@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="bbv.Common Rules" Description="This rule set contains all rules used for bbv.Common." ToolsVersion="10.0">
+   <RuleHintPaths>
+    <Path>..\tools\FxCop\Rules\</Path>
+  </RuleHintPaths>
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1004" Action="None" />
+    <Rule Id="CA1006" Action="None" />
+    <Rule Id="CA1014" Action="None" />
+    <Rule Id="CA1016" Action="None" />
+    <Rule Id="CA1020" Action="None" />
+    <Rule Id="CA1300" Action="None" />
+    <Rule Id="CA1500" Action="None" />
+    <Rule Id="CA1701" Action="None" />
+    <Rule Id="CA1703" Action="None" />
+    <Rule Id="CA1726" Action="None" />
+    <Rule Id="CA1903" Action="None" />
+    <Rule Id="CA2109" Action="None" />
+    <Rule Id="CA2210" Action="None" />
+  </Rules>
+</RuleSet>
