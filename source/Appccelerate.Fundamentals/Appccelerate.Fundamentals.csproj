@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.Fundamentals</AppccelerateProjectName>
+    <AppccelerateProjectType>Source</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events\EventArgs{T}.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

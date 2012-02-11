@@ -7,3 +7,6 @@ _ReSharper*/
 *.Cache
 *.cache
 /msbuild.log
+source/Appccelerate.1.2.dotCover
+*.user
+*.suo

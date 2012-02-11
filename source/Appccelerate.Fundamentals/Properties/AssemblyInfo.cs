@@ -1,18 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
-	<CodeSnippet Format="1.0.0">
-		<Header>
-			<Title>Appccelerate Apache License File Header</Title>
-			<Shortcut>apache</Shortcut>
-			<Description>Adds the Apache License header.</Description>
-			<Author>Appccelerate</Author>
-			<SnippetTypes>
-				<SnippetType>Expansion</SnippetType>
-			</SnippetTypes>
-		</Header>
-		<Snippet>
-			<Code Language="csharp">
-				<![CDATA[//<copyright file="GlobalAssemblyInfo.cs" company="Appccelerate">
+﻿//-------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,8 +14,12 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // </copyright>
-]]>
-			</Code>
-		</Snippet>
-	</CodeSnippet>
-</CodeSnippets>
+//-------------------------------------------------------------------------------
+
+using System.Reflection;
+
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("Appccelerate.Fundamentals")]
+[assembly: AssemblyDescription("")]

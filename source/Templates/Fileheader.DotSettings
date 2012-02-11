@@ -1,0 +1,34 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Shortcut/@EntryValue">apache</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Description/@EntryValue">Appccelerate Apache License File Header</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Text/@EntryValue">//-------------------------------------------------------------------------------&#xD;
+// &lt;copyright file="$filename$" company="Appccelerate"&gt;&#xD;
+//   Copyright (c) 2008-$year$&#xD;
+//&#xD;
+//   Licensed under the Apache License, Version 2.0 (the "License");&#xD;
+//   you may not use this file except in compliance with the License.&#xD;
+//   You may obtain a copy of the License at&#xD;
+//&#xD;
+//       http://www.apache.org/licenses/LICENSE-2.0&#xD;
+//&#xD;
+//   Unless required by applicable law or agreed to in writing, software&#xD;
+//   distributed under the License is distributed on an "AS IS" BASIS,&#xD;
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#xD;
+//   See the License for the specific language governing permissions and&#xD;
+//   limitations under the License.&#xD;
+// &lt;/copyright&gt;&#xD;
+//-------------------------------------------------------------------------------</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=filename/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=filename/Expression/@EntryValue">getFileName()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=filename/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=filename/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=year/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=year/Expression/@EntryValue">getCreationTime("yyyy")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=year/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C73C6F130E1E8949A9F98CB34A65739C/Field/=year/Order/@EntryValue">1</s:Int64></wpf:ResourceDictionary>
