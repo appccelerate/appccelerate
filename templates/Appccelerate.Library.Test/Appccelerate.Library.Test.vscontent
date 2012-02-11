@@ -1,0 +1,14 @@
+<VSContent xmlns="http://schemas.microsoft.com/developer/vscontent/2005">
+    <Content>
+        <FileName>Appccelerate.Library.Test.zip</FileName>
+        <DisplayName>Appccelerate Test Project Template</DisplayName>
+        <Description>A test project template for the Appccelerate library.</Description>
+        <FileContentType>VSTemplate</FileContentType>
+        <ContentVersion>1.0</ContentVersion>
+        <Attributes>
+            <Attribute name="ProjectType" value="Visual C#"/>
+            <Attribute name="ProjectSubType" value=""/>
+            <Attribute name="TemplateType" value="Project"/>
+        </Attributes>
+    </Content>
+</VSContent>
