@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.Fundamentals</AppccelerateProjectName>
+    <AppccelerateProjectType>Test</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Appccelerate</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.1.6.0\Lib\net40\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.8.0.1549\lib\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.8.0.1545\lib\xunit.extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EnsureTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
+      <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
+      <Name>Appccelerate.Fundamentals</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

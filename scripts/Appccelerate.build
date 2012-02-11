@@ -13,7 +13,7 @@
   <property name="sources" value="${base_dir}\source" readonly="true" />
   <property name="publish" value="${base_dir}\publish" readonly="true" />
   <property name="tools_dir" value="${base_dir}\tools" />
-  <!--TODO<property name="xUnitConsole" value="${tools_dir}\xUnit\xunit.console.clr4.x86.exe" />-->
+  <property name="xUnitConsole" value="${tools_dir}\xUnit\xunit.console.clr4.x86.exe" />
   <!--TODO<property name="mspec" value="${tools_dir}\mspec\mspec-clr4.exe" />-->
   <property name="git" value="${tools_dir}\git\git.exe" />
   <property name="nuget.console" value="${tools_dir}\NuGet\nuget.exe" />
@@ -98,7 +98,7 @@
   
   <target name="clean-packages" description="Cleans all packages">
     <echo message="Starting cleaning of packages" />
-	<foreach item="File" property="file">
+  <foreach item="File" property="file">
       <in>
         <items basedir="${sources}/packages">					
           <include name="**/*" />
@@ -153,52 +153,52 @@
   </target>
 
   <target name="tests" description="Execute unit tests.">
-	  <!--TODO<call target="NunitTests" />
-	  <call target="xUnitTests" />
-	  <call target="MSpecTests" />-->
+    <call target="xUnitTests" />
+    <!--TODO<call target="NunitTests" />
+    <call target="MSpecTests" />-->
   </target>
   
   <target name="NunitTests">
-	  <echo message="---- run NUnit tests" />
-	  <nunit2>
-		  <formatter type="Plain" />
-		  <test>
-			  <assemblies basedir="${sources}">
-				  <exclude name="**/bin/${build_config}/*Silverlight.Test.dll" />
-				  <include name="**/bin/${build_config}/*Test.dll" />
-			  </assemblies>
-		  </test>
+    <echo message="---- run NUnit tests" />
+    <nunit2>
+      <formatter type="Plain" />
+      <test>
+        <assemblies basedir="${sources}">
+          <exclude name="**/bin/${build_config}/*Silverlight.Test.dll" />
+          <include name="**/bin/${build_config}/*Test.dll" />
+        </assemblies>
+      </test>
     </nunit2>
   </target>
   
   <target name="xUnitTests">
-	  <echo message="---- run xUnit tests" />
-	  <foreach item="File" property="xunittestfilename">
-		  <in>
-			  <items basedir="${base_dir}">
-				  <exclude name="**/bin/${build_config}/*Silverlight.Test.dll" />
-				  <include name="**/bin/${build_config}/*Test.dll" />
-			  </items>
-		  </in>
-		  <do>
-			  <exec program="${xUnitConsole}" commandline="${xunittestfilename}" />
-		  </do>
-	  </foreach>
+    <echo message="---- run xUnit tests" />
+    <foreach item="File" property="xunittestfilename">
+      <in>
+        <items basedir="${base_dir}">
+          <exclude name="**/bin/${build_config}/*Silverlight.Test.dll" />
+          <include name="**/bin/${build_config}/*Test.dll" />
+        </items>
+      </in>
+      <do>
+        <exec program="${xUnitConsole}" commandline="${xunittestfilename}" />
+      </do>
+    </foreach>
   </target>
   
   <target name="MSpecTests">
-	  <echo message="---- run MSpec" />
-	  <mkdir dir="${binaries}" />
-	  <foreach item="File" property="mspectestfilename">
-		  <in>
-			  <items basedir="${base_dir}">
-				  <include name="**/bin/${build_config}/*Specification.dll" />
-			  </items>
-		  </in>
-		  <do>
-			  <exec program="${mspec}" commandline="--html ${binaries}\${path::get-file-name(mspectestfilename)}.html --teamcity ${mspectestfilename}" />
-		  </do>
-	  </foreach>
+    <echo message="---- run MSpec" />
+    <mkdir dir="${binaries}" />
+    <foreach item="File" property="mspectestfilename">
+      <in>
+        <items basedir="${base_dir}">
+          <include name="**/bin/${build_config}/*Specification.dll" />
+        </items>
+      </in>
+      <do>
+        <exec program="${mspec}" commandline="--html ${binaries}\${path::get-file-name(mspectestfilename)}.html --teamcity ${mspectestfilename}" />
+      </do>
+    </foreach>
   </target>
 
   <target name="copy_bin" description="Copies the builded output to the top bin directory">
@@ -309,8 +309,8 @@
     <property name="t" value="${string::replace(time, ' ', '')}" />
     <property name="timestamp" value="${string::substring(t, 2, string::get-length(t) - 2)}" />-->
 
-	  <version_timestamp property='timestamp'/>
-	
+    <version_timestamp property='timestamp'/>
+  
     <loadfile file="${base_dir}\Scripts\Version.txt" property="version" />
 
     <foreach item="Folder" property="foldername">

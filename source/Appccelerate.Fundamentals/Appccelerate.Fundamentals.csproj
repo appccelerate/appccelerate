@@ -8,13 +8,18 @@
     <ProjectGuid>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</ProjectGuid>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Appccelerate</RootNamespace>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ensure.cs" />
     <Compile Include="Events\EventArgs{T}.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidatedNotNullAttribute.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
 </Project>

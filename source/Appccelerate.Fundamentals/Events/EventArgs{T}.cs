@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.Fundamentals.Events
+namespace Appccelerate.Events
 {
     using System;
 

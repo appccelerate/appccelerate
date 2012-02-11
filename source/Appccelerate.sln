@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.Fundamentals", "Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj", "{F2D5C375-C650-4DED-A85E-8DA8EC09927A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.Fundamentals.Test", "Appccelerate.Fundamentals.Test\Appccelerate.Fundamentals.Test.csproj", "{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,6 +18,12 @@ Global
 		{F2D5C375-C650-4DED-A85E-8DA8EC09927A}.DebugWithCodeAnalysis|Any CPU.Build.0 = DebugWithCodeAnalysis|Any CPU
 		{F2D5C375-C650-4DED-A85E-8DA8EC09927A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2D5C375-C650-4DED-A85E-8DA8EC09927A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}.DebugWithCodeAnalysis|Any CPU.ActiveCfg = DebugWithCodeAnalysis|Any CPU
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}.DebugWithCodeAnalysis|Any CPU.Build.0 = DebugWithCodeAnalysis|Any CPU
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
