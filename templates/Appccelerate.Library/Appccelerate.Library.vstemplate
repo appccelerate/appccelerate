@@ -17,8 +17,10 @@
     <Project TargetFileName="Appccelerate.Library.csproj" File="Appccelerate.Library.csproj" ReplaceParameters="true">
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="VersionInfo.g.cs">VersionInfo.g.cs</ProjectItem>
       </Folder>
 	  <ProjectItem ReplaceParameters="true" TargetFileName="Version.txt">Version.txt</ProjectItem>
+	  <ProjectItem ReplaceParameters="true" TargetFileName="Appccelerate.TODO.nuspec">Appccelerate.TODO.nuspec</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
