@@ -1,0 +1,8 @@
+    <files>  
+      <file src="lib\**\*.dll" target="lib" /> 
+      <file src="lib\**\*.pdb" target="lib" /> 
+      <file src="lib\**\*.xml" target="lib" /> 
+      <file src="License.txt" target="" /> 
+      <file src="..\..\..\source\%sourcefolder%\*.cs" target="src" />
+      <file src="..\..\..\source\%sourcefolder%\**\*.cs" target="src" />
+    </files>

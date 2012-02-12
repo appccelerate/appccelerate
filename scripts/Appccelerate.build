@@ -21,7 +21,7 @@
   <property name="version" value="0.0.0" />
   <property name="build.number" value="0" />
 
-  <property name="pre.release" value="true" />
+  <property name="pre.version" value="-alpha" />
 
   <property name="build_config" value="Release" />
   <property name="build_succeeded" value="false" />
@@ -273,14 +273,25 @@
         
         <property name="nugetFolder" value="${binaries}\${build_config}\${path::get-file-name-without-extension(nuspec)}" />
         <property name="nugetFile" value="${nugetFolder}\${path::get-file-name(nuspec)}" />
+        <property name="sourceFolder" value="${path::get-file-name-without-extension(nugetFile)}" />
         
         <loadfile file="${nuspec}" property="content" />
+
+        <foreach item="Line" in="${base_dir}\scripts\nuget.symbols.txt" property="sourcefiles">
+          <do>
+            <property name="sourceProjectFiles" value="${string::replace(sourcefiles, '%sourcefolder%', sourceFolder)}" />
+            <property name="content" value="${string::replace(content, '&lt;/package>', sourceProjectFiles + '&lt;/package>')}" />
+          </do>
+        </foreach>
+        
         <foreach item="Line" in="${publish}\versions.txt" delim="," property="projectname,projectversion,nextversion,fileversion">
           <do>
             <property name="content" value="${string::replace(content, '%' + projectname + '%', '[' + projectversion + ',' + nextversion + ')')}" />
-            <property name="content" value="${string::replace(content, '%' + projectname + 'FileVersion%', fileversion)}" />
+            <property name="content" value="${string::replace(content, '%' + projectname + 'FileVersion%', string::substring(fileversion, 0, string::get-length(fileversion) - 2) + pre.version)}" />
           </do>
         </foreach>
+        
+        <echo message="${content}" />
         <echo message="${content}" file="${nugetFile}" />
 
         <copy overwrite="false" todir="${nugetFolder}">
@@ -289,7 +300,8 @@
           </fileset>
         </copy>
 
-        <exec program="${nuget.console}" commandline="pack ${nugetFile}" />
+        <exec program="${nuget.console}" commandline="pack ${nugetFile} -symbols" />
+    
         <move todir="${publish}\NuGet\">
           <fileset basedir="${base_dir}\Scripts\">
             <include name="*.nupkg" />
