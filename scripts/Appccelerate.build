@@ -21,6 +21,8 @@
   <property name="build.number" value="0" />
 
   <property name="pre.version" value="-alpha" />
+  <property name="pushToNuget" value="false" />  <!-- if set to true will publish to Nuget !!!! -->
+  <property name="nuget.api.key" value="" />  <!-- if blank then your key will be used. TC sets this value explicitely -->
 
   <property name="build_config" value="Release" />
   <property name="build_succeeded" value="false" />
@@ -49,6 +51,7 @@
     <call target="revert_version" />
     <call target="package" />
     <call target="nuget" />
+    <call target="publishToNuget" if="${pushToNuget}" />
 
     <echo message="finished with pre.version = ${pre.version}" />
   </target>
@@ -292,6 +295,21 @@
           </fileset>
         </move>
         
+      </do>
+    </foreach>
+  </target>
+
+  <target name="publishToNuget" description="pushes built packages to Nuget">
+    <foreach item="File" property="package">
+      <in>
+        <items>
+          <exclude name="${publish}/NuGet/*.symbols.nupkg" />
+          <include name="${publish}/NuGet/*.nupkg" />
+        </items>
+      </in>
+      <do>
+        <echo message="pushing ${package} to Nuget" />
+        <exec program="${nuget.console}" commandline="push ${package} ${nuget.api.key}" />
       </do>
     </foreach>
   </target>
