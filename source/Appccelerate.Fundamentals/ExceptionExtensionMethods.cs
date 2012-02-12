@@ -21,9 +21,6 @@ namespace Appccelerate
     using System;
     using System.Reflection;
 
-    /// <summary>
-    /// Extension methods for exceptions.
-    /// </summary>
     public static class ExceptionExtensionMethods
     {
         /// <summary>
