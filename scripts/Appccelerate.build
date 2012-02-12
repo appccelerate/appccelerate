@@ -21,6 +21,8 @@
   <property name="version" value="0.0.0" />
   <property name="build.number" value="0" />
 
+  <property name="pre.release" value="true" />
+
   <property name="build_config" value="Release" />
   <property name="build_succeeded" value="false" />
   <property name="parallelBuild" value="true" overwrite="false" readonly="false" />
@@ -46,8 +48,8 @@
     <call target="copy_bin" />
     <call target="tests" />
     <call target="revert_version" />
-    <!--<call target="package" />
-    <call target="nuget" />
+    <call target="package" />
+    <!--<call target="nuget" />
 
     <echo message="built version ${version}." />-->
   </target>
@@ -220,7 +222,7 @@
       <do>
         <property name="project" value="${path::get-file-name(folder)}" />
 
-        <copy overwrite="false" todir="${binaries}\${build_config}\" flatten="false">
+        <copy overwrite="false" todir="${binaries}\${build_config}\${project}" flatten="false">
           <fileset basedir="${folder}/bin/${build_config}">
             <include name="**/${project}.dll" />
             <include name="**/${project}.xml" />
@@ -235,7 +237,7 @@
           
           <foreach item="Line" in="${dependenciesFile}" property="dependency">
             <do>
-              <copy overwrite="false" todir="${binaries}\${build_config}\" flatten="false">
+              <copy overwrite="false" todir="${binaries}\${build_config}\${project}" flatten="false">
                 <fileset basedir="${folder}/bin/${build_config}">
                   <include name="**/${dependency}" />
                 </fileset>
@@ -249,7 +251,7 @@
   </target>
 
   <target name="package">
-    <zip zipfile="${publish}\${project.name}-${version}.0.${timestamp}.zip">
+    <zip zipfile="${publish}\${project.name}.zip">
       <fileset basedir="${binaries}\${build_config}">
         <include name="**/*" />
       </fileset>
