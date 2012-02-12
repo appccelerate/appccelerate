@@ -14,7 +14,7 @@
   <property name="publish" value="${base_dir}\publish" readonly="true" />
   <property name="tools_dir" value="${base_dir}\tools" />
   <property name="xUnitConsole" value="${tools_dir}\xUnit\xunit.console.clr4.x86.exe" />
-  <!--TODO<property name="mspec" value="${tools_dir}\mspec\mspec-clr4.exe" />-->
+  <property name="mspec" value="${sources}\packages\Machine.Specifications.0.5.3.0\tools\mspec-clr4.exe" />-->
   <property name="git" value="${tools_dir}\git\git.exe" />
   <property name="nuget.console" value="${tools_dir}\NuGet\nuget.exe" />
   
@@ -157,21 +157,7 @@
 
   <target name="tests" description="Execute unit tests.">
     <call target="xUnitTests" />
-    <!--TODO<call target="NunitTests" />
-    <call target="MSpecTests" />-->
-  </target>
-  
-  <target name="NunitTests">
-    <echo message="---- run NUnit tests" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test>
-        <assemblies basedir="${sources}">
-          <exclude name="**/bin/${build_config}/*Silverlight.Test.dll" />
-          <include name="**/bin/${build_config}/*Test.dll" />
-        </assemblies>
-      </test>
-    </nunit2>
+    <call target="MSpecTests" />
   </target>
   
   <target name="xUnitTests">
