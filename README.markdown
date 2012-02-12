@@ -1,5 +1,3 @@
-This is the main repository for Appccelerate.
-
 Accelerate your .Net application development.
 
 For who it is
