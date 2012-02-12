@@ -49,7 +49,7 @@
     <call target="tests" />
     <call target="revert_version" />
     <call target="package" />
-    <!--<call target="nuget" />
+    <call target="nuget" />
 
     <echo message="built version ${version}." />-->
   </target>
@@ -284,7 +284,7 @@
         <echo message="${content}" file="${nugetFile}" />
 
         <copy overwrite="false" todir="${nugetFolder}">
-          <fileset basedir="${base_dir}\Scripts\">
+          <fileset basedir="${base_dir}\source\">
             <include name="License.txt" />
           </fileset>
         </copy>
