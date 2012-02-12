@@ -37,6 +37,7 @@
     -->
   <target name="integrate" depends="clean, build_release, tests" 
           description="Build and exectute unit tests for developers before commit their changes.">
+    <tstamp />
   </target>
   
   <target name="publish" depends="clean" 
@@ -54,6 +55,7 @@
     <call target="publishToNuget" if="${pushToNuget}" />
 
     <echo message="finished with pre.version = ${pre.version}" />
+    <tstamp />
   </target>
   
   <!--
