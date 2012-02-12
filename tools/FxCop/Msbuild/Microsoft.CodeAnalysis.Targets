@@ -1,0 +1,178 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+<!-- Global properties for all analyzers -->
+
+    <PropertyGroup>
+        <CodeAnalysisStaticAnalysisDirectory Condition="'$(CodeAnalysisStaticAnalysisDirectory)'==''">$(Registry:HKEY_LOCAL_MACHINE\Software\Microsoft\VisualStudio\10.0\Setup\EDev@StanDir)</CodeAnalysisStaticAnalysisDirectory>
+        <!-- If we didn't find the first registry path, assume we're in a 64bit process. -->
+        <!-- read registry from Wow6432Node -->
+        <CodeAnalysisStaticAnalysisDirectory Condition="'$(CodeAnalysisStaticAnalysisDirectory)'==''">$(Registry:HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\VisualStudio\10.0\Setup\EDev@StanDir)</CodeAnalysisStaticAnalysisDirectory>
+
+        <!-- Default rule set search paths -->
+        <CodeAnalysisRuleSetDirectories Condition=
+            "'$(CodeAnalysisIgnoreBuiltInRuleSets)'!='true' and
+             '$(CodeAnalysisStaticAnalysisDirectory)'!=''">$(CodeAnalysisRuleSetDirectories);$(CodeAnalysisStaticAnalysisDirectory)\Rule Sets</CodeAnalysisRuleSetDirectories>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(RunCodeAnalysis)'=='true' or '$(RunCodeAnalysisOnce)'=='true'">
+        <!-- Define the CODE_ANALYSIS constant -->
+        <DefineConstants Condition="'$(Language)'=='C#' ">CODE_ANALYSIS;$(DefineConstants)</DefineConstants>
+        <FinalDefineConstants Condition="'$(Language)'=='VB' ">CODE_ANALYSIS=-1,$(FinalDefineConstants)</FinalDefineConstants>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup Condition="'$(Language)'=='C++' and ('$(RunCodeAnalysis)'=='true' or '$(RunCodeAnalysisOnce)'=='true')">
+        <ClCompile>
+            <PreprocessorDefinitions>CODE_ANALYSIS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+<!-- Global properties for all analyzers -->
+
+
+<!-- FxCop analyzer properties -->
+
+    <PropertyGroup>
+        <!-- FxCopDir must be considered for backwards compatibility with the Visual Studio 2005 task, except within the context of a Team Build build. -->
+        <CodeAnalysisPath Condition="'$(CodeAnalysisPath)'=='' and '$(FxCopDir)'!='' and '$(TeamBuildConstants)'==''">$(FxCopDir)</CodeAnalysisPath>
+        <CodeAnalysisPath Condition="'$(CodeAnalysisPath)'==''">$(Registry:HKEY_LOCAL_MACHINE\Software\Microsoft\VisualStudio\10.0\Setup\EDev@FxCopDir)</CodeAnalysisPath>
+        <!-- If we didn't find the first registry path, assume we're in a 64bit process. -->
+        <!-- read registry from Wow6432Node -->
+        <CodeAnalysisPath Condition="'$(CodeAnalysisPath)'==''">$(Registry:HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\VisualStudio\10.0\Setup\EDev@FxCopDir)</CodeAnalysisPath>
+
+        <!-- Default FxCop settings -->
+        <CodeAnalysisApplyLogFileXsl Condition="'$(CodeAnalysisApplyLogFileXsl)'==''">false</CodeAnalysisApplyLogFileXsl>
+        <CodeAnalysisFailOnMissingRules Condition="'$(CodeAnalysisFailOnMissingRules)'==''">false</CodeAnalysisFailOnMissingRules>
+        <CodeAnalysisForceOutput Condition="'$(CodeAnalysisForceOutput)'==''">true</CodeAnalysisForceOutput>
+        <CodeAnalysisGenerateSuccessFile Condition="'$(CodeAnalysisGenerateSuccessFile)'==''">true</CodeAnalysisGenerateSuccessFile>
+        <CodeAnalysisIgnoreGeneratedCode Condition="'$(CodeAnalysisIgnoreGeneratedCode)'==''">true</CodeAnalysisIgnoreGeneratedCode>
+        <CodeAnalysisIgnoreInvalidTargets Condition="'$(CodeAnalysisIgnoreInvalidTargets)'==''">true</CodeAnalysisIgnoreInvalidTargets>
+        <CodeAnalysisInputAssembly Condition="'$(CodeAnalysisInputAssembly)'==''">$(OutDir)$(TargetName)$(TargetExt)</CodeAnalysisInputAssembly>
+        <CodeAnalysisLogFile Condition="'$(CodeAnalysisLogFile)'==''">$(CodeAnalysisInputAssembly).CodeAnalysisLog.xml</CodeAnalysisLogFile>
+        <CodeAnalysisModuleSuppressionsFile Condition="'$(CodeAnalysisModuleSuppressionsFile)'==''">GlobalSuppressions$(DefaultLanguageSourceExtension)</CodeAnalysisModuleSuppressionsFile>
+        <CodeAnalysisOverrideRuleVisibilities Condition="'$(CodeAnalysisOverrideRuleVisibilities)'==''">false</CodeAnalysisOverrideRuleVisibilities>
+        <CodeAnalysisOutputToConsole Condition="'$(CodeAnalysisOutputToConsole)'==''">false</CodeAnalysisOutputToConsole>
+        <CodeAnalysisQuiet Condition="'$(CodeAnalysisQuiet)'==''">false</CodeAnalysisQuiet>
+        <CodeAnalysisRuleSet Condition="'$(CodeAnalysisRules)'=='' and '$(CodeAnalysisRuleAssemblies)'=='' and '$(CodeAnalysisRuleSet)'==''">MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+
+        <!--
+             Do not add the built-in rule directories in any of the following conditions:
+             1. CodeAnalysisRuleAssemblies is not empty, CodeAnalysisRuleDirectories is empty, and CodeAnalysisRuleSet is empty. (This is the case when CodeAnalysisRuleAssemblies will be used.)
+             2. CodeAnalysisIgnoreBuiltInRules is true.
+             3. CodeAnalysisPath is empty.
+             4. CodeAnalysisProject is not empty (i.e., an FxCop project file is used).
+
+             The condition below checks ensures none of these four are true.
+        -->
+        <CodeAnalysisRuleDirectories Condition=
+        	"('$(CodeAnalysisRuleAssemblies)'=='' or '$(CodeAnalysisRuleDirectories)'!='' or '$(CodeAnalysisRuleSet)'!='') and 
+	          '$(CodeAnalysisIgnoreBuiltInRules)'!='true' and 
+	          '$(CodeAnalysisPath)'!='' and 
+	          '$(CodeAnalysisProject)'==''">$(CodeAnalysisRuleDirectories);$(CodeAnalysisPath)\Rules</CodeAnalysisRuleDirectories>
+
+        <CodeAnalysisSaveMessagesToReport Condition="'$(CodeAnalysisSaveMessagesToReport)'==''">Active</CodeAnalysisSaveMessagesToReport>
+        <CodeAnalysisSearchGlobalAssemblyCache Condition="'$(CodeAnalysisSearchGlobalAssemblyCache)'==''">true</CodeAnalysisSearchGlobalAssemblyCache>
+        <CodeAnalysisSucceededFile Condition="'$(CodeAnalysisSucceededFile)'==''">$(CodeAnalysisInputAssembly).lastcodeanalysissucceeded</CodeAnalysisSucceededFile>
+        <CodeAnalysisSummary Condition="'$(CodeAnalysisSummary)'==''">false</CodeAnalysisSummary>
+        <CodeAnalysisTimeout Condition="'$(CodeAnalysisTimeout)'==''">120</CodeAnalysisTimeout>
+        <CodeAnalysisTreatWarningsAsErrors Condition="'$(CodeAnalysisTreatWarningsAsErrors)'==''">false</CodeAnalysisTreatWarningsAsErrors>
+        <CodeAnalysisUpdateProject Condition="'$(CodeAnalysisUpdateProject)'==''">false</CodeAnalysisUpdateProject>
+        <CodeAnalysisUseTypeNameInSuppression Condition="'$(CodeAnalysisUseTypeNameInSuppression)'==''">true</CodeAnalysisUseTypeNameInSuppression>
+        <CodeAnalysisVerbose Condition="'$(CodeAnalysisVerbose)'==''">false</CodeAnalysisVerbose>
+    </PropertyGroup>
+
+    <!-- C#/VB specific properties -->
+    <PropertyGroup Condition="'$(Language)'=='C#' or '$(Language)'=='VB'">
+        <!-- Run Code Analysis after the build, but before running the application-->
+        <PrepareForRunDependsOn>$(PrepareForRunDependsOn);RunCodeAnalysis</PrepareForRunDependsOn>
+        <RunCodeAnalysisDependsOn>$(RunCodeAnalysisDependsOn);Compile</RunCodeAnalysisDependsOn>
+    </PropertyGroup>
+
+    <!-- C++ specific properties -->
+    <PropertyGroup Condition="'$(Language)'=='C++'">
+        <!-- Run Code Analysis after the build, but before running the application-->
+        <AfterBuildLinkTargets>$(AfterBuildLinkTargets);RunCodeAnalysis</AfterBuildLinkTargets>
+        <RunCodeAnalysisDependsOn>$(RunCodeAnalysisDependsOn);ClCompile</RunCodeAnalysisDependsOn>
+        <ExtensionsToDeleteOnClean>$(ExtensionsToDeleteOnClean);$(CodeAnalysisLogFile);$(CodeAnalysisSucceededFile)</ExtensionsToDeleteOnClean>
+        <CodeAnalysisTLogFile>$(IntDir)CodeAnalysis.read.1.tlog</CodeAnalysisTLogFile>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup Condition="'$(Language)'=='C++' and '$(RunCodeAnalysisOnce)'=='true'">
+        <ClCompile>
+            <EnablePREFast>true</EnablePREFast>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <!-- Make CodeAnalysisDictionary available as a Build Action in Visual Studio -->
+    <ItemGroup>
+        <AvailableItemName Include="CodeAnalysisDictionary" />
+    </ItemGroup>
+
+<!-- FxCop analyzer properties -->
+
+<!-- FxCop analyzer targets -->
+
+    <PropertyGroup>
+        <RunCodeAnalysisInputs>$(CodeAnalysisInputAssembly)</RunCodeAnalysisInputs>
+        <RunCodeAnalysisInputs Condition="'$(CodeAnalysisRuleSet)'!='' and Exists('$(CodeAnalysisRuleSet)')">$(RunCodeAnalysisInputs);$(CodeAnalysisRuleSet)</RunCodeAnalysisInputs>
+        <RunCodeAnalysisInputs Condition="'$(CodeAnalysisRuleSet)'!='' and !Exists('$(CodeAnalysisRuleSet)') and Exists('$(ProjectDir)$(CodeAnalysisRuleSet)')">$(RunCodeAnalysisInputs);$(ProjectDir)$(CodeAnalysisRuleSet)</RunCodeAnalysisInputs>
+    </PropertyGroup>
+
+    <UsingTask TaskName="Microsoft.Build.Tasks.CodeAnalysis" AssemblyFile=".\FxCopTask.dll"/>
+
+    <Target
+        Name="RunCodeAnalysis"
+        Condition="'$(RunCodeAnalysis)'=='true' or '$(RunCodeAnalysisOnce)'=='true'"
+        Inputs="$(RunCodeAnalysisInputs)"
+        Outputs="$(CodeAnalysisLogFile);$(CodeAnalysisSucceededFile)"
+        DependsOnTargets="$(RunCodeAnalysisDependsOn)"
+        >
+        <CodeAnalysis
+            AdditionalOptions="$(CodeAnalysisAdditionalOptions)"
+            AlternativeToolName="$(CodeAnalysisAlternativeToolName)"
+            AnalysisTimeout="$(CodeAnalysisTimeout)"
+            ApplyLogFileXsl="$(CodeAnalysisApplyLogFileXsl)"
+            Assemblies="$(CodeAnalysisInputAssembly)"
+            ConsoleXsl="$(CodeAnalysisConsoleXsl)"
+            Culture="$(CodeAnalysisCulture)"
+            DependentAssemblyPaths="@(CodeAnalysisDependentAssemblyPaths)"
+            Dictionaries="@(CodeAnalysisDictionary)"
+            DisableReferenceSwitchGeneration="$(CodeAnalysisDisableReferenceSwitchGeneration)"
+            FailOnMissingRules="$(CodeAnalysisFailOnMissingRules)"
+            FilesWritten="$(CodeAnalysisLogFile);$(CodeAnalysisSucceededFile)"
+            ForceOutput="$(CodeAnalysisForceOutput)"
+            GenerateSuccessFile="$(CodeAnalysisGenerateSuccessFile)"
+            IgnoreGeneratedCode="$(CodeAnalysisIgnoreGeneratedCode)"
+            IgnoreInvalidTargets="$(CodeAnalysisIgnoreInvalidTargets)"
+            Imports="@(CodeAnalysisImport)"
+            LogFile="$(CodeAnalysisLogFile)"
+            LogFileXsl="$(CodeAnalysisLogFileXsl)"
+            MSBuildProjectDirectory="$(MSBuildProjectDirectory)"
+            OutputToConsole="$(CodeAnalysisOutputToConsole)"
+            OverrideRuleVisibilities="$(CodeAnalysisOverrideRuleVisibilities)"
+            PlatformPath="$(CodeAnalysisPlatformPath)"
+            Project="$(CodeAnalysisProject)"
+            Quiet="$(CodeAnalysisQuiet)"
+            References="@(ReferencePath)"
+            RuleAssemblies="$(CodeAnalysisRuleAssemblies)"
+            RuleDirectories="$(CodeAnalysisRuleDirectories)"
+            Rules="$(CodeAnalysisRules)"
+            RuleSet="$(CodeAnalysisRuleSet)"
+            RuleSetDirectories="$(CodeAnalysisRuleSetDirectories)"
+            SaveMessagesToReport="$(CodeAnalysisSaveMessagesToReport)"
+            SearchGlobalAssemblyCache="$(CodeAnalysisSearchGlobalAssemblyCache)"
+            SuccessFile="$(CodeAnalysisSucceededFile)"
+            Summary="$(CodeAnalysisSummary)"   
+            TargetFrameworkVersion="$(TargetFrameworkVersion)"
+            TLogFile="$(CodeAnalysisTLogFile)"
+            ToolPath="$(CodeAnalysisPath)"
+            TreatWarningsAsErrors="$(CodeAnalysisTreatWarningsAsErrors)"
+            UpdateProject="$(CodeAnalysisUpdateProject)"            
+            Verbose="$(CodeAnalysisVerbose)"
+            >
+            <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+        </CodeAnalysis>
+    </Target>
+
+<!-- FxCop analyzer targets -->
+
+</Project>
