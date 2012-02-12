@@ -18,10 +18,9 @@
   <property name="git" value="${tools_dir}\git\git.exe" />
   <property name="nuget.console" value="${tools_dir}\NuGet\nuget.exe" />
   
-  <property name="version" value="0.0.0" />
   <property name="build.number" value="0" />
 
-  <property name="pre.version" value="alpha" />
+  <property name="pre.version" value="-alpha" />
 
   <property name="build_config" value="Release" />
   <property name="build_succeeded" value="false" />
@@ -51,7 +50,7 @@
     <call target="package" />
     <call target="nuget" />
 
-    <echo message="built version ${version}." />-->
+    <echo message="finished with pre.version = ${pre.version}" />
   </target>
   
   <!--
