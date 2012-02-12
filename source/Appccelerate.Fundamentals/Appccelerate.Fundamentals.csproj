@@ -30,5 +30,8 @@
   <ItemGroup>
     <Content Include="Version.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.Fundamentals.nuspec" />
+  </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
 </Project>
