@@ -21,7 +21,7 @@
   <property name="version" value="0.0.0" />
   <property name="build.number" value="0" />
 
-  <property name="pre.version" value="-alpha" />
+  <property name="pre.version" value="alpha" />
 
   <property name="build_config" value="Release" />
   <property name="build_succeeded" value="false" />
@@ -291,7 +291,6 @@
           </do>
         </foreach>
         
-        <echo message="${content}" />
         <echo message="${content}" file="${nugetFile}" />
 
         <copy overwrite="false" todir="${nugetFolder}">
@@ -343,6 +342,8 @@
             <attribute type="AssemblyVersionAttribute" value="${major}.${minor}.0.0" />
             <!-- File Version is Major.Minor.BuildNumber.0-->
             <attribute type="AssemblyFileVersionAttribute" value="${major}.${minor}.${build.number}.0" />
+            <!-- Information version info uses pre version info - empty for official releases -->
+            <!--<attribute type="AssemblyInformationalVersionAttribute" value="${pre.version}" />   bug in FxCop!!! -->
           </attributes>
         </asminfo>
 
@@ -373,34 +374,4 @@
       </do>
     </foreach>
   </target>
-  
-  <script language="C#" prefix="test" >  
-<code>  
-  <![CDATA[  
- [TaskName("version_timestamp")]  
- public class version_timestamp : Task  
- {  
-  private string _property;  
-  
-  [TaskAttribute("property", Required = true)]  
-  public string Property  
-  {  
-   get { return _property; }  
-   set { _property = value; }  
-  }  
-  
-  protected override void ExecuteTask()  
-  {  
-   DateTime now = DateTime.UtcNow;
-
-   string gmtTime = now.ToString("yy") + now.DayOfYear + "." + now.ToString("HHmm");
-   
-   Properties.Add(_property, gmtTime);  
-  
-   Log(Level.Info, "[version_timestamp] :" + gmtTime);  
-  }  
- }  
-  ]]>  
-</code>  
-  </script>
 </project>
