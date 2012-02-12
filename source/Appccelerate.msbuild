@@ -169,13 +169,6 @@
     <Compile Include="$(AppccelerateSourcePath)GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="$(AppccelerateSourcePath)\VersionAssemblyInfos\$(AppccelerateProjectName).VersionInfo.g.cs">
-      <Link>Properties\$(AppccelerateProjectName).VersionInfo.g.cs</Link>
-    </Compile>
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(AppccelerateProjectType)' == 'Source'">
-    <Content Include="Version.txt" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(AppccelerateProjectType)' == 'Source'">

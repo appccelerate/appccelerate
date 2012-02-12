@@ -19,6 +19,7 @@
   <property name="nuget.console" value="${tools_dir}\NuGet\nuget.exe" />
   
   <property name="version" value="0.0.0" />
+  <property name="build.number" value="0" />
 
   <property name="build_config" value="Release" />
   <property name="build_succeeded" value="false" />
@@ -45,10 +46,10 @@
     <call target="copy_bin" />
     <call target="tests" />
     <call target="revert_version" />
-    <call target="package" />
+    <!--<call target="package" />
     <call target="nuget" />
 
-    <echo message="built version ${version}." />
+    <echo message="built version ${version}." />-->
   </target>
   
   <!--
@@ -299,58 +300,54 @@
 
   <target name="set_version" description="adds the version in GlobalAssemblyInfo.cs.">
 
-    <!--<property name="now" value="${datetime::now()}" />
-    <property name="year" value="${datetime::get-year(now)}" />
-    <property name="day" value="${datetime::get-day-of-year(now)} " />
-    <property name="hour" value="${datetime::get-hour(now)} " />
-    <property name="min" value="${datetime::get-minute(now)} " />
-
-    <property name="time" value="${year}${day}.${hour}${min}" />
-    <property name="t" value="${string::replace(time, ' ', '')}" />
-    <property name="timestamp" value="${string::substring(t, 2, string::get-length(t) - 2)}" />-->
-
-    <version_timestamp property='timestamp'/>
-  
-    <loadfile file="${base_dir}\Scripts\Version.txt" property="version" />
-
     <foreach item="Folder" property="foldername">
       <in>
         <items>
-          <exclude name="${sources}\bbv.Common.Test" />
-          <exclude name="${sources}\bbv.Common.*.Test" />
-          <exclude name="${sources}\bbv.Common.*.Specification" />
-          <exclude name="${sources}\bbv.Common.*.Sample" />
-          <exclude name="${sources}\bbv.Common.*.Performance" />
+          <exclude name="${sources}\Appccelerate.*.Test" />
+          <exclude name="${sources}\Appccelerate.*.Specification" />
+          <exclude name="${sources}\Appccelerate.*.Sample" />
+          <exclude name="${sources}\Appccelerate.*.Performance" />
           <exclude name="${sources}\.*" />
-          <include name="${sources}\bbv.Common*" />
+          <include name="${sources}\Appccelerate*" />
         </items>
       </in>
       <do>
+        <!-- Major and Minor version are specified in Versions.txt by the project-->
         <loadfile file="${foldername}\Version.txt" property="projversion" />
+
+        <property name="split.index" value="${string::index-of(projversion, '.')}" />
+        <property name="major" value="${string::substring(projversion, 0, split.index)}" />
+        <property name="minor" value="${string::substring(projversion, int::parse(split.index) + 1, string::get-length(projversion) - int::parse(split.index) - 1)}" />
         
-        <asminfo language="CSharp" output="${foldername}.VersionInfo.g.cs">
+        <asminfo language="CSharp" output="${foldername}\Properties\VersionInfo.g.cs">
           <imports>
             <import namespace="System" />
             <import namespace="System.Reflection" />
           </imports>
           <attributes>
-            <attribute type="AssemblyVersionAttribute" value="${version}.${projversion}.0.0" />
-            <attribute type="AssemblyFileVersionAttribute" value="${version}.${projversion}.${timestamp}" />
+            <!-- Assembly Version is Major.Minor.0.0 -->
+            <attribute type="AssemblyVersionAttribute" value="${major}.${minor}.0.0" />
+            <!-- File Version is Major.Minor.BuildNumber.0-->
+            <attribute type="AssemblyFileVersionAttribute" value="${major}.${minor}.${build.number}.0" />
           </attributes>
         </asminfo>
 
-        <echo append="true" 
-              message="${path::get-file-name(foldername)},${version}.${projversion}.0.0,${version}.${int::parse(projversion) + 1}.0.0,${version}.${projversion}.${timestamp}${environment::newline()}" 
+        <echo append="true"
+              message="${path::get-file-name(foldername)},${major}.${minor}.0.0,${int::parse(major) + 1}.0.0.0,${major}.${minor}.${build.number}.0${environment::newline()}"
               file="${publish}\versions.txt" />
+        
       </do>
     </foreach>
+
+    
+    
   </target>
 
   <target name="revert_version" description="reverts the changes made to VersionAssemblyInfo.">
     <foreach item="File" property="filename">
       <in>
         <items>
-          <include name="${sources}\*.VersionInfo.g.cs" />
+          <include name="${sources}\**\VersionInfo.g.cs" />
         </items>
       </in>
       <do>
