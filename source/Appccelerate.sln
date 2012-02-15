@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.Fundamentals.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.Fundamentals.Specification", "Appccelerate.Fundamentals.Specification\Appccelerate.Fundamentals.Specification.csproj", "{DB74DA37-0D6A-49FD-818D-A1976BBD4A25}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fundamentals", "Fundamentals", "{3528786D-A0F8-484F-92FE-E8B4223B352F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,5 +37,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14C65FF5-CB4D-4B5A-BA7B-47D0D504F091} = {3528786D-A0F8-484F-92FE-E8B4223B352F}
+		{F2D5C375-C650-4DED-A85E-8DA8EC09927A} = {3528786D-A0F8-484F-92FE-E8B4223B352F}
+		{DB74DA37-0D6A-49FD-818D-A1976BBD4A25} = {3528786D-A0F8-484F-92FE-E8B4223B352F}
 	EndGlobalSection
 EndGlobal
