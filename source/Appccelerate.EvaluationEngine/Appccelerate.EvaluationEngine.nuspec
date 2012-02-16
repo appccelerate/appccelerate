@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.EvaluationEngine</id>
+    <version>%Appccelerate.EvaluationEngineFileVersion%</version>
+    <title>"Appccelerate.EvaluationEngine"</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      The evaluation engine provides an infrastructure for decoupled evaluation.
+      Features: 
+      The evaluation engine provides a single entry point to ask questions (queries, calculations, ...), 
+      Questioner is completely decoupled from answer finding algorithm, 
+      Hierarchical evaluation engines (children inherit knowledge from parent),
+      Solution definitions can be loaded from modules or plug-ins,
+      Extensible to solve any kind of question (validation rules, status queries, …),
+      Fluent definition syntax allowing constraints, strategies, aggregators and mutiple expressions per question,
+      Thorough customizable logging.
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate</tags>
+  </metadata>
+</package>
