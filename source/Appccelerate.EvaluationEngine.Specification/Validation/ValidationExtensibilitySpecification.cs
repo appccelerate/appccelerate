@@ -140,10 +140,10 @@ namespace Appccelerate.EvaluationEngine.Validation
                 {
                     result.Valid = false;
 
-                    var myValidationViolation = this.Factory.CreateValidationViolation();
-                    myValidationViolation.Reason = NameIsEmptyReason;
-                    myValidationViolation.ViolationHint = Hint;
-                    result.AddViolation(myValidationViolation);
+                    var validationViolation = this.Factory.CreateValidationViolation();
+                    validationViolation.Reason = NameIsEmptyReason;
+                    validationViolation.ViolationHint = Hint;
+                    result.AddViolation(validationViolation);
                 }
 
                 return result;
