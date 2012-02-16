@@ -10,6 +10,7 @@
     <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>The evaluation engine provides an infrastructure for decoupled evaluation.</summary>
     <description>
       The evaluation engine provides an infrastructure for decoupled evaluation.
       Features: 
@@ -23,5 +24,8 @@
     </description>
     <copyright>Copyright 2012</copyright>
     <tags>Appccelerate</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+    </dependencies>
   </metadata>
 </package>
