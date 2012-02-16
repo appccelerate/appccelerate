@@ -10,6 +10,7 @@
     <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<summary></summary>
     <description></description>
     <copyright>Copyright 2012</copyright>
     <tags>Appccelerate</tags>
