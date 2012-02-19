@@ -1,0 +1,31 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.EventBroker</id>
+    <version>%Appccelerate.EventBrokerFileVersion%</version>
+    <title>"Appccelerate.EventBroker"</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Notification component for synchronous and asynchronous loosly coupled notification with automatic thread switching</summary>
+    <description>
+      Notification component for synchronous and asynchronous loosly coupled notification with automatic thread switching:
+      synchronous and asynchronous notification,
+      automatic thread switching: to background or UI thread,
+      loose coupling of event topic publishers and subscribers,
+      publishers and subscribers are referenced by weak references and can therfore be garbage collected
+      multiple publishers and/or subscribers for a single event topic,
+      matchers for publications and subscriptions,
+      thorough customizable logging,
+      extension support,
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate, EventBroker, publisher, subscriber, events, multi-threading, thread-switching</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+    </dependencies>
+  </metadata>
+</package>
