@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.Windows</id>
+    <version>%Appccelerate.WindowsFileVersion%</version>
+    <title>"Appccelerate.Windows"</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Provides helper functionality for interaction with Windows</summary>
+    <description>
+      Provides helper functionality for interaction with Windows:
+      check whether application is already running (ApplicationHelper),
+      get DPI of windows desktop (GraphicHelper),
+      logout, restart Windows (Windows Helper)
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate, Windows</tags>
+  </metadata>
+</package>
