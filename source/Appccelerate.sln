@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.Windows", "App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.Windows.Test", "Appccelerate.Windows.Test\Appccelerate.Windows.Test.csproj", "{5ACDED29-EA8F-48E0-A462-3BC00BFBE5A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker.Sample", "Appccelerate.EventBroker.Sample\Appccelerate.EventBroker.Sample.csproj", "{CF83E89B-54C6-466A-ADF2-C26FE3E24286}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -226,6 +228,21 @@ Global
 		{5ACDED29-EA8F-48E0-A462-3BC00BFBE5A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5ACDED29-EA8F-48E0-A462-3BC00BFBE5A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5ACDED29-EA8F-48E0-A462-3BC00BFBE5A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.DebugWithCodeAnalysis|Any CPU.ActiveCfg = DebugWithCodeAnalysis|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.DebugWithCodeAnalysis|Any CPU.Build.0 = DebugWithCodeAnalysis|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.DebugWithCodeAnalysis|Mixed Platforms.ActiveCfg = DebugWithCodeAnalysis|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.DebugWithCodeAnalysis|Mixed Platforms.Build.0 = DebugWithCodeAnalysis|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.DebugWithCodeAnalysis|x86.ActiveCfg = DebugWithCodeAnalysis|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -241,6 +258,7 @@ Global
 		{6B189709-125E-46EC-8FEE-50345375F221} = {28464055-4F9B-4522-B390-E84B72B4AEF4}
 		{CF725C82-A037-41DA-B464-3C88898BB4EE} = {28464055-4F9B-4522-B390-E84B72B4AEF4}
 		{59583ACD-E778-4F33-A550-9EFF0E7958E0} = {28464055-4F9B-4522-B390-E84B72B4AEF4}
+		{CF83E89B-54C6-466A-ADF2-C26FE3E24286} = {28464055-4F9B-4522-B390-E84B72B4AEF4}
 		{DE64C585-8522-45D6-BC89-7E969F63943A} = {6A4999E8-C7CF-45EF-99B1-31F441AD87B0}
 		{5ACDED29-EA8F-48E0-A462-3BC00BFBE5A8} = {6A4999E8-C7CF-45EF-99B1-31F441AD87B0}
 	EndGlobalSection
