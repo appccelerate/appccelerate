@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>"$safeprojectname$"</id>
-    <version>%"$safeprojectname$"FileVersion%</version>
-    <title>"$safeprojectname$"</title>
+    <id>$safeprojectname$</id>
+    <version>%$safeprojectname$FileVersion%</version>
+    <title>$safeprojectname$</title>
     <authors>Appccelerate team</authors>
     <owners>Appccelerate team</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
