@@ -16,7 +16,7 @@
       AsyncResult to implement asynchronous tasks.
     </description>
     <copyright>Copyright 2012</copyright>
-    <tags>Appccelerate,multi-threading,AsyncResult,AsyncWorker,worker</tags>
+    <tags>Appccelerate multi-threading AsyncResult AsyncWorker worker</tags>
     <dependencies>
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
     </dependencies>

@@ -23,7 +23,7 @@
       Thorough customizable logging.
     </description>
     <copyright>Copyright 2012</copyright>
-    <tags>Appccelerate</tags>
+    <tags>Appccelerate evaluation-engine</tags>
     <dependencies>
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
     </dependencies>

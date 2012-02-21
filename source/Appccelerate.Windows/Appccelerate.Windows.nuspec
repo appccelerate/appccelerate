@@ -18,6 +18,6 @@
       logout, restart Windows (Windows Helper)
     </description>
     <copyright>Copyright 2012</copyright>
-    <tags>Appccelerate, Windows</tags>
+    <tags>Appccelerate Windows</tags>
   </metadata>
 </package>
