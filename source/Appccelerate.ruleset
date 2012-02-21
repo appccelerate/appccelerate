@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="bbv.Common Rules" Description="This rule set contains all rules used for bbv.Common." ToolsVersion="10.0">
+<RuleSet Name="Appccelerate Rules" Description="This rule set contains all rules used for Appccelerate." ToolsVersion="10.0">
    <RuleHintPaths>
     <Path>..\tools\FxCop\Rules\</Path>
   </RuleHintPaths>
