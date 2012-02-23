@@ -1,0 +1,32 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.StateMachine</id>
+    <version>%Appccelerate.StateMachineFileVersion%</version>
+    <title>Appccelerate.StateMachine</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Hierarchical state machine with fluent definition syntax.</summary>
+    <description>
+      Hierarchical state machine with fluent definition syntax
+      Features:
+      states and events can be defined with enums, strings or ints - resulting in single class state machines,
+      actions on transitions, entry and exit actions, transition guards, 
+      hierarchical with different history behaviors to initialize state always to same state or last active state
+      fluent definition interface
+      synchronous/asynchronous state machine (passive state machine handles state transitions synchronously, active state machine handles state transitions asynchronously on the worker thread of the state machine),
+      extensible thorough logging
+      state machine report for description of state machine (csv, yEd)
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+      <dependency id="Appccelerate.AsyncModule" version="%Appccelerate.AsyncModule%"/>
+    </dependencies>
+  </metadata>
+</package>
