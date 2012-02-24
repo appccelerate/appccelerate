@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.IO</id>
+    <version>%Appccelerate.IOFileVersion%</version>
+    <title>Appccelerate.IO</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Provides functionality for simplified IO operations</summary>
+    <description>
+      Provides functionality for simplified IO operations:
+      Stream decorators/interceptors,
+      loader for resources (from file/embedded)
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+    </dependencies>
+  </metadata>
+</package>

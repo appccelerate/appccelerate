@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <child>ChildValue</child>
+  <childList>
+    <grandChild>grandChild1</grandChild>
+    <grandChild>grandChild2</grandChild>
+  </childList>
+  
+</root>
