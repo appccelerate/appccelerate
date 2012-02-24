@@ -1,0 +1,29 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.Bootstrapper</id>
+    <version>%Appccelerate.BootstrapperFileVersion%</version>
+    <title>Appccelerate.Bootstrapper</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Bootstrapper provides a simple and flexible way to make your application's startup and shutdown behavior pluggable and extendable.</summary>
+    <description>
+      Bootstrapper provides a simple and flexible way to make your application's startup and shutdown behavior pluggable and extendable:
+      The bootstrapper provides a single entry point to startup and shutdown the application,
+      Fluent definition syntax allowing to expressively define the startup and shutdown behavior of the application,
+      Pluggable behaviors which allow to extend the bootstrapping mechanism in AOP like style,
+      ConfigurationSection support with behavior,
+      Unobtrusive Key/Value pair configuration section support with behavior,
+      Thorough reporting of application startup and shutdown behavior.
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate bootstrapper startup shutdow</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{60C1FD31-5B76-41C1-AC02-9E47A34EA900}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Appccelerate.Bootstrapper.Sample</RootNamespace>
+    <AssemblyName>Appccelerate.Bootstrapper.Sample</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Funq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95c13cd3fe8e976a, processorArchitecture=MSIL" />
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-client\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Complex\Behaviors\DependencyUsingBehavior.cs" />
+    <Compile Include="Complex\Behaviors\FunqletProvidingBehavior.cs" />
+    <Compile Include="Complex\ComplexExtensionBase.cs" />
+    <Compile Include="Complex\ComplexStrategy.cs" />
+    <Compile Include="Complex\Configuration\ColorElement.cs" />
+    <Compile Include="Complex\Configuration\CustomConfigurationSection.cs" />
+    <Compile Include="Complex\Configuration\FontElement.cs" />
+    <Compile Include="Complex\CustomFunqlet.cs" />
+    <Compile Include="Complex\Dependency.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWhichIsFunqlet.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWhichNeedsDependency.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWhichRegistersSomething.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWithCustomConfigurationSection.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWithExtensionConfigurationSection.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWithExtensionConfigurationSectionWithConversionAndCustomizedLoading.cs" />
+    <Compile Include="Complex\Extensions\ExtensionWithExtensionConfigurationSectionWithDictionary.cs" />
+    <Compile Include="Complex\Extensions\Log4netExtension.cs" />
+    <Compile Include="Complex\IComplexExtension.cs" />
+    <Compile Include="Complex\IDependency.cs" />
+    <Compile Include="Customization\AsynchronousRunExecutor.cs" />
+    <Compile Include="Customization\AsynchronousShutdownExecutor.cs" />
+    <Compile Include="Customization\CustomExtensionResolver.cs" />
+    <Compile Include="Customization\CustomizationStrategy.cs" />
+    <Compile Include="Customization\DecoratingExecutable.cs" />
+    <Compile Include="Customization\DecoratingExecutableFactory.cs" />
+    <Compile Include="Customization\TextFileReporter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simple\FirstSimpleExtension.cs" />
+    <Compile Include="Simple\ISimpleExtension.cs" />
+    <Compile Include="Simple\SecondSimpleExtension.cs" />
+    <Compile Include="Simple\SimpleExtensionBase.cs" />
+    <Compile Include="Simple\SimpleStrategy.cs" />
+    <Compile Include="Simple\ThirdSimpleExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Libs\Funq.dll" />
+    <Content Include="Libs\Funq.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.Bootstrapper\Appccelerate.Bootstrapper.csproj">
+      <Project>{B1FB577F-4616-4CE1-8D9A-F72021323FBB}</Project>
+      <Name>Appccelerate.Bootstrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
+      <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
+      <Name>Appccelerate.Fundamentals</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.Bootstrapper</AppccelerateProjectName>
+    <AppccelerateProjectType>Source</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{B1FB577F-4616-4CE1-8D9A-F72021323FBB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\lib\Net40\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.Bootstrapper.XML</DocumentationFile>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractStrategy.cs" />
+    <Compile Include="Behavior\DisposeExtensionBehavior.cs" />
+    <Compile Include="Behavior\LazyBehavior.cs" />
+    <Compile Include="BootstrapperException.cs" />
+    <Compile Include="Configuration\ConfigurationSectionBehavior.cs" />
+    <Compile Include="Configuration\DefaultConfigurationSectionBehaviorFactory.cs" />
+    <Compile Include="Configuration\DefaultExtensionConfigurationSectionBehaviorFactory.cs" />
+    <Compile Include="Configuration\ExtensionConfigurationSection.cs" />
+    <Compile Include="Configuration\ExtensionConfigurationSectionBehavior.cs" />
+    <Compile Include="Configuration\ExtensionConfigurationSectionHelper.cs" />
+    <Compile Include="Configuration\ExtensionSettingsElement.cs" />
+    <Compile Include="Configuration\ExtensionSettingsElementCollection.cs" />
+    <Compile Include="Configuration\IAssignExtensionProperties.cs" />
+    <Compile Include="Configuration\IConfigurationSectionBehaviorFactory.cs" />
+    <Compile Include="Configuration\IConsumeConfiguration.cs" />
+    <Compile Include="Configuration\IConsumeConfigurationSection.cs" />
+    <Compile Include="Configuration\IConversionCallback.cs" />
+    <Compile Include="Configuration\IExtensionConfigurationSectionBehaviorFactory.cs" />
+    <Compile Include="Configuration\IHaveConfigurationSectionName.cs" />
+    <Compile Include="Configuration\IHaveConversionCallbacks.cs" />
+    <Compile Include="Configuration\IHaveDefaultConversionCallback.cs" />
+    <Compile Include="Configuration\ILoadConfigurationSection.cs" />
+    <Compile Include="Configuration\Internals\AssignExtensionProperties.cs" />
+    <Compile Include="Configuration\Internals\ConsumeConfiguration.cs" />
+    <Compile Include="Configuration\Internals\ConsumeConfigurationSection.cs" />
+    <Compile Include="Configuration\Internals\DefaultConversionCallback.cs" />
+    <Compile Include="Configuration\Internals\FuncConversionCallback.cs" />
+    <Compile Include="Configuration\Internals\HaveConfigurationSectionName.cs" />
+    <Compile Include="Configuration\Internals\HaveConversionCallbacks.cs" />
+    <Compile Include="Configuration\Internals\HaveDefaultConversionCallback.cs" />
+    <Compile Include="Configuration\Internals\LoadConfigurationSection.cs" />
+    <Compile Include="Configuration\Internals\ReflectExtensionPublicProperties.cs" />
+    <Compile Include="Configuration\IReflectExtensionProperties.cs" />
+    <Compile Include="DefaultBootstrapper.cs" />
+    <Compile Include="Execution\SynchronousExecutor.cs" />
+    <Compile Include="Execution\SynchronousReverseExecutor.cs" />
+    <Compile Include="Extension\ExtensionHost.cs" />
+    <Compile Include="Extension\NullExtensionResolver.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IBehavior.cs" />
+    <Compile Include="IBootstrapper.cs" />
+    <Compile Include="IDescribable.cs" />
+    <Compile Include="IExecutor.cs" />
+    <Compile Include="IExtension.cs" />
+    <Compile Include="IExtensionHost.cs" />
+    <Compile Include="IExtensionPoint.cs" />
+    <Compile Include="IExtensionResolver.cs" />
+    <Compile Include="IReporter.cs" />
+    <Compile Include="IStrategy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\VersionInfo.g.cs" />
+    <Compile Include="Reporting\BehaviorContext.cs" />
+    <Compile Include="Reporting\ExecutableContext.cs" />
+    <Compile Include="Reporting\ExecutionContext.cs" />
+    <Compile Include="Reporting\ExtensionContext.cs" />
+    <Compile Include="Reporting\IReportingContext.cs" />
+    <Compile Include="Reporting\NullReporter.cs" />
+    <Compile Include="Reporting\ReportingContext.cs" />
+    <Compile Include="Syntax\ExecutableFactory.cs" />
+    <Compile Include="Syntax\Executables\ActionExecutable.cs" />
+    <Compile Include="Syntax\Executables\ActionOnExtensionExecutable.cs" />
+    <Compile Include="Syntax\Executables\ActionOnExtensionWithInitializerExecutable.cs" />
+    <Compile Include="Syntax\IBehaviorAware.cs" />
+    <Compile Include="Syntax\IExecutable.cs" />
+    <Compile Include="Syntax\IExecutableFactory.cs" />
+    <Compile Include="Syntax\ISyntax.cs" />
+    <Compile Include="Syntax\ISyntaxBuilder.cs" />
+    <Compile Include="Syntax\SyntaxBuilder.cs" />
+    <Compile Include="Syntax\SyntaxBuilderWithContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.Bootstrapper.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
+      <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
+      <Name>Appccelerate.Fundamentals</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>
