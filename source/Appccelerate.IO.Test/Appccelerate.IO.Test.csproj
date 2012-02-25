@@ -27,6 +27,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Csv\CsvParserTest.cs" />
+    <Compile Include="Csv\CsvWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\EmbeddedResourceLoaderTest.cs" />
     <Compile Include="Resources\FileResourceLoaderTest.cs" />
