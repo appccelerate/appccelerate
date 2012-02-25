@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.MappingEventBroker.Specification</AppccelerateProjectName>
+    <AppccelerateProjectType>Specification</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{5E881AA2-EB82-4DDD-848F-A96CB5C5A554}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Appccelerate.MappingEventBroker</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <NoWarn>169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugWithCodeAnalysis|AnyCPU'">
+    <NoWarn>169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <NoWarn>169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.1.7.0\Lib\net40\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications">
+      <HintPath>..\packages\Machine.Specifications.0.5.3.0\lib\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Concern.cs" />
+    <Compile Include="DestinationEventArgs.cs" />
+    <Compile Include="EventBrokerWithDefaultAutoMapperExtension.cs" />
+    <Compile Include="EventBrokerWithUserDefinedAutoMapperExtension.cs" />
+    <Compile Include="MappedEventFiredBehavior.cs" />
+    <Compile Include="MappedEventNotFiredBehavior.cs" />
+    <Compile Include="MockMapperExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Publisher.cs" />
+    <Compile Include="SourceEventArgs.cs" />
+    <Compile Include="Subscriber.cs" />
+    <Compile Include="Topics.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Settings.stylecop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6B189709-125E-46EC-8FEE-50345375F221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.MappingEventBroker\Appccelerate.MappingEventBroker.csproj">
+      <Project>{AE29ED13-EA6A-49CA-905F-503B0F8CA78B}</Project>
+      <Name>Appccelerate.MappingEventBroker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.MappingEventBroker.AutoMapper</id>
+    <version>%Appccelerate.MappingEventBroker.AutoMapperFileVersion%</version>
+    <title>Appccelerate.MappingEventBroker.AutoMapper</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Event broker extension for mapping event arguments from one type to another using AutoMapper.</summary>
+    <description>Event broker extension for mapping event arguments from one type to another using AutoMapper.</description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate event-broker mapping AutoMapper</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+      <dependency id="Appccelerate.EventBroker" version="%Appccelerate.EventBroker%"/>
+      <dependency id="Appccelerate.MappingEventBroker" version="%Appccelerate.MappingEventBroker%"/>
+    </dependencies>
+  </metadata>
+</package>
