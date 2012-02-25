@@ -21,8 +21,7 @@ namespace Appccelerate.EventBroker
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-
+    
     using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Matchers;
 

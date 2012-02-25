@@ -79,7 +79,7 @@ namespace Appccelerate.StateMachine.Internals
         [Fact]
         public void EventArgumentIsPassedToTheGuard()
         {
-            var originalEventArgument = "test";
+            const string OriginalEventArgument = "test";
 
             string eventArgument = null;
 
@@ -95,9 +95,9 @@ namespace Appccelerate.StateMachine.Internals
             this.testee.Initialize(States.A);
             this.testee.EnterInitialState();
 
-            this.testee.Fire(Events.A, originalEventArgument);
+            this.testee.Fire(Events.A, OriginalEventArgument);
 
-            eventArgument.Should().Be(originalEventArgument);
+            eventArgument.Should().Be(OriginalEventArgument);
         }
 
         /// <summary>

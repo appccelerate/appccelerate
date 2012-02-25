@@ -224,12 +224,7 @@ namespace Appccelerate.Async
         {
             get
             {
-                if (this.data == null)
-                {
-                    this.data = new Dictionary<string, object>();
-                }
-
-                return this.data;
+                return this.data ?? (this.data = new Dictionary<string, object>());
             }
         }
 

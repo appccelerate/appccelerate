@@ -21,7 +21,6 @@ namespace Appccelerate.Bootstrapper.Configuration.Internals
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// Default IAssignExtensionProperties
@@ -36,7 +35,7 @@ namespace Appccelerate.Bootstrapper.Configuration.Internals
             Ensure.ArgumentNotNull(conversionCallbacksProvider, "conversionCallbacksProvider");
             Ensure.ArgumentNotNull(defaultConversionCallbackProvider, "defaultConversionCallbackProvider");
 
-            IEnumerable<PropertyInfo> properties = reflector.Reflect(extension);
+            var properties = reflector.Reflect(extension).ToList();
             IDictionary<string, IConversionCallback> conversionCallbacks = conversionCallbacksProvider.ConversionCallbacks;
             IConversionCallback defaultCallback = defaultConversionCallbackProvider.DefaultConversionCallback;
 
@@ -44,8 +43,7 @@ namespace Appccelerate.Bootstrapper.Configuration.Internals
             {
                 KeyValuePair<string, string> pair = keyValuePair;
 
-                var matchedProperty = properties.Where(property => property.Name.Equals(pair.Key, StringComparison.OrdinalIgnoreCase))
-                    .SingleOrDefault();
+                var matchedProperty = properties.SingleOrDefault(property => property.Name.Equals(pair.Key, StringComparison.OrdinalIgnoreCase));
 
                 if (matchedProperty == null)
                 {

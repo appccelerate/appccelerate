@@ -22,7 +22,7 @@ namespace Appccelerate.Bootstrapper.Specification.Helpers
 
     public class ReportingContextBuilder : IReportContextBuilder, IBehaviorBuilder
     {
-        private ReportingContext reportingContext;
+        private readonly ReportingContext reportingContext;
 
         private IExecutionContext currentExecutionContext;
 

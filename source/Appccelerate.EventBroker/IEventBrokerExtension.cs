@@ -19,14 +19,9 @@
 namespace Appccelerate.EventBroker
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-
-    using Appccelerate.EventBroker.Handlers;
-
+    
     using Internals;
-    using Matchers;
-
+    
     /// <summary>
     /// Interface for implementing event broker extensions.
     /// </summary>

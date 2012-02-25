@@ -31,7 +31,7 @@ namespace Appccelerate.Bootstrapper.Sample.Customization
     /// </summary>
     public class TextFileReporter : IReporter
     {
-        private StringReporter decoratedReporter;
+        private readonly StringReporter decoratedReporter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextFileReporter"/> class.

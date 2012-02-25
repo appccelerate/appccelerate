@@ -88,10 +88,9 @@ namespace Appccelerate.StateMachine.Internals
         /// <param name="stack">The stack containing the state hierarchy.</param>
         private void TraverseDownTheStateHierarchyAndEnterStates(Stack<IState<TState, TEvent>> stack)
         {
-            IState<TState, TEvent> state;
             while (stack.Count > 0)
             {
-                state = stack.Pop();
+                IState<TState, TEvent> state = stack.Pop();
                 state.Entry(this.stateContext);
             }
         }

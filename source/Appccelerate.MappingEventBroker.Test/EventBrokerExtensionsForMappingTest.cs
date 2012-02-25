@@ -28,7 +28,7 @@ namespace Appccelerate.MappingEventBroker
     {
         private readonly Mock<IEventBroker> eventBroker;
 
-        private Mock<IMappingEventBrokerExtension> extension;
+        private readonly Mock<IMappingEventBrokerExtension> extension;
 
         public EventBrokerExtensionsForMappingTest()
         {

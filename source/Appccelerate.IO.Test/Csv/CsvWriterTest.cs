@@ -27,7 +27,7 @@ namespace Appccelerate.IO.Csv
 
     public class CsvWriterTest
     {
-        private CsvWriter testee;
+        private readonly CsvWriter testee;
 
         public CsvWriterTest()
         {

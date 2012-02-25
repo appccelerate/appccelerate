@@ -23,8 +23,7 @@ namespace Appccelerate.IO.Resources
     using System.Reflection;
     using System.Xml;
     using System.Xml.XPath;
-    using IO;
-
+    
     /// <summary>
     /// Implements the <see cref="IResourceLoader"/> to load resources from file system
     /// </summary>

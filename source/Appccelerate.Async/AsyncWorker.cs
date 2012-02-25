@@ -41,7 +41,7 @@ namespace Appccelerate.Async
         /// <summary>The progress delegate.</summary>
         private readonly ProgressChangedEventHandler progress;
 
-        private List<IAsyncWorkerExtension> extensions;
+        private readonly List<IAsyncWorkerExtension> extensions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncWorker"/> class.

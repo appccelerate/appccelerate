@@ -54,12 +54,12 @@ namespace Appccelerate.MappingEventBroker.Conventions
         [Fact]
         public void MapTopic_MustRewriteTopic()
         {
-            var uri = @"topic://Appccelerate.AutoMapperEventBrokerExtension.Conventions/DefaultTopicConventionTest";
-            var expected = @"mapped://Appccelerate.AutoMapperEventBrokerExtension.Conventions/DefaultTopicConventionTest";
+            const string Uri = @"topic://Appccelerate.AutoMapperEventBrokerExtension.Conventions/DefaultTopicConventionTest";
+            const string Expected = @"mapped://Appccelerate.AutoMapperEventBrokerExtension.Conventions/DefaultTopicConventionTest";
 
-            var result = this.testee.MapTopic(uri);
+            var result = this.testee.MapTopic(Uri);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(Expected, result);
         }
     }
 }

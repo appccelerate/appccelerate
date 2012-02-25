@@ -18,8 +18,6 @@
 
 namespace Appccelerate.StateMachine
 {
-    using System;
-
     public static class Concern
     {
         public const string Initialization = "Initialize state machine";

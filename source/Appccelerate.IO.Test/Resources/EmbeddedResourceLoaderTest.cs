@@ -52,7 +52,7 @@ namespace Appccelerate.IO.Resources
         /// <summary>
         /// The object under test
         /// </summary>
-        private EmbeddedResourceLoader testee;
+        private readonly EmbeddedResourceLoader testee;
 
         public EmbeddedResourceLoaderTest()
         {

@@ -26,7 +26,7 @@ namespace Appccelerate.MappingEventBroker
 
     public class EventTopicCollectionTest
     {
-        private EventTopicCollection testee;
+        private readonly EventTopicCollection testee;
 
         public EventTopicCollectionTest()
         {

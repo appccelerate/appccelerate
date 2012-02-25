@@ -29,7 +29,7 @@ namespace Appccelerate.MappingEventBroker.Conventions
 
     public class FuncTopicConventionTest
     {
-        private Mock<IEventTopicInfo> eventTopicInfo;
+        private readonly Mock<IEventTopicInfo> eventTopicInfo;
 
         public FuncTopicConventionTest()
         {

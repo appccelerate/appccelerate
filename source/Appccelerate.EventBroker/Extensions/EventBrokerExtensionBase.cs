@@ -19,9 +19,7 @@
 namespace Appccelerate.EventBroker.Extensions
 {
     using System;
-    using System.Collections.Generic;
-
-    using Appccelerate.EventBroker.Handlers;
+    
     using Appccelerate.EventBroker.Internals;
 
     /// <summary>

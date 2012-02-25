@@ -68,13 +68,13 @@ namespace Appccelerate.StateMachine.Internals
         [Fact]
         public void ExecuteWhenPassingWrongTypeThenException()
         {
-            var argument = 4;
+            const int Argument = 4;
 
-            Action action = () => this.testee.Execute(argument);
+            Action action = () => this.testee.Execute(Argument);
 
             action
                 .ShouldThrow<ArgumentException>()
-                .WithMessage(ExceptionMessages.CannotCastArgumentToGuardArgument(argument, this.testee.Describe()));
+                .WithMessage(ExceptionMessages.CannotCastArgumentToGuardArgument(Argument, this.testee.Describe()));
         }
     }
 }
