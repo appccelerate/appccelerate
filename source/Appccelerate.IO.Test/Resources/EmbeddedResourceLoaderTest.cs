@@ -23,6 +23,8 @@ namespace Appccelerate.IO.Resources
     using System.Reflection;
     using System.Xml.XPath;
 
+    using FluentAssertions;
+
     using Xunit;
 
     public class EmbeddedResourceLoaderTest
@@ -133,8 +135,8 @@ namespace Appccelerate.IO.Resources
                 Assembly.GetExecutingAssembly(),
                 string.Format("{0}.{1}", typeof(EmbeddedResourceLoaderTest).Namespace, XmlResourceName));
 
-            Assert.Equal(209, stream.Length);
-            Assert.Equal(0, stream.Position);
+            stream.Length.Should().BeGreaterOrEqualTo(200);
+            stream.Position.Should().Be(0);
         }
 
         /// <summary>
@@ -145,8 +147,8 @@ namespace Appccelerate.IO.Resources
         {
             Stream stream = this.testee.LoadResourceAsStream(typeof(EmbeddedResourceLoaderTest), XmlResourceName);
 
-            Assert.Equal(209, stream.Length);
-            Assert.Equal(0, stream.Position);
+            stream.Length.Should().BeGreaterOrEqualTo(200);
+            stream.Position.Should().Be(0);
         }
 
         /// <summary>
