@@ -16,13 +16,17 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter
+namespace Appccelerate.DistributedEventBroker.NServiceBus
 {
     using System;
-    using DistributedEventBroker.Messages;
-    using Messages;
+
+    using Appccelerate.DistributedEventBroker.Messages;
+    using Appccelerate.DistributedEventBroker.NServiceBus.Messages;
+
     using Moq;
-    using NServiceBus;
+
+    using global::NServiceBus;
+
     using Xunit;
 
     public class NServiceBusEventBrokerBusTest

@@ -16,10 +16,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter.Messages
+namespace Appccelerate.DistributedEventBroker.NServiceBus.Messages
 {
     using Appccelerate.DistributedEventBroker.Messages;
-    using NServiceBus;
+    
+    using global::NServiceBus;
 
     /// <summary>
     /// Marker interface for nservicebus specific messages.

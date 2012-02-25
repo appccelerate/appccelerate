@@ -16,11 +16,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.MassTransitAdapter
+namespace Appccelerate.DistributedEventBroker.MassTransit
 {
-    using System;
-    using MassTransit;
-    using Messages;
+    using Appccelerate.DistributedEventBroker.Messages;
+
+    using global::MassTransit;
 
     /// <summary>
     /// MassTransit specific event broker bus implementation.

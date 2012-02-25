@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter.Factories
+namespace Appccelerate.DistributedEventBroker.NServiceBus.Factories
 {
     using DistributedEventBroker.Factories;
 

@@ -16,13 +16,13 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.MassTransitAdapter
+namespace Appccelerate.DistributedEventBroker.MassTransit
 {
     using System;
 
     using Appccelerate.DistributedEventBroker.Messages;
 
-    using MassTransit;
+    using global::MassTransit;
 
     using Moq;
 

@@ -16,10 +16,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter
+namespace Appccelerate.DistributedEventBroker.NServiceBus
 {
     using Factories;
-    using NServiceBus;
+    
+    using global::NServiceBus;
 
     /// <summary>
     /// The distributed event broker extension for nservice bus.

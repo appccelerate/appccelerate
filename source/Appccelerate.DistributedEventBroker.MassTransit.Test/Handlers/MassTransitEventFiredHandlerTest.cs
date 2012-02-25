@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.MassTransitAdapter.Handlers
+namespace Appccelerate.DistributedEventBroker.MassTransit.Handlers
 {
     using Appccelerate.DistributedEventBroker.Messages;
 

@@ -16,11 +16,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter.Handlers
+namespace Appccelerate.DistributedEventBroker.NServiceBus.Handlers
 {
     using DistributedEventBroker.Handlers;
     using Messages;
-    using NServiceBus;
+    using global::NServiceBus;
 
     /// <summary>
     /// Handler which subscribes to <see cref="INServiceBusEventFired"/>

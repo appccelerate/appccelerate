@@ -38,9 +38,9 @@ namespace Appccelerate.DistributedEventBroker.Factories
         {
             get
             {
-                var distributedBrokerId = "DistributedEventBroker";
-                yield return new object[] { distributedBrokerId, Guid.NewGuid(), "topic://Simple", EventArgs.Empty, };
-                yield return new object[] { distributedBrokerId, Guid.NewGuid(), "topic://Complex", new CancelEventArgs(), };
+                const string DistributedBrokerId = "DistributedEventBroker";
+                yield return new object[] { DistributedBrokerId, Guid.NewGuid(), "topic://Simple", EventArgs.Empty };
+                yield return new object[] { DistributedBrokerId, Guid.NewGuid(), "topic://Complex", new CancelEventArgs() };
             }
         }
 

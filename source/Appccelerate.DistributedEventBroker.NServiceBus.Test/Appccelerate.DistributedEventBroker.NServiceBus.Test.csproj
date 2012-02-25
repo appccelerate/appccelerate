@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>Appccelerate.DistributedEventBroker.NServiceBusAdapter</RootNamespace>
+    <RootNamespace>Appccelerate.DistributedEventBroker.NServiceBus</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">

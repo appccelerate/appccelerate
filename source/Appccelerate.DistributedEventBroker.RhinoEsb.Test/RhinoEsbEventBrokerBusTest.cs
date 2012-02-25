@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.RhinoEsbAdapter
+namespace Appccelerate.DistributedEventBroker.RhinoEsb
 {
     using Appccelerate.DistributedEventBroker.Messages;
 

@@ -16,13 +16,13 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter.Factories
+namespace Appccelerate.DistributedEventBroker.NServiceBus.Factories
 {
     using Xunit;
 
     public class NServiceBusDistributedFactoryTest
     {
-        private NServiceBusDistributedFactory testee;
+        private readonly NServiceBusDistributedFactory testee;
 
         public NServiceBusDistributedFactoryTest()
         {

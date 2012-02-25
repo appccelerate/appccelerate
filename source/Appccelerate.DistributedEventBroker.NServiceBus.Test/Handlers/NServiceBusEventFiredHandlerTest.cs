@@ -16,9 +16,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter.Handlers
+namespace Appccelerate.DistributedEventBroker.NServiceBus.Handlers
 {
-    using Appccelerate.DistributedEventBroker.NServiceBusAdapter.Messages;
+    using Appccelerate.DistributedEventBroker.NServiceBus.Messages;
     using Moq;
     using Xunit;
 

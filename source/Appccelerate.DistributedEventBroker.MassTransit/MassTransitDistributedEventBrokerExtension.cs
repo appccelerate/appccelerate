@@ -16,9 +16,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.MassTransitAdapter
+namespace Appccelerate.DistributedEventBroker.MassTransit
 {
-    using MassTransit;
+    using global::MassTransit;
 
     /// <summary>
     /// Distributed event broker extension for mass transit.

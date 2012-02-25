@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>Appccelerate.DistributedEventBroker.RhinoEsbAdapter</RootNamespace>
+    <RootNamespace>Appccelerate.DistributedEventBroker.RhinoEsb</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Esent.Interop">

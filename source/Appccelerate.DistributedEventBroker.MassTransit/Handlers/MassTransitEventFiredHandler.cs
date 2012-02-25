@@ -16,11 +16,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.MassTransitAdapter.Handlers
+namespace Appccelerate.DistributedEventBroker.MassTransit.Handlers
 {
-    using DistributedEventBroker.Handlers;
-    using MassTransit;
-    using Messages;
+    using Appccelerate.DistributedEventBroker.Handlers;
+    using Appccelerate.DistributedEventBroker.Messages;
+
+    using global::MassTransit;
 
     /// <summary>
     /// Handler which consumes <see cref="IEventFired"/> messages

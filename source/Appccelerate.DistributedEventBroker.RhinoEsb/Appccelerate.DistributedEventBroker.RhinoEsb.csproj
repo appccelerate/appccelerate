@@ -15,7 +15,7 @@
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>Appccelerate.DistributedEventBroker.RhinoEsbAdapter</RootNamespace>
+    <RootNamespace>Appccelerate.DistributedEventBroker.RhinoEsb</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Esent.Interop">

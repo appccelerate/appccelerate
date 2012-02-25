@@ -208,7 +208,7 @@ namespace Appccelerate.DistributedEventBroker
                                                                 m.HandlerRestriction = publication.HandlerRestriction;
                                                                 m.EventArgsType = e.GetType().AssemblyQualifiedName;
                                                                 m.EventArgs = this.Serializer.Serialize(e);
-                                                                m.EventBrokerIdentification = this.HostedEventBrokerIdentification.ToString();
+                                                                m.EventBrokerIdentification = this.HostedEventBrokerIdentification.ToString(CultureInfo.InvariantCulture);
                                                                 m.DistributedEventBrokerIdentification =
                                                                     this.DistributedEventBrokerIdentification;
                                                             });
@@ -231,7 +231,7 @@ namespace Appccelerate.DistributedEventBroker
                 return;
             }
 
-            var publicationsWithNotAllowedRestrictions = eventTopic.Publications.Where(p => p.HandlerRestriction != HandlerRestriction.Asynchronous);
+            var publicationsWithNotAllowedRestrictions = eventTopic.Publications.Where(p => p.HandlerRestriction != HandlerRestriction.Asynchronous).ToList();
 
             if (publicationsWithNotAllowedRestrictions.Any())
             {

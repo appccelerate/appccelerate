@@ -16,12 +16,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter.Factories
+namespace Appccelerate.DistributedEventBroker.NServiceBus.Factories
 {
     using System;
     using Appccelerate.DistributedEventBroker.Factories;
     using Appccelerate.DistributedEventBroker.Messages;
-    using Appccelerate.DistributedEventBroker.NServiceBusAdapter.Messages;
+    using Appccelerate.DistributedEventBroker.NServiceBus.Messages;
 
     /// <summary>
     /// Event message factory which creates NServiceBus specific message types.

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>Appccelerate.DistributedEventBroker.MassTransitAdapter</RootNamespace>
+    <RootNamespace>Appccelerate.DistributedEventBroker.MassTransit</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">

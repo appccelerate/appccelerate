@@ -16,13 +16,14 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.DistributedEventBroker.NServiceBusAdapter
+namespace Appccelerate.DistributedEventBroker.NServiceBus
 {
     using System;
     using System.Globalization;
     using DistributedEventBroker.Messages;
     using Messages;
-    using NServiceBus;
+    
+    using global::NServiceBus;
 
     /// <summary>
     /// NServiceBus specific event broker bus implementation.
