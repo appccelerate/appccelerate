@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.DistributedEventBroker.NServiceBus</AppccelerateProjectName>
+    <AppccelerateProjectType>Source</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{ED278AE1-F458-485A-8DC5-17EC18BA0692}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\lib\Net40\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.DistributedEventBroker.NServiceBus.XML</DocumentationFile>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Appccelerate.DistributedEventBroker.NServiceBusAdapter</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus">
+      <HintPath>..\packages\NServiceBus.2.6.0.1506\lib\net40\NServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core">
+      <HintPath>..\packages\NServiceBus.2.6.0.1506\lib\net40\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Factories\NServiceBusDistributedFactory.cs" />
+    <Compile Include="Factories\NServiceBusEventMessageFactory.cs" />
+    <Compile Include="Handlers\NServiceBusEventFiredHandler.cs" />
+    <Compile Include="Messages\INServiceBusEventFired.cs" />
+    <Compile Include="Messages\NServiceBusEventFired.cs" />
+    <Compile Include="NServiceBusDistributedEventBrokerExtension.cs" />
+    <Compile Include="NServiceBusEventBrokerBus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\VersionInfo.g.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.DistributedEventBroker.NServiceBus.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.DistributedEventBroker\Appccelerate.DistributedEventBroker.csproj">
+      <Project>{3197BFBC-30E8-4188-B2CF-64E7472B6995}</Project>
+      <Name>Appccelerate.DistributedEventBroker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6B189709-125E-46EC-8FEE-50345375F221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

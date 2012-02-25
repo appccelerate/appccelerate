@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.DistributedEventBroker.RhinoEsb</id>
+    <version>%Appccelerate.DistributedEventBroker.RhinoEsbFileVersion%</version>
+    <title>Appccelerate.DistributedEventBroker.RhinoEsb</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>RhinoEsb adapter for distributed event broker (Appccelerate.DistributedEventBroker).</summary>
+    <description>
+      Adapter for using event broker extension for distributed communication over RhinoEsb.
+      Allows sending events over RhinoEsb using the Appccelerate.EventBroker infrastructur.
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate event-broker extension interprocess-communication distributed</tags>
+    <dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+      <dependency id="Appccelerate.EventBroker" version="%Appccelerate.EventBroker%"/>
+      <dependency id="Appccelerate.DistributedEventBroker" version="%Appccelerate.DistributedEventBroker%"/>
+      <dependency id="Rhino.ServiceBus" version="2.2"/>
+    </dependencies>
+  </metadata>
+</package>

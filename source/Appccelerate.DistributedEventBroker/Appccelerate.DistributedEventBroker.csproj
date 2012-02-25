@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.DistributedEventBroker</AppccelerateProjectName>
+    <AppccelerateProjectType>Source</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{3197BFBC-30E8-4188-B2CF-64E7472B6995}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\lib\Net40\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.DistributedEventBroker.XML</DocumentationFile>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="DistributedEventBrokerExtensionBase.cs" />
+    <Compile Include="EventBrokerExtensionsForDistribution.cs" />
+    <Compile Include="Factories\AbstractEventMessageFactory.cs" />
+    <Compile Include="Factories\DefaultDistributedFactory.cs" />
+    <Compile Include="Factories\DefaultEventMessageFactory.cs" />
+    <Compile Include="Handlers\EventFiredHandlerBase.cs" />
+    <Compile Include="IDistributedEventBrokerExtension.cs" />
+    <Compile Include="IDistributedFactory.cs" />
+    <Compile Include="IEventArgsSerializer.cs" />
+    <Compile Include="IEventBrokerBus.cs" />
+    <Compile Include="IEventMessageFactory.cs" />
+    <Compile Include="IManageEventBroker.cs" />
+    <Compile Include="ITopicSelectionStrategy.cs" />
+    <Compile Include="Messages\EventFired.cs" />
+    <Compile Include="Messages\IEventFired.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\VersionInfo.g.cs" />
+    <Compile Include="Serializer\BinaryEventArgsSerializer.cs" />
+    <Compile Include="Serializer\DataContractEventArgsSerializer.cs" />
+    <Compile Include="Serializer\XmlEventArgsSerializer.cs" />
+    <Compile Include="Strategies\DefaultTopicSelectionStrategy.cs" />
+    <Compile Include="Strategies\FuncTopicSelectionStrategy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.DistributedEventBroker.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6B189709-125E-46EC-8FEE-50345375F221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
+      <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
+      <Name>Appccelerate.Fundamentals</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>
