@@ -25,7 +25,9 @@ namespace Appccelerate.StateMachine.Reports
     using System.Linq;
     using System.Xml.Linq;
 
-    using Appccelerate.StateMachine.Internals;
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.States;
+    using Appccelerate.StateMachine.Machine.Transitions;
 
     /// <summary>
     /// generates a graphml file that can be read by yEd.

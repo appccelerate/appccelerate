@@ -22,7 +22,8 @@ namespace Appccelerate.StateMachine.Reports
     using System.Collections.Generic;
     using System.IO;
 
-    using Appccelerate.StateMachine.Internals;
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.States;
 
     /// <summary>
     /// Generator for csv reports of states and transitions of a state machine.

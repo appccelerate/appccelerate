@@ -22,6 +22,9 @@ namespace Appccelerate.StateMachine
     using System.Collections.Generic;
     using System.Threading;
 
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.Events;
+
     using FluentAssertions;
 
     using Xunit;

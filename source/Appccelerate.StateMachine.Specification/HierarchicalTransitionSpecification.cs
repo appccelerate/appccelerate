@@ -19,7 +19,7 @@
 namespace Appccelerate.StateMachine
 {
     using FluentAssertions;
-    using Machine.Specifications;
+    using global::Machine.Specifications;
 
     [Subject(Concern.Transition)]
     public class When_firing_an_event_onto_a_started_hierarchical_state_machine_with_source_and_destination_having_different_parents

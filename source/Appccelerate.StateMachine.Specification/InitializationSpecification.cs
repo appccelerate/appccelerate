@@ -20,8 +20,10 @@ namespace Appccelerate.StateMachine
 {
     using System;
 
+    using Appccelerate.StateMachine.Machine;
+
     using FluentAssertions;
-    using Machine.Specifications;
+    using global::Machine.Specifications;
 
     [Subject(Concern.Initialization)]
     public class When_an_initialized_state_machine_is_started

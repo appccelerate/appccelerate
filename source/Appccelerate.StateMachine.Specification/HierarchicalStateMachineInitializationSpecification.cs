@@ -19,7 +19,7 @@
 namespace Appccelerate.StateMachine
 {
     using FluentAssertions;
-    using Machine.Specifications;
+    using global::Machine.Specifications;
 
     [Subject(Concern.Initialization)]
     public class When_initializing_to_leaf_state_of_a_hierarchical_state_machine : HierarchicalStateMachineInitializationSpecification

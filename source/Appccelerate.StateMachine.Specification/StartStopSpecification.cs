@@ -19,7 +19,7 @@
 namespace Appccelerate.StateMachine
 {
     using FluentAssertions;
-    using Machine.Specifications;
+    using global::Machine.Specifications;
 
     [Subject(Concern.StartStop)]
     public class When_starting_an_initialized_state_machine : InitializedTwoStateStateMachineSpecification

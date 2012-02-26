@@ -25,7 +25,9 @@ namespace Appccelerate.StateMachine.Reports
     using System.Text;
 
     using Appccelerate.Formatters;
-    using Appccelerate.StateMachine.Internals;
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.States;
+    using Appccelerate.StateMachine.Machine.Transitions;
 
     /// <summary>
     /// Creates a textual report of a state machine.

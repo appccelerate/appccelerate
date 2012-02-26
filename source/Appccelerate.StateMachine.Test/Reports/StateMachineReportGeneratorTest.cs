@@ -17,7 +17,7 @@
 //-------------------------------------------------------------------------------
 namespace Appccelerate.StateMachine.Reports
 {
-    using Appccelerate.StateMachine.Internals;
+    using Appccelerate.StateMachine.Machine;
 
     using FluentAssertions;
 

@@ -19,6 +19,10 @@
 namespace Appccelerate.StateMachine
 {
     using System.Collections.Generic;
+
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.Transitions;
+
     using Extensions;
 
     public class RecordEventsExtension : ExtensionBase<int, int>
@@ -33,7 +37,7 @@ namespace Appccelerate.StateMachine
 
             public IList<int> RecordedQueuedEvents { get; private set; }
 
-            public override void FiredEvent(IStateMachineInformation<int, int> stateMachine, Internals.ITransitionContext<int, int> context)
+            public override void FiredEvent(IStateMachineInformation<int, int> stateMachine, ITransitionContext<int, int> context)
             {
                 this.RecordedFiredEvents.Add(context.EventId);
             }

@@ -19,8 +19,12 @@
 namespace Appccelerate.StateMachine
 {
     using System;
+
+    using Appccelerate.StateMachine.Machine.Events;
+
     using FluentAssertions;
-    using Machine.Specifications;
+    
+    using global::Machine.Specifications;
 
     [Subject(Concern.ExceptionHandling)]
     public class When_a_transition_action_throws_an_exception : ExceptionSpecification

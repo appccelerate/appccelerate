@@ -23,7 +23,7 @@ namespace Appccelerate.StateMachine
 
     using FluentAssertions;
 
-    using Machine.Specifications;
+    using global::Machine.Specifications;
 
     [Subject(Concern.EntryAndExitActions)]
     public class When_defining_an_entry_action

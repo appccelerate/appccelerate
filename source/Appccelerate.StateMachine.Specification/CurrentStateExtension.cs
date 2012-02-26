@@ -18,13 +18,16 @@
 
 namespace Appccelerate.StateMachine
 {
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.States;
+
     using Extensions;
 
     public class CurrentStateExtension : ExtensionBase<int, int>
     {
         public int CurrentState { get; private set; }
 
-        public override void SwitchedState(IStateMachineInformation<int, int> stateMachine, Internals.IState<int, int> oldState, Internals.IState<int, int> newState)
+        public override void SwitchedState(IStateMachineInformation<int, int> stateMachine, IState<int, int> oldState, IState<int, int> newState)
         {
             this.CurrentState = newState.Id;
         }

@@ -19,8 +19,12 @@
 namespace Appccelerate.StateMachine
 {
     using System;
+
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Syntax;
+
     using AsyncModule;
-    using Internals;
 
     /// <summary>
     /// An active state machine.

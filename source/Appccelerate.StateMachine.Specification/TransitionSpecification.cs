@@ -19,7 +19,7 @@
 namespace Appccelerate.StateMachine
 {
     using FluentAssertions;
-    using Machine.Specifications;
+    using global::Machine.Specifications;
 
     [Subject(Concern.Transition)]
     public class When_firing_an_event_onto_a_started_state_machine

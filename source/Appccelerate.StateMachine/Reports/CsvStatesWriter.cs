@@ -24,7 +24,8 @@ namespace Appccelerate.StateMachine.Reports
     using System.Linq;
 
     using Appccelerate.Formatters;
-    using Appccelerate.StateMachine.Internals;
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.States;
 
     /// <summary>
     /// Writes the states of a state machine to a stream as csv.

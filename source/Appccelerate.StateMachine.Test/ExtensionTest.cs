@@ -19,8 +19,9 @@
 namespace Appccelerate.StateMachine
 {
     using System;
-    using Appccelerate.StateMachine.Internals;
-
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.Contexts;
+    
     using FakeItEasy;
 
     using Xunit;

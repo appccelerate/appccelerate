@@ -19,7 +19,10 @@
 namespace Appccelerate.StateMachine
 {
     using System;
-    using Internals;
+
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
     /// A state machine.

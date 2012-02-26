@@ -19,7 +19,10 @@
 namespace Appccelerate.StateMachine.Extensions
 {
     using System;
-    using Internals;
+
+    using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Machine.States;
+    using Appccelerate.StateMachine.Machine.Transitions;
 
     /// <summary>
     /// Base class for state machine extensions with empty implementation.
