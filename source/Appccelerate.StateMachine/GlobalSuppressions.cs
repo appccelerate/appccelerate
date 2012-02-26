@@ -68,3 +68,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Scope = "member", Target = "Appccelerate.StateMachine.IStateMachine`2.#Fire(!1,System.Object)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Scope = "member", Target = "Appccelerate.StateMachine.IStateMachine`2.#FirePriority(!1)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Scope = "member", Target = "Appccelerate.StateMachine.IStateMachine`2.#FirePriority(!1,System.Object)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "Appccelerate.StateMachine.Internals.ITransitionDictionary`2.#GetTransitions()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Scope = "type", Target = "Appccelerate.StateMachine.Internals.ITransitionDictionary`2")]

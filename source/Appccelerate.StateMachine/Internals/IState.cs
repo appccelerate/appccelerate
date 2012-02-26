@@ -58,7 +58,7 @@ namespace Appccelerate.StateMachine.Internals
         /// Gets the transitions.
         /// </summary>
         /// <value>The transitions.</value>
-        TransitionDictionary<TState, TEvent> Transitions { get; }
+        ITransitionDictionary<TState, TEvent> Transitions { get; }
 
         /// <summary>
         /// Gets or sets the level in the hierarchy.

@@ -197,7 +197,7 @@ namespace Appccelerate.StateMachine.Internals
         /// Gets the transitions that start in this state.
         /// </summary>
         /// <value>The transitions.</value>
-        public TransitionDictionary<TState, TEvent> Transitions
+        public ITransitionDictionary<TState, TEvent> Transitions
         {
             get { return this.transitions; }
         }

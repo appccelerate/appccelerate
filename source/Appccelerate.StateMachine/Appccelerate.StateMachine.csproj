@@ -47,6 +47,7 @@
     <Compile Include="Internals\ITransition.cs" />
     <Compile Include="Internals\ITransitionActionHolder.cs" />
     <Compile Include="Internals\ITransitionContext.cs" />
+    <Compile Include="Internals\ITransitionDictionary.cs" />
     <Compile Include="Internals\ITransitionResult.cs" />
     <Compile Include="Internals\RecordType.cs" />
     <Compile Include="Internals\ArgumentGuardHolder.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Internals\Transition.cs" />
     <Compile Include="Internals\TransitionContext.cs" />
     <Compile Include="Internals\TransitionDictionary.cs" />
+    <Compile Include="Internals\TransitionInfo.cs" />
     <Compile Include="Internals\TransitionResult.cs" />
     <Compile Include="IStateMachine.cs" />
     <Compile Include="IStateMachineInformation.cs" />

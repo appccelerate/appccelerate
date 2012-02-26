@@ -20,13 +20,13 @@ namespace Appccelerate.StateMachine.Internals
 {
     using System;
     using System.Collections.Generic;
-    
+
     /// <summary>
     /// Manages the transitions of a state.
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
-    public class TransitionDictionary<TState, TEvent>
+    public class TransitionDictionary<TState, TEvent> : ITransitionDictionary<TState, TEvent>
         where TState : IComparable
         where TEvent : IComparable
     {
@@ -90,9 +90,9 @@ namespace Appccelerate.StateMachine.Internals
         /// Gets all transitions.
         /// </summary>
         /// <returns>All transitions.</returns>
-        public IEnumerable<TransitionInfo> GetTransitions()
+        public IEnumerable<TransitionInfo<TState, TEvent>> GetTransitions()
         {
-            var list = new List<TransitionInfo>();
+            var list = new List<TransitionInfo<TState, TEvent>>();
             foreach (var eventId in this.transitions.Keys)
             {
                 this.GetTransitionsOfEvent(eventId, list);
@@ -131,79 +131,11 @@ namespace Appccelerate.StateMachine.Internals
         /// </summary>
         /// <param name="eventId">The event id.</param>
         /// <param name="list">The list to add the transition.</param>
-        private void GetTransitionsOfEvent(TEvent eventId, List<TransitionInfo> list)
+        private void GetTransitionsOfEvent(TEvent eventId, List<TransitionInfo<TState, TEvent>> list)
         {
             foreach (var transition in this.transitions[eventId])
             {
-                list.Add(new TransitionInfo(eventId, transition.Source, transition.Target, transition.Guard, transition.Actions));
-            }
-        }
-
-        /// <summary>
-        /// Describes a transition.
-        /// </summary>
-        public class TransitionInfo
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TransitionDictionary{TState, TEvent}.TransitionInfo"/> class.
-            /// </summary>
-            /// <param name="eventId">The event id.</param>
-            /// <param name="source">The source.</param>
-            /// <param name="target">The target.</param>
-            /// <param name="guard">The guard.</param>
-            /// <param name="actions">The actions.</param>
-            public TransitionInfo(TEvent eventId, IState<TState, TEvent> source, IState<TState, TEvent> target, IGuardHolder guard, IEnumerable<ITransitionActionHolder> actions)
-            {
-                this.EventId = eventId;
-                this.Source = source;
-                this.Target = target;
-                this.Guard = guard;
-                this.Actions = actions;
-            }
-
-            /// <summary>
-            /// Gets the event id.
-            /// </summary>
-            /// <value>The event id.</value>
-            public TEvent EventId
-            {
-                get; private set;
-            }
-
-            /// <summary>
-            /// Gets the source.
-            /// </summary>
-            /// <value>The source.</value>
-            public IState<TState, TEvent> Source
-            {
-                get; private set;
-            }
-
-            /// <summary>
-            /// Gets the target.
-            /// </summary>
-            /// <value>The target.</value>
-            public IState<TState, TEvent> Target
-            {
-                get; private set;
-            }
-
-            /// <summary>
-            /// Gets the guard.
-            /// </summary>
-            /// <value>The guard.</value>
-            public IGuardHolder Guard
-            {
-                get; private set;
-            }
-
-            /// <summary>
-            /// Gets the actions.
-            /// </summary>
-            /// <value>The actions.</value>
-            public IEnumerable<ITransitionActionHolder> Actions
-            {
-                get; private set;
+                list.Add(new TransitionInfo<TState, TEvent>(eventId, transition.Source, transition.Target, transition.Guard, transition.Actions));
             }
         }
     }

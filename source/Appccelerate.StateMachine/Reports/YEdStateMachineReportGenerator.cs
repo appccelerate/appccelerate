@@ -129,12 +129,12 @@ namespace Appccelerate.StateMachine.Reports
                        : string.Empty;
         }
 
-        private static string CreateGuardDescription(TransitionDictionary<TState, TEvent>.TransitionInfo transition)
+        private static string CreateGuardDescription(TransitionInfo<TState, TEvent> transition)
         {
             return transition.Guard != null ? "[" + transition.Guard.Describe() + "]" : string.Empty;
         }
 
-        private static string CreateActionsDescription(TransitionDictionary<TState, TEvent>.TransitionInfo transition)
+        private static string CreateActionsDescription(TransitionInfo<TState, TEvent> transition)
         {
             return transition.Actions.Any() ? (transition.Actions.Aggregate("(", (aggregate, action) => (aggregate.Length > 1 ? aggregate + ", " : aggregate) + action.Describe()) + ")") : string.Empty;
         }
@@ -150,7 +150,7 @@ namespace Appccelerate.StateMachine.Reports
             }
         }
 
-        private void AddEdge(XElement graph, TransitionDictionary<TState, TEvent>.TransitionInfo transition)
+        private void AddEdge(XElement graph, TransitionInfo<TState, TEvent> transition)
         {
             string actions = CreateActionsDescription(transition);
             string guard = CreateGuardDescription(transition);
