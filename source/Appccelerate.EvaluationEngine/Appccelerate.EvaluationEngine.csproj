@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.EvaluationEngine</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{7BDE66B4-C478-4D7B-917A-E0E75DA7F3EC}</ProjectGuid>

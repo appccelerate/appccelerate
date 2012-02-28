@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.IO</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{45D03061-5B6F-4906-961B-EC3F0F629137}</ProjectGuid>

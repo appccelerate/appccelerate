@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.Windows</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{DE64C585-8522-45D6-BC89-7E969F63943A}</ProjectGuid>

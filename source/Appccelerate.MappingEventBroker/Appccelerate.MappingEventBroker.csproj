@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.MappingEventBroker</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{AE29ED13-EA6A-49CA-905F-503B0F8CA78B}</ProjectGuid>

@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.EventBroker</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{6B189709-125E-46EC-8FEE-50345375F221}</ProjectGuid>
