@@ -21,8 +21,6 @@ namespace Appccelerate.EventBroker
     using System;
     using System.Reflection;
 
-    using Appccelerate.EventBroker.Internals;
-
     /// <summary>
     /// A handler defines how a subscription is executed (on which thread, sync, async, ...).
     /// </summary>

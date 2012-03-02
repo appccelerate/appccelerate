@@ -21,15 +21,18 @@ namespace Appccelerate.EventBroker
     using System;
     using System.Collections.Generic;
     using System.IO;
-    
+
+    using Appccelerate.EventBroker.Factories;
     using Appccelerate.EventBroker.Internals;
+    using Appccelerate.EventBroker.Internals.GlobalMatchers;
+    using Appccelerate.EventBroker.Internals.Publications;
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
     /// The <see cref="EventBroker"/> is the facade component to the event broker framework.
     /// It provides the registration and unregistration functionality for event publisher and subscribers.
     /// </summary>
-    public class EventBroker : IEventBroker, IEventRegisterer, IExtensionHost
+    public class EventBroker : IEventBroker, IEventRegistrar, IExtensionHost
     {
         /// <summary>
         /// The inspector used to find publications and subscription within a class.
@@ -68,6 +71,8 @@ namespace Appccelerate.EventBroker
         /// <param name="factory">The factory.</param>
         public EventBroker(IFactory factory)
         {
+            Ensure.ArgumentNotNull(factory, "factory");
+
             this.factory = factory;
 
             this.factory.Initialize(this);
@@ -88,10 +93,11 @@ namespace Appccelerate.EventBroker
         {
             this.eventInspector.ProcessPublisher(item, true, this.eventTopicHost);
             this.eventInspector.ProcessSubscriber(item, true, this.eventTopicHost);
-            
-            if (item is IEventBrokerRegisterable)
+
+            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
+            if (eventBrokerRegisterable != null)
             {
-                ((IEventBrokerRegisterable)item).Register(this);
+                eventBrokerRegisterable.Register(this);
             }
 
             this.extensions.ForEach(extension => extension.RegisteredItem(item));
@@ -106,9 +112,10 @@ namespace Appccelerate.EventBroker
             this.eventInspector.ProcessPublisher(item, false, this.eventTopicHost);
             this.eventInspector.ProcessSubscriber(item, false, this.eventTopicHost);
 
-            if (item is IEventBrokerRegisterable)
+            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
+            if (eventBrokerRegisterable != null)
             {
-                ((IEventBrokerRegisterable)item).Unregister(this);
+                eventBrokerRegisterable.Unregister(this);
             }
 
             this.extensions.ForEach(extension => extension.UnregisteredItem(item));
@@ -168,20 +175,20 @@ namespace Appccelerate.EventBroker
         /// <param name="publisher">The publisher (for event flow and logging).</param>
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="sender">The sender (passed to the event handler).</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        public void Fire(string topic, object publisher, HandlerRestriction handlerRestriction, object sender, EventArgs e)
+        /// <param name="eventArgs">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        public void Fire(string topic, object publisher, HandlerRestriction handlerRestriction, object sender, EventArgs eventArgs)
         {
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-            var spontaneousPublication = new SpontaneousPublication(eventTopic, publisher, e.GetType(), handlerRestriction, new List<IPublicationMatcher>());
-            eventTopic.AddPublication(spontaneousPublication);
-            
-            eventTopic.Fire(
-                    sender,
-                    e,
-                    spontaneousPublication);
+            Ensure.ArgumentNotNull(eventArgs, "eventArgs");
 
-            eventTopic.RemovePublication(spontaneousPublication);
-            spontaneousPublication.Dispose();
+            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+            using (var spontaneousPublication = new SpontaneousPublication(eventTopic, publisher, eventArgs.GetType(), handlerRestriction, new List<IPublicationMatcher>()))
+            {
+                eventTopic.AddPublication(spontaneousPublication);
+
+                eventTopic.Fire(sender, eventArgs, spontaneousPublication);
+
+                eventTopic.RemovePublication(spontaneousPublication);
+            }
         }
 
         /// <summary>
@@ -294,6 +301,8 @@ namespace Appccelerate.EventBroker
         /// <param name="matchers">The subscription matchers.</param>
         public void AddSubscription(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
 
             eventTopic.AddSubscription(
@@ -314,6 +323,7 @@ namespace Appccelerate.EventBroker
         /// <param name="matchers">The subscription matchers.</param>
         public void AddSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
 
             eventTopic.AddSubscription(
@@ -331,6 +341,8 @@ namespace Appccelerate.EventBroker
         /// <param name="handlerMethod">The handler method.</param>
         public void RemoveSubscription(string topic, object subscriber, EventHandler handlerMethod)
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
 
             eventTopic.RemoveSubscription(subscriber, handlerMethod.Method);
@@ -345,6 +357,8 @@ namespace Appccelerate.EventBroker
         /// <param name="handlerMethod">The handler method.</param>
         public void RemoveSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod) where TEventArgs : EventArgs
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
 
             eventTopic.RemoveSubscription(subscriber, handlerMethod.Method);

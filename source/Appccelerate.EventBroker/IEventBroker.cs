@@ -45,8 +45,8 @@ namespace Appccelerate.EventBroker
         /// <param name="publisher">The publisher (for event flow and logging).</param>
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="sender">The sender (passed to the event handler).</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void Fire(string topic, object publisher, HandlerRestriction handlerRestriction, object sender, EventArgs e);
+        /// <param name="eventArgs">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void Fire(string topic, object publisher, HandlerRestriction handlerRestriction, object sender, EventArgs eventArgs);
 
         /// <summary>
         /// Adds the extension.

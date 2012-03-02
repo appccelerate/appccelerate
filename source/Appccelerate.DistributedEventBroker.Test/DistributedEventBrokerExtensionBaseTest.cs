@@ -45,14 +45,14 @@ namespace Appccelerate.DistributedEventBroker
 
         private readonly Mock<IEventBroker> internalEventBroker;
 
-        private readonly Mock<IEventRegisterer> internalRegisterer;
+        private readonly Mock<IEventRegistrar> internalRegisterer;
 
         public DistributedEventBrokerExtensionBaseTest()
         {
             this.eventBrokerBus = new Mock<IEventBrokerBus>();
             this.eventBroker = new Mock<IEventBroker>();
             this.internalEventBroker = new Mock<IEventBroker>();
-            this.internalRegisterer = this.internalEventBroker.As<IEventRegisterer>();
+            this.internalRegisterer = this.internalEventBroker.As<IEventRegistrar>();
             this.factory = new Mock<IDistributedFactory>
                                {
                                    DefaultValue = DefaultValue.Mock

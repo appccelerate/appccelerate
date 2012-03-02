@@ -49,12 +49,12 @@ namespace Appccelerate.EventBroker
         {
             public bool WasRegistered { get; private set; }
 
-            public void Register(IEventRegisterer eventRegisterer)
+            public void Register(IEventRegistrar eventRegistrar)
             {
                 this.WasRegistered = true;
             }
 
-            public void Unregister(IEventRegisterer eventRegisterer)
+            public void Unregister(IEventRegistrar eventRegistrar)
             {
             }
         }
@@ -83,11 +83,11 @@ namespace Appccelerate.EventBroker
         {
             public bool WasUnregistered { get; private set; }
 
-            public void Register(IEventRegisterer eventRegisterer)
+            public void Register(IEventRegistrar eventRegistrar)
             {
             }
 
-            public void Unregister(IEventRegisterer eventRegisterer)
+            public void Unregister(IEventRegistrar eventRegistrar)
             {
                 this.WasUnregistered = true;
             }

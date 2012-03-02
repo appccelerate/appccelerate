@@ -84,12 +84,12 @@ namespace Appccelerate.DistributedEventBroker
         }
 
         /// <summary>
-        /// Gets the internal event registerer which is the <see cref="InternalEventBroker"/> casted to <see cref="IEventRegisterer"/>.
+        /// Gets the internal event registerer which is the <see cref="InternalEventBroker"/> casted to <see cref="IEventRegistrar"/>.
         /// </summary>
         /// <value>The internal event registerer.</value>
-        internal static IEventRegisterer InternalEventRegisterer
+        internal static IEventRegistrar InternalEventRegistrar
         {
-            get { return (IEventRegisterer)InternalEventBroker; }
+            get { return (IEventRegistrar)InternalEventBroker; }
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace Appccelerate.DistributedEventBroker
 
             var topic = this.CreateDynamicSubscriptionTopic();
 
-            InternalEventRegisterer.AddSubscription<EventArgs<IEventFired>>(topic, this, this.HandleEvent, this.CreateHandler());
+            InternalEventRegistrar.AddSubscription<EventArgs<IEventFired>>(topic, this, this.HandleEvent, this.CreateHandler());
         }
 
         /// <summary>

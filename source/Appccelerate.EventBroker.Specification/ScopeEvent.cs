@@ -21,6 +21,7 @@ namespace Appccelerate.EventBroker
     using System;
 
     using Appccelerate.EventBroker.Matchers;
+    using Appccelerate.EventBroker.Matchers.Scope;
 
     public class ScopeEvent
     {

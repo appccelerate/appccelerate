@@ -17,3 +17,4 @@
 //-------------------------------------------------------------------------------
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Scope = "member", Target = "Appccelerate.MappingEventBroker.MappingEventBrokerExtension.#FiringEvent(Appccelerate.EventBroker.Internals.IEventTopicInfo,Appccelerate.EventBroker.Internals.IPublication,System.Object,System.EventArgs)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Scope = "member", Target = "Appccelerate.MappingEventBroker.MappingEventBrokerExtension.#FiringEvent(Appccelerate.EventBroker.IEventTopicInfo,Appccelerate.EventBroker.IPublication,System.Object,System.EventArgs)")]

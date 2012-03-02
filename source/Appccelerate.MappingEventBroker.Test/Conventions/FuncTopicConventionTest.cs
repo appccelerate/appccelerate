@@ -20,6 +20,7 @@ namespace Appccelerate.MappingEventBroker.Conventions
 {
     using System;
 
+    using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Internals;
 
     using Moq;

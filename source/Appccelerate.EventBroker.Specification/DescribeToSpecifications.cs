@@ -22,7 +22,7 @@ namespace Appccelerate.EventBroker
     using System.Globalization;
     using System.IO;
 
-    using Appccelerate.EventBroker.Matchers;
+    using Appccelerate.EventBroker.Matchers.Scope;
 
     using FluentAssertions;
 
@@ -184,7 +184,7 @@ namespace Appccelerate.EventBroker
 
         public class Subscriber
         {
-            [EventSubscription("topic://SimpleEvent", typeof(Handlers.Publisher), typeof(Matchers.SubscribeGlobal))]
+            [EventSubscription("topic://SimpleEvent", typeof(Handlers.Publisher), typeof(SubscribeGlobal))]
             public void HandleSimpleEvent(object sender, EventArgs e)
             {
             }

@@ -20,6 +20,7 @@ namespace Appccelerate.MappingEventBroker.Internals
 {
     using System;
 
+    using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Internals;
 
     /// <summary>

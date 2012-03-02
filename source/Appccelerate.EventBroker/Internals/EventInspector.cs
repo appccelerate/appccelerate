@@ -21,7 +21,9 @@ namespace Appccelerate.EventBroker.Internals
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using Exceptions;
+
+    using Appccelerate.EventBroker.Internals.Exceptions;
+
     using Matchers;
 
     /// <summary>
@@ -116,6 +118,9 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="eventTopicHost">The event topic host.</param>
         public void ProcessPublisher(string topic, object publisher, string eventName, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> matchers, bool register, IEventTopicHost eventTopicHost)
         {
+            Ensure.ArgumentNotNull(publisher, "publisher");
+            Ensure.ArgumentNotNull(eventTopicHost, "eventTopicHost");
+
             EventInfo eventInfo = publisher.GetType().GetEvent(eventName);
 
             if (eventInfo == null)
@@ -147,6 +152,8 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="eventTopicHost">The event topic host.</param>
         public void ProcessSubscriber(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, ISubscriptionMatcher[] matchers, bool register, IEventTopicHost eventTopicHost)
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             this.HandleSubscriber(eventTopicHost, topic, register, subscriber, handlerMethod.Method, handler, matchers);
         }
 
@@ -163,6 +170,8 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="eventTopicHost">The event topic host.</param>
         public void ProcessSubscriber<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, ISubscriptionMatcher[] matchers, bool register, IEventTopicHost eventTopicHost) where TEventArgs : EventArgs
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             this.HandleSubscriber(eventTopicHost, topic, register, subscriber, handlerMethod.Method, handler, matchers);
         }
 

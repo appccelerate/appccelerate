@@ -22,8 +22,6 @@ namespace Appccelerate.EventBroker.Handlers
     using System.Reflection;
     using System.Threading;
 
-    using Appccelerate.EventBroker.Internals;
-
     /// <summary>
     /// Handler that executes the subscription synchronously on the user interface thread (Send semantics).
     /// </summary>

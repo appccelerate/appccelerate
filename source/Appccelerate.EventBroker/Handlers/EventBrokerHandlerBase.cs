@@ -21,7 +21,7 @@ namespace Appccelerate.EventBroker.Handlers
     using System;
     using System.Reflection;
 
-    using Appccelerate.EventBroker.Internals;
+    using Appccelerate.EventBroker.Exceptions;
 
     /// <summary>
     /// Abstract base class for event broker handles providing the host of extensions.

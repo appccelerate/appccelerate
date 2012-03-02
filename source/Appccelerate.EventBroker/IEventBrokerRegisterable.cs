@@ -26,15 +26,15 @@ namespace Appccelerate.EventBroker
     {
         /// <summary>
         /// The publisher or subscriber can register additional publications and subscriptions
-        /// on the <paramref name="eventRegisterer"/>.
+        /// on the <paramref name="eventRegistrar"/>.
         /// </summary>
-        /// <param name="eventRegisterer">The event registerer to register publications and subscriptions.</param>
-        void Register(IEventRegisterer eventRegisterer);
+        /// <param name="eventRegistrar">The event registerer to register publications and subscriptions.</param>
+        void Register(IEventRegistrar eventRegistrar);
 
         /// <summary>
         /// The publisher or subscribe has to clean-up all registrations made in call to <see cref="Register"/>.
         /// </summary>
-        /// <param name="eventRegisterer">The event registerer.</param>
-        void Unregister(IEventRegisterer eventRegisterer);
+        /// <param name="eventRegistrar">The event registerer.</param>
+        void Unregister(IEventRegistrar eventRegistrar);
     }
 }

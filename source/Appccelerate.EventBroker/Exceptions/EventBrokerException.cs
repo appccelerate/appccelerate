@@ -19,6 +19,7 @@
 namespace Appccelerate.EventBroker.Exceptions
 {
     using System;
+    using System.Globalization;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -39,7 +40,7 @@ namespace Appccelerate.EventBroker.Exceptions
         /// <param name="format">Exception message as a format string.</param>
         /// <param name="args">Argument for the exception message format string.</param>
         public EventBrokerException(string format, params object[] args)
-            : base(string.Format(format, args))
+            : base(string.Format(CultureInfo.InvariantCulture, format, args))
         {
         }
 

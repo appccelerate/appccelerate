@@ -19,8 +19,8 @@
 namespace Appccelerate.EventBroker.Extensions
 {
     using System;
-    
-    using Appccelerate.EventBroker.Internals;
+
+    using Appccelerate.EventBroker.Exceptions;
 
     /// <summary>
     /// Base class for <see cref="IEventBrokerExtension"/>s that implements all members as virtual methods.

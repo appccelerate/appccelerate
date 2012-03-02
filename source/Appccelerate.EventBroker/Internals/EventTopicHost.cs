@@ -22,6 +22,8 @@ namespace Appccelerate.EventBroker.Internals
     using System.Collections.Generic;
     using System.IO;
 
+    using Appccelerate.EventBroker.Internals.GlobalMatchers;
+
     /// <summary>
     /// Default implementation of a <see cref="IEventTopicHost"/>.
     /// </summary>
@@ -93,14 +95,14 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="writer">The writer.</param>
         public void DescribeTo(TextWriter writer)
         {
+            Ensure.ArgumentNotNull(writer, "writer");
+
             foreach (IEventTopic eventTopic in this.eventTopics.Values)
             {
                 eventTopic.DescribeTo(writer);
                 writer.WriteLine();
             }
         }
-
-        #region Dispose
 
         /// <summary>
         /// See <see cref="IDisposable.Dispose"/> for more information.
@@ -132,7 +134,5 @@ namespace Appccelerate.EventBroker.Internals
                 this.eventTopics.Clear();
             }
         }
-
-        #endregion
     }
 }

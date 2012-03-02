@@ -46,14 +46,14 @@ namespace Appccelerate.EventBroker
                 this.Event(this, eventArgs);
             }
 
-            public void Register(IEventRegisterer eventRegisterer)
+            public void Register(IEventRegistrar eventRegistrar)
             {
-                eventRegisterer.AddPublication(EventTopic, this, ref this.Event);
+                eventRegistrar.AddPublication(EventTopic, this, ref this.Event);
             }
 
-            public void Unregister(IEventRegisterer eventRegisterer)
+            public void Unregister(IEventRegistrar eventRegistrar)
             {
-                eventRegisterer.RemovePublication(EventTopic, this, ref this.Event);
+                eventRegistrar.RemovePublication(EventTopic, this, ref this.Event);
             }
         }
 
@@ -86,14 +86,14 @@ namespace Appccelerate.EventBroker
                 this.ReceivedEventArgs = eventArgs;
             }
 
-            public void Register(IEventRegisterer eventRegisterer)
+            public void Register(IEventRegistrar eventRegistrar)
             {
-                eventRegisterer.AddSubscription(EventTopic, this, this.HandleEvent, new Publisher());
+                eventRegistrar.AddSubscription(EventTopic, this, this.HandleEvent, new Publisher());
             }
 
-            public void Unregister(IEventRegisterer eventRegisterer)
+            public void Unregister(IEventRegistrar eventRegistrar)
             {
-                eventRegisterer.RemoveSubscription(EventTopic, this, this.HandleEvent);
+                eventRegistrar.RemoveSubscription(EventTopic, this, this.HandleEvent);
             }
         }
     }

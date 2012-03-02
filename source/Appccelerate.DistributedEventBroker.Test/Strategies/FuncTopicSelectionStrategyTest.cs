@@ -19,6 +19,9 @@
 namespace Appccelerate.DistributedEventBroker.Strategies
 {
     using System;
+
+    using Appccelerate.EventBroker;
+
     using EventBroker.Internals;
     using Moq;
     using Xunit;

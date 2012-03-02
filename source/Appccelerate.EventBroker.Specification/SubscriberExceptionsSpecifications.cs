@@ -20,6 +20,7 @@ namespace Appccelerate.EventBroker
 {
     using System;
 
+    using Appccelerate.EventBroker.Exceptions;
     using Appccelerate.EventBroker.Extensions;
 
     using FluentAssertions;
@@ -108,7 +109,7 @@ namespace Appccelerate.EventBroker
 
         public class ExceptionHandlingExtension : EventBrokerExtensionBase
         {
-            public override void SubscriberExceptionOccurred(Internals.IEventTopicInfo eventTopic, Exception exception, ExceptionHandlingContext context)
+            public override void SubscriberExceptionOccurred(IEventTopicInfo eventTopic, Exception exception, ExceptionHandlingContext context)
             {
                 context.SetHandled();
             }

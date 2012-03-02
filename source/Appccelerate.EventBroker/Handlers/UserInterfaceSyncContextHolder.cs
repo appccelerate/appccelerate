@@ -20,7 +20,6 @@ namespace Appccelerate.EventBroker.Handlers
 {
     using System.Reflection;
     using System.Threading;
-    using Exceptions;
 
     /// <summary>
     /// Helper class to store the synchronization context.

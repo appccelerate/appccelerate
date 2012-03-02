@@ -21,10 +21,15 @@ namespace Appccelerate.EventBroker.Internals
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Exceptions;
+
+    using Appccelerate.EventBroker.Internals.Exceptions;
+    using Appccelerate.EventBroker.Internals.GlobalMatchers;
+    using Appccelerate.EventBroker.Internals.Publications;
+
     using Matchers;
 
     /// <summary>
@@ -128,6 +133,8 @@ namespace Appccelerate.EventBroker.Internals
             HandlerRestriction handlerRestriction,
             IList<IPublicationMatcher> matchers)
         {
+            Ensure.ArgumentNotNull(eventInfo, "eventInfo");
+
             IPublication publication = this.factory.CreatePublication(this, publisher, eventInfo, handlerRestriction, matchers);
             this.Clean();
             this.ThrowIfRepeatedPublication(publisher, eventInfo.Name);
@@ -178,6 +185,8 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="eventInfo">The event on the publisher that fires the topic.</param>
         public void RemovePublication(object publisher, EventInfo eventInfo)
         {
+            Ensure.ArgumentNotNull(eventInfo, "eventInfo");
+
             this.Clean();
             IPublication publication = this.FindPublication(publisher, eventInfo.Name);
             if (publication != null)
@@ -292,14 +301,16 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="subscriptionMatchers">Matchers for the subscription.</param>
         public void AddSubscription(object subscriber, MethodInfo handlerMethod, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers)
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             this.Clean();
             ISubscription subscription = this.factory.CreateSubscription(subscriber, handlerMethod, handler, subscriptionMatchers);
             
             this.ThrowIfRepeatedSubscription(subscriber, handlerMethod.Name);
             foreach (IPublication publication in this.publications)
             {
-                this.ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
-                this.ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
+                ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
+                ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
             }
 
             lock (this)
@@ -319,6 +330,8 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="handlerMethod">The method on the subscriber that will handle the <see cref="EventTopic"/>.</param>
         public void RemoveSubscription(object subscriber, MethodInfo handlerMethod)
         {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
             this.Clean();
             ISubscription subscription = this.FindSubscription(subscriber, handlerMethod.Name);
             if (subscription != null)
@@ -348,6 +361,8 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="writer">The writer.</param>
         public void DescribeTo(TextWriter writer)
         {
+            Ensure.ArgumentNotNull(writer, "writer");
+
             writer.Write("EventTopic: ");
             writer.Write(this.Uri);
             writer.WriteLine();
@@ -398,30 +413,6 @@ namespace Appccelerate.EventBroker.Internals
         }
 
         /// <summary>
-        /// Checks if the specified publication has been registered with this <see cref="EventTopic"/>.
-        /// </summary>
-        /// <param name="publisher">The object that contains the publication.</param>
-        /// <param name="eventName">The name of event on the publisher that fires the topic.</param>
-        /// <returns>true if the topic contains the requested publication; otherwise false.</returns>
-        public bool ContainsPublication(object publisher, string eventName)
-        {
-            this.Clean();
-            return this.FindPublication(publisher, eventName) != null;
-        }
-
-        /// <summary>
-        /// Checks if the specified subscription has been registered with this <see cref="EventTopic"/>.
-        /// </summary>
-        /// <param name="subscriber">The object that contains the method that will handle the <see cref="EventTopic"/>.</param>
-        /// <param name="handlerMethodName">The name of the method on the subscriber that will handle the <see cref="EventTopic"/>.</param>
-        /// <returns>true, if the topic contains the subscription; otherwise false.</returns>
-        public bool ContainsSubscription(object subscriber, string handlerMethodName)
-        {
-            this.Clean();
-            return this.FindSubscription(subscriber, handlerMethodName) != null;
-        }
-
-        /// <summary>
         /// Adds the publication.
         /// </summary>
         /// <param name="publication">The publication.</param>
@@ -431,8 +422,8 @@ namespace Appccelerate.EventBroker.Internals
 
             foreach (ISubscription subscription in this.subscriptions)
             {
-                this.ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
-                this.ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
+                ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
+                ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
             }
 
             lock (this)
@@ -459,6 +450,71 @@ namespace Appccelerate.EventBroker.Internals
                 }
 
                 this.publications.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Throws an <see cref="EventTopicException"/> if publisher and subscriber use incompatible event arguments.
+        /// </summary>
+        /// <param name="subscription">The subscription.</param>
+        /// <param name="publication">The publication.</param>
+        /// <exception cref="EventTopicException">Thrown if publisher and subscriber use incompatible event arguments.</exception>
+        private static void ThrowIfPublisherAndSubscriberEventArgsMismatch(ISubscription subscription, IPublication publication)
+        {
+            Type publisherEventArgsType = publication.EventArgsType;
+            Type subscriberEventArgsType = subscription.EventArgsType;
+
+            // check that the T in EventHandler<T> is matching, the IsAssignableFrom method return false event if types can be assigned
+            // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on even thandler type
+            // therefore do the check on the event args type only.
+            if (!subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
+            {
+                using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+                {
+                    writer.Write("Publication ");
+                    writer.WriteLine();
+                    publication.DescribeTo(writer);
+                    writer.WriteLine();
+                    writer.Write("does not match with subscription ");
+                    writer.WriteLine();
+                    subscription.DescribeTo(writer);
+
+                    throw new EventTopicException(writer.GetStringBuilder().ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Throws if subscription handler does not match handler restriction of publisher.
+        /// </summary>
+        /// <param name="subscription">The subscription.</param>
+        /// <param name="publication">The publication.</param>
+        private static void ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(ISubscription subscription, IPublication publication)
+        {
+            if (publication.HandlerRestriction == HandlerRestriction.None)
+            {
+                return;
+            }
+
+            if ((int)subscription.Handler.Kind == (int)publication.HandlerRestriction)
+            {
+                return;
+            }
+
+            using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+            {
+                writer.Write("Publication ");
+                writer.WriteLine();
+                publication.DescribeTo(writer);
+                writer.WriteLine();
+                writer.Write("does not allow subscription ");
+                writer.WriteLine();
+                subscription.DescribeTo(writer);
+                writer.WriteLine();
+                writer.Write(" because publisher requires the subscription handler to be ");
+                writer.Write(publication.HandlerRestriction);
+
+                throw new EventTopicException(writer.GetStringBuilder().ToString());
             }
         }
 
@@ -649,67 +705,6 @@ namespace Appccelerate.EventBroker.Internals
             {
                 throw new RepeatedSubscriptionException(subscriber, handlerMethodName);
             }
-        }
-
-        /// <summary>
-        /// Throws an <see cref="EventTopicException"/> if publisher and subscriber use incompatible event arguments.
-        /// </summary>
-        /// <param name="subscription">The subscription.</param>
-        /// <param name="publication">The publication.</param>
-        /// <exception cref="EventTopicException">Thrown if publisher and subscriber use incompatible event arguments.</exception>
-        private void ThrowIfPublisherAndSubscriberEventArgsMismatch(ISubscription subscription, IPublication publication)
-        {
-            Type publisherEventArgsType = publication.EventArgsType;
-            Type subscriberEventArgsType = subscription.EventArgsType;
-
-            // check that the T in EventHandler<T> is matching, the IsAssignableFrom method return false event if types can be assigned
-            // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on even thandler type
-            // therefore do the check on the event args type only.
-            if (!subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
-            {
-                StringWriter writer = new StringWriter();
-                writer.Write("Publication ");
-                writer.WriteLine();
-                publication.DescribeTo(writer);
-                writer.WriteLine();
-                writer.Write("does not match with subscription ");
-                writer.WriteLine();
-                subscription.DescribeTo(writer);
-
-                throw new EventTopicException(writer.GetStringBuilder().ToString());
-            }
-        }
-
-        /// <summary>
-        /// Throws if subscription handler does not match handler restriction of publisher.
-        /// </summary>
-        /// <param name="subscription">The subscription.</param>
-        /// <param name="publication">The publication.</param>
-        private void ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(ISubscription subscription, IPublication publication)
-        {
-            if (publication.HandlerRestriction == HandlerRestriction.None)
-            {
-                return;
-            }
-
-            if ((int)subscription.Handler.Kind == (int)publication.HandlerRestriction)
-            {
-                return;
-            }
-
-            StringWriter writer = new StringWriter();
-            writer.Write("Publication ");
-            writer.WriteLine();
-            publication.DescribeTo(writer);
-            writer.WriteLine();
-            writer.Write("does not allow subscription ");
-            writer.WriteLine();
-            subscription.DescribeTo(writer);
-            writer.WriteLine();
-            writer.Write(" because publisher requires the subscription handler to be ");
-            writer.Write(publication.HandlerRestriction);
-
-            throw new EventTopicException(writer.GetStringBuilder().ToString());
         }
     }
 }

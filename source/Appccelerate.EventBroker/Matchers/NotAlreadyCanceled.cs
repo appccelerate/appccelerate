@@ -21,7 +21,6 @@ namespace Appccelerate.EventBroker.Matchers
     using System;
     using System.ComponentModel;
     using System.IO;
-    using Internals;
 
     /// <summary>
     /// Subscription matcher that matches only if the event arguments are <see cref="CancelEventArgs"/> and
@@ -42,7 +41,8 @@ namespace Appccelerate.EventBroker.Matchers
         /// <returns><code>true</code> if event has to be sent to the subscriber.</returns>
         public bool Match(IPublication publication, ISubscription subscription, EventArgs e)
         {
-            return e is CancelEventArgs && !((CancelEventArgs)e).Cancel;
+            var cancelEventArgs = e as CancelEventArgs;
+            return cancelEventArgs != null && !cancelEventArgs.Cancel;
         }
 
         /// <summary>
@@ -51,6 +51,8 @@ namespace Appccelerate.EventBroker.Matchers
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(TextWriter writer)
         {
+            Ensure.ArgumentNotNull(writer, "writer");
+
             writer.Write("event arguments (CancelEventArgs) are not yet canceled");
         }
     }

@@ -19,8 +19,8 @@
 namespace Appccelerate.EventBroker
 {
     using System;
-    
-    using Internals;
+
+    using Appccelerate.EventBroker.Exceptions;
     
     /// <summary>
     /// Interface for implementing event broker extensions.

@@ -20,7 +20,7 @@ namespace Appccelerate.EventBroker
 {
     using System;
 
-    using Appccelerate.EventBroker.Exceptions;
+    using Appccelerate.EventBroker.Internals.Exceptions;
 
     using FluentAssertions;
 

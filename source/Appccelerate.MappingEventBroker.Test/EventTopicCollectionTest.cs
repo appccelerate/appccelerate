@@ -18,6 +18,7 @@
 
 namespace Appccelerate.MappingEventBroker
 {
+    using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Internals;
 
     using Moq;

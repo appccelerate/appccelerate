@@ -22,7 +22,7 @@ namespace Appccelerate.EventBroker
     using System.IO;
     using System.Text;
 
-    using Appccelerate.EventBroker.Internals;
+    using Appccelerate.EventBroker.Exceptions;
     using Appccelerate.EventBroker.Matchers;
 
     using FluentAssertions;

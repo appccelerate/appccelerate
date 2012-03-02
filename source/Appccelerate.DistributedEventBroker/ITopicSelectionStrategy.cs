@@ -18,6 +18,8 @@
 
 namespace Appccelerate.DistributedEventBroker
 {
+    using Appccelerate.EventBroker;
+
     using EventBroker.Internals;
 
     /// <summary>

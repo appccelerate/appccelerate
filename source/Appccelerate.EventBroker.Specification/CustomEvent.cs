@@ -22,7 +22,7 @@ namespace Appccelerate.EventBroker
 
     using Appccelerate.Events;
 
-    public class CustomEvent
+    public static class CustomEvent
     {
         public const string EventTopic = "topic://custom.event";
 
@@ -46,14 +46,14 @@ namespace Appccelerate.EventBroker
                 this.Event(this, eventArgs);
             }
 
-            public void Register(IEventRegisterer eventBroker)
+            public void Register(IEventRegistrar eventRegistrar)
             {
-                eventBroker.AddPublication(EventTopic, this, ref this.Event);
+                eventRegistrar.AddPublication(EventTopic, this, ref this.Event);
             }
 
-            public void Unregister(IEventRegisterer eventBroker)
+            public void Unregister(IEventRegistrar eventRegistrar)
             {
-                eventBroker.RemovePublication(EventTopic, this, ref this.Event);
+                eventRegistrar.RemovePublication(EventTopic, this, ref this.Event);
             }
         }
 
@@ -83,14 +83,14 @@ namespace Appccelerate.EventBroker
                 this.ReceivedEventArgs = eventArgs;
             }
 
-            public void Register(IEventRegisterer eventRegisterer)
+            public void Register(IEventRegistrar eventRegistrar)
             {
-                eventRegisterer.AddSubscription<EventArgs<string>>(EventTopic, this, this.HandleEvent, new Handlers.Publisher());
+                eventRegistrar.AddSubscription<EventArgs<string>>(EventTopic, this, this.HandleEvent, new Handlers.Publisher());
             }
 
-            public void Unregister(IEventRegisterer eventRegisterer)
+            public void Unregister(IEventRegistrar eventRegistrar)
             {
-                eventRegisterer.RemoveSubscription<EventArgs<string>>(EventTopic, this, this.HandleEvent);
+                eventRegistrar.RemoveSubscription<EventArgs<string>>(EventTopic, this, this.HandleEvent);
             }
         }
     }

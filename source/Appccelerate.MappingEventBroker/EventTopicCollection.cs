@@ -20,6 +20,7 @@ namespace Appccelerate.MappingEventBroker
 {
     using System.Collections.ObjectModel;
 
+    using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Internals;
 
     /// <summary>

@@ -20,7 +20,6 @@ namespace Appccelerate.EventBroker
 {
     using System;
     using System.Collections.Generic;
-    using Internals;
 
     /// <summary>
     /// Declares an event as an <see cref="IEventTopic"/> publication.

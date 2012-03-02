@@ -26,6 +26,7 @@ namespace Appccelerate.EventBroker.Sample
     using System.Linq;
     using System.Text;
 
+    using Appccelerate.EventBroker.Exceptions;
     using Appccelerate.EventBroker.Extensions;
     using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Matchers;

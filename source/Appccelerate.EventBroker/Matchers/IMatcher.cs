@@ -20,7 +20,6 @@ namespace Appccelerate.EventBroker.Matchers
 {
     using System;
     using System.IO;
-    using Internals;
 
     /// <summary>
     /// Interface for matchers.

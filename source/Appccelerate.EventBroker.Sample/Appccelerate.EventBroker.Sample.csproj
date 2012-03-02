@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.EventBroker.Sample</AppccelerateProjectName>
-    <AppccelerateProjectType>Source</AppccelerateProjectType>
+    <AppccelerateProjectType>Test</AppccelerateProjectType>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{CF83E89B-54C6-466A-ADF2-C26FE3E24286}</ProjectGuid>
