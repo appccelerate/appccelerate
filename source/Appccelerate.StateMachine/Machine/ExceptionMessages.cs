@@ -19,10 +19,8 @@
 namespace Appccelerate.StateMachine.Machine
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-
+    
     using Appccelerate.Formatters;
 
     /// <summary>
@@ -70,26 +68,18 @@ namespace Appccelerate.StateMachine.Machine
             return string.Format(CultureInfo.InvariantCulture, "State {0} cannot be its own super-state.", state);
         }
 
-        /// <summary>
-        /// Cannot set state as a super state because the children states do already have a super state.
-        /// </summary>
-        /// <typeparam name="TState">The type of the state.</typeparam>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
-        /// <param name="newSuperStateId">The new super state id.</param>
-        /// <param name="statesAlreadyHavingASuperState">State of the states already having A super.</param>
-        /// <returns>error message</returns>
-        public static string CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet<TState, TEvent>(TState newSuperStateId, IEnumerable<IState<TState, TEvent>> statesAlreadyHavingASuperState)
+        public static string CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet<TState, TEvent>(TState newSuperStateId, IState<TState, TEvent> stateAlreadyHavingASuperState)
             where TState : IComparable
             where TEvent : IComparable
         {
-            var statesWithSuperStates = from m in statesAlreadyHavingASuperState select new { m.Id, SuperStateId = m.SuperState.Id };
-            string message = statesWithSuperStates.Aggregate(string.Empty, (acc, info) => acc + " state = " + info.Id + " super state = " + info.SuperStateId + ";");
+            Ensure.ArgumentNotNull(stateAlreadyHavingASuperState, "stateAlreadyHavingASuperState");
 
             return string.Format(
                 CultureInfo.InvariantCulture,
-                "Cannot set state {0} as a super state because the following states do already have a super state: {1}.",
+                "Cannot set state {0} as a super state because the state {1} has already a super state {2}.",
                 newSuperStateId,
-                message);
+                stateAlreadyHavingASuperState.Id,
+                stateAlreadyHavingASuperState.SuperState.Id);
         }
 
         /// <summary>

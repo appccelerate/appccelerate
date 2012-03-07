@@ -107,9 +107,20 @@ namespace Appccelerate.StateMachine.Reports
         {
             var elevator = new PassiveStateMachine<States, Events>("Elevator");
 
-            elevator.DefineHierarchyOn(States.Healthy, States.OnFloor, HistoryType.Deep, States.OnFloor, States.Moving);
-            elevator.DefineHierarchyOn(States.Moving, States.MovingUp, HistoryType.Shallow, States.MovingUp, States.MovingDown);
-            elevator.DefineHierarchyOn(States.OnFloor, States.DoorClosed, HistoryType.None, States.DoorClosed, States.DoorOpen);
+            elevator.DefineHierarchyOn(States.Healthy)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(States.OnFloor)
+                .WithSubState(States.Moving);
+
+            elevator.DefineHierarchyOn(States.Moving)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(States.MovingUp)
+                .WithSubState(States.MovingDown);
+
+            elevator.DefineHierarchyOn(States.OnFloor)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(States.DoorClosed)
+                .WithSubState(States.DoorOpen);
 
             elevator.In(States.Healthy)
                 .On(Events.ErrorOccured).Goto(States.Error);
@@ -151,8 +162,8 @@ namespace Appccelerate.StateMachine.Reports
                 transitionsReport = reader.ReadToEnd();
             }
 
-            const string ExpectedStatesReport = "Source;Entry;Exit;ChildrenOnFloor;AnnounceFloor;Beep, Beep;DoorClosed, DoorOpenMoving;;;MovingUp, MovingDownHealthy;;;OnFloor, MovingMovingUp;;;MovingDown;;;DoorClosed;;;DoorOpen;;;Error;;;";
-            const string ExpectedTransitionsReport = "Source;Event;Guard;Target;ActionsOnFloor;CloseDoor;;DoorClosed;OnFloor;OpenDoor;;DoorOpen;OnFloor;GoUp;CheckOverload;MovingUp;OnFloor;GoUp;;internal transition;AnnounceOverload, BeepOnFloor;GoDown;CheckOverload;MovingDown;OnFloor;GoDown;;internal transition;AnnounceOverloadMoving;Stop;;OnFloor;Healthy;ErrorOccured;;Error;Error;Reset;;Healthy;Error;ErrorOccured;;internal transition;";
+            const string ExpectedTransitionsReport = "Source;Event;Guard;Target;ActionsHealthy;ErrorOccured;;Error;OnFloor;CloseDoor;;DoorClosed;OnFloor;OpenDoor;;DoorOpen;OnFloor;GoUp;CheckOverload;MovingUp;OnFloor;GoUp;;internal transition;AnnounceOverload, BeepOnFloor;GoDown;CheckOverload;MovingDown;OnFloor;GoDown;;internal transition;AnnounceOverloadMoving;Stop;;OnFloor;Error;Reset;;Healthy;Error;ErrorOccured;;internal transition;";
+            const string ExpectedStatesReport = "Source;Entry;Exit;ChildrenHealthy;;;OnFloor, MovingOnFloor;AnnounceFloor;Beep, Beep;DoorClosed, DoorOpenMoving;;;MovingUp, MovingDownMovingUp;;;MovingDown;;;DoorClosed;;;DoorOpen;;;Error;;;";
 
             statesReport.Replace("\n", string.Empty).Replace("\r", string.Empty)
                 .Should().Be(ExpectedStatesReport.Replace("\n", string.Empty).Replace("\r", string.Empty));

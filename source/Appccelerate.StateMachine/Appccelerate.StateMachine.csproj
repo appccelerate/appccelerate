@@ -50,6 +50,7 @@
     <Compile Include="Machine\GuardHolders\ArgumentLessGuardHolder.cs" />
     <Compile Include="Machine\GuardHolders\GuardHoldersExceptionMessages.cs" />
     <Compile Include="Machine\GuardHolders\IGuardHolder.cs" />
+    <Compile Include="Machine\HierarchyBuilder.cs" />
     <Compile Include="Machine\IExtension.cs" />
     <Compile Include="Machine\IExtensionHost.cs" />
     <Compile Include="Machine\Initializable.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Syntax\IExitActionSyntax.cs" />
     <Compile Include="Syntax\IGotoInIfSyntax.cs" />
     <Compile Include="Syntax\IGotoSyntax.cs" />
+    <Compile Include="Syntax\IHierarchySyntax.cs" />
     <Compile Include="Syntax\IIfOrOtherwiseSyntax.cs" />
     <Compile Include="Syntax\IIfSyntax.cs" />
     <Compile Include="Syntax\IOnSyntax.cs" />

@@ -211,10 +211,14 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void DefineNonTreeHierarchy()
         {
-            this.testee.DefineHierarchyOn(StateMachine.States.A, StateMachine.States.B, HistoryType.None, StateMachine.States.B);
+            this.testee.DefineHierarchyOn(StateMachine.States.A)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(StateMachine.States.B);
             
             Assert.Throws<InvalidOperationException>(
-                () => this.testee.DefineHierarchyOn(StateMachine.States.C, StateMachine.States.B, HistoryType.None, StateMachine.States.B));
+                () => this.testee.DefineHierarchyOn(StateMachine.States.C)
+                    .WithHistoryType(HistoryType.None)
+                    .WithInitialSubState(StateMachine.States.B));
         }
 
         [Fact]

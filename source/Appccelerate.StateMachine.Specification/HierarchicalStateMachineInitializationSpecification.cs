@@ -92,7 +92,9 @@ namespace Appccelerate.StateMachine
 
             machine.AddExtension(testExtension);
 
-            machine.DefineHierarchyOn(SuperState, LeafState, HistoryType.None, LeafState);
+            machine.DefineHierarchyOn(SuperState)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(LeafState);
 
             machine.In(SuperState)
                 .ExecuteOnEntry(() => entryActionOfSuperStateExecuted = true);

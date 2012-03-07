@@ -41,23 +41,17 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// If a state is specified as the initial sub state that is not in the list of sub states then an <see cref="ArgumentException"/> is thrown.
-        /// </summary>
-        [Fact]
-        public void AddHierarchicalStatesInitialStateIsNotASubState()
-        {
-            Assert.Throws<ArgumentException>(
-                () => this.testee.DefineHierarchyOn(StateMachine.States.B, StateMachine.States.A, HistoryType.None, StateMachine.States.B1, StateMachine.States.B2));
-        }
-
-        /// <summary>
         /// If the super-state is specified as the initial state of its sub-states then an <see cref="ArgumentException"/> is thrown.
         /// </summary>
         [Fact]
         public void AddHierarchicalStatesInitialStateIsSuperStateItself()
         {
             Assert.Throws<ArgumentException>(
-                () => this.testee.DefineHierarchyOn(StateMachine.States.B, StateMachine.States.B, HistoryType.None, StateMachine.States.B1, StateMachine.States.B2));
+                () => this.testee.DefineHierarchyOn(StateMachine.States.B)
+                    .WithHistoryType(HistoryType.None)
+                    .WithInitialSubState(StateMachine.States.B)
+                    .WithSubState(StateMachine.States.B1)
+                    .WithSubState(StateMachine.States.B2));
         }
     }
 }

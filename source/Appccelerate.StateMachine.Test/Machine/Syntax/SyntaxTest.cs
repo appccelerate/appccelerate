@@ -70,6 +70,18 @@ namespace Appccelerate.StateMachine.Machine.Syntax
                 };
         }
 
+        [Fact]
+        public void DefineHierarchySyntax()
+        {
+            var stateMachine = new StateMachine<int, int>();
+            
+            stateMachine.DefineHierarchyOn(1)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(2)
+                .WithSubState(3)
+                .WithSubState(4);
+        }
+
         private bool AGuard(string argument)
         {
             return true;

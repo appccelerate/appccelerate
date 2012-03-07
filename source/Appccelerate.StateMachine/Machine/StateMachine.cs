@@ -23,8 +23,6 @@ namespace Appccelerate.StateMachine.Machine
     using System.Linq;
 
     using Appccelerate.StateMachine.Machine.Events;
-    using Appccelerate.StateMachine.Machine.States;
-    using Appccelerate.StateMachine.Machine.Transitions;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -269,29 +267,13 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// Defines a state hierarchy.
+        /// Defines the hierarchy on.
         /// </summary>
         /// <param name="superStateId">The super state id.</param>
-        /// <param name="initialSubStateId">The initial state id.</param>
-        /// <param name="historyType">Type of the history.</param>
-        /// <param name="subStateIds">The sub state ids.</param>
-        public void DefineHierarchyOn(TState superStateId, TState initialSubStateId, HistoryType historyType, params TState[] subStateIds)
+        /// <returns>Syntax to build a state hierarchy.</returns>
+        public IHierarchySyntax<TState> DefineHierarchyOn(TState superStateId)
         {
-            Ensure.ArgumentNotNull(subStateIds, "subStateIds");
-
-            this.CheckThatNoStateHasAlreadyASuperState(subStateIds, superStateId);
-            
-            var superState = this.states[superStateId];
-            superState.HistoryType = historyType;
-
-            foreach (TState subStateId in subStateIds)
-            {
-                var subState = this.states[subStateId];
-                subState.SuperState = superState;
-                superState.SubStates.Add(subState);
-            }
-
-            superState.InitialState = this.states[initialSubStateId];
+            return new HierarchyBuilder<TState, TEvent>(this.states, superStateId);
         }
 
         /// <summary>
@@ -439,15 +421,6 @@ namespace Appccelerate.StateMachine.Machine
             if (this.currentState == null)
             {
                 throw new InvalidOperationException(ExceptionMessages.StateMachineHasNotYetEnteredInitialState);
-            }
-        }
-
-        private void CheckThatNoStateHasAlreadyASuperState(IEnumerable<TState> stateIds, TState newSuperStateId)
-        {
-            IEnumerable<IState<TState, TEvent>> statesAlreadyHavingASuperState = stateIds.Select(subStateId => this.states[subStateId]).Where(subState => subState.SuperState != null);
-            if (statesAlreadyHavingASuperState.Any())
-            {
-                throw new InvalidOperationException(ExceptionMessages.CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet(newSuperStateId, statesAlreadyHavingASuperState));
             }
         }
     }

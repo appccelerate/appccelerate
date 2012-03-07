@@ -40,8 +40,15 @@ namespace Appccelerate.StateMachine
             {
                 machine = new PassiveStateMachine<int, int>();
 
-                machine.DefineHierarchyOn(ParentOfSourceState, SourceState, HistoryType.None, SourceState, SiblingOfSourceState);
-                machine.DefineHierarchyOn(ParentOfDestinationState, DestinationState, HistoryType.None, DestinationState, SiblingOfDestinationState);
+                machine.DefineHierarchyOn(ParentOfSourceState)
+                    .WithHistoryType(HistoryType.None)
+                    .WithInitialSubState(SourceState)
+                    .WithSubState(SiblingOfSourceState);
+                
+                machine.DefineHierarchyOn(ParentOfDestinationState)
+                    .WithHistoryType(HistoryType.None)
+                    .WithInitialSubState(DestinationState)
+                    .WithSubState(SiblingOfDestinationState);
 
                 machine.In(SourceState)
                     .ExecuteOnExit(() => log += "exit" + SourceState)
@@ -118,9 +125,20 @@ namespace Appccelerate.StateMachine
         {
             machine = new PassiveStateMachine<int, int>();
 
-            machine.DefineHierarchyOn(CommonAncestorState, ParentOfSourceState, HistoryType.None, ParentOfSourceState, ParentOfDestinationState);
-            machine.DefineHierarchyOn(ParentOfSourceState, SourceState, HistoryType.None, SourceState, SiblingOfSourceState);
-            machine.DefineHierarchyOn(ParentOfDestinationState, DestinationState, HistoryType.None, DestinationState, SiblingOfDestinationState);
+            machine.DefineHierarchyOn(CommonAncestorState)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(ParentOfSourceState)
+                .WithSubState(ParentOfDestinationState);
+
+            machine.DefineHierarchyOn(ParentOfSourceState)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(SourceState)
+                .WithSubState(SiblingOfSourceState);
+
+            machine.DefineHierarchyOn(ParentOfDestinationState)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(DestinationState)
+                .WithSubState(SiblingOfDestinationState);
 
             machine.In(SourceState)
                 .On(Event).Goto(DestinationState);

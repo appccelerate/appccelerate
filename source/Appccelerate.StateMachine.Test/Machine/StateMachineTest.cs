@@ -52,11 +52,30 @@ namespace Appccelerate.StateMachine.Machine
 
             this.testee = new StateMachine<StateMachine.States, StateMachine.Events>();
 
-            this.testee.DefineHierarchyOn(StateMachine.States.B, StateMachine.States.B1, HistoryType.None, StateMachine.States.B1, StateMachine.States.B2);
-            this.testee.DefineHierarchyOn(StateMachine.States.C, StateMachine.States.C2, HistoryType.Shallow, StateMachine.States.C1, StateMachine.States.C2);
-            this.testee.DefineHierarchyOn(StateMachine.States.C1, StateMachine.States.C1a, HistoryType.Shallow, StateMachine.States.C1a, StateMachine.States.C1b);
-            this.testee.DefineHierarchyOn(StateMachine.States.D, StateMachine.States.D1, HistoryType.Deep, StateMachine.States.D1, StateMachine.States.D2);
-            this.testee.DefineHierarchyOn(StateMachine.States.D1, StateMachine.States.D1a, HistoryType.Deep, StateMachine.States.D1a, StateMachine.States.D1b);
+            this.testee.DefineHierarchyOn(StateMachine.States.B)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(StateMachine.States.B1)
+                .WithSubState(StateMachine.States.B2);
+            
+            this.testee.DefineHierarchyOn(StateMachine.States.C)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(StateMachine.States.C2)
+                .WithSubState(StateMachine.States.C1);
+            
+            this.testee.DefineHierarchyOn(StateMachine.States.C1)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(StateMachine.States.C1a)
+                .WithSubState(StateMachine.States.C1b);
+            
+            this.testee.DefineHierarchyOn(StateMachine.States.D)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(StateMachine.States.D1)
+                .WithSubState(StateMachine.States.D2);
+            
+            this.testee.DefineHierarchyOn(StateMachine.States.D1)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(StateMachine.States.D1a)
+                .WithSubState(StateMachine.States.D1b);
 
             this.testee.In(StateMachine.States.A)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.A))

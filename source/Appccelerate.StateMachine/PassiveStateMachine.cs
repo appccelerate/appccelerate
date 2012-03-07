@@ -150,15 +150,12 @@ namespace Appccelerate.StateMachine
         }
 
         /// <summary>
-        /// Defines a state hierarchy.
+        /// Defines the hierarchy on.
         /// </summary>
         /// <param name="superStateId">The super state id.</param>
-        /// <param name="initialSubStateId">The initial state id.</param>
-        /// <param name="historyType">Type of the history.</param>
-        /// <param name="subStateIds">The sub state ids.</param>
-        public void DefineHierarchyOn(TState superStateId, TState initialSubStateId, HistoryType historyType, params TState[] subStateIds)
+        public IHierarchySyntax<TState> DefineHierarchyOn(TState superStateId)
         {
-            this.stateMachine.DefineHierarchyOn(superStateId, initialSubStateId, historyType, subStateIds);
+            return this.stateMachine.DefineHierarchyOn(superStateId);
         }
 
         /// <summary>

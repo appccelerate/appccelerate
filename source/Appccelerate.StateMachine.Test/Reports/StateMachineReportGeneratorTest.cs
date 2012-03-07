@@ -35,11 +35,30 @@ namespace Appccelerate.StateMachine.Reports
         [Fact]
         public void Report()
         {
-            this.machine.DefineHierarchyOn(States.B, States.B1, HistoryType.None, States.B1, States.B2);
-            this.machine.DefineHierarchyOn(States.C, States.C1, HistoryType.Shallow, States.C1, States.C2);
-            this.machine.DefineHierarchyOn(States.C1, States.C1a, HistoryType.Shallow, States.C1a, States.C1b);
-            this.machine.DefineHierarchyOn(States.D, States.D1, HistoryType.Deep, States.D1, States.D2);
-            this.machine.DefineHierarchyOn(States.D1, States.D1a, HistoryType.Deep, States.D1a, States.D1b);
+            this.machine.DefineHierarchyOn(States.B)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(States.B1)
+                .WithSubState(States.B2);
+
+            this.machine.DefineHierarchyOn(States.C)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(States.C1)
+                .WithSubState(States.C2);
+            
+            this.machine.DefineHierarchyOn(States.C1)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(States.C1a)
+                .WithSubState(States.C1b);
+            
+            this.machine.DefineHierarchyOn(States.D)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(States.D1)
+                .WithSubState(States.D2);
+            
+            this.machine.DefineHierarchyOn(States.D1)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(States.D1a)
+                .WithSubState(States.D1b);
 
             this.machine.In(States.A)
                 .ExecuteOnEntry(EnterA)

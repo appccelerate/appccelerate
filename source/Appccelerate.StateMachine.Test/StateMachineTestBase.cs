@@ -164,11 +164,30 @@ namespace Appccelerate.StateMachine
         {
             AutoResetEvent allTransitionsCompleted = this.SetUpWaitForAllTransitions(1);
 
-            this.testee.DefineHierarchyOn(States.B, States.B1, HistoryType.None, States.B1, States.B2);
-            this.testee.DefineHierarchyOn(States.C, States.C2, HistoryType.Shallow, States.C1, States.C2);
-            this.testee.DefineHierarchyOn(States.C1, States.C1a, HistoryType.Shallow, States.C1a, States.C1b);
-            this.testee.DefineHierarchyOn(States.D, States.D1, HistoryType.Deep, States.D1, States.D2);
-            this.testee.DefineHierarchyOn(States.D1, States.D1a, HistoryType.Deep, States.D1a, States.D1b);
+            this.testee.DefineHierarchyOn(StateMachine.States.B)
+                .WithHistoryType(HistoryType.None)
+                .WithInitialSubState(StateMachine.States.B1)
+                .WithSubState(StateMachine.States.B2);
+
+            this.testee.DefineHierarchyOn(StateMachine.States.C)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(StateMachine.States.C2)
+                .WithSubState(StateMachine.States.C1);
+
+            this.testee.DefineHierarchyOn(StateMachine.States.C1)
+                .WithHistoryType(HistoryType.Shallow)
+                .WithInitialSubState(StateMachine.States.C1a)
+                .WithSubState(StateMachine.States.C1b);
+
+            this.testee.DefineHierarchyOn(StateMachine.States.D)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(StateMachine.States.D1)
+                .WithSubState(StateMachine.States.D2);
+
+            this.testee.DefineHierarchyOn(StateMachine.States.D1)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(StateMachine.States.D1a)
+                .WithSubState(StateMachine.States.D1b);
 
             this.testee.In(States.A)
                 .On(Events.B).Goto(States.B);
