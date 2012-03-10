@@ -40,6 +40,7 @@
     <Compile Include="Machine\ExceptionCasesTest.cs" />
     <Compile Include="Machine\GuardHolders\SingleArgumentGuardHolderTest.cs" />
     <Compile Include="Machine\GuardTest.cs" />
+    <Compile Include="Machine\HierarchyBuilderTest.cs" />
     <Compile Include="Machine\StateActionTest.cs" />
     <Compile Include="Machine\StateMachineBuildHierarchyTest.cs" />
     <Compile Include="Machine\StateMachineTest.cs" />

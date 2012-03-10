@@ -75,7 +75,10 @@ namespace Appccelerate.StateMachine.Machine
 
             if (subState.SuperState != null)
             {
-                throw new InvalidOperationException(ExceptionMessages.CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet(this.superState.Id, subState));
+                throw new InvalidOperationException(
+                    ExceptionMessages.CannotSetStateAsASuperStateBecauseASuperStateIsAlreadySet(
+                        this.superState.Id, 
+                        subState));
             }
         }
     }
