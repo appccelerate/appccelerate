@@ -20,6 +20,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -71,6 +72,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             if (namedItem != null)
             {
                 this.log.DebugFormat(
+                    CultureInfo.InvariantCulture,
                     "Fired event '{0}'. Invoked by publisher '{1}' with name '{2}' with sender '{3}' and EventArgs '{4}'.",
                     eventTopic.Uri,
                     publication.Publisher,
@@ -81,6 +83,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             else
             {
                 this.log.DebugFormat(
+                    CultureInfo.InvariantCulture,
                     "Fired event '{0}'. Invoked by publisher '{1}' with sender '{2}' and EventArgs '{3}'.",
                     eventTopic.Uri,
                     publication.Publisher,
@@ -173,7 +176,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <param name="publication">The publication.</param>
         public override void AddedPublication(IEventTopicInfo eventTopic, IPublication publication)
         {
-            using (TextWriter writer = new StringWriter())
+            using (TextWriter writer = new StringWriter(CultureInfo.InvariantCulture))
             {
                 foreach (IPublicationMatcher publicationMatcher in publication.PublicationMatchers)
                 {
@@ -182,6 +185,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
                 }
 
                 this.log.DebugFormat(
+                    CultureInfo.InvariantCulture,
                     "Added publication '{0}.{1}' to topic '{2}' with matchers '{3}'.",
                     publication.Publisher != null ? publication.Publisher.GetType().FullName : "-",
                     publication.EventName,
@@ -211,7 +215,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <param name="subscription">The subscription.</param>
         public override void AddedSubscription(IEventTopicInfo eventTopic, ISubscription subscription)
         {
-            using (TextWriter writer = new StringWriter())
+            using (TextWriter writer = new StringWriter(CultureInfo.InvariantCulture))
             {
                 foreach (ISubscriptionMatcher subscriptionMatcher in subscription.SubscriptionMatchers)
                 {
@@ -220,6 +224,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
                 }
 
                 this.log.DebugFormat(
+                    CultureInfo.InvariantCulture,
                     "Added subscription '{0}.{1}' to topic '{2}' with matchers '{3}'.",
                     subscription.Subscriber != null ? subscription.Subscriber.GetType().FullName : "-",
                     subscription.HandlerMethodName,
@@ -254,6 +259,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void RelayingEvent(IEventTopicInfo eventTopic, IPublication publication, ISubscription subscription, IHandler handler, object sender, EventArgs e)
         {
             this.log.DebugFormat(
+                CultureInfo.InvariantCulture,
                 "Relaying event '{6}' from publisher '{0}' [{1}] to subscriber '{2}' [{3}] with EventArgs '{4}' with handler '{5}'.",
                 publication.Publisher,
                 publication.Publisher is INamedItem ? ((INamedItem)publication.Publisher).EventBrokerItemName : string.Empty,
@@ -276,6 +282,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void RelayedEvent(IEventTopicInfo eventTopic, IPublication publication, ISubscription subscription, IHandler handler, object sender, EventArgs e)
         {
             this.log.DebugFormat(
+                CultureInfo.InvariantCulture,
                 "Relayed event '{6}' from publisher '{0}' [{1}] to subscriber '{2}' [{3}] with EventArgs '{4}' with handler '{5}'.",
                 publication.Publisher,
                 publication.Publisher is INamedItem ? ((INamedItem)publication.Publisher).EventBrokerItemName : string.Empty,
@@ -304,7 +311,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             matchers.AddRange(subscriptionMatchers);
 
             StringBuilder sb = new StringBuilder();
-            using (TextWriter writer = new StringWriter(sb))
+            using (TextWriter writer = new StringWriter(sb, CultureInfo.InvariantCulture))
             {
                 foreach (IMatcher matcher in matchers)
                 {
@@ -319,6 +326,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             }
 
             this.log.DebugFormat(
+                CultureInfo.InvariantCulture,
                 "Skipped event '{0}' from publisher '{1}' [{2}] to subscriber '{3}' [{4}] with EventArgs '{5}' because the matchers '{6}' did not match.",
                 eventTopic.Uri,
                 publication.Publisher,
@@ -338,7 +346,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void SubscriberExceptionOccurred(IEventTopicInfo eventTopic, Exception exception, ExceptionHandlingContext context)
         {
             this.log.Error(
-                string.Format("An exception was thrown during handling the topic '{0}'", eventTopic.Uri),
+                string.Format(CultureInfo.InvariantCulture, "An exception was thrown during handling the topic '{0}'", eventTopic.Uri),
                 exception);
         }
     }

@@ -22,6 +22,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Log4Net\AsyncModuleLogExtension.cs" />
     <Compile Include="Log4Net\AsyncWorkerLogExtension.cs" />
     <Compile Include="Log4Net\EvaluationEngineLogExtension.cs" />
