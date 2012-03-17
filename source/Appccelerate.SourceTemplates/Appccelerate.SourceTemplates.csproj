@@ -22,6 +22,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Log4Net\EventBrokerLogExtension.cs" />
     <Compile Include="Log4Net\StateMachineLogExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\VersionInfo.g.cs" />
@@ -41,6 +42,10 @@
     <ProjectReference Include="..\Appccelerate.EvaluationEngine\Appccelerate.EvaluationEngine.csproj">
       <Project>{7BDE66B4-C478-4D7B-917A-E0E75DA7F3EC}</Project>
       <Name>Appccelerate.EvaluationEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6B189709-125E-46EC-8FEE-50345375F221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
     </ProjectReference>
     <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
       <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>

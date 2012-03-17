@@ -34,6 +34,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Log4Net\EventBrokerLogExtensionTest.cs" />
     <Compile Include="Log4Net\Log4NetHelper.cs" />
     <Compile Include="Log4Net\StateMachineLogExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -42,6 +43,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6B189709-125E-46EC-8FEE-50345375F221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Appccelerate.SourceTemplates\Appccelerate.SourceTemplates.csproj">
       <Project>{BE06B9D3-4070-4BD4-820A-4B410CA1355E}</Project>
       <Name>Appccelerate.SourceTemplates</Name>
