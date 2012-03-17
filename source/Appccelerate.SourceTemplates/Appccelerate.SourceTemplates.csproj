@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.SourceTemplates</AppccelerateProjectName>
+    <AppccelerateProjectType>Source</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{BE06B9D3-4070-4BD4-820A-4B410CA1355E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Log4Net\StateMachineLogExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\VersionInfo.g.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.SourceTemplates.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.Bootstrapper\Appccelerate.Bootstrapper.csproj">
+      <Project>{B1FB577F-4616-4CE1-8D9A-F72021323FBB}</Project>
+      <Name>Appccelerate.Bootstrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.EvaluationEngine\Appccelerate.EvaluationEngine.csproj">
+      <Project>{7BDE66B4-C478-4D7B-917A-E0E75DA7F3EC}</Project>
+      <Name>Appccelerate.EvaluationEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
+      <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
+      <Name>Appccelerate.Fundamentals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.StateMachine\Appccelerate.StateMachine.csproj">
+      <Project>{A8B37574-7920-4796-8EAD-67385EC206D9}</Project>
+      <Name>Appccelerate.StateMachine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

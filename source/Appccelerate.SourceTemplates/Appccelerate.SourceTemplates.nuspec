@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Appccelerate.SourceTemplates</id>
+    <version>%Appccelerate.SourceTemplatesFileVersion%</version>
+    <title>Appccelerate.SourceTemplates</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Source files showing how Appccelerate components can be extended.</summary>
+    <description>
+      Contains source files showing how to write 
+      log4net loggers for Appccelerate components.
+    </description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate</tags>
+  </metadata>
+  <files>
+    <file src="..\..\..\source\Appccelerate.SourceTemplates\Log4Net\*.*" target="content\AppccelerateSourceTemplates\Log4Net\" />
+  </files>
+</package>

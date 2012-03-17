@@ -227,8 +227,8 @@
           
           <foreach item="Line" in="${dependenciesFile}" property="dependency">
             <do>
-              <copy overwrite="false" todir="${binaries}\${build_config}\${project}" flatten="false">
-                <fileset basedir="${folder}/bin/${build_config}">
+              <copy overwrite="false" todir="${binaries}\${build_config}\${project}\lib" flatten="false">
+                <fileset basedir="${folder}/bin/${build_config}/lib">
                   <include name="**/${dependency}" />
                 </fileset>
               </copy>
@@ -267,12 +267,16 @@
         
         <loadfile file="${nuspec}" property="content" />
 
-        <foreach item="Line" in="${base_dir}\scripts\nuget.symbols.txt" property="sourcefiles">
-          <do>
-            <property name="sourceProjectFiles" value="${string::replace(sourcefiles, '%sourcefolder%', sourceFolder)}" />
-            <property name="content" value="${string::replace(content, '&lt;/package>', sourceProjectFiles + '&lt;/package>')}" />
-          </do>
-        </foreach>
+		<property name="is_binary_package" value="${not string::contains(content, '/files')}" />
+		
+		<if test="${is_binary_package}">
+			<foreach item="Line" in="${base_dir}\scripts\nuget.symbols.txt" property="sourcefiles">
+			  <do>
+				<property name="sourceProjectFiles" value="${string::replace(sourcefiles, '%sourcefolder%', sourceFolder)}" />
+				<property name="content" value="${string::replace(content, '&lt;/package>', sourceProjectFiles + '&lt;/package>')}" />
+			  </do>
+			</foreach>
+        </if>
         
         <foreach item="Line" in="${publish}\versions.txt" delim="," property="projectname,projectversion,nextversion,fileversion">
           <do>
@@ -289,7 +293,12 @@
           </fileset>
         </copy>
 
-        <exec program="${nuget.console}" commandline="pack ${nugetFile} -symbols" />
+		<if test="${is_binary_package}">
+			<exec program="${nuget.console}" commandline="pack ${nugetFile} -symbols" />
+		</if>
+		<ifnot test="${is_binary_package}">
+			<exec program="${nuget.console}" commandline="pack ${nugetFile}" />
+		</ifnot>
     
         <move todir="${publish}\NuGet\">
           <fileset basedir="${base_dir}\Scripts\">
