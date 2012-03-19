@@ -92,6 +92,28 @@ namespace Appccelerate.StateMachine.Machine
             action2Argument.Should().Be(EventArgument);
         }
 
+        [Fact]
+        public void ExecutesActions_WhenActionsWithAndWithoutArgumentAreDefined()
+        {
+            const int EventArgument = 17;
+
+            bool action1Executed = false;
+            bool action2Executed = false;
+            
+            this.testee.In(StateMachine.States.A)
+                .On(StateMachine.Events.B).Goto(StateMachine.States.B)
+                    .Execute<int>(argument => { action1Executed = true; })
+                    .Execute(() => { action2Executed = true; });
+
+            this.testee.Initialize(StateMachine.States.A);
+            this.testee.EnterInitialState();
+
+            this.testee.Fire(StateMachine.Events.B, EventArgument);
+
+            action1Executed.Should().BeTrue("action with argument should be executed");
+            action2Executed.Should().BeTrue("action without argument should be executed");
+        }
+
         /// <summary>
         /// Internal transitions can be executed 
         /// (internal transition = transition that remains in the same state and does not execute exit

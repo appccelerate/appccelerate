@@ -183,22 +183,22 @@ namespace Appccelerate.StateMachine.Machine
             return this.Execute<T>(actions);
         }
 
-        IIfOrOtherwiseSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute(params Action[] actions)
+        IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute(params Action[] actions)
         {
             return this.Execute(actions);
         }
 
-        IIfOrOtherwiseSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
         {
             return this.Execute<T>(actions);
         }
 
-        IEventSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute(params Action[] actions)
+        IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute(params Action[] actions)
         {
             return this.Execute(actions);
         }
 
-        IEventSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
         {
             return this.Execute<T>(actions);
         }

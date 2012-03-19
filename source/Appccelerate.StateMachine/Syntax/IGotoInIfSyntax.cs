@@ -32,7 +32,7 @@ namespace Appccelerate.StateMachine.Syntax
         /// </summary>
         /// <param name="actions">The actions to execute when the transition is taken.</param>
         /// <returns>Event syntax</returns>
-        IIfOrOtherwiseSyntax<TState, TEvent> Execute(params Action[] actions);
+        IGotoInIfSyntax<TState, TEvent> Execute(params Action[] actions);
 
         /// <summary>
         /// Defines the transition actions.
@@ -40,6 +40,6 @@ namespace Appccelerate.StateMachine.Syntax
         /// <typeparam name="T">The type of the action argument.</typeparam>
         /// <param name="actions">The actions to execute when the transition is taken.</param>
         /// <returns>Event syntax</returns>
-        IIfOrOtherwiseSyntax<TState, TEvent> Execute<T>(params Action<T>[] actions);
+        IGotoInIfSyntax<TState, TEvent> Execute<T>(params Action<T>[] actions);
     }
 }
