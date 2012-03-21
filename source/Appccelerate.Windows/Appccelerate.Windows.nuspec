@@ -3,7 +3,7 @@
   <metadata>
     <id>Appccelerate.Windows</id>
     <version>%Appccelerate.WindowsFileVersion%</version>
-    <title>"Appccelerate.Windows"</title>
+    <title>Appccelerate.Windows</title>
     <authors>Appccelerate team</authors>
     <owners>Appccelerate team</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>

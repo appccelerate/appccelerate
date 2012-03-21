@@ -3,7 +3,7 @@
   <metadata>
     <id>Appccelerate.EvaluationEngine</id>
     <version>%Appccelerate.EvaluationEngineFileVersion%</version>
-    <title>"Appccelerate.EvaluationEngine"</title>
+    <title>Appccelerate.EvaluationEngine</title>
     <authors>Appccelerate team</authors>
     <owners>Appccelerate team</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
