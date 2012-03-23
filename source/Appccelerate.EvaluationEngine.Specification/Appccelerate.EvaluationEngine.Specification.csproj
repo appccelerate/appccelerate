@@ -21,6 +21,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregatorSpecifications.cs" />
     <Compile Include="AnswerParametrizedQuestionsSpecification.cs" />
     <Compile Include="AnswerQuestionsSpecification.cs" />
     <Compile Include="Concern.cs" />
