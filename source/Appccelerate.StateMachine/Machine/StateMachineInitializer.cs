@@ -21,8 +21,6 @@ namespace Appccelerate.StateMachine.Machine
     using System;
     using System.Collections.Generic;
 
-    using Appccelerate.StateMachine.Machine.States;
-
     /// <summary>
     /// Responsible for entering the initial state of the state machine. 
     /// All states up in the hierarchy are entered, too.
@@ -58,12 +56,12 @@ namespace Appccelerate.StateMachine.Machine
         /// Enters the initial state by entering all states further up in the hierarchy.
         /// </summary>
         /// <returns>The entered state. The initial state or a sub state of the initial state.</returns>
-        public IState<TState, TEvent> EnterInitialState()
+        public IState<TState, TEvent> EnterInitialState(object eventArgument)
         {
             var stack = this.TraverseUpTheStateHierarchy();
-            this.TraverseDownTheStateHierarchyAndEnterStates(stack);
+            this.TraverseDownTheStateHierarchyAndEnterStates(stack, eventArgument);
 
-            return this.initialState.EnterByHistory(this.stateContext);
+            return this.initialState.EnterByHistory(eventArgument, this.stateContext);
         }
 
         /// <summary>
@@ -84,16 +82,12 @@ namespace Appccelerate.StateMachine.Machine
             return stack;
         }
 
-        /// <summary>
-        /// Traverses down the state hierarchy and enter all states along.
-        /// </summary>
-        /// <param name="stack">The stack containing the state hierarchy.</param>
-        private void TraverseDownTheStateHierarchyAndEnterStates(Stack<IState<TState, TEvent>> stack)
+        private void TraverseDownTheStateHierarchyAndEnterStates(Stack<IState<TState, TEvent>> stack, object eventArgument)
         {
             while (stack.Count > 0)
             {
                 IState<TState, TEvent> state = stack.Pop();
-                state.Entry(this.stateContext);
+                state.Entry(eventArgument, this.stateContext);
             }
         }
     }

@@ -28,11 +28,19 @@ namespace Appccelerate.StateMachine.Syntax
     public interface IEntryActionSyntax<TState, TEvent> : IExitActionSyntax<TState, TEvent>
     {
         /// <summary>
-        /// Defines entry actions.
+        /// Defines an entry action.
         /// </summary>
-        /// <param name="actions">The actions.</param>
+        /// <param name="action">The action.</param>
         /// <returns>Exit action syntax.</returns>
-        IExitActionSyntax<TState, TEvent> ExecuteOnEntry(params Action[] actions);
+        IEntryActionSyntax<TState, TEvent> ExecuteOnEntry(Action action);
+
+        /// <summary>
+        /// Defines an entry action.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <returns>Exit action syntax.</returns>
+        /// <typeparam name="T">Type of the event argument passed to the action.</typeparam>
+        IEntryActionSyntax<TState, TEvent> ExecuteOnEntry<T>(Action<T> action);
 
         /// <summary>
         /// Defines an entry action.
@@ -41,6 +49,6 @@ namespace Appccelerate.StateMachine.Syntax
         /// <param name="action">The action.</param>
         /// <param name="parameter">The parameter that will be passed to the entry action.</param>
         /// <returns>Exit action syntax.</returns>
-        IExitActionSyntax<TState, TEvent> ExecuteOnEntry<T>(Action<T> action, T parameter);
+        IEntryActionSyntax<TState, TEvent> ExecuteOnEntryParametrized<T>(Action<T> action, T parameter);
     }
 }

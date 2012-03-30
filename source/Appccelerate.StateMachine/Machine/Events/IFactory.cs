@@ -22,8 +22,6 @@ namespace Appccelerate.StateMachine.Machine.Events
 
     using Appccelerate.StateMachine.Machine.ActionHolders;
     using Appccelerate.StateMachine.Machine.GuardHolders;
-    using Appccelerate.StateMachine.Machine.States;
-    using Appccelerate.StateMachine.Machine.Transitions;
 
     /// <summary>
     /// Provides creation methods for all objects needed inside the state machine.
@@ -54,6 +52,8 @@ namespace Appccelerate.StateMachine.Machine.Events
         /// <returns>A newly created action holder.</returns>
         IActionHolder CreateActionHolder(Action action);
 
+        IActionHolder CreateActionHolder<T>(Action<T> action);
+
         /// <summary>
         /// Creates an action holder.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Appccelerate.StateMachine.Machine.Events
         /// </summary>
         /// <param name="action">The action.</param>
         /// <returns>A newly created transition action holder.</returns>
-        ITransitionActionHolder CreateTransitionActionHolder(Action action);
+        IActionHolder CreateTransitionActionHolder(Action action);
 
         /// <summary>
         /// Creates a transition action holder.
@@ -78,7 +78,7 @@ namespace Appccelerate.StateMachine.Machine.Events
         /// <returns>
         /// A newly created transition action holder.
         /// </returns>
-        ITransitionActionHolder CreateTransitionActionHolder<T>(Action<T> action);
+        IActionHolder CreateTransitionActionHolder<T>(Action<T> action);
 
         /// <summary>
         /// Creates a guard holder.

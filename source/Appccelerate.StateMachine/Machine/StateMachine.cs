@@ -224,7 +224,7 @@ namespace Appccelerate.StateMachine.Machine
             this.extensions.ForEach(extension => extension.EnteringInitialState(this, this.initialStateId.Value));
 
             IStateContext<TState, TEvent> stateContext = this.factory.CreateStateContext(null, this);
-            this.EnterInitialState(this.states[this.initialStateId.Value], stateContext);
+            this.EnterInitialState(this.states[this.initialStateId.Value], stateContext, null);
 
             this.extensions.ForEach(extension => extension.EnteredInitialState(this, this.initialStateId.Value, stateContext));
         }
@@ -371,10 +371,10 @@ namespace Appccelerate.StateMachine.Machine
             this.initialStateId.Value = initialState.Id;
         }
 
-        private void EnterInitialState(IState<TState, TEvent> initialState, IStateContext<TState, TEvent> stateContext)
+        private void EnterInitialState(IState<TState, TEvent> initialState, IStateContext<TState, TEvent> stateContext, object eventArgument)
         {
             var initializer = this.factory.CreateStateMachineInitializer(initialState, stateContext);
-            this.CurrentState = initializer.EnterInitialState();
+            this.CurrentState = initializer.EnterInitialState(eventArgument);
         }
 
         /// <summary>

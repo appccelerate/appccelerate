@@ -24,8 +24,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
     using Appccelerate.StateMachine.Machine.ActionHolders;
     using Appccelerate.StateMachine.Machine.GuardHolders;
-    using Appccelerate.StateMachine.Machine.States;
-
+    
     /// <summary>
     /// A transition of the state machine.
     /// </summary>
@@ -39,7 +38,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
         /// <summary>
         /// The actions that are executed when this transition is fired.
         /// </summary>
-        private readonly List<ITransitionActionHolder> actions;
+        private readonly List<IActionHolder> actions;
 
         private readonly IExtensionHost<TState, TEvent> extensionHost;
         private readonly IStateMachineInformation<TState, TEvent> stateMachineInformation;
@@ -54,7 +53,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             this.stateMachineInformation = stateMachineInformation;
             this.extensionHost = extensionHost;
 
-            this.actions = new List<ITransitionActionHolder>();
+            this.actions = new List<IActionHolder>();
         }
 
         /// <summary>
@@ -79,7 +78,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
         /// Gets the actions of this transition.
         /// </summary>
         /// <value>The actions.</value>
-        public ICollection<ITransitionActionHolder> Actions
+        public ICollection<IActionHolder> Actions
         {
             get { return this.actions; }
         }
@@ -113,11 +112,11 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
             if (!this.InternalTransition)
             {
-                this.UnwindSubStates(context.State, context);
+                this.UnwindSubStates(context.State, context.EventArgument, context);
 
                 this.Fire(this.Source, this.Target, context.EventArgument, context);
 
-                newState = this.Target.EnterByHistory(context);
+                newState = this.Target.EnterByHistory(context.EventArgument, context);
             }
             else
             {
@@ -189,9 +188,9 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             {
                 // Handles 1.
                 // Handles 3. after traversing from the source to the target.
-                source.Exit(context);
+                source.Exit(eventArgument, context);
                 this.PerformActions(eventArgument, context);
-                this.Target.Entry(context);
+                this.Target.Entry(eventArgument, context);
             }
             else if (source == target)
             {
@@ -202,9 +201,9 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             {
                 //// Handles 4.
                 //// Handles 5a. after traversing the hierarchy until a common ancestor if found.
-                source.Exit(context);
+                source.Exit(eventArgument, context);
                 this.PerformActions(eventArgument, context);
-                target.Entry(context);
+                target.Entry(eventArgument, context);
             }
             else
             {
@@ -214,7 +213,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
                 // Handles 5b.
                 if (source.Level > target.Level)
                 {
-                    source.Exit(context);
+                    source.Exit(eventArgument, context);
                     this.Fire(source.SuperState, target, eventArgument, context);
                 }
                 else if (source.Level < target.Level)
@@ -222,14 +221,14 @@ namespace Appccelerate.StateMachine.Machine.Transitions
                     // Handles 2.
                     // Handles 5c.
                     this.Fire(source, target.SuperState, eventArgument, context);
-                    target.Entry(context);
+                    target.Entry(eventArgument, context);
                 }
                 else
                 {
                     // Handles 5a.
-                    source.Exit(context);
+                    source.Exit(eventArgument, context);
                     this.Fire(source.SuperState, target.SuperState, eventArgument, context);
-                    target.Entry(context);
+                    target.Entry(eventArgument, context);
                 }
             }
         }
@@ -282,16 +281,11 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             }
         }
 
-        /// <summary>
-        /// Exits all sub-states up the hierarchy up to the <paramref name="origin"/> state.
-        /// </summary>
-        /// <param name="origin">The origin.</param>
-        /// <param name="stateContext">The event context.</param>
-        private void UnwindSubStates(IState<TState, TEvent> origin, IStateContext<TState, TEvent> stateContext)
+        private void UnwindSubStates(IState<TState, TEvent> origin, object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             for (IState<TState, TEvent> o = origin; o != this.Source; o = o.SuperState)
             {
-                o.Exit(stateContext);
+                o.Exit(eventArgument, stateContext);
             }
         }
     }

@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="ITransitionActionHolder.cs" company="Appccelerate">
+// <copyright file="ArgumentLessActionHolder.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,21 +18,27 @@
 
 namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
-    /// <summary>
-    /// Holds a transition action.
-    /// </summary>
-    public interface ITransitionActionHolder
-    {
-        /// <summary>
-        /// Executes the transition action.
-        /// </summary>
-        /// <param name="argument">The state machine event argument.</param>
-        void Execute(object argument);
+    using System;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
 
-        /// <summary>
-        /// Describes the action.
-        /// </summary>
-        /// <returns>Description of the action.</returns>
-        string Describe();
+    public class ArgumentLessActionHolder : IActionHolder
+    {
+        private readonly Action action;
+
+        public ArgumentLessActionHolder(Action action)
+        {
+            this.action = action;
+        }
+
+        public void Execute(object argument)
+        {
+            this.action();
+        }
+
+        public string Describe()
+        {
+            return this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name;
+        }
     }
 }

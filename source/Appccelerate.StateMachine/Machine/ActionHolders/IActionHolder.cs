@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
 // <copyright file="IActionHolder.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
@@ -14,19 +14,20 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
 
 namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
     /// <summary>
-    /// Wrapper for parameterless actions and actions with parameters.
+    /// Holds a transition action.
     /// </summary>
     public interface IActionHolder
     {
         /// <summary>
-        /// Executes the wrapped action.
+        /// Executes the transition action.
         /// </summary>
-        void Execute();
+        /// <param name="argument">The state machine event argument.</param>
+        void Execute(object argument);
 
         /// <summary>
         /// Describes the action.

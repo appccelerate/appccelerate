@@ -30,7 +30,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
     /// </summary>
     public class TransitionInfo<TState, TEvent> where TState : IComparable where TEvent : IComparable
     {
-        public TransitionInfo(TEvent eventId, IState<TState, TEvent> source, IState<TState, TEvent> target, IGuardHolder guard, IEnumerable<ITransitionActionHolder> actions)
+        public TransitionInfo(TEvent eventId, IState<TState, TEvent> source, IState<TState, TEvent> target, IGuardHolder guard, IEnumerable<IActionHolder> actions)
         {
             this.EventId = eventId;
             this.Source = source;
@@ -79,7 +79,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
         /// Gets the actions.
         /// </summary>
         /// <value>The actions.</value>
-        public IEnumerable<ITransitionActionHolder> Actions
+        public IEnumerable<IActionHolder> Actions
         {
             get; private set;
         }

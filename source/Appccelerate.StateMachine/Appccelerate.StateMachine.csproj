@@ -30,13 +30,11 @@
     <Compile Include="InitializationInformation.cs" />
     <Compile Include="IStateMachine.cs" />
     <Compile Include="IStateMachineInformation.cs" />
-    <Compile Include="Machine\ActionHolders\ActionHolder.cs" />
-    <Compile Include="Machine\ActionHolders\ActionHolder{T}.cs" />
-    <Compile Include="Machine\ActionHolders\ArgumentLessTransitionActionHolder.cs" />
-    <Compile Include="Machine\ActionHolders\ArgumentTransitionActionHolder.cs" />
+    <Compile Include="Machine\ActionHolders\ParametrizedActionHolder{T}.cs" />
+    <Compile Include="Machine\ActionHolders\ArgumentLessActionHolder.cs" />
+    <Compile Include="Machine\ActionHolders\ArgumentActionHolder.cs" />
     <Compile Include="Machine\ActionHolders\ActionHoldersExceptionMessages.cs" />
     <Compile Include="Machine\ActionHolders\IActionHolder.cs" />
-    <Compile Include="Machine\ActionHolders\ITransitionActionHolder.cs" />
     <Compile Include="Machine\Contexts\StateContext.cs" />
     <Compile Include="Machine\Contexts\TransitionContext.cs" />
     <Compile Include="Machine\Events\ContextEventArgs.cs" />

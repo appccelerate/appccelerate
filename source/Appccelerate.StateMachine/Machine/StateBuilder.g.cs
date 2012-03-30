@@ -23,8 +23,6 @@ namespace Appccelerate.StateMachine.Machine
     using System.Linq;
 
     using Appccelerate.StateMachine.Machine.Events;
-    using Appccelerate.StateMachine.Machine.States;
-    using Appccelerate.StateMachine.Machine.Transitions;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -68,17 +66,23 @@ namespace Appccelerate.StateMachine.Machine
         /// <summary>
         /// Defines entry actions.
         /// </summary>
-        /// <param name="actions">The actions.</param>
+        /// <param name="action">The action.</param>
         /// <returns>Exit action syntax.</returns>
-        IExitActionSyntax<TState, TEvent> IEntryActionSyntax<TState, TEvent>.ExecuteOnEntry(params Action[] actions)
+        IEntryActionSyntax<TState, TEvent> IEntryActionSyntax<TState, TEvent>.ExecuteOnEntry(Action action)
         {
-            Ensure.ArgumentNotNull(actions, "actions");
+            Ensure.ArgumentNotNull(action, "action");
 
-            foreach (var action in actions)
-            {
-                this.state.EntryActions.Add(this.factory.CreateActionHolder(action));    
-            }
+            this.state.EntryActions.Add(this.factory.CreateActionHolder(action));    
             
+            return this;
+        }
+
+        public IEntryActionSyntax<TState, TEvent> ExecuteOnEntry<T>(Action<T> action)
+        {
+            Ensure.ArgumentNotNull(action, "action");
+
+            this.state.EntryActions.Add(this.factory.CreateActionHolder(action));
+
             return this;
         }
 
@@ -89,7 +93,7 @@ namespace Appccelerate.StateMachine.Machine
         /// <param name="action">The action.</param>
         /// <param name="parameter">The parameter that will be passed to the entry action.</param>
         /// <returns>Exit action syntax.</returns>
-        IExitActionSyntax<TState, TEvent> IEntryActionSyntax<TState, TEvent>.ExecuteOnEntry<T>(Action<T> action, T parameter)
+        IEntryActionSyntax<TState, TEvent> IEntryActionSyntax<TState, TEvent>.ExecuteOnEntryParametrized<T>(Action<T> action, T parameter)
         {
             this.state.EntryActions.Add(this.factory.CreateActionHolder(action, parameter));
 
@@ -97,18 +101,24 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// Defines exit actions.
+        /// Defines an exit action.
         /// </summary>
-        /// <param name="actions">The actions.</param>
+        /// <param name="action">The action.</param>
         /// <returns>Event syntax.</returns>
-        IEventSyntax<TState, TEvent> IExitActionSyntax<TState, TEvent>.ExecuteOnExit(params Action[] actions)
+        IExitActionSyntax<TState, TEvent> IExitActionSyntax<TState, TEvent>.ExecuteOnExit(Action action)
         {
-            Ensure.ArgumentNotNull(actions, "actions");
+            Ensure.ArgumentNotNull(action, "action");
 
-            foreach (var action in actions)
-            {
-                this.state.ExitActions.Add(this.factory.CreateActionHolder(action));
-            }
+            this.state.ExitActions.Add(this.factory.CreateActionHolder(action));
+            
+            return this;
+        }
+
+        public IExitActionSyntax<TState, TEvent> ExecuteOnExit<T>(Action<T> action)
+        {
+            Ensure.ArgumentNotNull(action, "action");
+
+            this.state.ExitActions.Add(this.factory.CreateActionHolder(action));
 
             return this;
         }
@@ -120,7 +130,7 @@ namespace Appccelerate.StateMachine.Machine
         /// <param name="action">The action.</param>
         /// <param name="parameter">The parameter that will be passed to the exit action.</param>
         /// <returns>Exit action syntax.</returns>
-        IEventSyntax<TState, TEvent> IExitActionSyntax<TState, TEvent>.ExecuteOnExit<T>(Action<T> action, T parameter)
+        IExitActionSyntax<TState, TEvent> IExitActionSyntax<TState, TEvent>.ExecuteOnExitParametrized<T>(Action<T> action, T parameter)
         {
             this.state.ExitActions.Add(this.factory.CreateActionHolder(action, parameter));
 

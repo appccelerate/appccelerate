@@ -76,7 +76,12 @@ namespace Appccelerate.StateMachine.Machine
         /// <returns>A newly created action holder.</returns>
         public virtual IActionHolder CreateActionHolder(Action action)
         {
-            return new ActionHolder(action);
+            return new ArgumentLessActionHolder(action);
+        }
+
+        public virtual IActionHolder CreateActionHolder<T>(Action<T> action)
+        {
+            return new ArgumentActionHolder<T>(action);
         }
 
         /// <summary>
@@ -88,7 +93,7 @@ namespace Appccelerate.StateMachine.Machine
         /// <returns>A newly created action holder.</returns>
         public virtual IActionHolder CreateActionHolder<T>(Action<T> action, T parameter)
         {
-            return new ActionHolder<T>(action, parameter);    
+            return new ParametrizedActionHolder<T>(action, parameter);    
         }
 
         /// <summary>
@@ -96,9 +101,9 @@ namespace Appccelerate.StateMachine.Machine
         /// </summary>
         /// <param name="action">The action.</param>
         /// <returns>A newly created transition action holder.</returns>
-        public virtual ITransitionActionHolder CreateTransitionActionHolder(Action action)
+        public virtual IActionHolder CreateTransitionActionHolder(Action action)
         {
-            return new ArgumentLessTransitionActionHolder(action);
+            return new ArgumentLessActionHolder(action);
         }
 
         /// <summary>
@@ -107,9 +112,9 @@ namespace Appccelerate.StateMachine.Machine
         /// <typeparam name="T">The type of the action argument.</typeparam>
         /// <param name="action">The action.</param>
         /// <returns>A newly created transition action holder.</returns>
-        public virtual ITransitionActionHolder CreateTransitionActionHolder<T>(Action<T> action)
+        public virtual IActionHolder CreateTransitionActionHolder<T>(Action<T> action)
         {
-            return new ArgumentTransitionActionHolder<T>(action);
+            return new ArgumentActionHolder<T>(action);
         }
         
         /// <summary>

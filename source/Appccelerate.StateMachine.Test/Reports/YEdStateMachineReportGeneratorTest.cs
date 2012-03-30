@@ -112,7 +112,8 @@ namespace Appccelerate.StateMachine.Reports
 
             elevator.In(States.OnFloor)
                 .ExecuteOnEntry(AnnounceFloor)
-                .ExecuteOnExit(Beep, Beep)
+                .ExecuteOnExit(Beep)
+                .ExecuteOnExit(Beep)
                 .On(Events.CloseDoor).Goto(States.DoorClosed)
                 .On(Events.OpenDoor).Goto(States.DoorOpen)
                 .On(Events.GoUp)

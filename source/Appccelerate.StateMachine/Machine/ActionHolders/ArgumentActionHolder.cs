@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ActionHolder.cs" company="Appccelerate">
+//-------------------------------------------------------------------------------
+// <copyright file="ArgumentActionHolder.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
 
 namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
@@ -22,37 +22,25 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    /// <summary>
-    /// Wraps a parameterless action.
-    /// </summary>
-    public class ActionHolder : IActionHolder
+    public class ArgumentActionHolder<T> : IActionHolder
     {
-        /// <summary>
-        /// the wrapped action.
-        /// </summary>
-        private readonly Action action;
+        private readonly Action<T> action;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionHolder"/> class.
-        /// </summary>
-        /// <param name="action">The wrapped action.</param>
-        public ActionHolder(Action action)
+       public ArgumentActionHolder(Action<T> action)
         {
             this.action = action;
         }
 
-        /// <summary>
-        /// Executes the wrapped action.
-        /// </summary>
-        public void Execute()
+        public void Execute(object argument)
         {
-            this.action();
+            if (argument != null && !(argument is T))
+            {
+                throw new ArgumentException(ActionHoldersExceptionMessages.CannotCastArgumentToActionArgument(argument, this.Describe()));
+            }
+
+            this.action((T)argument);
         }
 
-        /// <summary>
-        /// Describes the action.
-        /// </summary>
-        /// <returns>Description of the action.</returns>
         public string Describe()
         {
             return this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name;

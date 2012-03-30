@@ -237,91 +237,63 @@ namespace Appccelerate.StateMachine.Machine.States
             return result;
         }
 
-        /// <summary>
-        /// Enters this state.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        public void Entry(IStateContext<TState, TEvent> stateContext)
+        public void Entry(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             Ensure.ArgumentNotNull(stateContext, "stateContext");
 
             stateContext.AddRecord(this.Id, RecordType.Enter);
 
-            this.ExecuteEntryActions(stateContext);
+            this.ExecuteEntryActions(eventArgument, stateContext);
         }
 
-        /// <summary>
-        /// Exits this state, executes the exit action and sets the <see cref="LastActiveState"/> on the super-state.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        public void Exit(IStateContext<TState, TEvent> stateContext)
+        public void Exit(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             Ensure.ArgumentNotNull(stateContext, "stateContext");
 
             stateContext.AddRecord(this.Id, RecordType.Exit);
 
-            this.ExecuteExitActions(stateContext);
+            this.ExecuteExitActions(eventArgument, stateContext);
             this.SetThisStateAsLastStateOfSuperState();
         }
 
-        /// <summary>
-        /// Enters this state by its history depending on <see cref="HistoryType"/>.
-        /// The <see cref="Entry"/> method has to be called already.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <returns>
-        /// The active state (depends on <see cref="HistoryType"/>.
-        /// </returns>
-        public IState<TState, TEvent> EnterByHistory(IStateContext<TState, TEvent> stateContext)
+        public IState<TState, TEvent> EnterByHistory(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             IState<TState, TEvent> result = this;
 
             switch (this.HistoryType)
             {
                 case HistoryType.None:
-                    result = this.EnterHistoryNone(stateContext);
+                    result = this.EnterHistoryNone(eventArgument, stateContext);
                     break;
 
                 case HistoryType.Shallow:
-                    result = this.EnterHistoryShallow(stateContext);
+                    result = this.EnterHistoryShallow(eventArgument, stateContext);
                     break;
 
                 case HistoryType.Deep:
-                    result = this.EnterHistoryDeep(stateContext);
+                    result = this.EnterHistoryDeep(eventArgument, stateContext);
                     break;
             }
 
             return result;
         }
 
-        /// <summary>
-        /// Enters this state is shallow mode:
-        /// The entry action is executed and the initial state is entered in shallow mode if there is one.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <returns>The entered state.</returns>
-        public IState<TState, TEvent> EnterShallow(IStateContext<TState, TEvent> stateContext)
+        public IState<TState, TEvent> EnterShallow(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
-            this.Entry(stateContext);
+            this.Entry(eventArgument, stateContext);
 
             return this.initialState == null ?
                                                  this :
-                                                          this.initialState.EnterShallow(stateContext);
+                                                          this.initialState.EnterShallow(eventArgument, stateContext);
         }
 
-        /// <summary>
-        /// Enters this state is deep mode:
-        /// The entry action is executed and the initial state is entered in deep mode if there is one.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <returns>The active state.</returns>
-        public IState<TState, TEvent> EnterDeep(IStateContext<TState, TEvent> stateContext)
+        public IState<TState, TEvent> EnterDeep(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
-            this.Entry(stateContext);
+            this.Entry(eventArgument, stateContext);
 
             return this.LastActiveState == null ?
                                                     this :
-                                                             this.LastActiveState.EnterDeep(stateContext);
+                                                             this.LastActiveState.EnterDeep(eventArgument, stateContext);
         }
 
         /// <summary>
@@ -364,19 +336,19 @@ namespace Appccelerate.StateMachine.Machine.States
             }
         }
 
-        private void ExecuteEntryActions(IStateContext<TState, TEvent> stateContext)
+        private void ExecuteEntryActions(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             foreach (var actionHolder in this.EntryActions)
             {
-                this.ExecuteEntryAction(actionHolder, stateContext);
+                this.ExecuteEntryAction(actionHolder, eventArgument, stateContext);
             }
         }
 
-        private void ExecuteEntryAction(IActionHolder actionHolder, IStateContext<TState, TEvent> stateContext)
+        private void ExecuteEntryAction(IActionHolder actionHolder, object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             try
             {
-                actionHolder.Execute();
+                actionHolder.Execute(eventArgument);
             }
             catch (Exception exception)
             {
@@ -399,19 +371,19 @@ namespace Appccelerate.StateMachine.Machine.States
                     this.stateMachineInformation, this, stateContext, exception));
         }
 
-        private void ExecuteExitActions(IStateContext<TState, TEvent> stateContext)
+        private void ExecuteExitActions(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             foreach (var actionHolder in this.ExitActions)
             {
-                this.ExecuteExitAction(actionHolder, stateContext);
+                this.ExecuteExitAction(actionHolder, eventArgument, stateContext);
             }
         }
 
-        private void ExecuteExitAction(IActionHolder actionHolder, IStateContext<TState, TEvent> stateContext)
+        private void ExecuteExitAction(IActionHolder actionHolder, object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             try
             {
-                actionHolder.Execute();
+                actionHolder.Execute(eventArgument);
             }
             catch (Exception exception)
             {
@@ -445,44 +417,29 @@ namespace Appccelerate.StateMachine.Machine.States
             }
         }
 
-        /// <summary>
-        /// Enters this instance with history type = deep.
-        /// </summary>
-        /// <param name="stateContext">The state context.</param>
-        /// <returns>The entered state.</returns>
-        private IState<TState, TEvent> EnterHistoryDeep(IStateContext<TState, TEvent> stateContext)
+        private IState<TState, TEvent> EnterHistoryDeep(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             return this.LastActiveState != null
                        ?
-                           this.LastActiveState.EnterDeep(stateContext)
+                           this.LastActiveState.EnterDeep(eventArgument, stateContext)
                        :
                            this;
         }
 
-        /// <summary>
-        /// Enters this instance with history type = shallow.
-        /// </summary>
-        /// <param name="stateContext">The state context.</param>
-        /// <returns>The entered state.</returns>
-        private IState<TState, TEvent> EnterHistoryShallow(IStateContext<TState, TEvent> stateContext)
+        private IState<TState, TEvent> EnterHistoryShallow(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             return this.LastActiveState != null
                        ?
-                           this.LastActiveState.EnterShallow(stateContext)
+                           this.LastActiveState.EnterShallow(eventArgument, stateContext)
                        :
                            this;
         }
 
-        /// <summary>
-        /// Enters this instance with history type = none.
-        /// </summary>
-        /// <param name="stateContext">The state context.</param>
-        /// <returns>The entered state.</returns>
-        private IState<TState, TEvent> EnterHistoryNone(IStateContext<TState, TEvent> stateContext)
+        private IState<TState, TEvent> EnterHistoryNone(object eventArgument, IStateContext<TState, TEvent> stateContext)
         {
             return this.initialState != null
                        ?
-                           this.initialState.EnterShallow(stateContext)
+                           this.initialState.EnterShallow(eventArgument, stateContext)
                        :
                            this;
         }
