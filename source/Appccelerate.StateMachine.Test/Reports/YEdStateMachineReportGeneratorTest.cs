@@ -118,7 +118,9 @@ namespace Appccelerate.StateMachine.Reports
                 .On(Events.OpenDoor).Goto(States.DoorOpen)
                 .On(Events.GoUp)
                     .If(CheckOverload).Goto(States.MovingUp)
-                    .Otherwise().Execute(AnnounceOverload, Beep)
+                    .Otherwise()
+                        .Execute(AnnounceOverload)
+                        .Execute(Beep)
                 .On(Events.GoDown)
                     .If(CheckOverload).Goto(States.MovingDown)
                     .Otherwise().Execute(AnnounceOverload);

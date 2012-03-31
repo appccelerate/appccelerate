@@ -137,36 +137,6 @@ namespace Appccelerate.StateMachine
     }
 
     [Subject(Concern.ExceptionHandling)]
-    public class W2hen_initializing_the_state_machine_and_an_entry_action_throws_an_exception : ExceptionSpecification
-    {
-        private const int State = 1;
-
-        static readonly Exception Exception = new Exception();
-
-        Establish context = () =>
-        {
-            machine.In(State)
-                .ExecuteOnEntry<int>(argument => { });
-        };
-
-        Because of = () =>
-        {
-            machine.Initialize(State);
-            machine.Start();
-        };
-
-        It should_fire_exception_throw_event = () =>
-        {
-            receivedTransitionExceptionEventArgs.Exception.Should().NotBeNull();
-        };
-
-        It should_pass_thrown_exception_to_event_arguments_of_exception_thrown_event = () =>
-        {
-            receivedTransitionExceptionEventArgs.Exception.Should().BeSameAs(Exception);
-        };
-    }
-
-    [Subject(Concern.ExceptionHandling)]
     public class When_transition_throws_exception_and_no_transition_exception_even_handler_is_registered
     {
         static readonly Exception exception = new Exception();

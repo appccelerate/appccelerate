@@ -19,7 +19,6 @@
 namespace Appccelerate.StateMachine.Machine
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Appccelerate.StateMachine.Machine.Events;
@@ -34,6 +33,7 @@ namespace Appccelerate.StateMachine.Machine
         IEntryActionSyntax<TState, TEvent>,
         IGotoInIfSyntax<TState, TEvent>,
         IOtherwiseSyntax<TState, TEvent>,
+        IIfOrOtherwiseSyntax<TState, TEvent>,
         IGotoSyntax<TState, TEvent>,
         IIfSyntax<TState, TEvent>,
         IOnSyntax<TState, TEvent>
@@ -182,86 +182,105 @@ namespace Appccelerate.StateMachine.Machine
 
             return this;
         }
-        
-        IEventSyntax<TState, TEvent> IOtherwiseSyntax<TState, TEvent>.Execute(params Action[] actions)
+
+        IOtherwiseExecuteSyntax<TState, TEvent> IOtherwiseExecuteSyntax<TState, TEvent>.Execute(Action action)
         {
-            return this.Execute(actions);
+            return this.ExecuteInternal(action);
         }
 
-        IEventSyntax<TState, TEvent> IOtherwiseSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IOtherwiseExecuteSyntax<TState, TEvent> IOtherwiseExecuteSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.Execute<T>(actions);
+            return this.ExecuteInternal<T>(action);
         }
 
-        IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute(params Action[] actions)
+        IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute(Action action)
         {
-            return this.Execute(actions);
+            return this.ExecuteInternal(action);
         }
 
-        IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.Execute<T>(actions);
+            return this.ExecuteInternal<T>(action);
         }
 
-        IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute(params Action[] actions)
+        IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute(Action action)
         {
-            return this.Execute(actions);
+            return this.ExecuteInternal(action);
         }
 
-        IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.Execute<T>(actions);
+            return this.ExecuteInternal<T>(action);
         }
 
-        IIfOrOtherwiseSyntax<TState, TEvent> IIfSyntax<TState, TEvent>.Execute(params Action[] actions)
+        IIfOrOtherwiseSyntax<TState, TEvent> IIfSyntax<TState, TEvent>.Execute(Action action)
         {
-            return this.Execute(actions);
+            return this.ExecuteInternal(action);
         }
 
-        IIfOrOtherwiseSyntax<TState, TEvent> IIfSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IIfOrOtherwiseSyntax<TState, TEvent> IIfSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.Execute<T>(actions);
+            return this.ExecuteInternal<T>(action);
         }
 
-        IEventSyntax<TState, TEvent> IOnSyntax<TState, TEvent>.Execute(params Action[] actions)
+        IOnExecuteSyntax<TState, TEvent> IOnExecuteSyntax<TState, TEvent>.Execute(Action action)
         {
-            return this.Execute(actions);
+            return this.ExecuteInternal(action);
         }
 
-        IEventSyntax<TState, TEvent> IOnSyntax<TState, TEvent>.Execute<T>(params Action<T>[] actions)
+        IOnExecuteSyntax<TState, TEvent> IOnExecuteSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.Execute<T>(actions);
+            return this.ExecuteInternal<T>(action);
         }
 
-        private StateBuilder<TState, TEvent> Execute(IEnumerable<Action> actions)
+        IIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.If<T>(Func<T, bool> guard)
         {
-            if (actions == null)
-            {
-                return this;
-            }
+            this.CreateTransition();
 
-            foreach (var action in actions)
-            {
-                this.currentTransition.Actions.Add(this.factory.CreateTransitionActionHolder(action));
-            }
+            this.SetGuard(guard);
 
+            return this;
+        }
+
+        IIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.If(Func<bool> guard)
+        {
+            this.CreateTransition();
+
+            this.SetGuard(guard);
+
+            return this;
+        }
+
+        IOtherwiseSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Otherwise()
+        {
+            this.CreateTransition();
+
+            return this;
+        }
+
+        IIfOrOtherwiseSyntax<TState, TEvent> IIfOrOtherwiseSyntax<TState, TEvent>.Execute(Action action)
+        {
+            return this.ExecuteInternal(action);
+        }
+
+        IIfOrOtherwiseSyntax<TState, TEvent> IIfOrOtherwiseSyntax<TState, TEvent>.Execute<T>(Action<T> action)
+        {
+            return this.ExecuteInternal<T>(action);
+        }
+
+        private StateBuilder<TState, TEvent> ExecuteInternal(Action action)
+        {
+            this.currentTransition.Actions.Add(this.factory.CreateTransitionActionHolder(action));
+            
             this.CheckGuards();
 
             return this;
         }
 
-        private StateBuilder<TState, TEvent> Execute<T>(IEnumerable<Action<T>> actions)
+        private StateBuilder<TState, TEvent> ExecuteInternal<T>(Action<T> action)
         {
-            if (actions == null)
-            {
-                return this;
-            }
-
-            foreach (var action in actions)
-            {
-                this.currentTransition.Actions.Add(this.factory.CreateTransitionActionHolder(action));
-            }
-
+            this.currentTransition.Actions.Add(this.factory.CreateTransitionActionHolder(action));
+            
             this.CheckGuards();
 
             return this;
