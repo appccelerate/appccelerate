@@ -105,17 +105,11 @@ namespace Appccelerate.SourceTemplates.Log4Net
             this.log.InfoFormat("State machine {0} enters initialstate {1}.", stateMachine, state);
         }
 
-        /// <summary>
-        /// Called when the state machine entered the initial state.
-        /// </summary>
-        /// <param name="stateMachine">The state machine.</param>
-        /// <param name="state">The state.</param>
-        /// <param name="stateContext">The state context.</param>
-        public override void EnteredInitialState(IStateMachineInformation<TState, TEvent> stateMachine, TState state, IStateContext<TState, TEvent> stateContext)
+        public override void EnteredInitialState(IStateMachineInformation<TState, TEvent> stateMachine, TState state, ITransitionContext<TState, TEvent> context)
         {
-            Ensure.ArgumentNotNull(stateContext, "stateContext");
+            Ensure.ArgumentNotNull(context, "context");
 
-            this.log.DebugFormat("State machine {0} performed {1}.", stateMachine, stateContext.GetRecords());
+            this.log.DebugFormat("State machine {0} performed {1}.", stateMachine, context.GetRecords());
         }
 
         /// <summary>
@@ -156,14 +150,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             }
         }
 
-        /// <summary>
-        /// Called before an entry action exception is handled.
-        /// </summary>
-        /// <param name="stateMachine">The state machine.</param>
-        /// <param name="state">The state.</param>
-        /// <param name="stateContext">The state context.</param>
-        /// <param name="exception">The exception. Can be replaced by the extension.</param>
-        public override void HandlingEntryActionException(IStateMachineInformation<TState, TEvent> stateMachine, IState<TState, TEvent> state, IStateContext<TState, TEvent> stateContext, ref Exception exception)
+        public override void HandlingEntryActionException(IStateMachineInformation<TState, TEvent> stateMachine, IState<TState, TEvent> state, ITransitionContext<TState, TEvent> context, ref Exception exception)
         {
             Ensure.ArgumentNotNull(stateMachine, "stateMachine");
             Ensure.ArgumentNotNull(state, "state");
@@ -171,14 +158,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             this.log.ErrorFormat("Exception in entry action of state {0} of state machine {1}: {2}", state.Id, stateMachine.Name, exception);
         }
 
-        /// <summary>
-        /// Called before an exit action exception is handled.
-        /// </summary>
-        /// <param name="stateMachine">The state machine.</param>
-        /// <param name="state">The state.</param>
-        /// <param name="stateContext">The state context.</param>
-        /// <param name="exception">The exception. Can be replaced by the extension.</param>
-        public override void HandlingExitActionException(IStateMachineInformation<TState, TEvent> stateMachine, IState<TState, TEvent> state, IStateContext<TState, TEvent> stateContext, ref Exception exception)
+        public override void HandlingExitActionException(IStateMachineInformation<TState, TEvent> stateMachine, IState<TState, TEvent> state, ITransitionContext<TState, TEvent> context, ref Exception exception)
         {
             Ensure.ArgumentNotNull(stateMachine, "stateMachine");
             Ensure.ArgumentNotNull(state, "state");

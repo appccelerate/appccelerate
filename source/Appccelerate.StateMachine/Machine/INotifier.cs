@@ -20,9 +20,6 @@ namespace Appccelerate.StateMachine.Machine
 {
     using System;
 
-    using Appccelerate.StateMachine.Machine.States;
-    using Appccelerate.StateMachine.Machine.Transitions;
-
     /// <summary>
     /// Provides functionalities to notify events.
     /// </summary>
@@ -35,16 +32,9 @@ namespace Appccelerate.StateMachine.Machine
         /// <summary>
         /// Called when an exception was thrown.
         /// </summary>
-        /// <param name="stateContext">The context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="exception">The exception.</param>
-        void OnExceptionThrown(IStateContext<TState, TEvent> stateContext, Exception exception);
-
-        /// <summary>
-        /// Called when an exception was thrown in a transition.
-        /// </summary>
-        /// <param name="transitionContext">The transition context.</param>
-        /// <param name="exception">The exception.</param>
-        void OnExceptionThrown(ITransitionContext<TState, TEvent> transitionContext, Exception exception);
+        void OnExceptionThrown(ITransitionContext<TState, TEvent> context, Exception exception);
 
         /// <summary>
         /// Called before a transition is executed.

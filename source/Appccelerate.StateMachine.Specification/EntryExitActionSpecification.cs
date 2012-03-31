@@ -155,7 +155,7 @@ namespace Appccelerate.StateMachine
                             throw exception3;
                         });
 
-            machine.ExceptionThrown += (s, e) => receivedException.Add(e.Exception);
+            machine.TransitionExceptionThrown += (s, e) => receivedException.Add(e.Exception);
 
             machine.Initialize(State);
             machine.Start();

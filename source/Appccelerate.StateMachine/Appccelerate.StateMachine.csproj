@@ -35,7 +35,6 @@
     <Compile Include="Machine\ActionHolders\ArgumentActionHolder.cs" />
     <Compile Include="Machine\ActionHolders\ActionHoldersExceptionMessages.cs" />
     <Compile Include="Machine\ActionHolders\IActionHolder.cs" />
-    <Compile Include="Machine\Contexts\StateContext.cs" />
     <Compile Include="Machine\Contexts\TransitionContext.cs" />
     <Compile Include="Machine\Events\ContextEventArgs.cs" />
     <Compile Include="Machine\Events\ExceptionEventArgs.cs" />
@@ -54,13 +53,13 @@
     <Compile Include="Machine\Initializable.cs" />
     <Compile Include="Machine\INotifier.cs" />
     <Compile Include="Machine\IState.cs" />
-    <Compile Include="Machine\IStateContext.cs" />
     <Compile Include="Machine\IStateDictionary.cs" />
     <Compile Include="Machine\IStateMachineReport.cs" />
     <Compile Include="Machine\ITransition.cs" />
     <Compile Include="Machine\ITransitionContext.cs" />
     <Compile Include="Machine\ITransitionDictionary.cs" />
     <Compile Include="Machine\ITransitionResult.cs" />
+    <Compile Include="Machine\Missable.cs" />
     <Compile Include="Machine\RecordType.cs" />
     <Compile Include="Machine\StandardFactory.cs" />
     <Compile Include="Machine\StateBuilder.g.cs" />

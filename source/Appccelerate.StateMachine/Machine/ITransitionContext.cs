@@ -19,30 +19,30 @@
 namespace Appccelerate.StateMachine.Machine
 {
     using System;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Provides information about the current transition.
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
-    public interface ITransitionContext<TState, TEvent> : IStateContext<TState, TEvent>
+    public interface ITransitionContext<TState, TEvent>
         where TState : IComparable where TEvent : IComparable
     {
-        /// <summary>
-        /// Gets the event id.
-        /// </summary>
-        /// <value>The event id.</value>
-        TEvent EventId { get; }
+        IState<TState, TEvent> State { get; }
 
-        /// <summary>
-        /// Gets the event argument.
-        /// </summary>
-        /// <value>The event argument.</value>
+        Missable<TEvent> EventId { get; }
+
         object EventArgument { get; }
 
-        /// <summary>
-        /// Called when a transition beginning should be notified.
-        /// </summary>
+        ReadOnlyCollection<Exception> Exceptions { get; }
+
+        void AddRecord(TState stateId, RecordType recordType);
+
+        string GetRecords();
+
+        void OnExceptionThrown(Exception exception);
+
         void OnTransitionBegin();
     }
 }

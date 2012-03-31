@@ -19,9 +19,10 @@
 namespace Appccelerate.StateMachine.Machine.Contexts
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
-
-    using Appccelerate.StateMachine.Machine.States;
+    using System.Text;
 
     /// <summary>
     /// Provides context information during a transition.
@@ -29,68 +30,98 @@ namespace Appccelerate.StateMachine.Machine.Contexts
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
     [DebuggerDisplay("State = {state} Event = {eventId} EventArguments = {eventArguments}")]
-    public class TransitionContext<TState, TEvent> : StateContext<TState, TEvent>, ITransitionContext<TState, TEvent>
+    public class TransitionContext<TState, TEvent> : ITransitionContext<TState, TEvent>
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The event that causes the transition.
-        /// </summary>
-        private readonly TEvent eventId;
-
-        /// <summary>
-        /// The event argument.
-        /// </summary>
+        private readonly IState<TState, TEvent> state;
+        private readonly Missable<TEvent> eventId;
         private readonly object eventArgument;
+        private readonly IList<Exception> exceptions;
+        private readonly List<Record> records;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransitionContext{TState,TEvent}"/> class.
-        /// </summary>
-        /// <param name="state">The source state.</param>
-        /// <param name="eventId">The event id.</param>
-        /// <param name="eventArgument">The event argument.</param>
-        /// <param name="notifier">The notifier to fire events about transition events and exceptions.</param>
-        public TransitionContext(IState<TState, TEvent> state, TEvent eventId, object eventArgument, INotifier<TState, TEvent> notifier)
-            : base(state, notifier)
+        public TransitionContext(IState<TState, TEvent> state, Missable<TEvent> eventId, object eventArgument, INotifier<TState, TEvent> notifier)
         {
+            this.state = state;
             this.eventId = eventId;
             this.eventArgument = eventArgument;
+            this.Notifier = notifier;
+
+            this.exceptions = new List<Exception>();
+            this.records = new List<Record>();
         }
 
-        /// <summary>
-        /// Gets the event id.
-        /// </summary>
-        /// <value>The event id.</value>
-        public TEvent EventId
+        public IState<TState, TEvent> State
+        {
+            get { return this.state; }
+        }
+
+        public Missable<TEvent> EventId
         {
             get { return this.eventId; }
         }
 
-        /// <summary>
-        /// Gets the event argument.
-        /// </summary>
-        /// <value>The event argument.</value>
         public object EventArgument
         {
             get { return this.eventArgument; }
         }
 
-        /// <summary>
-        /// Called when an exception should be notified.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        public override void OnExceptionThrown(Exception exception)
+        public ReadOnlyCollection<Exception> Exceptions
+        {
+            get { return new ReadOnlyCollection<Exception>(this.exceptions); }
+        }
+
+        protected INotifier<TState, TEvent> Notifier
+        {
+            get; private set;
+        }
+
+        public void OnExceptionThrown(Exception exception)
         {
             this.AddException(exception);
             this.Notifier.OnExceptionThrown(this, exception);
         }
 
-        /// <summary>
-        /// Called when a transition beginning should be notified.
-        /// </summary>
         public void OnTransitionBegin()
         {
             this.Notifier.OnTransitionBegin(this);
+        }
+
+        public void AddRecord(TState stateId, RecordType recordType)
+        {
+            this.records.Add(new Record(stateId, recordType));
+        }
+
+        public virtual string GetRecords()
+        {
+            StringBuilder result = new StringBuilder();
+
+            this.records.ForEach(record => result.AppendFormat(" -> {0}", record));
+
+            return result.ToString();
+        }
+
+        protected void AddException(Exception exception)
+        {
+            this.exceptions.Add(exception);
+        }
+
+        private class Record
+        {
+            public Record(TState stateId, RecordType recordType)
+            {
+                this.StateId = stateId;
+                this.RecordType = recordType;
+            }
+
+            public TState StateId { get; private set; }
+
+            public RecordType RecordType { get; private set; }
+
+            public override string ToString()
+            {
+                return this.RecordType + " " + this.StateId;
+            }
         }
     }
 }

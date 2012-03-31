@@ -39,11 +39,6 @@ namespace Appccelerate.StateMachine
         event EventHandler<TransitionEventArgs<TState, TEvent>> TransitionDeclined;
 
         /// <summary>
-        /// Occurs when an exception was thrown inside the state machine.
-        /// </summary>
-        event EventHandler<ExceptionEventArgs<TState, TEvent>> ExceptionThrown;
-
-        /// <summary>
         /// Occurs when an exception was thrown inside a transition of the state machine.
         /// </summary>
         event EventHandler<TransitionExceptionEventArgs<TState, TEvent>> TransitionExceptionThrown;

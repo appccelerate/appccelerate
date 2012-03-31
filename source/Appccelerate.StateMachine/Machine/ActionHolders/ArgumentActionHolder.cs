@@ -20,25 +20,33 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
 
     public class ArgumentActionHolder<T> : IActionHolder
     {
         private readonly Action<T> action;
 
-       public ArgumentActionHolder(Action<T> action)
+        public ArgumentActionHolder(Action<T> action)
         {
             this.action = action;
         }
 
         public void Execute(object argument)
         {
-            if (argument != null && !(argument is T))
+            T castedArgument = default(T);
+
+            if (argument != Missing.Value && !(argument is T))
             {
                 throw new ArgumentException(ActionHoldersExceptionMessages.CannotCastArgumentToActionArgument(argument, this.Describe()));
             }
 
-            this.action((T)argument);
+            if (argument != Missing.Value)
+            {
+                castedArgument = (T)argument;
+            }
+
+            this.action(castedArgument);
         }
 
         public string Describe()

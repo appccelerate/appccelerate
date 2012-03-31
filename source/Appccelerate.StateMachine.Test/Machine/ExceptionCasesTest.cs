@@ -31,40 +31,17 @@ namespace Appccelerate.StateMachine.Machine
     {
         private readonly StateMachine<StateMachine.States, StateMachine.Events> testee;
 
-        /// <summary>
-        /// the state that was provided in the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event.
-        /// </summary>
         private StateMachine.States? recordedStateId;
 
-        /// <summary>
-        /// the event that was provided in the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event.
-        /// </summary>
         private StateMachine.Events? recordedEventId;
 
-        /// <summary>
-        /// the event argument that was provided in the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event.
-        /// </summary>
         private object recordedEventArgument;
 
-        /// <summary>
-        /// the exception that was provided in the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event.
-        /// </summary>
         private Exception recordedException;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionCasesTest"/> class.
-        /// </summary>
         public ExceptionCasesTest()
         {
             this.testee = new StateMachine<StateMachine.States, StateMachine.Events>();
-
-            this.testee.ExceptionThrown += (sender, eventArgs) =>
-                                               {
-                                                   if (eventArgs != null)
-                                                   {
-                                                       this.recordedException = eventArgs.Exception;
-                                                   }
-                                               };
 
             this.testee.TransitionExceptionThrown += (sender, eventArgs) =>
                                                          {

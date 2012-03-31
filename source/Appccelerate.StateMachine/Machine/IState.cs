@@ -99,15 +99,15 @@ namespace Appccelerate.StateMachine.Machine
         /// <returns>The result of the transition.</returns>
         ITransitionResult<TState, TEvent> Fire(ITransitionContext<TState, TEvent> context);
 
-        void Entry(object eventArgument, IStateContext<TState, TEvent> stateContext);
+        void Entry(ITransitionContext<TState, TEvent> context);
 
-        void Exit(object eventArgument, IStateContext<TState, TEvent> stateContext);
+        void Exit(ITransitionContext<TState, TEvent> context);
 
-        IState<TState, TEvent> EnterByHistory(object eventArgument, IStateContext<TState, TEvent> stateContext);
+        IState<TState, TEvent> EnterByHistory(ITransitionContext<TState, TEvent> context);
 
-        IState<TState, TEvent> EnterShallow(object eventArgument, IStateContext<TState, TEvent> stateContext);
+        IState<TState, TEvent> EnterShallow(ITransitionContext<TState, TEvent> context);
 
-        IState<TState, TEvent> EnterDeep(object eventArgument, IStateContext<TState, TEvent> stateContext);
+        IState<TState, TEvent> EnterDeep(ITransitionContext<TState, TEvent> context);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

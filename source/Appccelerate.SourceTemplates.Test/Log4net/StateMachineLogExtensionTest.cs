@@ -19,6 +19,7 @@
 namespace Appccelerate.SourceTemplates.Log4Net
 {
     using System;
+    using System.Reflection;
 
     using Appccelerate.StateMachine;
     using Appccelerate.StateMachine.Machine;
@@ -107,10 +108,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
 
             var stateMachineInformationMock = this.CreateStateMachineInformation(StateMachineName, CurrentStateId);
             var stateMock = this.CreateState(CurrentStateId);
-            var stateContext = new StateContext<States, Events>();
+            var context = new TransitionContext<States, Events>(stateMock, new Missable<Events>(), null, null);
 
-            this.testee.HandlingEntryActionException(
-                stateMachineInformationMock, stateMock, stateContext, ref exception);
+            this.testee.HandlingEntryActionException(stateMachineInformationMock, stateMock, context, ref exception);
 
             this.log4Net.LogContains(
                 Level.Error,
@@ -124,11 +124,10 @@ namespace Appccelerate.SourceTemplates.Log4Net
             const States CurrentStateId = States.A;
             var stateMachineInformationMock = this.CreateStateMachineInformation(StateMachineName, CurrentStateId);
             var stateMock = this.CreateState(CurrentStateId);
-            var stateContext = new StateContext<States, Events>();
+            var context = new TransitionContext<States, Events>(stateMock, new Missable<Events>(), null, null);
             var exception = new Exception("test exception");
 
-            this.testee.HandlingExitActionException(
-                stateMachineInformationMock, stateMock, stateContext, ref exception);
+            this.testee.HandlingExitActionException(stateMachineInformationMock, stateMock, context, ref exception);
 
             this.log4Net.LogContains(
                 Level.Error,
@@ -143,7 +142,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             var stateMachineInformationMock = this.CreateStateMachineInformation(StateMachineName, CurrentStateId);
             var transitionMock = A.Fake<ITransition<States, Events>>();
             var stateMock = this.CreateState(CurrentStateId);
-            var transitionContext = new TransitionContext<States, Events>(stateMock, Events.B, null, null);
+            var transitionContext = new TransitionContext<States, Events>(stateMock, new Missable<Events>(Events.B), null, null);
             var exception = new Exception("test exception");
 
             this.testee.HandlingGuardException(stateMachineInformationMock, transitionMock, transitionContext, ref exception);
@@ -161,7 +160,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             var stateMachineInformationMock = this.CreateStateMachineInformation(StateMachineName, CurrentStateId);
             var transitionMock = A.Fake<ITransition<States, Events>>();
             var stateMock = this.CreateState(CurrentStateId);
-            var transitionContext = new TransitionContext<States, Events>(stateMock, Events.B, null, null);
+            var transitionContext = new TransitionContext<States, Events>(stateMock, new Missable<Events>(Events.B), null, null);
             var exception = new Exception("test exception");
 
             this.testee.HandlingTransitionException(stateMachineInformationMock, transitionMock, transitionContext, ref exception);
