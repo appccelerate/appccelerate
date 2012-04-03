@@ -30,12 +30,12 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HandlerKind.cs" />
     <Compile Include="HandlerRestriction.cs" />
-    <Compile Include="Handlers\Background.cs" />
+    <Compile Include="Handlers\OnBackground.cs" />
     <Compile Include="Handlers\EventBrokerHandlerBase.cs" />
     <Compile Include="Handlers\NotUserInterfaceThreadException.cs" />
-    <Compile Include="Handlers\Publisher.cs" />
-    <Compile Include="Handlers\UserInterface.cs" />
-    <Compile Include="Handlers\UserInterfaceAsync.cs" />
+    <Compile Include="Handlers\OnPublisher.cs" />
+    <Compile Include="Handlers\OnUserInterface.cs" />
+    <Compile Include="Handlers\OnUserInterfaceAsync.cs" />
     <Compile Include="Handlers\UserInterfaceSyncContextHolder.cs" />
     <Compile Include="IEventBroker.cs" />
     <Compile Include="IEventBrokerExtension.cs" />

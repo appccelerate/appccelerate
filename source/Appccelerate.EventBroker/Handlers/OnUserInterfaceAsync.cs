@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="UserInterface.cs" company="Appccelerate">
+// <copyright file="OnUserInterfaceAsync.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +20,11 @@ namespace Appccelerate.EventBroker.Handlers
 {
     using System;
     using System.Reflection;
-    using System.Threading;
 
     /// <summary>
-    /// Handler that executes the subscription synchronously on the user interface thread (Send semantics).
+    /// Handler that executes the subscription asynchronously on the user interface thread (Post semantics).
     /// </summary>
-    public class UserInterface : EventBrokerHandlerBase
+    public class OnUserInterfaceAsync : EventBrokerHandlerBase
     {
         /// <summary>
         /// The synchronization context that is used to switch to the UI thread.
@@ -38,7 +37,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// <value>The kind of the handler (synchronous or asynchronous).</value>
         public override HandlerKind Kind
         {
-            get { return HandlerKind.Synchronous; }
+            get { return HandlerKind.Asynchronous; }
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace Appccelerate.EventBroker.Handlers
         }
 
         /// <summary>
-        /// Executes the subscription synchronously on the user interface thread.
+        /// Executes the subscription asynchronously on the user interface thread.
         /// </summary>
         /// <param name="eventTopic">The event topic.</param>
         /// <param name="sender">The sender.</param>
@@ -61,36 +60,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// <param name="subscriptionHandler">The subscription handler.</param>
         public override void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
         {
-            if (this.RunningOnUserInterfaceThread())
-            {
-                this.CallWithoutThreadSwitch(eventTopic, subscriptionHandler, sender, e);
-            }
-            else
-            {
-                this.CallWithThreadSwitch(eventTopic, subscriptionHandler, sender, e);
-            }
-        }
-
-        private bool RunningOnUserInterfaceThread()
-        {
-            return Thread.CurrentThread.ManagedThreadId == this.syncContextHolder.ThreadId;
-        }
-
-        private void CallWithoutThreadSwitch(IEventTopic eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
-        {
-            try
-            {
-                subscriptionHandler.DynamicInvoke(sender, e);
-            }
-            catch (TargetInvocationException exception)
-            {
-                this.HandleSubscriberMethodException(exception, eventTopic);
-            }
-        }
-
-        private void CallWithThreadSwitch(IEventTopic eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
-        {
-            this.syncContextHolder.SyncContext.Send(
+            this.syncContextHolder.SyncContext.Post(
                 delegate(object data)
                     {
                         try
@@ -101,8 +71,8 @@ namespace Appccelerate.EventBroker.Handlers
                         {
                             this.HandleSubscriberMethodException(exception, eventTopic);
                         }
-                    },
-                subscriptionHandler);
+                    }, 
+                    subscriptionHandler);
         }
     }
 }

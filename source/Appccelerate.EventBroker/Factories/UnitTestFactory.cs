@@ -33,7 +33,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <returns>Subscription handler.</returns>
         public override IHandler CreateHandler(Type handlerType)
         {
-            return base.CreateHandler(typeof(Handlers.Publisher));
+            return base.CreateHandler(typeof(Handlers.OnPublisher));
         }
     }
 }

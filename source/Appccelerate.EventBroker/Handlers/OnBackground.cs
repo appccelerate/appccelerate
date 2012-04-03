@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="Background.cs" company="Appccelerate">
+// <copyright file="OnBackground.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ namespace Appccelerate.EventBroker.Handlers
     /// <summary>
     /// Handler that executes the subscription on a thread pool worker process (asynchronous).
     /// </summary>
-    public class Background : EventBrokerHandlerBase
+    public class OnBackground : EventBrokerHandlerBase
     {
         /// <summary>
         /// Gets the kind of the handler, whether it is a synchronous or asynchronous handler.
@@ -85,7 +85,7 @@ namespace Appccelerate.EventBroker.Handlers
             public readonly EventArgs EventArgs;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Background.CallInBackgroundArguments"/> struct.
+            /// Initializes a new instance of the <see cref="OnBackground.CallInBackgroundArguments"/> struct.
             /// </summary>
             /// <param name="sender">The sender.</param>
             /// <param name="eventArgs">The <see cref="System.EventArgs"/> instance containing the event data.</param>

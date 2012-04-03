@@ -22,7 +22,7 @@ namespace Appccelerate.EventBroker
 
     public class Subscriber
     {
-        [EventSubscription("event", typeof(Handlers.Publisher))]
+        [EventSubscription("event", typeof(Handlers.OnPublisher))]
         public void HandleEvent(object sender, EventArgs e)
         {
         }

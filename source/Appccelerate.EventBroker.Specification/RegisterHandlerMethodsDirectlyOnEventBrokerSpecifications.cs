@@ -50,7 +50,7 @@ namespace Appccelerate.EventBroker
                     SimpleEvent.EventTopic,
                     subscriber,
                     subscriber.Handle,
-                    new Handlers.Publisher());
+                    new Handlers.OnPublisher());
 
                 publisher.FireEvent(sentEventArgs);
             };

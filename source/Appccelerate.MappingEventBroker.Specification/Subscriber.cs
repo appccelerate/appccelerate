@@ -26,19 +26,19 @@ namespace Appccelerate.MappingEventBroker
 
         public SourceEventArgs SubscriptionEventArgs { get; private set; }
 
-        [EventSubscription(@"mapped://Publisher", typeof(Appccelerate.EventBroker.Handlers.Publisher))]
+        [EventSubscription(@"mapped://Publisher", typeof(Appccelerate.EventBroker.Handlers.OnPublisher))]
         public void HandleMapped(object sender, DestinationEventArgs e)
         {
             this.MappedSubscriptionEventArgs = e;
         }
 
-        [EventSubscription(@"userdefined://Publisher", typeof(Appccelerate.EventBroker.Handlers.Publisher))]
+        [EventSubscription(@"userdefined://Publisher", typeof(Appccelerate.EventBroker.Handlers.OnPublisher))]
         public void HandleUserDefined(object sender, DestinationEventArgs e)
         {
             this.MappedSubscriptionEventArgs = e;
         }
 
-        [EventSubscription(Topics.Publisher, typeof(Appccelerate.EventBroker.Handlers.Publisher))]
+        [EventSubscription(Topics.Publisher, typeof(Appccelerate.EventBroker.Handlers.OnPublisher))]
         public void HandleSubscription(object sender, SourceEventArgs e)
         {
             this.SubscriptionEventArgs = e;

@@ -39,7 +39,7 @@ namespace Appccelerate.EventBroker
         {
             public bool HandledEvent { get; private set; }
 
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             public void Handle(object sender, EventArgs eventArgs)
             {
                 this.HandledEvent = true;

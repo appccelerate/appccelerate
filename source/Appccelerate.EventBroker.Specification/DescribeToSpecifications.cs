@@ -131,9 +131,9 @@ namespace Appccelerate.EventBroker
                 .Should().Match(
                     "*" +
                     typeof(Subscriber) +
-                    "*Handler = Appccelerate.EventBroker.Handlers.Publisher*" +
+                    "*Handler = Appccelerate.EventBroker.Handlers.OnPublisher*" +
                     typeof(NamedSubscriber) +
-                    "*Handler = Appccelerate.EventBroker.Handlers.Publisher*");
+                    "*Handler = Appccelerate.EventBroker.Handlers.OnPublisher*");
 
         It should_list_event_args_type_per_subscriber = () =>
             description
@@ -184,7 +184,7 @@ namespace Appccelerate.EventBroker
 
         public class Subscriber
         {
-            [EventSubscription("topic://SimpleEvent", typeof(Handlers.Publisher), typeof(SubscribeGlobal))]
+            [EventSubscription("topic://SimpleEvent", typeof(Handlers.OnPublisher), typeof(SubscribeGlobal))]
             public void HandleSimpleEvent(object sender, EventArgs e)
             {
             }
@@ -197,7 +197,7 @@ namespace Appccelerate.EventBroker
                 get { return "NamedSubscriberName"; }
             }
 
-            [EventSubscription("topic://CustomEvent", typeof(Handlers.Publisher))]
+            [EventSubscription("topic://CustomEvent", typeof(Handlers.OnPublisher))]
             public void HandleCustomEvent(object sender, CustomEventArgs e)
             {
             }

@@ -86,7 +86,7 @@ namespace Appccelerate.EventBroker
 
         public class InvalidSubscriberWithWrongSignature
         {
-            [EventSubscription("topic", typeof(Handlers.Publisher))]
+            [EventSubscription("topic", typeof(Handlers.OnPublisher))]
             public void SimpleEvent(EventArgs e)
             {
             }
@@ -128,7 +128,7 @@ namespace Appccelerate.EventBroker
 
         public class InvalidSubscriberStaticHandler
         {
-            [EventSubscription("topic", typeof(Handlers.Publisher))]
+            [EventSubscription("topic", typeof(Handlers.OnPublisher))]
             public static void SimpleEvent(object sender, EventArgs e)
             {
             }
@@ -150,7 +150,7 @@ namespace Appccelerate.EventBroker
 
         public class UserInterfaceSubscriber
         {
-            [EventSubscription("topic", typeof(Handlers.UserInterface))]
+            [EventSubscription("topic", typeof(Handlers.OnUserInterface))]
             public void SimpleEvent(object sender, EventArgs e)
             {
             }
@@ -180,7 +180,7 @@ namespace Appccelerate.EventBroker
 
         public class SubscriberWithWrongEventArgsType
         {
-            [EventSubscription(SimpleEvent.EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(SimpleEvent.EventTopic, typeof(Handlers.OnPublisher))]
             public void Handle(object sender, EventArgs<string> e)
             {
             }
