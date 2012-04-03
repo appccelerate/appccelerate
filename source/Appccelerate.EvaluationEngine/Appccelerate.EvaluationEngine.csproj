@@ -30,6 +30,7 @@
     <Compile Include="Extensions\EmptyLogExtension.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IAggregator.cs" />
+    <Compile Include="IAnswerer.cs" />
     <Compile Include="IEvaluationEngine.cs" />
     <Compile Include="IEvaluationEngineModule.cs" />
     <Compile Include="Expressions\IExpression.cs" />
