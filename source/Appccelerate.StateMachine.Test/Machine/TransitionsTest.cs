@@ -79,9 +79,9 @@ namespace Appccelerate.StateMachine.Machine
             int? action2Argument = null;
 
             this.testee.In(StateMachine.States.A)
-                .On(StateMachine.Events.B).Goto(StateMachine.States.B).Execute<int>(
-                argument => { action1Argument = argument; },
-                argument => { action2Argument = argument; });
+                .On(StateMachine.Events.B).Goto(StateMachine.States.B)
+                    .Execute<int>(argument => { action1Argument = argument; })
+                    .Execute((int argument) => { action2Argument = argument; });
 
             this.testee.Initialize(StateMachine.States.A);
             this.testee.EnterInitialState();

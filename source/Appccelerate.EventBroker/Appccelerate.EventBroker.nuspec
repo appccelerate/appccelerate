@@ -3,7 +3,7 @@
   <metadata>
     <id>Appccelerate.EventBroker</id>
     <version>%Appccelerate.EventBrokerFileVersion%</version>
-    <title>"Appccelerate.EventBroker"</title>
+    <title>Appccelerate.EventBroker</title>
     <authors>Appccelerate team</authors>
     <owners>Appccelerate team</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>

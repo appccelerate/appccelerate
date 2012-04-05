@@ -95,15 +95,6 @@ namespace Appccelerate.StateMachine
         }
 
         /// <summary>
-        /// Occurs when an exception was thrown inside the state machine.
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs<TState, TEvent>> ExceptionThrown
-        {
-            add { this.stateMachine.ExceptionThrown += value; }
-            remove { this.stateMachine.ExceptionThrown -= value; }
-        }
-
-        /// <summary>
         /// Occurs when an exception was thrown inside a transition of the state machine.
         /// </summary>
         public event EventHandler<TransitionExceptionEventArgs<TState, TEvent>> TransitionExceptionThrown

@@ -30,7 +30,7 @@ namespace Appccelerate.EventBroker.Sample
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments</param>
-        [EventSubscription(EventTopics.PingUIFromUIThread, typeof(Handlers.Publisher))]
+        [EventSubscription(EventTopics.PingUIFromUIThread, typeof(Handlers.OnPublisher))]
         public void HandlePingUiFromUiThread(object sender, EventArgs e)
         {
             Wait();
@@ -42,7 +42,7 @@ namespace Appccelerate.EventBroker.Sample
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        [EventSubscription(EventTopics.PingUIFromAsync, typeof(Handlers.Background))]
+        [EventSubscription(EventTopics.PingUIFromAsync, typeof(Handlers.OnBackground))]
         public void HandlePingUiFromAsync(object sender, EventArgs e)
         {
             Wait();

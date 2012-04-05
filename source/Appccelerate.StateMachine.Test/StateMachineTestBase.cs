@@ -54,7 +54,7 @@ namespace Appccelerate.StateMachine
             this.TransitionCompletedMessages = new List<TransitionCompletedEventArgs<States, Events>>();
             this.TransitionDeclinedMessages = new List<TransitionEventArgs<States, Events>>();
 
-            this.testee.ExceptionThrown += (sender, e) => this.Exceptions.Add(e);
+            this.testee.TransitionExceptionThrown += (sender, e) => this.Exceptions.Add(e);
             this.testee.TransitionBegin += (sender, e) => this.TransitionBeginMessages.Add(e);
             this.testee.TransitionCompleted += (sender, e) => this.TransitionCompletedMessages.Add(e);
             this.testee.TransitionDeclined += (sender, e) => this.TransitionDeclinedMessages.Add(e);

@@ -352,7 +352,7 @@ namespace Appccelerate.DistributedEventBroker
         /// <returns>The default handler type for internal topics</returns>
         protected virtual IHandler CreateHandler()
         {
-            return new Background();
+            return new OnBackground();
         }
 
         /// <summary>

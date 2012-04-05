@@ -22,8 +22,7 @@ namespace Appccelerate.StateMachine.Machine
     using System.Collections.Generic;
 
     using Appccelerate.StateMachine.Machine.ActionHolders;
-    using Appccelerate.StateMachine.Machine.States;
-
+    
     /// <summary>
     /// Represents a state of the state machine.
     /// </summary>
@@ -100,43 +99,15 @@ namespace Appccelerate.StateMachine.Machine
         /// <returns>The result of the transition.</returns>
         ITransitionResult<TState, TEvent> Fire(ITransitionContext<TState, TEvent> context);
 
-        /// <summary>
-        /// Enters this state.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        void Entry(IStateContext<TState, TEvent> stateContext);
+        void Entry(ITransitionContext<TState, TEvent> context);
 
-        /// <summary>
-        /// Exits this state.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        void Exit(IStateContext<TState, TEvent> stateContext);
+        void Exit(ITransitionContext<TState, TEvent> context);
 
-        /// <summary>
-        /// Enters this state by its history depending on <see cref="State{TState,TEvent}.HistoryType"/>.
-        /// The <see cref="State{TState,TEvent}.Entry"/> method has to be called already.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <returns>
-        /// The active state (depends on <see cref="State{TState,TEvent}.HistoryType"/>.
-        /// </returns>
-        IState<TState, TEvent> EnterByHistory(IStateContext<TState, TEvent> stateContext);
+        IState<TState, TEvent> EnterByHistory(ITransitionContext<TState, TEvent> context);
 
-        /// <summary>
-        /// Enters this state is shallow mode:
-        /// The entry action is executed and the initial state is entered in shallow mode if there is one.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <returns>The active state.</returns>
-        IState<TState, TEvent> EnterShallow(IStateContext<TState, TEvent> stateContext);
+        IState<TState, TEvent> EnterShallow(ITransitionContext<TState, TEvent> context);
 
-        /// <summary>
-        /// Enters this state is deep mode:
-        /// The entry action is executed and the initial state is entered in deep mode if there is one.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <returns>The active state.</returns>
-        IState<TState, TEvent> EnterDeep(IStateContext<TState, TEvent> stateContext);
+        IState<TState, TEvent> EnterDeep(ITransitionContext<TState, TEvent> context);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

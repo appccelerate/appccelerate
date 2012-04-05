@@ -127,12 +127,12 @@ namespace Appccelerate.StateMachine
 
         It should_fire_exception_throw_event = () =>
             {
-                receivedExceptionEventArgs.Exception.Should().NotBeNull();
+                receivedTransitionExceptionEventArgs.Exception.Should().NotBeNull();
             };
 
         It should_pass_thrown_exception_to_event_arguments_of_exception_thrown_event = () =>
             {
-                receivedExceptionEventArgs.Exception.Should().BeSameAs(Exception);
+                receivedTransitionExceptionEventArgs.Exception.Should().BeSameAs(Exception);
             };
     }
 
@@ -217,7 +217,6 @@ namespace Appccelerate.StateMachine
     public class TransitionExceptionBehaviors
     {
         protected static TransitionExceptionEventArgs<int, int> receivedTransitionExceptionEventArgs;
-        protected static ExceptionEventArgs<int, int> receivedExceptionEventArgs;
 
         It should_catch_exception_and_fire_transition_exception_event = () =>
             {
@@ -243,28 +242,20 @@ namespace Appccelerate.StateMachine
             {
                 receivedTransitionExceptionEventArgs.EventArgument.Should().Be(Values.Parameter);
             };
-
-        It should_not_fire_exception_thrown_event = () =>
-            {
-                receivedExceptionEventArgs.Should().BeNull();
-            };
     }
 
     public class ExceptionSpecification
     {
         protected static PassiveStateMachine<int, int> machine;
         protected static TransitionExceptionEventArgs<int, int> receivedTransitionExceptionEventArgs;
-        protected static ExceptionEventArgs<int, int> receivedExceptionEventArgs;
 
         Establish context = () =>
             {
-                receivedExceptionEventArgs = null;
                 receivedTransitionExceptionEventArgs = null;
 
                 machine = new PassiveStateMachine<int, int>();
 
                 machine.TransitionExceptionThrown += (s, e) => receivedTransitionExceptionEventArgs = e;
-                machine.ExceptionThrown += (s, e) => receivedExceptionEventArgs = e;
             };
     }
 

@@ -20,8 +20,6 @@ namespace Appccelerate.StateMachine.Machine.Events
 {
     using System;
 
-    using Appccelerate.StateMachine.Machine.States;
-
     /// <summary>
     /// Event arguments providing exception information.
     /// </summary>
@@ -32,26 +30,14 @@ namespace Appccelerate.StateMachine.Machine.Events
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The exception.
-        /// </summary>
         private readonly Exception exception;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionEventArgs{TState, TEvent}"/> class.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        /// <param name="exception">The exception.</param>
-        public ExceptionEventArgs(IStateContext<TState, TEvent> stateContext, Exception exception) 
-            : base(stateContext)
+        public ExceptionEventArgs(ITransitionContext<TState, TEvent> context, Exception exception) 
+            : base(context)
         {
             this.exception = exception;
         }
 
-        /// <summary>
-        /// Gets the exception.
-        /// </summary>
-        /// <value>The exception.</value>
         public Exception Exception
         {
             get { return this.exception; }

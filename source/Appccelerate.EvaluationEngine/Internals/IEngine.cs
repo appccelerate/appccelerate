@@ -23,26 +23,8 @@ namespace Appccelerate.EvaluationEngine.Internals
     /// <summary>
     /// The engine answering questions.
     /// </summary>
-    public interface IEngine
+    public interface IEngine : IAnswerer
     {
-        /// <summary>
-        /// Answers the specified question.
-        /// </summary>
-        /// <typeparam name="TAnswer">The type of the answer.</typeparam>
-        /// <typeparam name="TParameter">The type of the parameter.</typeparam>
-        /// <param name="question">The question.</param>
-        /// <param name="parameter">The parameter.</param>
-        /// <returns>The answer</returns>
-        TAnswer Answer<TAnswer, TParameter>(IQuestion<TAnswer, TParameter> question, TParameter parameter);
-
-        /// <summary>
-        /// Answers the specified question.
-        /// </summary>
-        /// <typeparam name="TAnswer">The type of the answer.</typeparam>
-        /// <param name="question">The question.</param>
-        /// <returns>The answer</returns>
-        TAnswer Answer<TAnswer>(IQuestion<TAnswer> question);
-
         /// <summary>
         /// Sets the log extension.
         /// </summary>

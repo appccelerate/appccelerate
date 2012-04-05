@@ -48,7 +48,7 @@ namespace Appccelerate.StateMachine.Machine.Events
         /// <value>The id of the source state of the transition.</value>
         public TState StateId
         {
-            get { return this.TransitionContext.State.Id; }
+            get { return this.Context.State.Id; }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Appccelerate.StateMachine.Machine.Events
         /// <value>The event id.</value>
         public TEvent EventId
         {
-            get { return this.TransitionContext.EventId; }
+            get { return this.Context.EventId.Value; }
         }
 
         /// <summary>
@@ -66,16 +66,7 @@ namespace Appccelerate.StateMachine.Machine.Events
         /// <value>The event argument.</value>
         public object EventArgument
         {
-            get { return this.TransitionContext.EventArgument; }
-        }
-
-        /// <summary>
-        /// Gets the event context.
-        /// </summary>
-        /// <value>The event context.</value>
-        private ITransitionContext<TState, TEvent> TransitionContext
-        {
-            get { return (ITransitionContext<TState, TEvent>)this.StateContext; }
+            get { return this.Context.EventArgument; }
         }
 
         /// <summary>

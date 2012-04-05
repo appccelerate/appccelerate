@@ -20,8 +20,6 @@ namespace Appccelerate.StateMachine.Machine.Events
 {
     using System;
 
-    using Appccelerate.StateMachine.Machine.States;
-
     /// <summary>
     /// Event arguments holding context information.
     /// </summary>
@@ -32,27 +30,16 @@ namespace Appccelerate.StateMachine.Machine.Events
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The context.
-        /// </summary>
-        private readonly IStateContext<TState, TEvent> stateContext;
+        private readonly ITransitionContext<TState, TEvent> context;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContextEventArgs{TState, TEvent}"/> class.
-        /// </summary>
-        /// <param name="stateContext">The event context.</param>
-        protected ContextEventArgs(IStateContext<TState, TEvent> stateContext)
+        protected ContextEventArgs(ITransitionContext<TState, TEvent> context)
         {
-            this.stateContext = stateContext;
+            this.context = context;
         }
 
-        /// <summary>
-        /// Gets the event context.
-        /// </summary>
-        /// <value>The event context.</value>
-        protected IStateContext<TState, TEvent> StateContext
+        protected ITransitionContext<TState, TEvent> Context
         {
-            get { return this.stateContext; }
+            get { return this.context; }
         }
     }
 }

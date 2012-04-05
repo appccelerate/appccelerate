@@ -134,7 +134,7 @@ namespace Appccelerate.EventBroker
 
         public class Subscriber
         {
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             public void Handle(object sender, CancelEventArgs cancelEventArgs)
             {
                 cancelEventArgs.Cancel = true;
@@ -258,13 +258,13 @@ namespace Appccelerate.EventBroker
 
             public bool HandledEventTopic2 { get; private set; }
 
-            [EventSubscription(EventTopic1, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic1, typeof(Handlers.OnPublisher))]
             public void HandleEventTopic1(object sender, EventArgs eventArgs)
             {
                 this.HandledEventTopic1 = true;
             }
 
-            [EventSubscription(EventTopic2, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic2, typeof(Handlers.OnPublisher))]
             public void HandleEventTopic2(object sender, EventArgs eventArgs)
             {
                 this.HandledEventTopic2 = true;
@@ -327,8 +327,8 @@ namespace Appccelerate.EventBroker
         {
             public int CallCount { get; private set; }
 
-            [EventSubscription(EventTopic1, typeof(Handlers.Publisher))]
-            [EventSubscription(EventTopic2, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic1, typeof(Handlers.OnPublisher))]
+            [EventSubscription(EventTopic2, typeof(Handlers.OnPublisher))]
             public void HandleEventTopic1(object sender, EventArgs eventArgs)
             {
                 this.CallCount++;

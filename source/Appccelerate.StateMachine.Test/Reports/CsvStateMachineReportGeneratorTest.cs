@@ -131,12 +131,15 @@ namespace Appccelerate.StateMachine.Reports
 
             elevator.In(States.OnFloor)
                 .ExecuteOnEntry(AnnounceFloor)
-                .ExecuteOnExit(Beep, Beep)
+                .ExecuteOnExit(Beep)
+                .ExecuteOnExit(Beep)
                 .On(Events.CloseDoor).Goto(States.DoorClosed)
                 .On(Events.OpenDoor).Goto(States.DoorOpen)
                 .On(Events.GoUp)
                     .If(CheckOverload).Goto(States.MovingUp)
-                    .Otherwise().Execute(AnnounceOverload, Beep)
+                    .Otherwise()
+                        .Execute(AnnounceOverload)
+                        .Execute(Beep)
                 .On(Events.GoDown)
                     .If(CheckOverload).Goto(States.MovingDown)
                     .Otherwise().Execute(AnnounceOverload);

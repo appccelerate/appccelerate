@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="HandlerRestrictionEvent.cs" company="Appccelerate">
+// <copyright file="Missable.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,33 +16,43 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.StateMachine.Machine
 {
     using System;
 
-    public class HandlerRestrictionEvent
+    public class Missable<T>
     {
-        public const string EventTopic = "topic://topic";
+        private T value;
 
-        public class PublisherWithSynchronousRestriction
+        public Missable()
         {
-            [EventPublication(EventTopic, HandlerRestriction.Synchronous)]
-            public event EventHandler Event;
-
-            public void FireEvent()
-            {
-                this.Event(this, EventArgs.Empty);
-            }
+            this.IsMissing = true;
         }
 
-        public class SynchronousSubscriber
+        public Missable(T value)
         {
-            public bool HandledEvent { get; private set; }
+            this.Value = value;
+        }
 
-            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
-            public void Handle(object sender, EventArgs eventArgs)
+        public bool IsMissing { get; private set; }
+
+        public T Value
+        {
+            get
             {
-                this.HandledEvent = true;
+                if (this.IsMissing)
+                {
+                    throw new InvalidOperationException("a missing value cannot be accessed.");
+                }
+
+                return this.value;
+            }
+
+            set
+            {
+                this.value = value;
+
+                this.IsMissing = false;
             }
         }
     }

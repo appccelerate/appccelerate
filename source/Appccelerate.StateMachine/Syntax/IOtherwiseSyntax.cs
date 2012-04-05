@@ -25,7 +25,7 @@ namespace Appccelerate.StateMachine.Syntax
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
-    public interface IOtherwiseSyntax<TState, TEvent> : IEventSyntax<TState, TEvent>
+    public interface IOtherwiseSyntax<TState, TEvent> : IOtherwiseExecuteSyntax<TState, TEvent>
     {
         /// <summary>
         /// Defines the target state of the transition.
@@ -33,20 +33,23 @@ namespace Appccelerate.StateMachine.Syntax
         /// <param name="target">The target.</param>
         /// <returns>Goto syntax</returns>
         IGotoSyntax<TState, TEvent> Goto(TState target);
-        
+    }
+
+    public interface IOtherwiseExecuteSyntax<TState, TEvent> : IEventSyntax<TState, TEvent>
+    {
         /// <summary>
         /// Defines the transition actions.
         /// </summary>
-        /// <param name="actions">The actions to execute when the transition is taken.</param>
+        /// <param name="action">The action to execute when the transition is taken.</param>
         /// <returns>Event syntax</returns>
-        IEventSyntax<TState, TEvent> Execute(params Action[] actions);
+        IOtherwiseExecuteSyntax<TState, TEvent> Execute(Action action);
 
         /// <summary>
         /// Defines the transition actions.
         /// </summary>
         /// <typeparam name="T">The type of the action argument.</typeparam>
-        /// <param name="actions">The actions to execute when the transition is taken.</param>
+        /// <param name="action">The action to execute when the transition is taken.</param>
         /// <returns>Event syntax</returns>
-        IEventSyntax<TState, TEvent> Execute<T>(params Action<T>[] actions);
+        IOtherwiseExecuteSyntax<TState, TEvent> Execute<T>(Action<T> action);
     }
 }

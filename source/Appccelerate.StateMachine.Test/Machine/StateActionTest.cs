@@ -56,9 +56,8 @@ namespace Appccelerate.StateMachine.Machine
             bool entered2 = false;
 
             this.testee.In(StateMachine.States.A)
-                .ExecuteOnEntry(
-                    () => entered1 = true,
-                    () => entered2 = true);
+                .ExecuteOnEntry(() => entered1 = true)
+                .ExecuteOnEntry(() => entered2 = true);
 
             this.testee.Initialize(StateMachine.States.A);
 
@@ -74,7 +73,7 @@ namespace Appccelerate.StateMachine.Machine
             int i = 0;
 
             this.testee.In(StateMachine.States.A)
-                .ExecuteOnEntry(parameter => i = parameter, 3);
+                .ExecuteOnEntryParametrized(parameter => i = parameter, 3);
 
             this.testee.Initialize(StateMachine.States.A);
 
@@ -107,9 +106,8 @@ namespace Appccelerate.StateMachine.Machine
             bool exit2 = false;
 
             this.testee.In(StateMachine.States.A)
-                .ExecuteOnExit(
-                    () => exit1 = true,
-                    () => exit2 = true)
+                .ExecuteOnExit(() => exit1 = true)
+                .ExecuteOnExit(() => exit2 = true)
                 .On(StateMachine.Events.B).Goto(StateMachine.States.B);
 
             this.testee.Initialize(StateMachine.States.A);
@@ -127,7 +125,7 @@ namespace Appccelerate.StateMachine.Machine
             int i = 0;
 
             this.testee.In(StateMachine.States.A)
-                .ExecuteOnExit(value => i = value, 3)
+                .ExecuteOnExitParametrized(value => i = value, 3)
                 .On(StateMachine.Events.B).Goto(StateMachine.States.B);
 
             this.testee.Initialize(StateMachine.States.A);

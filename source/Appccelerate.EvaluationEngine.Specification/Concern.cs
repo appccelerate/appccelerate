@@ -20,6 +20,8 @@ namespace Appccelerate.EvaluationEngine
 {
     public static class Concern
     {
+        public const string Aggregator = "Aggregator";
+
         public const string Strategy = "Strategy";
 
         public const string Answer = "Question answering";

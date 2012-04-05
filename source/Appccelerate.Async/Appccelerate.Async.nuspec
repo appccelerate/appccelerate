@@ -3,7 +3,7 @@
   <metadata>
     <id>Appccelerate.Async</id>
     <version>%Appccelerate.AsyncFileVersion%</version>
-    <title>"Appccelerate.Async"</title>
+    <title>Appccelerate.Async</title>
     <authors>Appccelerate team</authors>
     <owners>Appccelerate team</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>

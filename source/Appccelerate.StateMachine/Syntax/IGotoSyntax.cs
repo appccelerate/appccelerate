@@ -30,16 +30,16 @@ namespace Appccelerate.StateMachine.Syntax
         /// <summary>
         /// Defines the transition actions.
         /// </summary>
-        /// <param name="actions">The actions to execute when the transition is taken.</param>
+        /// <param name="action">The action to execute when the transition is taken.</param>
         /// <returns>Event syntax</returns>
-        IGotoSyntax<TState, TEvent> Execute(params Action[] actions);
+        IGotoSyntax<TState, TEvent> Execute(Action action);
 
         /// <summary>
         /// Defines the transition actions.
         /// </summary>
         /// <typeparam name="T">The type of the action argument.</typeparam>
-        /// <param name="actions">The actions to execute when the transition is taken.</param>
+        /// <param name="action">The action to execute when the transition is taken.</param>
         /// <returns>Event syntax</returns>
-        IGotoSyntax<TState, TEvent> Execute<T>(params Action<T>[] actions);
+        IGotoSyntax<TState, TEvent> Execute<T>(Action<T> action);
     }
 }

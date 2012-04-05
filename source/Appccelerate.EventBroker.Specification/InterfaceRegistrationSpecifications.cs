@@ -61,7 +61,7 @@ namespace Appccelerate.EventBroker
 
         public interface ISubscriber
         {
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             void Handle(object sender, EventArgs eventArgs);
         }
 

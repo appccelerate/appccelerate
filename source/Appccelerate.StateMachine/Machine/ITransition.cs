@@ -50,7 +50,7 @@ namespace Appccelerate.StateMachine.Machine
         /// Gets the actions of this transition.
         /// </summary>
         /// <value>The actions.</value>
-        ICollection<ITransitionActionHolder> Actions { get; }
+        ICollection<IActionHolder> Actions { get; }
 
         /// <summary>
         /// Gets or sets the guard of this transition.

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ActionHolder{T}.cs" company="Appccelerate">
+// <copyright file="ParametrizedActionHolder{T}.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,45 +22,23 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    /// <summary>
-    /// Wraps an action with a single parameter.
-    /// </summary>
-    /// <typeparam name="T">The type of the parameter of the action.</typeparam>
-    public class ActionHolder<T> : IActionHolder
+    public class ParametrizedActionHolder<T> : IActionHolder
     {
-        /// <summary>
-        /// the wrapped action
-        /// </summary>
         private readonly Action<T> action;
 
-        /// <summary>
-        /// the parameter that is passed to the action on execution.
-        /// </summary>
         private readonly T parameter;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionHolder&lt;T&gt;"/> class.
-        /// </summary>
-        /// <param name="action">The wrapped action.</param>
-        /// <param name="parameter">The parameter that is passed to the action on execution.</param>
-        public ActionHolder(Action<T> action, T parameter)
+        public ParametrizedActionHolder(Action<T> action, T parameter)
         {
             this.action = action;
             this.parameter = parameter;
         }
 
-        /// <summary>
-        /// Executes the wrapped action.
-        /// </summary>
-        public void Execute()
+        public void Execute(object argument)
         {
             this.action(this.parameter);
         }
 
-        /// <summary>
-        /// Describes the action.
-        /// </summary>
-        /// <returns>Description of the action.</returns>
         public string Describe()
         {
             return this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name;

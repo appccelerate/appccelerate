@@ -79,7 +79,7 @@ namespace Appccelerate.StateMachine
             A.CallTo(() => this.extension.EnteredInitialState(
                     this.testee,
                     InitialState,
-                    A<StateContext<States, Events>>.That.Matches(context => context.State == null)))
+                    A<TransitionContext<States, Events>>.That.Matches(context => context.State == null)))
                 .MustHaveHappened();
         }
 
@@ -122,7 +122,7 @@ namespace Appccelerate.StateMachine
                     A<ITransitionContext<States, Events>>.That.Matches(
                         context => 
                             context.State.Id == States.A && 
-                            context.EventId == eventId && 
+                            context.EventId.Value == eventId && 
                             context.EventArgument == eventArgument)))
                 .MustHaveHappened();
         }
@@ -150,7 +150,7 @@ namespace Appccelerate.StateMachine
             A.CallTo(() => this.extension.FiredEvent(
                 this.testee, 
                 A<ITransitionContext<States, Events>>.That.Matches(
-                    c => c.EventId == NewEvent && c.EventArgument == newEventArgument)))
+                    c => c.EventId.Value == NewEvent && c.EventArgument == newEventArgument)))
                 .MustHaveHappened();
         }
 
@@ -401,7 +401,7 @@ namespace Appccelerate.StateMachine
         {
             Exception exception = new Exception();
 
-            this.testee.ExceptionThrown += (s, e) => { };
+            this.testee.TransitionExceptionThrown += (s, e) => { };
 
             this.testee.In(States.A).ExecuteOnEntry(() => { throw exception; });
             this.testee.Initialize(States.A);
@@ -410,14 +410,14 @@ namespace Appccelerate.StateMachine
             A.CallTo(() => this.extension.HandlingEntryActionException(
                     this.testee,
                     State(States.A),
-                    A<StateContext<States, Events>>.That.Matches(context => context.State == null),
+                    A<TransitionContext<States, Events>>.That.Matches(context => context.State == null),
                     ref exception))
                 .MustHaveHappened();
 
             A.CallTo(() => this.extension.HandledEntryActionException(
                     this.testee, 
                     State(States.A),
-                    A<StateContext<States, Events>>.That.Matches(context => context.State == null),
+                    A<TransitionContext<States, Events>>.That.Matches(context => context.State == null),
                     exception))
                 .MustHaveHappened();
         }
@@ -434,43 +434,19 @@ namespace Appccelerate.StateMachine
 
         private static ITransitionContext<States, Events> Context(States sourceState, Events eventId)
         {
-            return A<ITransitionContext<States, Events>>.That.Matches(context => context.EventId == eventId && context.State.Id == sourceState);
+            return A<ITransitionContext<States, Events>>.That.Matches(context => context.EventId.Value == eventId && context.State.Id == sourceState);
         }
 
-        /// <summary>
-        /// Extension that can be used in tests to override exceptions, states and events passed to it.
-        /// </summary>
         private class OverrideExtension : Extensions.ExtensionBase<States, Events>
         {
-            /// <summary>
-            /// Gets or sets the state used to override states passed in.
-            /// </summary>
-            /// <value>The state of the overridden.</value>
             public States? OverriddenState { get; set; }
 
-            /// <summary>
-            /// Gets or sets the event used to override events passed in.
-            /// </summary>
-            /// <value>The overridden event.</value>
             public Events? OverriddenEvent { get; set; }
 
-            /// <summary>
-            /// Gets or sets the event argument used to override event argument passed in.
-            /// </summary>
-            /// <value>The overridden event argument.</value>
             public object OverriddenEventArgument { get; set; }
 
-            /// <summary>
-            /// Gets or sets the exception used to override exceptions passed in.
-            /// </summary>
-            /// <value>The overridden exception.</value>
             public Exception OverriddenException { get; set; }
 
-            /// <summary>
-            /// Overrides the state passed in if <see cref="OverriddenState"/> is not null.
-            /// </summary>
-            /// <param name="stateMachine">The state machine.</param>
-            /// <param name="initialState">The initial state. Can be replaced by the extension.</param>
             public override void InitializingStateMachine(IStateMachineInformation<States, Events> stateMachine, ref States initialState)
             {
                 if (this.OverriddenState.HasValue)
@@ -479,12 +455,6 @@ namespace Appccelerate.StateMachine
                 }
             }
 
-            /// <summary>
-            /// Overrides the event and event arguments with <see cref="OverriddenEvent"/> and <see cref="OverriddenEventArgument"/> if they are not null.
-            /// </summary>
-            /// <param name="stateMachine">The state machine.</param>
-            /// <param name="eventId">The event id. Can be replaced by the extension.</param>
-            /// <param name="eventArgument">The event argument. Can be replaced by the extension.</param>
             public override void FiringEvent(IStateMachineInformation<States, Events> stateMachine, ref Events eventId, ref object eventArgument)
             {
                 if (this.OverriddenEvent.HasValue)
@@ -498,13 +468,6 @@ namespace Appccelerate.StateMachine
                 }
             }
 
-            /// <summary>
-            /// Overrides the exception if <see cref="OverriddenException"/> is not null.
-            /// </summary>
-            /// <param name="stateMachine">The state machine.</param>
-            /// <param name="transition">The transition.</param>
-            /// <param name="transitionContext">The transition context.</param>
-            /// <param name="exception">The exception. Can be replaced by the extension.</param>
             public override void HandlingGuardException(IStateMachineInformation<States, Events> stateMachine, ITransition<States, Events> transition, ITransitionContext<States, Events> transitionContext, ref Exception exception)
             {
                 if (this.OverriddenException != null)
@@ -513,13 +476,6 @@ namespace Appccelerate.StateMachine
                 }
             }
 
-            /// <summary>
-            /// Overrides the exception if <see cref="OverriddenException"/> is not null.
-            /// </summary>
-            /// <param name="stateMachine">The state machine.</param>
-            /// <param name="transition">The transition.</param>
-            /// <param name="context">The context.</param>
-            /// <param name="exception">The exception. Can be replaced by the extension.</param>
             public override void HandlingTransitionException(IStateMachineInformation<States, Events> stateMachine, ITransition<States, Events> transition, ITransitionContext<States, Events> context, ref Exception exception)
             {
                 if (this.OverriddenException != null)
@@ -528,14 +484,7 @@ namespace Appccelerate.StateMachine
                 }
             }
 
-            /// <summary>
-            /// Overrides the exception if <see cref="OverriddenException"/> is not null.
-            /// </summary>
-            /// <param name="stateMachine">The state machine.</param>
-            /// <param name="state">The state.</param>
-            /// <param name="stateContext">The state context.</param>
-            /// <param name="exception">The exception. Can be replaced by the extension.</param>
-            public override void HandlingEntryActionException(IStateMachineInformation<States, Events> stateMachine, IState<States, Events> state, IStateContext<States, Events> stateContext, ref Exception exception)
+            public override void HandlingEntryActionException(IStateMachineInformation<States, Events> stateMachine, IState<States, Events> state, ITransitionContext<States, Events> context, ref Exception exception)
             {
                 if (this.OverriddenException != null)
                 {
@@ -543,14 +492,7 @@ namespace Appccelerate.StateMachine
                 }
             }
 
-            /// <summary>
-            /// Overrides the exception if <see cref="OverriddenException"/> is not null.
-            /// </summary>
-            /// <param name="stateMachine">The state machine.</param>
-            /// <param name="state">The state.</param>
-            /// <param name="stateContext">The state context.</param>
-            /// <param name="exception">The exception. Can be replaced by the extension.</param>
-            public override void HandlingExitActionException(IStateMachineInformation<States, Events> stateMachine, IState<States, Events> state, IStateContext<States, Events> stateContext, ref Exception exception)
+            public override void HandlingExitActionException(IStateMachineInformation<States, Events> stateMachine, IState<States, Events> state, ITransitionContext<States, Events> context, ref Exception exception)
             {
                 if (this.OverriddenException != null)
                 {

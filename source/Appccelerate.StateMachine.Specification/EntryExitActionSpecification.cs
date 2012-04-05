@@ -48,11 +48,8 @@ namespace Appccelerate.StateMachine
                 machine.Start();
             };
 
-        It should_execute_entry_action_on_entry = () =>
-            {
-                entryActionExecuted
-                    .Should().BeTrue();
-            };
+        It should_execute_entry_action_on_entry = () => 
+            entryActionExecuted.Should().BeTrue();
     }
 
     [Subject(Concern.EntryAndExitActions)]
@@ -73,23 +70,17 @@ namespace Appccelerate.StateMachine
         Because of = () =>
         {
             machine.In(State)
-                .ExecuteOnEntry(p => parameter = p, Parameter);
+                .ExecuteOnEntryParametrized(p => parameter = p, Parameter);
 
             machine.Initialize(State);
             machine.Start();
         };
 
-        It should_execute_entry_action_on_entry = () =>
-        {
-            parameter
-               .Should().NotBeNull();
-        };
+        It should_execute_entry_action_on_entry = () => 
+            parameter.Should().NotBeNull();
 
         It should_pass_parameter_to_entry_action = () =>
-        {
-            parameter
-                .Should().Be(Parameter);
-        };
+            parameter.Should().Be(Parameter);
     }
 
     [Subject(Concern.EntryAndExitActions)]
@@ -110,9 +101,8 @@ namespace Appccelerate.StateMachine
         Because of = () =>
         {
             machine.In(State)
-                .ExecuteOnEntry(
-                    () => entryAction1Executed = true,
-                    () => entryAction2Executed = true);
+                .ExecuteOnEntry(() => entryAction1Executed = true)
+                .ExecuteOnEntry(() => entryAction2Executed = true);
             
             machine.Initialize(State);
             machine.Start();
@@ -153,20 +143,19 @@ namespace Appccelerate.StateMachine
         Because of = () =>
         {
             machine.In(State)
-                .ExecuteOnEntry(
-                    () => entryAction1Executed = true,
-                    () =>
+                .ExecuteOnEntry(() => entryAction1Executed = true)
+                .ExecuteOnEntry(() =>
                         {
                             entryAction2Executed = true;
                             throw exception2;
-                        },
-                    () =>
+                        })
+                .ExecuteOnEntry(() =>
                         {
                             entryAction3Executed = true;
                             throw exception3;
                         });
 
-            machine.ExceptionThrown += (s, e) => receivedException.Add(e.Exception);
+            machine.TransitionExceptionThrown += (s, e) => receivedException.Add(e.Exception);
 
             machine.Initialize(State);
             machine.Start();
@@ -218,11 +207,8 @@ namespace Appccelerate.StateMachine
             machine.Fire(Event);
         };
 
-        It should_execute_exit_action_on_exit = () =>
-        {
-            exitActionExecuted
-                .Should().BeTrue();
-        };
+        It should_execute_exit_action_on_exit = () => 
+            exitActionExecuted.Should().BeTrue();
     }
 
     [Subject(Concern.EntryAndExitActions)]
@@ -245,7 +231,7 @@ namespace Appccelerate.StateMachine
         Because of = () =>
         {
             machine.In(State)
-                .ExecuteOnExit(p => parameter = p, Parameter)
+                .ExecuteOnExitParametrized(p => parameter = p, Parameter)
                 .On(Event).Goto(AnotherState);
 
             machine.Initialize(State);
@@ -253,17 +239,11 @@ namespace Appccelerate.StateMachine
             machine.Fire(Event);
         };
 
-        It should_execute_exit_action_on_exit = () =>
-        {
-            parameter
-               .Should().NotBeNull();
-        };
+        It should_execute_exit_action_on_exit = () => 
+            parameter.Should().NotBeNull();
 
-        It should_pass_parameter_to_exit_action = () =>
-        {
-            parameter
-                .Should().Be(Parameter);
-        };
+        It should_pass_parameter_to_exit_action = () => 
+            parameter.Should().Be(Parameter);
     }
 
     [Subject(Concern.EntryAndExitActions)]
@@ -286,9 +266,8 @@ namespace Appccelerate.StateMachine
         Because of = () =>
         {
             machine.In(State)
-                .ExecuteOnExit(
-                    () => exitAction1Executed = true,
-                    () => exitAction2Executed = true)
+                .ExecuteOnExit(() => exitAction1Executed = true)
+                .ExecuteOnExit(() => exitAction2Executed = true)
                 .On(Event).Goto(AnotherState);
 
             machine.Initialize(State);
@@ -333,14 +312,13 @@ namespace Appccelerate.StateMachine
         Because of = () =>
         {
             machine.In(State)
-                .ExecuteOnExit(
-                    () => exitAction1Executed = true,
-                    () =>
+                .ExecuteOnExit(() => exitAction1Executed = true)
+                .ExecuteOnExit(() =>
                     {
                         exitAction2Executed = true;
                         throw exception2;
-                    },
-                    () =>
+                    })
+                .ExecuteOnExit(() =>
                     {
                         exitAction3Executed = true;
                         throw exception3;
@@ -367,9 +345,45 @@ namespace Appccelerate.StateMachine
         };
 
         It should_handle_all_exceptions_of_all_throwing_exit_actions = () =>
-        {
             receivedException
                 .Should().BeEquivalentTo(new[] { exception2, exception3 });
-        };
+    }
+
+    [Subject(Concern.EntryAndExitActions)]
+    public class When_calling_Fire_with_an_event_argument
+    {
+        private const int State = 1;
+        private const int AnotherState = 2;
+        private const int Event = 2;
+        private const int Argument = 17;
+
+        private static PassiveStateMachine<int, int> machine;
+
+        private static int argumentPassedToEntryAction;
+        private static int argumentPassedToExitAction;
+
+        Establish context = () =>
+            {
+                machine = new PassiveStateMachine<int, int>();
+
+                machine.In(State)
+                    .ExecuteOnExit((int argument) => argumentPassedToExitAction = argument)
+                    .On(Event).Goto(AnotherState);
+
+                machine.In(AnotherState)
+                    .ExecuteOnEntry((int argument) => argumentPassedToEntryAction = argument);
+
+                machine.Initialize(State);
+                machine.Start();
+            };
+
+        Because of = () =>
+            machine.Fire(Event, Argument);
+
+        It should_pass_event_argument_to_entry_actions_that_take_an_argument = () =>
+            argumentPassedToEntryAction.Should().Be(Argument);
+
+        It should_pass_event_argument_to_exit_actions_that_take_an_argument = () =>
+            argumentPassedToExitAction.Should().Be(Argument);
     }
 }

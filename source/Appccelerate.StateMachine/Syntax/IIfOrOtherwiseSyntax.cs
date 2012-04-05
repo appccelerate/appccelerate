@@ -47,5 +47,20 @@ namespace Appccelerate.StateMachine.Syntax
         /// </summary>
         /// <returns>Default syntax.</returns>
         IOtherwiseSyntax<TState, TEvent> Otherwise();
+
+        /// <summary>
+        /// Defines the transition actions.
+        /// </summary>
+        /// <param name="action">The actions to execute when the transition is taken.</param>
+        /// <returns>Event syntax</returns>
+        IIfOrOtherwiseSyntax<TState, TEvent> Execute(Action action);
+
+        /// <summary>
+        /// Defines the transition actions.
+        /// </summary>
+        /// <typeparam name="T">The type of the action argument.</typeparam>
+        /// <param name="action">The actions to execute when the transition is taken.</param>
+        /// <returns>Event syntax</returns>
+        IIfOrOtherwiseSyntax<TState, TEvent> Execute<T>(Action<T> action);
     }
 }

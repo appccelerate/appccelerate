@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="ITransitionActionHolder.cs" company="Appccelerate">
+// <copyright file="IAnswerer.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,23 +16,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.StateMachine.Machine.ActionHolders
+namespace Appccelerate.EvaluationEngine
 {
-    /// <summary>
-    /// Holds a transition action.
-    /// </summary>
-    public interface ITransitionActionHolder
+    public interface IAnswerer
     {
         /// <summary>
-        /// Executes the transition action.
+        /// Answers the specified question.
         /// </summary>
-        /// <param name="argument">The state machine event argument.</param>
-        void Execute(object argument);
+        /// <typeparam name="TAnswer">The type of the answer.</typeparam>
+        /// <typeparam name="TParameter">The type of the parameter.</typeparam>
+        /// <param name="question">The question.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>The answer</returns>
+        TAnswer Answer<TAnswer, TParameter>(IQuestion<TAnswer, TParameter> question, TParameter parameter);
 
         /// <summary>
-        /// Describes the action.
+        /// Answers the specified question.
         /// </summary>
-        /// <returns>Description of the action.</returns>
-        string Describe();
+        /// <typeparam name="TAnswer">The type of the answer.</typeparam>
+        /// <param name="question">The question.</param>
+        /// <returns>The answer</returns>
+        TAnswer Answer<TAnswer>(IQuestion<TAnswer> question);
     }
 }

@@ -20,7 +20,7 @@ namespace Appccelerate.StateMachine.Machine
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Reflection;
 
     using Appccelerate.StateMachine.Machine.Events;
     using Appccelerate.StateMachine.Syntax;
@@ -100,11 +100,6 @@ namespace Appccelerate.StateMachine.Machine
         /// Occurs when no transition could be executed.
         /// </summary>
         public event EventHandler<TransitionEventArgs<TState, TEvent>> TransitionDeclined;
-
-        /// <summary>
-        /// Occurs when an exception was thrown inside the state machine.
-        /// </summary>
-        public event EventHandler<ExceptionEventArgs<TState, TEvent>> ExceptionThrown;
 
         /// <summary>
         /// Occurs when an exception was thrown inside a transition of the state machine.
@@ -223,10 +218,10 @@ namespace Appccelerate.StateMachine.Machine
 
             this.extensions.ForEach(extension => extension.EnteringInitialState(this, this.initialStateId.Value));
 
-            IStateContext<TState, TEvent> stateContext = this.factory.CreateStateContext(null, this);
-            this.EnterInitialState(this.states[this.initialStateId.Value], stateContext);
+            var context = this.factory.CreateTransitionContext(null, new Missable<TEvent>(), Missing.Value, this);
+            this.EnterInitialState(this.states[this.initialStateId.Value], context);
 
-            this.extensions.ForEach(extension => extension.EnteredInitialState(this, this.initialStateId.Value, stateContext));
+            this.extensions.ForEach(extension => extension.EnteredInitialState(this, this.initialStateId.Value, context));
         }
 
         /// <summary>
@@ -235,7 +230,7 @@ namespace Appccelerate.StateMachine.Machine
         /// <param name="eventId">The event.</param>
         public void Fire(TEvent eventId)
         {
-            this.Fire(eventId, null);
+            this.Fire(eventId, Missing.Value);
         }
 
         /// <summary>
@@ -250,7 +245,7 @@ namespace Appccelerate.StateMachine.Machine
 
             this.extensions.ForEach(extension => extension.FiringEvent(this, ref eventId, ref eventArgument));
 
-            ITransitionContext<TState, TEvent> context = this.factory.CreateTransitionContext(this.CurrentState, eventId, eventArgument, this);
+            ITransitionContext<TState, TEvent> context = this.factory.CreateTransitionContext(this.CurrentState, new Missable<TEvent>(eventId), eventArgument, this);
             ITransitionResult<TState, TEvent> result = this.CurrentState.Fire(context);
 
             if (!result.Fired)
@@ -276,28 +271,11 @@ namespace Appccelerate.StateMachine.Machine
             return new HierarchyBuilder<TState, TEvent>(this.states, superStateId);
         }
 
-        /// <summary>
-        /// Fires the <see cref="ExceptionThrown"/> event.
-        /// </summary>
-        /// <param name="stateContext">The context.</param>
-        /// <param name="exception">The exception.</param>
-        public virtual void OnExceptionThrown(IStateContext<TState, TEvent> stateContext, Exception exception)
-        {
-            RethrowExceptionIfNoHandlerRegistered(exception, this.ExceptionThrown);
-
-            this.RaiseEvent(this.ExceptionThrown, new ExceptionEventArgs<TState, TEvent>(stateContext, exception), stateContext, false);
-        }
-
-        /// <summary>
-        /// Fires the <see cref="TransitionExceptionThrown"/> event.
-        /// </summary>
-        /// <param name="transitionContext">The transition context.</param>
-        /// <param name="exception">The exception.</param>
-        public virtual void OnExceptionThrown(ITransitionContext<TState, TEvent> transitionContext, Exception exception)
+        public virtual void OnExceptionThrown(ITransitionContext<TState, TEvent> context, Exception exception)
         {
             RethrowExceptionIfNoHandlerRegistered(exception, this.TransitionExceptionThrown);
 
-            this.RaiseEvent(this.TransitionExceptionThrown, new TransitionExceptionEventArgs<TState, TEvent>(transitionContext, exception), transitionContext, false);
+            this.RaiseEvent(this.TransitionExceptionThrown, new TransitionExceptionEventArgs<TState, TEvent>(context, exception), context, false);
         }
 
         /// <summary>
@@ -371,22 +349,13 @@ namespace Appccelerate.StateMachine.Machine
             this.initialStateId.Value = initialState.Id;
         }
 
-        private void EnterInitialState(IState<TState, TEvent> initialState, IStateContext<TState, TEvent> stateContext)
+        private void EnterInitialState(IState<TState, TEvent> initialState, ITransitionContext<TState, TEvent> context)
         {
-            var initializer = this.factory.CreateStateMachineInitializer(initialState, stateContext);
+            var initializer = this.factory.CreateStateMachineInitializer(initialState, context);
             this.CurrentState = initializer.EnterInitialState();
         }
 
-        /// <summary>
-        /// Raises an event and catches all exceptions. If an exception is caught then <paramref name="raiseEventOnException"/> specifies whether the
-        /// <see cref="ExceptionThrown"/> event is risen.
-        /// </summary>
-        /// <typeparam name="T">The type of the event arguments.</typeparam>
-        /// <param name="eventHandler">The event handler.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="stateContext">The event context.</param>
-        /// <param name="raiseEventOnException">if set to <c>true</c> [raise event on exception].</param>
-        private void RaiseEvent<T>(EventHandler<T> eventHandler, T arguments, IStateContext<TState, TEvent> stateContext, bool raiseEventOnException) where T : EventArgs
+        private void RaiseEvent<T>(EventHandler<T> eventHandler, T arguments, ITransitionContext<TState, TEvent> context, bool raiseEventOnException) where T : EventArgs
         {
             try
             {
@@ -404,7 +373,7 @@ namespace Appccelerate.StateMachine.Machine
                     throw;
                 }
 
-                ((INotifier<TState, TEvent>)this).OnExceptionThrown(stateContext, e);
+                ((INotifier<TState, TEvent>)this).OnExceptionThrown(context, e);
             }
         }
 

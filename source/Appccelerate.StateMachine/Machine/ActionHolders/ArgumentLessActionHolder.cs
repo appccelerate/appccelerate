@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="ArgumentTransitionActionHolder.cs" company="Appccelerate">
+// <copyright file="ArgumentLessActionHolder.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,41 +22,20 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    /// <summary>
-    /// Holds a transition action with exactly one argument.
-    /// </summary>
-    /// <typeparam name="T">The type of the argument.</typeparam>
-    public class ArgumentTransitionActionHolder<T> : ITransitionActionHolder
+    public class ArgumentLessActionHolder : IActionHolder
     {
-        private readonly Action<T> action;
+        private readonly Action action;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArgumentTransitionActionHolder{T}"/> class.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        public ArgumentTransitionActionHolder(Action<T> action)
+        public ArgumentLessActionHolder(Action action)
         {
             this.action = action;
         }
 
-        /// <summary>
-        /// Executes the transition action.
-        /// </summary>
-        /// <param name="argument">The state machine event argument.</param>
         public void Execute(object argument)
         {
-            if (argument != null && !(argument is T))
-            {
-                throw new ArgumentException(ActionHoldersExceptionMessages.CannotCastArgumentToActionArgument(argument, this.Describe()));
-            }
-
-            this.action((T)argument);
+            this.action();
         }
 
-        /// <summary>
-        /// Describes the action.
-        /// </summary>
-        /// <returns>Description of the action.</returns>
         public string Describe()
         {
             return this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name;

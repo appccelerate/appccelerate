@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="Publisher.cs" company="Appccelerate">
+// <copyright file="OnPublisher.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ namespace Appccelerate.EventBroker.Handlers
     /// <summary>
     /// Handler that executes the subscription on the same thread the publisher is currently running (synchronous).
     /// </summary>
-    public class Publisher : EventBrokerHandlerBase
+    public class OnPublisher : EventBrokerHandlerBase
     {
         /// <summary>
         /// Gets the kind of the handler, whether it is a synchronous or asynchronous handler.

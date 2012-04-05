@@ -39,7 +39,7 @@ namespace Appccelerate.EventBroker.Sample
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments</param>
-        [EventSubscription(EventTopics.PongUIFromUIThread, typeof(Handlers.UserInterface))]
+        [EventSubscription(EventTopics.PongUIFromUIThread, typeof(Handlers.OnUserInterface))]
         public void HandleUiFromUi(object sender, EventArgs e)
         {
             this.FeedbackLabel.Text = "UI from UI thread called.";
@@ -50,7 +50,7 @@ namespace Appccelerate.EventBroker.Sample
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        [EventSubscription(EventTopics.PongUIFromAsync, typeof(Handlers.UserInterface))]
+        [EventSubscription(EventTopics.PongUIFromAsync, typeof(Handlers.OnUserInterface))]
         public void HandleUiFromAsync(object sender, EventArgs e)
         {
             this.FeedbackLabel.Text = "UI from async.";

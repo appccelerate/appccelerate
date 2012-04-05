@@ -65,7 +65,7 @@ namespace Appccelerate.EventBroker
 
             public EventArgs ReceivedEventArgs { get; private set; }
 
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             public void HandleEvent(object sender, EventArgs eventArgs)
             {
                 this.HandledEvent = true;
@@ -88,7 +88,7 @@ namespace Appccelerate.EventBroker
 
             public void Register(IEventRegistrar eventRegistrar)
             {
-                eventRegistrar.AddSubscription(EventTopic, this, this.HandleEvent, new Publisher());
+                eventRegistrar.AddSubscription(EventTopic, this, this.HandleEvent, new OnPublisher());
             }
 
             public void Unregister(IEventRegistrar eventRegistrar)

@@ -190,7 +190,7 @@ namespace Appccelerate.EventBroker
 
         public class ExceptionSubscriber
         {
-            [EventSubscription(SimpleEvent.EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(SimpleEvent.EventTopic, typeof(Handlers.OnPublisher))]
             public void Handle(object sender, EventArgs eventArgs)
             {
                 throw new Exception("test");

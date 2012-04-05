@@ -45,7 +45,7 @@ namespace Appccelerate.EventBroker
         {
             int MyValue { get; }
 
-            [EventSubscription(@"event://ITestPublisher/MyEvent", typeof(Handlers.Publisher))]
+            [EventSubscription(@"event://ITestPublisher/MyEvent", typeof(Handlers.OnPublisher))]
             void HandleMyEvent(object sender, EventArgs<int> e);
         }
 

@@ -43,14 +43,14 @@ namespace Appccelerate.MappingEventBroker.Conventions
     ///    }
     ///    public class SubscriberOriginal
     ///    {
-    ///        [EventSubscription(@"topic://Original", typeof(Appccelerate.EventBroker.Handlers.Publisher))]
+    ///        [EventSubscription(@"topic://Original", typeof(Appccelerate.EventBroker.Handlers.OnPublisher))]
     ///        public void HandleOriginal(object sender, EventArgs e)
     ///        {
     ///        }
     ///    }
     ///    public class SubscriberMapped
     ///    {
-    ///        [EventSubscription(@"mapped://Original", typeof(Appccelerate.EventBroker.Handlers.Publisher))]
+    ///        [EventSubscription(@"mapped://Original", typeof(Appccelerate.EventBroker.Handlers.OnPublisher))]
     ///        public void HandleOriginal(object sender, CancelEventArgs e)
     ///        {
     ///        }

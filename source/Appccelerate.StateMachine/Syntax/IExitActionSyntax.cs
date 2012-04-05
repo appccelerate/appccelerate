@@ -28,11 +28,19 @@ namespace Appccelerate.StateMachine.Syntax
     public interface IExitActionSyntax<TState, TEvent> : IEventSyntax<TState, TEvent>
     {
         /// <summary>
-        /// Defines exit actions.
+        /// Defines an exit action.
         /// </summary>
-        /// <param name="actions">The actions.</param>
+        /// <param name="action">The action.</param>
         /// <returns>Event syntax.</returns>
-        IEventSyntax<TState, TEvent> ExecuteOnExit(params Action[] actions);
+        IExitActionSyntax<TState, TEvent> ExecuteOnExit(Action action);
+
+        /// <summary>
+        /// Defines an exit action.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <returns>Event syntax.</returns>
+        /// <typeparam name="T">Type of the event argument passed to the action.</typeparam>
+        IExitActionSyntax<TState, TEvent> ExecuteOnExit<T>(Action<T> action);
 
         /// <summary>
         /// Defines an exit action.
@@ -41,6 +49,6 @@ namespace Appccelerate.StateMachine.Syntax
         /// <param name="action">The action.</param>
         /// <param name="parameter">The parameter that will be passed to the exit action.</param>
         /// <returns>Exit action syntax.</returns>
-        IEventSyntax<TState, TEvent> ExecuteOnExit<T>(Action<T> action, T parameter);
+        IExitActionSyntax<TState, TEvent> ExecuteOnExitParametrized<T>(Action<T> action, T parameter);
     }
 }

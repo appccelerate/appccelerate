@@ -92,19 +92,19 @@ namespace Appccelerate.EventBroker
                 }
             }
 
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             public void GlobalHandler(object sender, EventArgs e)
             {
                 this.CalledGlobally = true;
             }
 
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher), typeof(SubscribeToParents))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher), typeof(SubscribeToParents))]
             public void ParentHandler(object sender, EventArgs e)
             {
                 this.CalledFromParent = true;
             }
 
-            [EventSubscription(EventTopic, typeof(Handlers.Publisher), typeof(SubscribeToChildren))]
+            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher), typeof(SubscribeToChildren))]
             public void ChildrenHandler(object sender, EventArgs e)
             {
                 this.CalledFromChild = true;
