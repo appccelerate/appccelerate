@@ -21,6 +21,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Access\IDirectory.g.cs" />
+    <Compile Include="Access\IDirectoryExtension.g.cs" />
+    <Compile Include="Access\IDirectoryInfo.cs" />
+    <Compile Include="Access\IDriveInfo.cs" />
+    <Compile Include="Access\IFile.g.cs" />
+    <Compile Include="Access\IFileExtension.g.cs" />
+    <Compile Include="Access\IFileInfo.g.cs" />
+    <Compile Include="Access\IFileSystemInfo.g.cs" />
+    <Compile Include="Access\IAccessFactory.cs" />
+    <Compile Include="Access\AccessFactory.cs" />
+    <Compile Include="Access\IPath.g.cs" />
+    <Compile Include="Access\IPathExtension.g.cs" />
     <Compile Include="Csv\CsvParseException.cs" />
     <Compile Include="Csv\CsvParser.cs" />
     <Compile Include="Csv\CsvWriter.cs" />
