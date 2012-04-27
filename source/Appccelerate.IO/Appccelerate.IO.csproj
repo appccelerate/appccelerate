@@ -27,6 +27,8 @@
     <Compile Include="Access\IDirectoryExtension.g.cs" />
     <Compile Include="Access\IDirectoryInfo.cs" />
     <Compile Include="Access\IDriveInfo.cs" />
+    <Compile Include="Access\IEnvironment.cs" />
+    <Compile Include="Access\IEnvironmentExtension.g.cs" />
     <Compile Include="Access\IFile.g.cs" />
     <Compile Include="Access\IFileExtension.g.cs" />
     <Compile Include="Access\IFileInfo.g.cs" />
@@ -36,6 +38,7 @@
     <Compile Include="Access\Internals\Directory.cs" />
     <Compile Include="Access\Internals\DirectoryInfo.cs" />
     <Compile Include="Access\Internals\DriveInfo.cs" />
+    <Compile Include="Access\Internals\Environment.cs" />
     <Compile Include="Access\Internals\ExtensionProviderExtensions.cs" />
     <Compile Include="Access\Internals\File.cs" />
     <Compile Include="Access\Internals\FileInfo.cs" />

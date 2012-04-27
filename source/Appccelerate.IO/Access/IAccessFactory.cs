@@ -24,38 +24,23 @@ namespace Appccelerate.IO.Access
     using System.Security;
 
     /// <summary>
-    /// Factory interface for factories which are responsible to create IO access
+    /// Factory interface for factories which are responsible to create IO
     /// components.
     /// </summary>
     public interface IAccessFactory
     {
-        /// <summary>
-        /// Creates the directory access layer.
-        /// </summary>
-        /// <returns>An instance implementing <see cref="IDirectory"/>.</returns>
         IDirectory CreateDirectory();
 
-        /// <summary>
-        /// Creates the file access layer.
-        /// </summary>
-        /// <returns>An instance implementing <see cref="IFile"/>.</returns>
         IFile CreateFile();
 
-        /// <summary>
-        /// Creates the path access layer.
-        /// </summary>
-        /// <returns>An instance implementing <see cref="IPath"/>.</returns>
         IPath CreatePath();
 
-        /// <summary>
-        /// Creates the file info access.
-        /// </summary>
-        /// <param name="fileInfo">The file info.</param>
-        /// <returns>An instance implementing <see cref="IFileInfo"/>.</returns>
+        IEnvironment CreateEnvironment();
+
         IFileInfo CreateFileInfo(FileInfo fileInfo);
 
         /// <summary>
-        /// Creates the file info access.
+        /// Creates the file info.
         /// </summary>
         /// <param name="pathToFile">The file path.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pathToFile"/> is null.
@@ -76,14 +61,14 @@ namespace Appccelerate.IO.Access
         IFileInfo CreateFileInfo(string pathToFile);
 
         /// <summary>
-        /// Creates the directory info access.
+        /// Creates the directory info.
         /// </summary>
         /// <param name="directoryInfo">The directory info.</param>
         /// <returns>An instance implementing <see cref="IDirectoryInfo"/>.</returns>
         IDirectoryInfo CreateDirectoryInfo(DirectoryInfo directoryInfo);
 
         /// <summary>
-        /// Creates the directory info access.
+        /// Creates the directory info.
         /// </summary>
         /// <param name="pathToDirectory">The directory path.</param>
         /// <exception cref="ArgumentNullException">path is null.</exception>
@@ -106,7 +91,7 @@ namespace Appccelerate.IO.Access
         IDriveInfo CreateDriveInfo(DriveInfo driveInfo);
 
         /// <summary>
-        /// Creates the drive info access.
+        /// Creates the drive info.
         /// </summary>
         /// <param name="driveName">A valid drive path or drive letter. This can be either
         /// uppercase or lowercase, 'a' to 'z'. A null value is not valid.</param>
@@ -120,24 +105,31 @@ namespace Appccelerate.IO.Access
         IDriveInfo CreateDriveInfo(string driveName);
 
         /// <summary>
-        /// Registers an extensions provider for file access extensions. The extensions provider is called on each
-        /// CreateFileAccess request.
+        /// Registers an extensions provider for file extensions. The extensions provider is called on each
+        /// CreateFile request.
         /// </summary>
-        /// <param name="extensionsProvider">The file access extension provider</param>
+        /// <param name="extensionsProvider">The file extension provider</param>
         void RegisterFileExtensionsProvider(Func<IEnumerable<IFileExtension>> extensionsProvider);
 
         /// <summary>
-        /// Registers an extensions provider for directory access extensions. The extensions provider is called on each
-        /// CreateDirectoryAccess request.
+        /// Registers an extensions provider for directory extensions. The extensions provider is called on each
+        /// CreateDirectory request.
         /// </summary>
-        /// <param name="extensionsProvider">The directory access extension provider</param>
+        /// <param name="extensionsProvider">The directory extension provider</param>
         void RegisterDirectoryExtensionsProvider(Func<IEnumerable<IDirectoryExtension>> extensionsProvider);
 
         /// <summary>
-        /// Registers an extensions provider for path access extensions. The extensions provider is called on each
-        /// CreatePathAccess request.
+        /// Registers an extensions provider for path extensions. The extensions provider is called on each
+        /// CreatePath request.
         /// </summary>
-        /// <param name="extensionsProvider">The path access extension provider</param>
+        /// <param name="extensionsProvider">The path extension provider</param>
         void RegisterPathExtensionsProvider(Func<IEnumerable<IPathExtension>> extensionsProvider);
+
+        /// <summary>
+        /// Registers an extensions provider for environment extensions. The extensions provider is called on each
+        /// CreateEnvironment request.
+        /// </summary>
+        /// <param name="extensionsProvider">The environment extension provider</param>
+        void RegisterEnvironmentExtensionsProvider(Func<IEnumerable<IEnvironmentExtension>> extensionsProvider);
     }
 }
