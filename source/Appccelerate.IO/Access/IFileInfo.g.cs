@@ -22,8 +22,6 @@ namespace Appccelerate.IO.Access
     using System.Runtime.InteropServices;
     using System.Security.AccessControl;
 
-#pragma warning disable 1734
-
     /// <summary>
     /// Interface which simplifies the access to the file info.
     /// </summary>
@@ -102,6 +100,4 @@ namespace Appccelerate.IO.Access
         /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.SetAccessControl(System.Security.AccessControl.FileSecurity)"]/*' />
         void SetAccessControl(FileSecurity fileSecurity);
     }
-
-#pragma warning restore 1734
 }

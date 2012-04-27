@@ -21,12 +21,14 @@ namespace Appccelerate.IO.Access
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Security.AccessControl;
     using System.Text;
 
     /// <summary>
     /// Interface for file access extensions
     /// </summary>
+    [CompilerGenerated]
     public interface IFileExtension
     {
         /// <see cref="IFile.GetLastWriteTime(System.String)" />

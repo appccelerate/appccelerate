@@ -19,10 +19,12 @@
 namespace Appccelerate.IO.Access
 {
     using System;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Interface for path access extensions
     /// </summary>
+    [CompilerGenerated]
     public interface IPathExtension
     {
         /// <see cref="IPath.GetDirectoryName"/>

@@ -20,11 +20,13 @@ namespace Appccelerate.IO.Access
 {
     using System;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Security.AccessControl;
 
     /// <summary>
     /// Interface for directory access extensions
     /// </summary>
+    [CompilerGenerated]
     public interface IDirectoryExtension
     {
         /// <see cref="IDirectory.Exists(System.String)" />

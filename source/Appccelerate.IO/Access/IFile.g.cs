@@ -20,14 +20,14 @@ namespace Appccelerate.IO.Access
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Security.AccessControl;
     using System.Text;
-
-#pragma warning disable 1734
 
     /// <summary>
     /// Interface which simplifies the access to the file system.
     /// </summary>
+    [CompilerGenerated]
     public interface IFile
     {
         /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.File.Delete(System.String)"]/*' />
@@ -184,6 +184,4 @@ namespace Appccelerate.IO.Access
         /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.File.SetLastWriteTimeUtc(System.String,System.DateTime)"]/*' />
         void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc);
     }
-
-#pragma warning restore 1734
 }

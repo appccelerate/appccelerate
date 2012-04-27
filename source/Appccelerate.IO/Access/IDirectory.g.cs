@@ -20,13 +20,13 @@ namespace Appccelerate.IO.Access
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Security.AccessControl;
-
-#pragma warning disable 1734
 
     /// <summary>
     /// Abstraction layer which simplifies access to directories.
     /// </summary>
+    [CompilerGenerated]
     public interface IDirectory
     {
         /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.Directory.Exists(System.String)"]/*' />
@@ -131,6 +131,4 @@ namespace Appccelerate.IO.Access
         /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.Directory.SetLastWriteTimeUtc(System.String,System.DateTime)"]/*' />
         void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc);
     }
-
-#pragma warning restore 1734
 }

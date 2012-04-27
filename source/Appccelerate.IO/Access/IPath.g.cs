@@ -19,10 +19,12 @@
 namespace Appccelerate.IO.Access
 {
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Abstraction layer which simplifies access to paths.
     /// </summary>
+    [CompilerGenerated]
     public interface IPath
     {
         /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.Path.GetDirectoryName(System.String)"]/*' />
