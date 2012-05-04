@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Access\DirectoryExtensionBase.cs" />
+    <Compile Include="Access\EnvironmentExtensionBase.cs" />
     <Compile Include="Access\FileExtensionBase.cs" />
     <Compile Include="Access\IDirectory.g.cs" />
     <Compile Include="Access\IDirectoryExtension.g.cs" />

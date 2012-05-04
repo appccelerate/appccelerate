@@ -18,10 +18,59 @@
 
 namespace Appccelerate.IO.Access
 {
+    using System;
     using System.Runtime.CompilerServices;
 
     [CompilerGenerated]
     public interface IEnvironmentExtension
     {
+        void BeginExit(int exitCode);
+
+        void EndExit(int exitCode);
+
+        void FailExit(ref Exception exception);
+
+        void BeginExpandEnvironmentVariables(string name);
+
+        void EndExpandEnvironmentVariables(string result, string name);
+
+        void FailExpandEnvironmentVariables(ref Exception exception);
+
+        void BeginFailFast(string message, Exception exception);
+
+        void EndFailFast(string message, Exception exception);
+
+        void FailFailFast(ref Exception exception);
+
+        void BeginFailFast(string message);
+
+        void EndFailFast(string message);
+
+        void BeginGetCommandLineArgs();
+
+        void EndGetCommandLineArgs(string[] result);
+
+        void FailGetCommandLineArgs(ref Exception exception);
+
+        /*----------------
+
+        string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
+
+        string GetEnvironmentVariable(string variable);
+
+        IDictionary<string, string> GetEnvironmentVariables(EnvironmentVariableTarget target);
+
+        IDictionary<string, string> GetEnvironmentVariables();
+
+        string GetFolderPath(Environment.SpecialFolder folder);
+
+        string GetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option);
+
+        IEnumerable<string> GetLogicalDrives();
+
+        void SetEnvironmentVariable(string variable, string value);
+
+        void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
+         -------*/
     }
 }

@@ -40,24 +40,186 @@ namespace Appccelerate.IO.Access.Internals
             }
         }
 
+        public string CommandLine
+        {
+            get
+            {
+                return System.Environment.CommandLine;
+            }
+        }
+
+        public string CurrentDirectory
+        {
+            get
+            {
+                return System.Environment.CurrentDirectory;
+            }
+
+            set
+            {
+                System.Environment.CurrentDirectory = value;
+            }
+        }
+
+        public int ExitCode
+        {
+            get
+            {
+                return System.Environment.ExitCode;
+            }
+
+            set
+            {
+                System.Environment.ExitCode = value;
+            }
+        }
+
+        public bool HasShutdownStarted
+        {
+            get
+            {
+                return System.Environment.HasShutdownStarted;
+            }
+        }
+
+        public bool Is64BitOperatingSystem
+        {
+            get
+            {
+                return System.Environment.Is64BitOperatingSystem;
+            }
+        }
+
+        public bool Is64BitProcess
+        {
+            get
+            {
+                return System.Environment.Is64BitProcess;
+            }
+        }
+
+        public string MachineName
+        {
+            get
+            {
+                return System.Environment.MachineName;
+            }
+        }
+
+        public string NewLine
+        {
+            get
+            {
+                return System.Environment.NewLine;
+            }
+        }
+
+        public OperatingSystem OSVersion
+        {
+            get
+            {
+                return System.Environment.OSVersion;
+            }
+        }
+
+        public int ProcessorCount
+        {
+            get
+            {
+                return System.Environment.ProcessorCount;
+            }
+        }
+
+        public string StackTrace
+        {
+            get
+            {
+                return System.Environment.StackTrace;
+            }
+        }
+
+        public string SystemDirectory
+        {
+            get
+            {
+                return System.Environment.SystemDirectory;
+            }
+        }
+
+        public int SystemPageSize
+        {
+            get
+            {
+                return System.Environment.SystemPageSize;
+            }
+        }
+
+        public int TickCount
+        {
+            get
+            {
+                return System.Environment.TickCount;
+            }
+        }
+
+        public string UserDomainName
+        {
+            get
+            {
+                return System.Environment.UserDomainName;
+            }
+        }
+
+        public bool UserInteractive
+        {
+            get
+            {
+                return System.Environment.UserInteractive;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return System.Environment.UserName;
+            }
+        }
+
+        public Version Version
+        {
+            get
+            {
+                return System.Environment.Version;
+            }
+        }
+
+        public long WorkingSet
+        {
+            get
+            {
+                return System.Environment.WorkingSet;
+            }
+        }
+
         public void Exit(int exitCode)
         {
-            this.SurroundWithExtension(() => System.Environment.Exit(exitCode));
+            this.SurroundWithExtension(() => System.Environment.Exit(exitCode), exitCode);
         }
 
         public string ExpandEnvironmentVariables(string name)
         {
-            return this.SurroundWithExtension(() => System.Environment.ExpandEnvironmentVariables(name));
+            return this.SurroundWithExtension(() => System.Environment.ExpandEnvironmentVariables(name), name);
         }
 
         public void FailFast(string message, Exception exception)
         {
-            this.SurroundWithExtension(() => System.Environment.FailFast(message, exception));
+            this.SurroundWithExtension(() => System.Environment.FailFast(message, exception), message, exception);
         }
 
         public void FailFast(string message)
         {
-            this.SurroundWithExtension(() => System.Environment.FailFast(message));
+            this.SurroundWithExtension(() => System.Environment.FailFast(message), message);
         }
 
         public IEnumerable<string> GetCommandLineArgs()
@@ -67,22 +229,47 @@ namespace Appccelerate.IO.Access.Internals
 
         public string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariable(variable, target));
+            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariable(variable, target), variable, target);
         }
 
         public string GetEnvironmentVariable(string variable)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariable(variable));
+            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariable(variable), variable);
         }
 
         public IDictionary<string, string> GetEnvironmentVariables(EnvironmentVariableTarget target)
         {
-            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariables(target)).OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value);
+            return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariables(target), target).OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value);
         }
 
         public IDictionary<string, string> GetEnvironmentVariables()
         {
             return this.SurroundWithExtension(() => System.Environment.GetEnvironmentVariables()).OfType<DictionaryEntry>().ToDictionary(e => (string)e.Key, v => (string)v.Value);
+        }
+
+        public string GetFolderPath(System.Environment.SpecialFolder folder)
+        {
+            return this.SurroundWithExtension(() => System.Environment.GetFolderPath(folder), folder);
+        }
+
+        public string GetFolderPath(System.Environment.SpecialFolder folder, System.Environment.SpecialFolderOption option)
+        {
+            return this.SurroundWithExtension(() => System.Environment.GetFolderPath(folder, option), folder, option);
+        }
+
+        public IEnumerable<string> GetLogicalDrives()
+        {
+            return this.SurroundWithExtension(() => System.Environment.GetLogicalDrives());
+        }
+
+        public void SetEnvironmentVariable(string variable, string value)
+        {
+            this.SurroundWithExtension(() => System.Environment.SetEnvironmentVariable(variable, value), variable, value);
+        }
+
+        public void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+        {
+            this.SurroundWithExtension(() => System.Environment.SetEnvironmentVariable(variable, value, target), variable, value, target);
         }
     }
 }

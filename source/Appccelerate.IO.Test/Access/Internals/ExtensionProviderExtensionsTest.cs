@@ -72,7 +72,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingAction_MustCallBeginWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingAction_MustCallBeginWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
 
@@ -84,7 +84,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingAction_MustCallEndWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingAction_MustCallEndWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
 
@@ -96,7 +96,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingAction_MustCallActionWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingAction_MustCallActionWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
 
@@ -108,7 +108,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingAction_MustCallFailWithCorrectExceptionAndRethrow()
+        public void SurroundWithExtensions_WhenUsingAction_MustCallFailWithCorrectExceptionAndRethrow()
         {
             const string ExpectedParameter = "Test";
 
@@ -122,7 +122,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingAction_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
+        public void SurroundWithExtensions_WhenUsingAction_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
         {
             const string ExpectedParameter = "Test";
 
@@ -135,7 +135,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingActionWithOverload_MustCallBeginWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingActionWithOverload_MustCallBeginWithCorrectParameters()
         {
             const bool ExpectedParameter = true;
 
@@ -147,7 +147,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingActionWithOverload_MustCallEndWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingActionWithOverload_MustCallEndWithCorrectParameters()
         {
             const bool ExpectedParameter = true;
 
@@ -159,7 +159,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingActionWithOverload_MustCallActionWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingActionWithOverload_MustCallActionWithCorrectParameters()
         {
             const bool ExpectedParameter = true;
 
@@ -171,7 +171,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingActionWithOverload_MustCallFailWithCorrectExceptionAndRethrow()
+        public void SurroundWithExtensions_WhenUsingActionWithOverload_MustCallFailWithCorrectExceptionAndRethrow()
         {
             const bool ExpectedParameter = true;
 
@@ -186,7 +186,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingActionWithOverload_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
+        public void SurroundWithExtensions_WhenUsingActionWithOverload_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
         {
             const bool ExpectedParameter = true;
 
@@ -199,7 +199,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFunc_MustCallBeginWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingFunc_MustCallBeginWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
 
@@ -211,7 +211,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFunc_MustCallEndWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingFunc_MustCallEndWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
 
@@ -223,7 +223,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFunc_MustCallActionWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingFunc_MustCallActionWithCorrectParameters()
         {
             const string ExpectedParameter = "Test";
 
@@ -236,7 +236,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFunc_MustCallFailWithCorrectExceptionAndRethrow()
+        public void SurroundWithExtensions_WhenUsingFunc_MustCallFailWithCorrectExceptionAndRethrow()
         {
             const string ExpectedParameter = "Test";
 
@@ -251,7 +251,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFunc_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
+        public void SurroundWithExtensions_WhenUsingFunc_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
         {
             const string ExpectedParameter = "Test";
 
@@ -264,7 +264,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFuncWithOverload_MustCallBeginWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingFuncWithOverload_MustCallBeginWithCorrectParameters()
         {
             const bool ExpectedParameter = true;
 
@@ -276,7 +276,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFuncWithOverload_MustCallEndWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingFuncWithOverload_MustCallEndWithCorrectParameters()
         {
             const bool ExpectedParameter = true;
 
@@ -288,7 +288,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFuncWithOverload_MustCallActionWithCorrectParameters()
+        public void SurroundWithExtensions_WhenUsingFuncWithOverload_MustCallActionWithCorrectParameters()
         {
             const bool ExpectedParameter = true;
 
@@ -301,7 +301,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFuncWithOverload_MustCallFailWithCorrectExceptionAndRethrow()
+        public void SurroundWithExtensions_WhenUsingFuncWithOverload_MustCallFailWithCorrectExceptionAndRethrow()
         {
             const bool ExpectedParameter = true;
 
@@ -315,7 +315,7 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         [Fact]
-        public void SourroundWithExtensions_WhenUsingFuncWithOverload_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
+        public void SurroundWithExtensions_WhenUsingFuncWithOverload_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
         {
             const bool ExpectedParameter = true;
 
