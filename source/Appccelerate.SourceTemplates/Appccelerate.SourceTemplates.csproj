@@ -25,8 +25,12 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Log4Net\AsyncModuleLogExtension.cs" />
     <Compile Include="Log4Net\AsyncWorkerLogExtension.cs" />
+    <Compile Include="Log4Net\EnvironmentLogExtension.cs" />
     <Compile Include="Log4Net\EvaluationEngineLogExtension.cs" />
     <Compile Include="Log4Net\EventBrokerLogExtension.cs" />
+    <Compile Include="Log4Net\DirectoryLogExtension.cs" />
+    <Compile Include="Log4Net\FileLogExtension.cs" />
+    <Compile Include="Log4Net\PathLogExtension.cs" />
     <Compile Include="Log4Net\LoggingStreamDecoratorStream.cs" />
     <Compile Include="Log4Net\StateMachineLogExtension.cs" />
     <Compile Include="Log4Net\UserInterfaceThreadSynchronizerLogExtension.cs" />
