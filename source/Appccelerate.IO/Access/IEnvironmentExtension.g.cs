@@ -19,6 +19,7 @@
 namespace Appccelerate.IO.Access
 {
     using System;
+    using System.Collections;
     using System.Runtime.CompilerServices;
 
     [CompilerGenerated]
@@ -52,25 +53,50 @@ namespace Appccelerate.IO.Access
 
         void FailGetCommandLineArgs(ref Exception exception);
 
-        /*----------------
+        void BeginGetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
 
-        string GetEnvironmentVariable(string variable, EnvironmentVariableTarget target);
+        void EndGetEnvironmentVariable(string result, string variable, EnvironmentVariableTarget target);
 
-        string GetEnvironmentVariable(string variable);
+        void FailGetEnvironmentVariable(ref Exception exception);
 
-        IDictionary<string, string> GetEnvironmentVariables(EnvironmentVariableTarget target);
+        void BeginGetEnvironmentVariable(string variable);
 
-        IDictionary<string, string> GetEnvironmentVariables();
+        void EndGetEnvironmentVariable(string result, string variable);
 
-        string GetFolderPath(Environment.SpecialFolder folder);
+        void BeginGetEnvironmentVariables(EnvironmentVariableTarget target);
 
-        string GetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option);
+        void EndGetEnvironmentVariables(IDictionary result, EnvironmentVariableTarget target);
 
-        IEnumerable<string> GetLogicalDrives();
+        void FailGetEnvironmentVariables(ref Exception exception);
 
-        void SetEnvironmentVariable(string variable, string value);
+        void BeginGetEnvironmentVariables();
 
-        void SetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
-         -------*/
+        void EndGetEnvironmentVariables(IDictionary result);
+
+        void BeginGetFolderPath(Environment.SpecialFolder folder);
+
+        void EndGetFolderPath(string result, Environment.SpecialFolder folder);
+
+        void FailGetFolderPath(ref Exception exception);
+
+        void BeginGetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option);
+
+        void EndGetFolderPath(string result, Environment.SpecialFolder folder, Environment.SpecialFolderOption option);
+
+        void BeginGetLogicalDrives();
+
+        void EndGetLogicalDrives(string[] result);
+
+        void FailGetLogicalDrives(ref Exception exception);
+
+        void BeginSetEnvironmentVariable(string variable, string value);
+
+        void EndSetEnvironmentVariable(string variable, string value);
+
+        void FailSetEnvironmentVariable(ref Exception exception);
+
+        void BeginSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
+
+        void EndSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target);
     }
 }

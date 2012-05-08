@@ -19,6 +19,7 @@
 namespace Appccelerate.IO.Access
 {
     using System;
+    using System.Collections;
 
     public class EnvironmentExtensionBase : IEnvironmentExtension
     {
@@ -75,6 +76,98 @@ namespace Appccelerate.IO.Access
         }
 
         public virtual void FailGetCommandLineArgs(ref Exception exception)
+        {
+        }
+
+        public virtual void BeginGetEnvironmentVariable(string variable, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void EndGetEnvironmentVariable(string result, string variable, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void FailGetEnvironmentVariable(ref Exception exception)
+        {
+        }
+
+        public virtual void BeginGetEnvironmentVariable(string variable)
+        {
+        }
+
+        public virtual void EndGetEnvironmentVariable(string result, string variable)
+        {
+        }
+
+        public virtual void EndSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void BeginSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void FailSetEnvironmentVariable(ref Exception exception)
+        {
+        }
+
+        public virtual void EndSetEnvironmentVariable(string variable, string value)
+        {
+        }
+
+        public virtual void BeginSetEnvironmentVariable(string variable, string value)
+        {
+        }
+
+        public virtual void FailGetLogicalDrives(ref Exception exception)
+        {
+        }
+
+        public virtual void EndGetLogicalDrives(string[] result)
+        {
+        }
+
+        public virtual void BeginGetLogicalDrives()
+        {
+        }
+
+        public virtual void EndGetFolderPath(string result, Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
+        {
+        }
+
+        public virtual void BeginGetFolderPath(Environment.SpecialFolder folder, Environment.SpecialFolderOption option)
+        {
+        }
+
+        public virtual void FailGetFolderPath(ref Exception exception)
+        {
+        }
+
+        public virtual void EndGetFolderPath(string result, Environment.SpecialFolder folder)
+        {
+        }
+
+        public virtual void BeginGetFolderPath(Environment.SpecialFolder folder)
+        {
+        }
+
+        public virtual void EndGetEnvironmentVariables(IDictionary result)
+        {
+        }
+
+        public virtual void BeginGetEnvironmentVariables()
+        {
+        }
+
+        public virtual void FailGetEnvironmentVariables(ref Exception exception)
+        {
+        }
+
+        public virtual void EndGetEnvironmentVariables(IDictionary result, EnvironmentVariableTarget target)
+        {
+        }
+
+        public virtual void BeginGetEnvironmentVariables(EnvironmentVariableTarget target)
         {
         }
     }

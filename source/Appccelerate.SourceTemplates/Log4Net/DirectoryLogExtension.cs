@@ -72,11 +72,15 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void EndExists(bool result, string path)
         {
+            base.EndExists(result, path);
         }
 
         /// <inheritdoc />
         public override void FailExists(ref Exception exception)
         {
+            base.FailExists(ref exception);
+
+            this.log.Error("Exception occurred while checking the directory for existance.", exception);
         }
 
         /// <inheritdoc />
@@ -92,6 +96,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailCreateDirectory(ref Exception exception)
         {
+            base.FailCreateDirectory(ref exception);
+
+            this.log.Error("Exception occurred while creating a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -117,6 +124,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailDelete(ref Exception exception)
         {
+            base.FailDelete(ref exception);
+
+            this.log.Error("Exception occurred while deleting a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -142,6 +152,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetFiles(ref Exception exception)
         {
+            base.FailGetFiles(ref exception);
+
+            this.log.Error("Exception occurred while getting all files of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -177,6 +190,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetDirectories(ref Exception exception)
         {
+            base.FailGetDirectories(ref exception);
+
+            this.log.Error("Exception occurred while getting all directories.", exception);
         }
 
         /// <inheritdoc />
@@ -197,6 +213,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLastAccessTime(ref Exception exception)
         {
+            base.FailGetLastAccessTime(ref exception);
+
+            this.log.Error("Exception occurred while getting the last access time.", exception);
         }
 
         /// <inheritdoc />
@@ -212,6 +231,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetCreationTime(ref Exception exception)
         {
+            base.FailSetCreationTime(ref exception);
+
+            this.log.Error("Exception occurred while setting the creation time of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -227,6 +249,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetCreationTimeUtc(ref Exception exception)
         {
+            base.FailSetCreationTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while setting the creation time in UTC of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -242,6 +267,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetCurrentDirectory(ref Exception exception)
         {
+            base.FailSetCurrentDirectory(ref exception);
+
+            this.log.Error("Exception occurred while setting the current directory.", exception);
         }
 
         /// <inheritdoc />
@@ -257,6 +285,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetLastAccessTime(ref Exception exception)
         {
+            base.FailSetLastAccessTime(ref exception);
+
+            this.log.Error("Exception occurred while setting the last access time of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -272,6 +303,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetLastAccessTimeUtc(ref Exception exception)
         {
+            base.FailSetLastAccessTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while setting the last access time in UTC of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -287,6 +321,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetLastWriteTime(ref Exception exception)
         {
+            base.FailSetLastWriteTime(ref exception);
+
+            this.log.Error("Exception occurred while setting the last write time of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -302,6 +339,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetLastWriteTimeUtc(ref Exception exception)
         {
+            base.FailSetLastWriteTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while setting the last write time in UTC of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -317,6 +357,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLastAccessTimeUtc(ref Exception exception)
         {
+            base.FailGetLastAccessTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while getting the last acess time in UTC of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -332,6 +375,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLastWriteTime(ref Exception exception)
         {
+            base.FailGetLastWriteTime(ref exception);
+
+            this.log.Error("Exception occurred while getting the last write time of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -347,6 +393,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLastWriteTimeUtc(ref Exception exception)
         {
+            base.FailGetLastWriteTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while getting the last write time in UTC of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -362,6 +411,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLogicalDrives(ref Exception exception)
         {
+            base.FailGetLogicalDrives(ref exception);
+
+            this.log.Error("Exception occurred while getting the logical drives.", exception);
         }
 
         /// <inheritdoc />
@@ -377,6 +429,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetParent(ref Exception exception)
         {
+            base.FailGetParent(ref exception);
+
+            this.log.Error("Exception occurred while getting the parent of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -392,6 +447,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailMove(ref Exception exception)
         {
+            base.FailMove(ref exception);
+
+            this.log.Error("Exception occurred while moving a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -407,6 +465,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailSetAccessControl(ref Exception exception)
         {
+            base.FailSetAccessControl(ref exception);
+
+            this.log.Error("Exception occurred while setting the access control of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -427,6 +488,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetAccessControl(ref Exception exception)
         {
+            base.FailGetAccessControl(ref exception);
+
+            this.log.Error("Exception occurred while getting the access control of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -452,6 +516,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetCreationTime(ref Exception exception)
         {
+            base.FailGetCreationTime(ref exception);
+
+            this.log.Error("Exception occurred while getting the creation time of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -467,6 +534,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetCreationTimeUtc(ref Exception exception)
         {
+            base.FailGetCreationTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while getting the creation time in UTC of a directory.", exception);
         }
 
         /// <inheritdoc />
@@ -482,6 +552,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetCurrentDirectory(ref Exception exception)
         {
+            base.FailGetCurrentDirectory(ref exception);
+
+            this.log.Error("Exception occurred while getting the current directory.", exception);
         }
 
         /// <inheritdoc />
@@ -497,6 +570,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetDirectoryRoot(ref Exception exception)
         {
+            base.FailGetDirectoryRoot(ref exception);
+
+            this.log.Error("Exception occurred while getting the directory root.", exception);
         }
 
         /// <inheritdoc />
@@ -512,6 +588,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetFileSystemEntries(ref Exception exception)
         {
+            base.FailGetFileSystemEntries(ref exception);
+
+            this.log.Error("Exception occurred while getting file system entries.", exception);
         }
 
         /// <inheritdoc />
