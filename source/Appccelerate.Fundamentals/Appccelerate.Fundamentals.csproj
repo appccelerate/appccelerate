@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ensure.cs" />
+    <Compile Include="EnumerableExtensionMethods.cs" />
     <Compile Include="Events\EventArgs{T}.cs" />
     <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="Formatters\FormatHelper.cs" />

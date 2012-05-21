@@ -23,9 +23,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
     using System.IO;
     using System.Reflection;
     using System.Security.AccessControl;
-
     using Appccelerate.IO.Access;
-
     using log4net;
 
     /// <summary>
@@ -168,11 +166,17 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void BeginGetFiles(string path)
         {
+            base.BeginGetFiles(path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting all files of the directory {0}.", path);
         }
 
         /// <inheritdoc />
         public override void EndGetFiles(string[] result, string path)
         {
+            base.EndGetFiles(result, path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all files {0} of the directory {1}", result.AggregateInto(), path);
         }
 
         /// <inheritdoc />

@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnsureTest.cs" />
+    <Compile Include="EnumerableExtensionMethodsTest.cs" />
     <Compile Include="Formatters\FormatHelperTest.cs" />
     <Compile Include="Formatters\StringTruncationFormatterTest.cs" />
     <Compile Include="Formatters\TypeExtensionsTest.cs" />
