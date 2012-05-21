@@ -73,6 +73,8 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void EndExists(bool result, string path)
         {
             base.EndExists(result, path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "File {0} {1}.", path, result ? "exists" : "does not exist");
         }
 
         /// <inheritdoc />
@@ -86,11 +88,17 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void BeginCreateDirectory(string path)
         {
+            base.BeginCreateDirectory(path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Creating directory {0}.", path);
         }
 
         /// <inheritdoc />
         public override void EndCreateDirectory(DirectoryInfo result, string path)
         {
+            base.EndCreateDirectory(result, path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Directory at {0} created", result);
         }
 
         /// <inheritdoc />
@@ -104,21 +112,33 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void BeginCreateDirectory(string path, DirectorySecurity directorySecurity)
         {
+            base.BeginCreateDirectory(path, directorySecurity);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Creating directory {0} with security {1}.", path, directorySecurity);
         }
 
         /// <inheritdoc />
         public override void EndCreateDirectory(DirectoryInfo result, string path, DirectorySecurity directorySecurity)
         {
+            base.EndCreateDirectory(result, path, directorySecurity);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Directory at {0} with security {1} created.", result, directorySecurity);
         }
 
         /// <inheritdoc />
         public override void BeginDelete(string path, bool recursive)
         {
+            base.BeginDelete(path, recursive);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Deleting directory {0} {1}.", path, recursive ? "recursive" : "non recursive");
         }
 
         /// <inheritdoc />
         public override void EndDelete(string path, bool recursive)
         {
+            base.EndDelete(path, recursive);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Directory {0} deleted {1}.", path, recursive ? "recursive" : "non recursive");
         }
 
         /// <inheritdoc />
@@ -132,11 +152,17 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void BeginDelete(string path)
         {
+            base.BeginDelete(path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Deleting directory {0}.", path);
         }
 
         /// <inheritdoc />
         public override void EndDelete(string path)
         {
+            base.EndDelete(path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Deleted directory {0}.", path);
         }
 
         /// <inheritdoc />
