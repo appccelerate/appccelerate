@@ -27,77 +27,54 @@ namespace Appccelerate.IO.Access
     /// </summary>
     public interface IFileInfo : IFileSystemInfo
     {
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="P:System.IO.FileInfo.Directory"]/*' />
         IDirectoryInfo Directory { get; }
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="P:System.IO.FileInfo.DirectoryName"]/*' />
         string DirectoryName { get; }
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="P:System.IO.FileInfo.IsReadOnly"]/*' />
         bool IsReadOnly { get; set; }
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="P:System.IO.FileInfo.Length"]/*' />
         long Length { get; }
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.AppendText"]/*' />
         StreamWriter AppendText();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.CopyTo(System.String)"]/*' />
         IFileInfo CopyTo(string destFileName);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.CopyTo(System.String, System.Boolean)"]/*' />
         IFileInfo CopyTo(string destFileName, bool overwrite);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Create"]/*' />
         Stream Create();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.CreateText"]/*' />
         StreamWriter CreateText();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Decrypt"]/*' />
         [ComVisible(false)]
         void Decrypt();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Encrypt"]/*' />
         [ComVisible(false)]
         void Encrypt();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.GetAccessControl"]/*' />
         FileSecurity GetAccessControl();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.GetAccessControl(System.Security.AccessControl.AccessControlSections)"]/*' />
         FileSecurity GetAccessControl(AccessControlSections includeSections);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.MoveTo(System.String)"]/*' />
         void MoveTo(string destFileName);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Open(System.IO.FileMode)"]/*' />
         Stream Open(FileMode mode);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Open(System.IO.FileMode,System.IO.FileAccess)"]/*' />
-        Stream Open(FileMode mode, System.IO.FileAccess access);
+        Stream Open(FileMode mode, FileAccess access);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Open(System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)"]/*' />
-        Stream Open(FileMode mode, System.IO.FileAccess access, FileShare share);
+        Stream Open(FileMode mode, FileAccess access, FileShare share);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.OpenRead"]/*' />
         Stream OpenRead();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.OpenText"]/*' />
         StreamReader OpenText();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.OpenWrite"]/*' />
         Stream OpenWrite();
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Replace(System.String,System.String)"]/*' />
         [ComVisible(false)]
         IFileInfo Replace(string destinationFileName, string destinationBackupFileName);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.Replace(System.String,System.String,System.Boolean)"]/*' />
         [ComVisible(false)]
         IFileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors);
 
-        /// <include file='mscorlib.xml' path='/doc/members/member[@name="M:System.IO.FileInfo.SetAccessControl(System.Security.AccessControl.FileSecurity)"]/*' />
         void SetAccessControl(FileSecurity fileSecurity);
     }
 }

@@ -18,35 +18,15 @@
 
 namespace Appccelerate.IO.Access
 {
-    using System.IO;
-    using System.Security;
-
     /// <summary>
     /// Interface which simplifies the access to the directory info.
     /// </summary>
     public interface IDirectoryInfo : IFileSystemInfo
     {
-        /// <summary>
-        /// Gets the parent directory of a specified subdirectory.
-        /// </summary>
-        /// <value>The parent directory, or null if the path is null or if the file path
-        /// denotes a root (such as "\", "C:", or * "\\server\share").</value>
-        /// <exception cref="SecurityException">The caller does not have the required
-        /// permission.</exception>
         IDirectoryInfo Parent { get; }
 
-        /// <summary>
-        /// Gets the root portion of a path.
-        /// </summary>
-        /// <value>A <see cref="IDirectoryInfo"/> object representing the root of a path.</value>
-        /// <exception cref="SecurityException">The caller does not have the required
-        /// permission.</exception>
         IDirectoryInfo Root { get; }
 
-        /// <summary>
-        /// Creates a directory.
-        /// </summary>
-        /// <exception cref="IOException">The directory cannot be created.</exception>
         void Create();
     }
 }
