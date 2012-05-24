@@ -81,11 +81,15 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void BeginExpandEnvironmentVariables(string name)
         {
             base.BeginExpandEnvironmentVariables(name);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Expanding environment variables {0}.", name);
         }
 
         public override void EndExpandEnvironmentVariables(string result, string name)
         {
             base.EndExpandEnvironmentVariables(result, name);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Expanded environment variables {0} to {1}.", name, result);
         }
 
         public override void FailExpandEnvironmentVariables(ref Exception exception)
@@ -229,6 +233,8 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void FailGetLogicalDrives(ref Exception exception)
         {
             base.FailGetLogicalDrives(ref exception);
+
+            this.log.Error("Exception occurred while getting logical drives.", exception);
         }
 
         public override void BeginSetEnvironmentVariable(string variable, string value)
@@ -244,6 +250,8 @@ namespace Appccelerate.SourceTemplates.Log4Net
         public override void FailSetEnvironmentVariable(ref Exception exception)
         {
             base.FailSetEnvironmentVariable(ref exception);
+
+            this.log.Error("Exception occurred while setting an environment variable.", exception);
         }
 
         public override void BeginSetEnvironmentVariable(string variable, string value, EnvironmentVariableTarget target)

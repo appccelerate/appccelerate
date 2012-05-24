@@ -457,6 +457,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailReadAllBytes(ref Exception exception)
         {
+            base.FailReadAllBytes(ref exception);
+
+            this.log.Error("Exception occurred while reading all bytes.", exception);
         }
 
         /// <inheritdoc />
@@ -472,6 +475,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailReadAllLines(ref Exception exception)
         {
+            base.FailReadAllLines(ref exception);
+
+            this.log.Error("Exception occurred while reading all lines.", exception);
         }
 
         /// <inheritdoc />
@@ -497,6 +503,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailReadAllText(ref Exception exception)
         {
+            base.FailReadAllText(ref exception);
+
+            this.log.Error("Exception occurred while reading all text.", exception);
         }
 
         /// <inheritdoc />
@@ -512,6 +521,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailWriteAllLines(ref Exception exception)
         {
+            base.FailWriteAllLines(ref exception);
+
+            this.log.Error("Exception occurred while writing all lines.", exception);
         }
 
         /// <inheritdoc />
@@ -537,6 +549,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailWriteAllText(ref Exception exception)
         {
+            base.FailWriteAllText(ref exception);
+
+            this.log.Error("Exception occurred while writing all text.", exception);
         }
 
         /// <inheritdoc />
@@ -562,6 +577,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailWriteAllBytes(ref Exception exception)
         {
+            base.FailWriteAllBytes(ref exception);
+
+            this.log.Error("Exception occurred while writing all bytes.", exception);
         }
 
         /// <inheritdoc />
@@ -577,6 +595,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailOpen(ref Exception exception)
         {
+            base.FailOpen(ref exception);
+
+            this.log.Error("Exception occurred while opening a file or stream.", exception);
         }
 
         /// <inheritdoc />
@@ -612,6 +633,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailAppendAllText(ref Exception exception)
         {
+            base.FailAppendAllText(ref exception);
+
+            this.log.Error("Exception occurred while appending all text.", exception);
         }
 
         /// <inheritdoc />
@@ -637,6 +661,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailAppendText(ref Exception exception)
         {
+            base.FailAppendText(ref exception);
+
+            this.log.Error("Exception occurred while appending text.", exception);
         }
 
         /// <inheritdoc />
@@ -652,6 +679,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailCreate(ref Exception exception)
         {
+            base.FailCreate(ref exception);
+
+            this.log.Error("Exception occurred while creating a file or stream.", exception);
         }
 
         /// <inheritdoc />
@@ -697,6 +727,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailDecrypt(ref Exception exception)
         {
+            base.FailDecrypt(ref exception);
+
+            this.log.Error("Exception occurred while decrypting a file.", exception);
         }
 
         /// <inheritdoc />
@@ -712,6 +745,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailEncrypt(ref Exception exception)
         {
+            base.FailEncrypt(ref exception);
+
+            this.log.Error("Exception occurred while encrypting a file.", exception);
         }
 
         /// <inheritdoc />
@@ -727,6 +763,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetAccessControl(ref Exception exception)
         {
+            base.FailGetAccessControl(ref exception);
+
+            this.log.Error("Exception occurred while getting access control.", exception);
         }
 
         /// <inheritdoc />
@@ -752,6 +791,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetCreationTime(ref Exception exception)
         {
+            base.FailGetCreationTime(ref exception);
+
+            this.log.Error("Exception occurred while getting creation time.", exception);
         }
 
         /// <inheritdoc />
@@ -767,6 +809,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetCreationTimeUtc(ref Exception exception)
         {
+            base.FailGetCreationTimeUtc(ref exception);
+
+            this.log.Error("Exception occurred while getting creation time in UTC.", exception);
         }
 
         /// <inheritdoc />
@@ -782,6 +827,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLastAccessTime(ref Exception exception)
         {
+            base.FailGetLastAccessTime(ref exception);
+
+            this.log.Error("Exception occurred while getting last access time.", exception);
         }
 
         /// <inheritdoc />
@@ -797,6 +845,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetLastAccessTimeUtc(ref Exception exception)
         {
+            base.FailGetLastAccessTime(ref exception);
+
+            this.log.Error("Exception occurred while getting last access time in UTC.", exception);
         }
 
         /// <inheritdoc />

@@ -31,6 +31,8 @@ namespace Appccelerate.SourceTemplates.Log4Net
     /// </summary>
     public class DirectoryLogExtension : DirectoryExtensionBase
     {
+        private const string Semicolon = ";";
+
         private readonly ILog log;
 
         /// <summary>
@@ -176,7 +178,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         {
             base.EndGetFiles(result, path);
 
-            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all files {0} of the directory {1}", result.AggregateInto(), path);
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all files {0} of the directory {1}", string.Join(Semicolon, result), path);
         }
 
         /// <inheritdoc />
@@ -190,31 +192,49 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void BeginGetFiles(string path, string searchPattern)
         {
+            base.BeginGetFiles(path, searchPattern);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting all files of the directory {0} with search pattern {1}", path, searchPattern);
         }
 
         /// <inheritdoc />
         public override void EndGetFiles(string[] result, string path, string searchPattern)
         {
+            base.EndGetFiles(result, path, searchPattern);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all files {0} of the directory {1} with search pattern {2}", string.Join(Semicolon, result), path, searchPattern);
         }
 
         /// <inheritdoc />
         public override void BeginGetFiles(string path, string searchPattern, SearchOption searchOption)
         {
+            base.BeginGetFiles(path, searchPattern, searchOption);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting all files of the directory {0} with search pattern {1} and search option {2}", path, searchPattern, searchOption);
         }
 
         /// <inheritdoc />
         public override void EndGetFiles(string[] result, string path, string searchPattern, SearchOption searchOption)
         {
+            base.EndGetFiles(result, path, searchPattern, searchOption);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all files {0} of the directory {1} with search pattern {2} and search option {3}", string.Join(Semicolon, result), path, searchPattern, searchOption);
         }
 
         /// <inheritdoc />
         public override void BeginGetDirectories(string path)
         {
+            base.BeginGetDirectories(path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting directories under {0}.", path);
         }
 
         /// <inheritdoc />
         public override void EndGetDirectories(string[] result, string path)
         {
+            base.EndGetDirectories(result, path);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all directories {0} under {1}.", string.Join(Semicolon, result), path);
         }
 
         /// <inheritdoc />
@@ -228,16 +248,25 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void BeginGetDirectories(string path, string searchPattern)
         {
+            base.BeginGetDirectories(path, searchPattern);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting all directories under {0} with search pattern {1}", path, searchPattern);
         }
 
         /// <inheritdoc />
         public override void EndGetDirectories(string[] result, string path, string searchPattern)
         {
+            base.EndGetDirectories(result, path, searchPattern);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Got all directories {0} under {1} with search pattern {2}", string.Join(Semicolon, result), path, searchPattern);
         }
 
         /// <inheritdoc />
         public override void BeginGetDirectories(string path, string searchPattern, SearchOption searchOption)
         {
+            base.BeginGetDirectories(path, searchPattern, searchOption);
+
+            this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting all directories under {0} with search pattern {1} and search option {2}", path, searchPattern, searchOption);
         }
 
         /// <inheritdoc />

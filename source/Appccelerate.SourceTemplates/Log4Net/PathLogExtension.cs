@@ -118,6 +118,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetFileNameWithoutExtension(ref Exception exception)
         {
+            base.FailGetFileNameWithoutExtension(ref exception);
+
+            this.log.Error("Exception occurred while getting a file name without extension.", exception);
         }
 
         /// <inheritdoc />
@@ -136,6 +139,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailCombine(ref Exception exception)
         {
+            base.FailCombine(ref exception);
+
+            this.log.Error("Exception occurred while combinding paths.", exception);
         }
 
         /// <inheritdoc />
@@ -154,6 +160,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetRandomFileName(ref Exception exception)
         {
+            base.FailGetRandomFileName(ref exception);
+
+            this.log.Error("Exception occurred while getting a random file name.", exception);
         }
 
         /// <inheritdoc />
@@ -172,6 +181,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailChangeExtension(ref Exception exception)
         {
+            base.FailChangeExtension(ref exception);
+
+            this.log.Error("Exception occurred while changing a file extension.", exception);
         }
 
         /// <inheritdoc />
@@ -190,6 +202,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetExtension(ref Exception exception)
         {
+            base.FailGetExtension(ref exception);
+
+            this.log.Error("Exception occurred while getting a file extension.", exception);
         }
 
         /// <inheritdoc />
@@ -208,6 +223,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetFullPath(ref Exception exception)
         {
+            base.FailGetFullPath(ref exception);
+
+            this.log.Error("Exception occurred while getting the full path.", exception);
         }
 
         /// <inheritdoc />
@@ -226,6 +244,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetInvalidFileNameChars(ref Exception exception)
         {
+            base.FailGetInvalidFileNameChars(ref exception);
+
+            this.log.Error("Exception occurred while getting invalid file name chars.", exception);
         }
 
         /// <inheritdoc />
@@ -244,6 +265,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetInvalidPathChars(ref Exception exception)
         {
+            base.FailGetInvalidPathChars(ref exception);
+
+            this.log.Error("Exception occurred while getting invalid path name chars.", exception);
         }
 
         /// <inheritdoc />
@@ -262,6 +286,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetPathRoot(ref Exception exception)
         {
+            base.FailGetPathRoot(ref exception);
+
+            this.log.Error("Exception occurred while getting path root.", exception);
         }
 
         /// <inheritdoc />
@@ -280,6 +307,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetTempFileName(ref Exception exception)
         {
+            base.FailGetTempFileName(ref exception);
+
+            this.log.Error("Exception occurred while getting temp file name.", exception);
         }
 
         /// <inheritdoc />
@@ -298,6 +328,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailGetTempPath(ref Exception exception)
         {
+            base.FailGetTempPath(ref exception);
+
+            this.log.Error("Exception occurred while getting temp path.", exception);
         }
 
         /// <inheritdoc />
@@ -316,6 +349,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailHasExtension(ref Exception exception)
         {
+            base.FailHasExtension(ref exception);
+
+            this.log.Error("Exception occurred while verifying if the path has an extension.", exception);
         }
 
         /// <inheritdoc />
@@ -334,6 +370,9 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <inheritdoc />
         public override void FailIsPathRooted(ref Exception exception)
         {
+            base.FailIsPathRooted(ref exception);
+
+            this.log.Error("Exception occurred while verifying if the path is rooted.", exception);
         }
     }
 }
