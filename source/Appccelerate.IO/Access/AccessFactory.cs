@@ -41,6 +41,8 @@ namespace Appccelerate.IO.Access
 
         private Func<IEnumerable<IEnvironmentExtension>> environmentExtensionsProvider = Enumerable.Empty<IEnvironmentExtension>;
 
+        private Func<IEnumerable<IDriveExtension>> driveExtensionsProvider = Enumerable.Empty<IDriveExtension>;
+
         public IDirectory CreateDirectory()
         {
             return new Directory(this.directoryExtensionsProvider());
@@ -59,6 +61,11 @@ namespace Appccelerate.IO.Access
         public IEnvironment CreateEnvironment()
         {
             return new Environment(this.environmentExtensionsProvider());
+        }
+
+        public IDrive CreateDrive()
+        {
+            return new Drive(this.driveExtensionsProvider());
         }
 
         public IFileInfo CreateFileInfo(System.IO.FileInfo fileInfo)
@@ -99,6 +106,11 @@ namespace Appccelerate.IO.Access
         public void RegisterDirectoryExtensionsProvider(Func<IEnumerable<IDirectoryExtension>> extensionsProvider)
         {
             this.directoryExtensionsProvider = extensionsProvider;
+        }
+
+        public void RegisterDriveExtensionsProvider(Func<IEnumerable<IDriveExtension>> extensionsProvider)
+        {
+            this.driveExtensionsProvider = extensionsProvider;
         }
 
         public void RegisterPathExtensionsProvider(Func<IEnumerable<IPathExtension>> extensionsProvider)

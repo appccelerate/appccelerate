@@ -1,5 +1,5 @@
-//-------------------------------------------------------------------------------
-// <copyright file="IDriveInfo.cs" company="Appccelerate">
+﻿//-------------------------------------------------------------------------------
+// <copyright file="IDriveExtension.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,28 +18,18 @@
 
 namespace Appccelerate.IO.Access
 {
-    using System.IO;
-    using System.Runtime.Serialization;
+    using System;
+    using System.Runtime.CompilerServices;
 
-    /// <summary>
-    /// Interface which simplifies the access to directory info.
-    /// </summary>
-    public interface IDriveInfo : ISerializable
+    using Appccelerate.IO.Access.Internals;
+
+    [CompilerGenerated]
+    public interface IDriveExtension
     {
-        long AvailableFreeSpace { get; }
+        void BeginGetDrives();
 
-        string DriveFormat { get; }
+        void EndGetDrives(DriveInfo[] result);
 
-        DriveType DriveType { get; }
-
-        bool IsReady { get; }
-
-        IDirectoryInfo RootDirectory { get; }
-
-        long TotalFreeSpace { get; }
-
-        long TotalSize { get; }
-
-        string Name { get; }
+        void FailGetDrives(ref Exception exception);
     }
 }

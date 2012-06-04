@@ -37,6 +37,8 @@ namespace Appccelerate.IO.Access
 
         IEnvironment CreateEnvironment();
 
+        IDrive CreateDrive();
+
         IFileInfo CreateFileInfo(FileInfo fileInfo);
 
         /// <summary>
@@ -117,6 +119,13 @@ namespace Appccelerate.IO.Access
         /// </summary>
         /// <param name="extensionsProvider">The directory extension provider</param>
         void RegisterDirectoryExtensionsProvider(Func<IEnumerable<IDirectoryExtension>> extensionsProvider);
+
+        /// <summary>
+        /// Registers an extensions provider for drive extensions. The extensions provider is called on each
+        /// CreateDrive request.
+        /// </summary>
+        /// <param name="extensionsProvider">The drive extension provider</param>
+        void RegisterDriveExtensionsProvider(Func<IEnumerable<IDriveExtension>> extensionsProvider);
 
         /// <summary>
         /// Registers an extensions provider for path extensions. The extensions provider is called on each

@@ -22,11 +22,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Access\DirectoryExtensionBase.cs" />
+    <Compile Include="Access\DriveExtensionBase.cs" />
+    <Compile Include="Access\Internals\Drive.cs" />
     <Compile Include="Access\EnvironmentExtensionBase.cs" />
     <Compile Include="Access\FileExtensionBase.cs" />
     <Compile Include="Access\IDirectory.g.cs" />
     <Compile Include="Access\IDirectoryExtension.g.cs" />
     <Compile Include="Access\IDirectoryInfo.cs" />
+    <Compile Include="Access\IDrive.g.cs" />
     <Compile Include="Access\IDriveInfo.cs" />
     <Compile Include="Access\IEnvironment.cs" />
     <Compile Include="Access\IEnvironmentExtension.g.cs" />
@@ -66,6 +69,7 @@
     <Content Include="Version.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Access\IDriveExtension.g.cs" />
     <None Include="Appccelerate.IO.nuspec" />
   </ItemGroup>
   <ItemGroup>

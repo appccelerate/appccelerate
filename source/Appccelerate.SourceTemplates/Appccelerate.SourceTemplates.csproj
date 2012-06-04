@@ -25,6 +25,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Log4Net\AsyncModuleLogExtension.cs" />
     <Compile Include="Log4Net\AsyncWorkerLogExtension.cs" />
+    <Compile Include="Log4Net\DriveLogExtension.cs" />
     <Compile Include="Log4Net\EnvironmentLogExtension.cs" />
     <Compile Include="Log4Net\EvaluationEngineLogExtension.cs" />
     <Compile Include="Log4Net\EventBrokerLogExtension.cs" />

@@ -122,17 +122,6 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         /// <summary>
-        /// Retrieves the drive names of all logical drives on a computer.
-        /// </summary>
-        /// <returns>An enumerable of type <see cref="IDriveInfo"/> that represents the logical drives on a computer.</returns>
-        /// <exception cref="IOException">An I/O error occurred (for example, a disk error or a drive was not ready).</exception>
-        /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission.</exception>
-        public IEnumerable<IDriveInfo> GetDrives()
-        {
-            return System.IO.DriveInfo.GetDrives().Select(info => new DriveInfo(info)).OfType<IDriveInfo>();
-        }
-
-        /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>

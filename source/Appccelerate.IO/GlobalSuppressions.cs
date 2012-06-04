@@ -47,3 +47,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Option", Scope = "member", Target = "Appccelerate.IO.Access.IEnvironment.#GetFolderPath(System.Environment+SpecialFolder,System.Environment+SpecialFolderOption)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "Appccelerate.IO.Access.IEnvironment.#GetLogicalDrives()")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "Appccelerate.IO.Access.IEnvironment.#GetCommandLineArgs()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "Appccelerate.IO.Access.Internals.DriveInfo.#GetDrives()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Scope = "member", Target = "Appccelerate.IO.Access.Internals.DriveInfo.#GetDrives()")]
