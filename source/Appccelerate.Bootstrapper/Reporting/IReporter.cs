@@ -16,10 +16,8 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.Bootstrapper
+namespace Appccelerate.Bootstrapper.Reporting
 {
-    using Appccelerate.Bootstrapper.Reporting;
-
     /// <summary>
     /// Marks the implementor as reporter of the bootstrapping process.
     /// </summary>
