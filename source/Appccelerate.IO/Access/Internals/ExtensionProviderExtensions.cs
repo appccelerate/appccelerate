@@ -65,7 +65,7 @@ namespace Appccelerate.IO.Access.Internals
         public static TResult SurroundWithExtension<TExtension, TResult>(this IExtensionProvider<TExtension> provider, Expression<Func<TResult>> function, params object[] args)
             where TExtension : class
         {
-            return (TResult)SurroundWithExtensionInternal(provider, function, args);
+            return SurroundWithExtensionInternal<TExtension, TResult>(provider, function, args);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Appccelerate.IO.Access.Internals
         public static void SurroundWithExtension<TExtension>(this IExtensionProvider<TExtension> provider, Expression<Action> action, params object[] args)
             where TExtension : class
         {
-            SurroundWithExtensionInternal(provider, action, args);
+            SurroundWithExtensionInternal<TExtension, Missing>(provider, action, args);
         }
 
         /// <summary>
@@ -89,17 +89,17 @@ namespace Appccelerate.IO.Access.Internals
             ReflectionCache.Clear();
         }
 
-        private static object SurroundWithExtensionInternal<TExtension>(this IExtensionProvider<TExtension> provider, LambdaExpression expression, params object[] args)
+        private static TReturn SurroundWithExtensionInternal<TExtension, TReturn>(this IExtensionProvider<TExtension> provider, LambdaExpression expression, params object[] args)
              where TExtension : class
         {
             var callExpression = (MethodCallExpression)expression.Body;
             MethodInfo callMethodInfo = callExpression.Method;
-            bool hasReturn = callMethodInfo.ReturnType != typeof(void);
+            bool hasReturn = typeof(TReturn) != typeof(Missing);
             string methodName = callMethodInfo.Name;
 
             var key = new Key(callMethodInfo.MethodHandle, callMethodInfo.Name, callMethodInfo.GetParameterTypes().ToArray());
 
-            Item item = !ReflectionCache.Contains(key) ? CacheItem<TExtension>(methodName, key, hasReturn, callMethodInfo.ReturnType) : ReflectionCache[key];
+            Item item = !ReflectionCache.Contains(key) ? CacheItem<TExtension>(methodName, key, hasReturn, typeof(TReturn)) : ReflectionCache[key];
 
             object result;
 
@@ -123,7 +123,7 @@ namespace Appccelerate.IO.Access.Internals
                 throw innerException;
             }
 
-            return result;
+            return (TReturn)result;
         }
 
         private static object[] GetArguments(bool hasReturn, object[] args, object result)

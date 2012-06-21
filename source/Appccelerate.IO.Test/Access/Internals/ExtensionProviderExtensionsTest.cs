@@ -20,6 +20,8 @@ namespace Appccelerate.IO.Access.Internals
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+
     using FakeItEasy;
     using FluentAssertions;
     using Xunit;
@@ -30,6 +32,8 @@ namespace Appccelerate.IO.Access.Internals
 
         private readonly IExtensionProvider<IExtension> provider;
 
+        private readonly MemoryStream expectedReturnStream = new MemoryStream();
+
         private readonly IExtension extension;
 
         private Exception exception;
@@ -39,6 +43,8 @@ namespace Appccelerate.IO.Access.Internals
         private bool boolParameter;
 
         private bool throwException;
+
+        private int intParameter;
 
         public ExtensionProviderExtensionsTest()
         {
@@ -67,6 +73,10 @@ namespace Appccelerate.IO.Access.Internals
             void BeginDoReturn(bool s);
 
             void EndDoReturn(int result, bool s);
+
+            void BeginDoReturn(int s);
+
+            void EndDoReturn(Stream result, int s);
 
             void FailDoReturn(ref Exception exception);
         }
@@ -327,6 +337,70 @@ namespace Appccelerate.IO.Access.Internals
             action.ShouldThrow<InvalidOperationException>();
         }
 
+        [Fact]
+        public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallBeginWithCorrectParameters()
+        {
+            const int ExpectedParameter = 42;
+
+            this.SetupExtensions();
+
+            this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
+
+            A.CallTo(() => this.extension.BeginDoReturn(ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallEndWithCorrectParameters()
+        {
+            const int ExpectedParameter = 42;
+
+            this.SetupExtensions();
+
+            this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
+
+            A.CallTo(() => this.extension.EndDoReturn(this.expectedReturnStream, ExpectedParameter)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallActionWithCorrectParameters()
+        {
+            const int ExpectedParameter = 42;
+
+            this.SetupExtensions();
+
+            Stream result = this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
+
+            this.intParameter.Should().Be(ExpectedParameter);
+            result.Should().Be(this.expectedReturnStream);
+        }
+
+        [Fact]
+        public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallFailWithCorrectExceptionAndRethrow()
+        {
+            const int ExpectedParameter = 42;
+
+            this.SetupExtensions();
+            this.SetupThrowsException();
+
+            Action action = () => this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
+
+            action.ShouldThrow<Exception>();
+            A.CallTo(() => this.extension.FailDoReturn(ref this.exception)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void SurroundWithExtensions_WhenUsingFuncWithOverloadAndExtensionUsingReturnTypeMapping_MustCallFailWithCorrectExceptionAndRethrowExchangedException()
+        {
+            const int ExpectedParameter = 42;
+
+            this.SetupExtensionsWithExceptionExchangingExtension();
+            this.SetupThrowsException();
+
+            Action action = () => this.provider.SurroundWithExtension<IExtension, Stream>(() => this.DoReturn(ExpectedParameter), ExpectedParameter);
+
+            action.ShouldThrow<InvalidOperationException>();
+        }
+
         private void Do(bool parameter)
         {
             if (this.throwException)
@@ -369,6 +443,18 @@ namespace Appccelerate.IO.Access.Internals
             this.boolParameter = parameter;
 
             return ExpectedReturnValue;
+        }
+
+        private MemoryStream DoReturn(int parameter)
+        {
+            if (this.throwException)
+            {
+                throw this.exception;
+            }
+
+            this.intParameter = parameter;
+
+            return this.expectedReturnStream;
         }
 
         private void SetupThrowsException()
@@ -440,6 +526,16 @@ namespace Appccelerate.IO.Access.Internals
                 throw this.exceptionToThrow;
             }
 
+            public void BeginDoReturn(int s)
+            {
+                throw this.exceptionToThrow;
+            }
+
+            public void EndDoReturn(Stream result, int s)
+            {
+                throw this.exceptionToThrow;
+            }
+
             public void FailDoReturn(ref Exception exception)
             {
                 exception = new InvalidOperationException();
@@ -496,6 +592,16 @@ namespace Appccelerate.IO.Access.Internals
             }
 
             public void EndDoReturn(int result, bool s)
+            {
+                throw this.exceptionToThrow;
+            }
+
+            public void BeginDoReturn(int s)
+            {
+                throw this.exceptionToThrow;
+            }
+
+            public void EndDoReturn(Stream result, int s)
             {
                 throw this.exceptionToThrow;
             }
