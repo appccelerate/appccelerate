@@ -17,7 +17,6 @@
     <dependencies>
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
       <dependency id="Appccelerate.EventBroker" version="%Appccelerate.EventBroker%"/>
-      <dependency id="Appccelerate.DistributedEventBroker" version="%Appccelerate.DistributedEventBroker%"/>
     </dependencies>
   </metadata>
 </package>
