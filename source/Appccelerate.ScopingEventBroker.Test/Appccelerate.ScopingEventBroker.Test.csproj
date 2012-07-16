@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.ScopingEventBroker.Test</AppccelerateProjectName>
+    <AppccelerateProjectType>Test</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{5F2E88D4-26F8-4F8D-8D79-F0C4159275E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>Appccelerate.ScopingEventBroker.Test</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Appccelerate.ScopingEventBroker</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.7.4574.62\lib\NET40\FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.1.7.1.1\Lib\net40\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.9.1\lib\net20\xunit.extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractEventScopeContextTest.cs" />
+    <Compile Include="ScopingHandlerDecoratorTest.cs" />
+    <Compile Include="EventScopingStandardFactoryTest.cs" />
+    <Compile Include="EventScopeTest.cs" />
+    <Compile Include="PerThreadEventScopeContextTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6b189709-125e-46ec-8fee-50345375f221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.ScopingEventBroker\Appccelerate.ScopingEventBroker.csproj">
+      <Project>{7fbcda54-9487-472f-ba6a-d4cf2f68ba05}</Project>
+      <Name>Appccelerate.ScopingEventBroker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

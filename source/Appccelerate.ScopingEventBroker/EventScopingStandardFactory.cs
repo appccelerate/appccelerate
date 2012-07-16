@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="EventTopicCollection.cs" company="Appccelerate">
+// <copyright file="EventScopingStandardFactory.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,30 +16,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.MappingEventBroker
+namespace Appccelerate.ScopingEventBroker
 {
-    using System.Collections.ObjectModel;
-
+    using System;
     using Appccelerate.EventBroker;
+    using Appccelerate.EventBroker.Factories;
 
-    /// <summary>
-    /// Specialized keyed collection which used the <see cref="IEventTopicInfo.Uri"/> as key.
-    /// </summary>
-    public class EventTopicCollection : KeyedCollection<string, IEventTopicInfo>
+    public class EventScopingStandardFactory : StandardFactory
     {
-        /// <summary>
-        /// When implemented in a derived class, extracts the key from the specified element.
-        /// </summary>
-        /// <returns>
-        /// The key for the specified element.
-        /// </returns>
-        /// <param name="item">The element from which to extract the key.
-        /// </param>
-        protected override string GetKeyForItem(IEventTopicInfo item)
-        {
-            Ensure.ArgumentNotNull(item, "item");
+        private readonly IEventScopeHolder scopeHolder;
 
-            return item.Uri;
+        public EventScopingStandardFactory(IEventScopeHolder scopeHolder)
+        {
+            this.scopeHolder = scopeHolder;
+        }
+
+        protected override IHandler ActivateHandler(Type handlerType)
+        {
+            var handler = base.ActivateHandler(handlerType);
+
+            return handler.Kind == HandlerKind.Asynchronous ? new ScopingHandlerDecorator(handler, this.scopeHolder) : handler;
         }
     }
 }

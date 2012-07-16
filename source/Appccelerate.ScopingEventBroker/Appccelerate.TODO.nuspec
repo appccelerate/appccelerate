@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.ScopingEventBroker</id>
+    <version>%Appccelerate.ScopingEventBrokerFileVersion%</version>
+    <title>Appccelerate.ScopingEventBroker</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<summary></summary>
+    <description></description>
+    <copyright>Copyright 2012</copyright>
+    <tags>Appccelerate</tags>
+  </metadata>
+</package>
