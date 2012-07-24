@@ -45,7 +45,7 @@ namespace Appccelerate.ScopingEventBroker
 
         public void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
         {
-            IEventScopeRegisterer scope = this.scopeHolder.Current;
+            IEventScopeRegistry scope = this.scopeHolder.Current;
 
             if (scope != null)
             {

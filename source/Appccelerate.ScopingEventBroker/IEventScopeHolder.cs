@@ -20,6 +20,6 @@ namespace Appccelerate.ScopingEventBroker
 {
     public interface IEventScopeHolder
     {
-        IEventScopeRegisterer Current { get; }
+        IEventScopeRegistry Current { get; }
     }
 }

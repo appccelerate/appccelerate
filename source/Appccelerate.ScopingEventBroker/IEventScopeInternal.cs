@@ -19,9 +19,9 @@
 namespace Appccelerate.ScopingEventBroker
 {
     /// <summary>
-    /// Marker interface which implements <see cref="IEventScope"/> and <see cref="IEventScopeRegisterer"/>
+    /// Marker interface which implements <see cref="IEventScope"/> and <see cref="IEventScopeRegistry"/>
     /// </summary>
-    public interface IEventScopeInternal : IEventScope, IEventScopeRegisterer
+    public interface IEventScopeInternal : IEventScope, IEventScopeRegistry
     {
     }
 }

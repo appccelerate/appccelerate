@@ -32,7 +32,7 @@ namespace Appccelerate.ScopingEventBroker
             this.scopeFactory = eventScopeFactory;
         }
 
-        public IEventScopeRegisterer Current
+        public IEventScopeRegistry Current
         {
             get { return this.CurrentScope; }
         }

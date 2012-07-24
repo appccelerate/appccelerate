@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="IEventScopeRegisterer.cs" company="Appccelerate">
+// <copyright file="IEventScopeRegistry.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,9 @@ namespace Appccelerate.ScopingEventBroker
     using System;
 
     /// <summary>
-    /// The registerer takes care of registering callbacks which are called when the scope is released.
+    /// The registry takes care of registering callbacks which are called when the scope is released.
     /// </summary>
-    public interface IEventScopeRegisterer
+    public interface IEventScopeRegistry
     {
         void Register(Action releaseCallback);
     }
