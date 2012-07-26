@@ -45,11 +45,11 @@ namespace Appccelerate.ScopingEventBroker
 
         public void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
         {
-            IEventScopeRegistry scope = this.scopeHolder.Current;
+            IEventScopeRegistry registry = this.scopeHolder.Current;
 
-            if (scope != null)
+            if (registry != null)
             {
-                scope.Register(() => this.handler.Handle(eventTopic, sender, e, subscriptionHandler));
+                registry.Register(() => this.handler.Handle(eventTopic, sender, e, subscriptionHandler));
             }
             else
             {

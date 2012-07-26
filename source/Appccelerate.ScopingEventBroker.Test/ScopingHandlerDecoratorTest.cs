@@ -67,6 +67,7 @@ namespace Appccelerate.ScopingEventBroker
         {
             var eventTopic = A.Fake<IEventTopic>();
             var subscriptionHandler = new Action(() => { });
+            A.CallTo(() => this.scopeHolder.Current).Returns(null);
 
             this.testee.Handle(eventTopic, null, EventArgs.Empty, subscriptionHandler);
 
@@ -76,7 +77,7 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void Handle_WhenScopeAvailable_MustNotExecuteHandler()
         {
-            A.CallTo(() => this.scopeHolder.Current).Returns(A.Fake<IEventScopeRegistry>());
+            A.CallTo(() => this.scopeHolder.Current).Returns(A.Fake<IEventScopeInternal>());
 
             this.testee.Handle(A.Fake<IEventTopic>(), null, EventArgs.Empty, new Action(() => { }));
 
@@ -87,7 +88,7 @@ namespace Appccelerate.ScopingEventBroker
         public void Handle_WhenScopeAvailable_MustRegisterHandleAction()
         {
             var eventTopic = A.Fake<IEventTopic>();
-            var registry = A.Fake<IEventScopeRegistry>();
+            var registry = A.Fake<IEventScopeInternal>();
 
             A.CallTo(() => registry.Register(A<Action>.Ignored)).Invokes((Action a) => a());
             A.CallTo(() => this.scopeHolder.Current).Returns(registry);

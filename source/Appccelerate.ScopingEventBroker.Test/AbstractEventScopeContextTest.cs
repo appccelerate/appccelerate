@@ -26,24 +26,32 @@ namespace Appccelerate.ScopingEventBroker
     public class AbstractEventScopeContextTest
     {
         private readonly IEventScopeInternal eventScope;
+
+        private readonly IEventScopeFactory eventScopeFactory;
+
         private readonly TestAbstractEventScopeContext testee;
 
         public AbstractEventScopeContextTest()
         {
             this.eventScope = A.Fake<IEventScopeInternal>();
+            this.eventScopeFactory = A.Fake<IEventScopeFactory>();
 
-            this.testee = new TestAbstractEventScopeContext(() => this.eventScope);
+            this.testee = new TestAbstractEventScopeContext(this.eventScopeFactory);
         }
 
         [Fact]
         public void Current_WhenConstructed_ShouldBeNull()
         {
+            this.SetupFactoryCreatesScope();
+
             this.testee.Current.Should().BeNull();
         }
 
         [Fact]
         public void Acquire_ShouldSetCurrent()
         {
+            this.SetupFactoryCreatesScope();
+
             this.testee.Acquire();
 
             this.testee.Current.Should().NotBeNull();
@@ -52,6 +60,8 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void DisposeCurrent_RemoveCurrent()
         {
+            this.SetupFactoryCreatesScope();
+
             using (this.testee.Acquire())
             {
             }
@@ -62,6 +72,8 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void Dispose_ShouldDisposeInner()
         {
+            this.SetupFactoryCreatesScope();
+
             using (this.testee.Acquire())
             {
             }
@@ -72,6 +84,8 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void ReleaseOnAcquired_ShouldReleaseAcquired()
         {
+            this.SetupFactoryCreatesScope();
+
             using (IEventScope scope = this.testee.Acquire())
             {
                 scope.Release();
@@ -83,6 +97,8 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void CancelOnAcquired_ShouldCancelAcquired()
         {
+            this.SetupFactoryCreatesScope();
+
             using (IEventScope scope = this.testee.Acquire())
             {
                 scope.Cancel();
@@ -94,15 +110,22 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void RegisterOnAcquired_ShouldRegisterOnAcquired()
         {
+            this.SetupFactoryCreatesScope();
+
             this.testee.Acquire();
             this.testee.Current.Register(() => { });
 
             A.CallTo(() => this.eventScope.Register(A<Action>.Ignored)).MustHaveHappened();
         }
 
+        private void SetupFactoryCreatesScope()
+        {
+            A.CallTo(() => this.eventScopeFactory.CreateScope()).Returns(this.eventScope);
+        }
+
         private class TestAbstractEventScopeContext : AbstractEventScopeContext
         {
-            public TestAbstractEventScopeContext(Func<IEventScopeInternal> eventScopeFactory)
+            public TestAbstractEventScopeContext(IEventScopeFactory eventScopeFactory)
                 : base(eventScopeFactory)
             {
             }

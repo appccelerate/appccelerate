@@ -18,6 +18,8 @@
 
 namespace Appccelerate.ScopingEventBroker
 {
+    using Appccelerate.EventBroker;
+
     public interface IEventScopeFactory
     {
         IEventScopeInternal CreateScope();
@@ -25,5 +27,7 @@ namespace Appccelerate.ScopingEventBroker
         IEventScopeContext CreateScopeContext();
 
         IEventScopeHolder CreateScopeHolder();
+
+        IHandler CreateHandlerDecorator(IHandler handler);
     }
 }

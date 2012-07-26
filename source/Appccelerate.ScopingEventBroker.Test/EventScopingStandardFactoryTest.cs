@@ -23,9 +23,9 @@ namespace Appccelerate.ScopingEventBroker
     using System.Reflection;
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Handlers;
-    using FakeItEasy;
+
     using FluentAssertions;
-    using Xunit;
+
     using Xunit.Extensions;
 
     public class EventScopingStandardFactoryTest
@@ -37,7 +37,7 @@ namespace Appccelerate.ScopingEventBroker
 
         public EventScopingStandardFactoryTest()
         {
-            this.testee = new EventScopingStandardFactory(A.Fake<IEventScopeHolder>());
+            this.testee = new EventScopingStandardFactory(new FakeDecoratorCreatingEventScopeFactory());
         }
 
         [Theory]
@@ -46,38 +46,68 @@ namespace Appccelerate.ScopingEventBroker
         [InlineData(typeof(OnUserInterfaceAsync), Decorated)]
         [InlineData(typeof(OnPublisher), NotDecorated)]
         public void CreateHandler_ShouldDecorateWhenHandlerAsynchronous(Type handlerType, bool decorated)
-        {
+        {               
             IHandler handler = this.testee.CreateHandler(handlerType);
 
-            ShouldBe(handler, decorated);
+            ShouldBe(handler, decorated, handlerType);
         }
 
-        [Fact]
-        public void CreateHandler_ShouldActivateHandler()
-        {
-            var handlerType = typeof(TestHandler);
-
-            var handler = (TestHandler)this.testee.CreateHandler(handlerType);
-
-            handler.Should().BeOfType<TestHandler>();
-        }
-
-        private static void ShouldBe(IHandler handler, bool decorated)
+        private static void ShouldBe(IHandler handler, bool decorated, Type handlerType)
         {
             var assertions = new Dictionary<bool, Action<IHandler>>
             {
-                { true, h => h.Should().BeOfType<ScopingHandlerDecorator>() }, 
-                { false, h => h.GetType().Should().Be(handler.GetType()) }, 
+                { true, h => h.Should().BeOfType<FakeDecorator>()
+                    .And.Subject.As<FakeDecorator>().DecoratedHandlerType
+                        .Should().Be(handlerType) }, 
+                { false, h => h.GetType().Should().Be(handlerType) }, 
             };
 
             assertions[decorated](handler);
         }
 
-        private class TestHandler : IHandler
+        private class FakeDecoratorCreatingEventScopeFactory : IEventScopeFactory
         {
+            public IEventScopeInternal CreateScope()
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEventScopeContext CreateScopeContext()
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEventScopeHolder CreateScopeHolder()
+            {
+                throw new NotImplementedException();
+            }
+
+            public IHandler CreateHandlerDecorator(IHandler handler)
+            {
+                return new FakeDecorator(handler);
+            }
+        }
+
+        private class FakeDecorator : IHandler
+        {
+            private readonly IHandler inner;
+
+            public FakeDecorator(IHandler inner)
+            {
+                this.inner = inner;
+            }
+
             public HandlerKind Kind
             {
                 get { return HandlerKind.Synchronous; }
+            }
+
+            public Type DecoratedHandlerType
+            {
+                get
+                {
+                    return this.inner.GetType();
+                }
             }
 
             public void Initialize(object subscriber, MethodInfo handlerMethod, IExtensionHost extensionHost)

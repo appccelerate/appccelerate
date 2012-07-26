@@ -25,14 +25,14 @@ namespace Appccelerate.ScopingEventBroker
     /// </summary>
     public abstract class AbstractEventScopeContext : IEventScopeContext, IEventScopeHolder
     {
-        private readonly Func<IEventScopeInternal> scopeFactory;
+        private readonly IEventScopeFactory scopeFactory;
 
-        protected AbstractEventScopeContext(Func<IEventScopeInternal> eventScopeFactory)
+        protected AbstractEventScopeContext(IEventScopeFactory eventScopeFactory)
         {
             this.scopeFactory = eventScopeFactory;
         }
 
-        public IEventScopeRegistry Current
+        public IEventScopeInternal Current
         {
             get { return this.CurrentScope; }
         }
@@ -41,7 +41,7 @@ namespace Appccelerate.ScopingEventBroker
 
         public IEventScope Acquire()
         {
-            return this.CurrentScope ?? (this.CurrentScope = new ScopeDecorator(this.scopeFactory(), this.ResetAction));
+            return this.CurrentScope ?? (this.CurrentScope = new ScopeDecorator(this.scopeFactory.CreateScope(), this.ResetAction));
         }
 
         protected virtual void ResetAction()

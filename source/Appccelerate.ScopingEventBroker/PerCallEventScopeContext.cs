@@ -1,5 +1,5 @@
-//-------------------------------------------------------------------------------
-// <copyright file="EventScopeFactory.cs" company="Appccelerate">
+﻿//-------------------------------------------------------------------------------
+// <copyright file="PerCallEventScopeContext.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,21 +18,13 @@
 
 namespace Appccelerate.ScopingEventBroker
 {
-    public class EventScopeFactory : IEventScopeFactory
+    public class PerCallEventScopeContext : AbstractEventScopeContext
     {
-        public IEventScopeInternal CreateScope()
+        public PerCallEventScopeContext(IEventScopeFactory eventScopeFactory)
+            : base(eventScopeFactory)
         {
-            throw new System.NotImplementedException();
         }
 
-        public IEventScopeContext CreateScopeContext()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEventScopeHolder CreateScopeHolder()
-        {
-            throw new System.NotImplementedException();
-        }
+        protected override ScopeDecorator CurrentScope { get; set; }
     }
 }

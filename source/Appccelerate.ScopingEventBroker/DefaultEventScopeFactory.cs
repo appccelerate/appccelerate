@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="EventScopingStandardFactory.cs" company="Appccelerate">
+// <copyright file="DefaultEventScopeFactory.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,24 +18,28 @@
 
 namespace Appccelerate.ScopingEventBroker
 {
-    using System;
     using Appccelerate.EventBroker;
-    using Appccelerate.EventBroker.Factories;
 
-    public class EventScopingStandardFactory : StandardFactory
+    public class DefaultEventScopeFactory : IEventScopeFactory
     {
-        private readonly IEventScopeFactory eventScopeFactory;
-
-        public EventScopingStandardFactory(IEventScopeFactory eventScopeFactory)
+        public virtual IEventScopeInternal CreateScope()
         {
-            this.eventScopeFactory = eventScopeFactory;
+            throw new System.NotImplementedException();
         }
 
-        protected override IHandler ActivateHandler(Type handlerType)
+        public virtual IEventScopeContext CreateScopeContext()
         {
-            IHandler handler = base.ActivateHandler(handlerType);
+            throw new System.NotImplementedException();
+        }
 
-            return handler.Kind == HandlerKind.Asynchronous ? this.eventScopeFactory.CreateHandlerDecorator(handler) : handler;
+        public virtual IEventScopeHolder CreateScopeHolder()
+        {
+            return new PerCallEventScopeContext(this);
+        }
+
+        public virtual IHandler CreateHandlerDecorator(IHandler handler)
+        {
+            return new ScopingHandlerDecorator(handler, this.CreateScopeHolder());
         }
     }
 }

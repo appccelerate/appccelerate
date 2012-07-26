@@ -29,7 +29,7 @@ namespace Appccelerate.ScopingEventBroker
         private readonly object disposeLock = new object();
         private ThreadLocal<ScopeDecorator> current;
 
-        public PerThreadEventScopeContext(Func<IEventScopeInternal> eventScopeFactory)
+        public PerThreadEventScopeContext(IEventScopeFactory eventScopeFactory)
             : base(eventScopeFactory)
         {
             this.current = new ThreadLocal<ScopeDecorator>();

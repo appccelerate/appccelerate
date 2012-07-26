@@ -30,7 +30,7 @@ namespace Appccelerate.ScopingEventBroker
 
         public PerThreadEventScopeContextTest()
         {
-            this.testee = new PerThreadEventScopeContext(A.Fake<IEventScopeInternal>);
+            this.testee = new PerThreadEventScopeContext(A.Fake<IEventScopeFactory>());
         }
 
         [Fact]
