@@ -29,6 +29,7 @@
   <property name="parallelBuild" value="true" overwrite="false" readonly="false" />
   
   <sysinfo failonerror="false" />
+  <setenv name="EnableNuGetPackageRestore" value="true" />
 
   <!--
   =========================================================
