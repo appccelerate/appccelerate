@@ -50,8 +50,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// </summary>
         private readonly HandlerRestriction handlerRestriction;
 
-        #region Construction
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Publication"/> class.
         /// </summary>
@@ -71,10 +69,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.publicationMatchers = publicationMatchers;
         }
         
-        #endregion
-
-        #region Data
-
         /// <summary>
         /// Gets the publisher of the event.
         /// </summary>
@@ -122,11 +116,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         {
             get { return this.publisher.IsAlive;  }
         }
-
-        #endregion
-
-        #region DescribeTo
-
+        
         /// <summary>
         /// Describes this publication
         /// name, scope, event handler.
@@ -156,11 +146,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
                 }
             }
         }
-
-        #endregion
-
-        #region Dispose
-
+        
         /// <summary>
         /// See <see cref="IDisposable.Dispose"/> for more information.
         /// </summary>
@@ -175,8 +161,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected abstract void Dispose(bool disposing);
-
-        #endregion
 
         /// <summary>
         /// Fires the event publication.

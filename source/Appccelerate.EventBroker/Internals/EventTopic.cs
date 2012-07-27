@@ -144,24 +144,6 @@ namespace Appccelerate.EventBroker.Internals
         /// <summary>
         /// Adds a publication to the topic.
         /// </summary>
-        /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
-        /// <param name="eventHandler">The event handler that will fire the topic.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication(
-            object publisher,
-            ref EventHandler eventHandler,
-            HandlerRestriction handlerRestriction,
-            IList<IPublicationMatcher> matchers)
-        {
-            IPublication publication = this.factory.CreatePublication(this, publisher, ref eventHandler, handlerRestriction, matchers);
-            this.Clean();
-            this.AddPublication(publication);
-        }
-
-        /// <summary>
-        /// Adds a publication to the topic.
-        /// </summary>
         /// <typeparam name="TEventArgs">The type of the event arguments of the event handler.</typeparam>
         /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
         /// <param name="eventHandler">The event handler that will fire the topic.</param>
@@ -189,26 +171,10 @@ namespace Appccelerate.EventBroker.Internals
 
             this.Clean();
             IPublication publication = this.FindPublication(publisher, eventInfo.Name);
-            if (publication != null)
-            {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
-                    
-                    publication.Dispose();
+            
+            this.RemovePublication(publication);
 
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
-            }
+            publication.Dispose();
         }
 
         /// <summary>
@@ -220,75 +186,38 @@ namespace Appccelerate.EventBroker.Internals
         {
             this.Clean();
             IPublication publication = this.FindPublication(publisher, CodePublication<EventArgs>.EventNameOfCodePublication);
-            if (publication != null)
-            {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
+            
+            this.RemovePublication(publication);
 
-                    this.factory.DestroyPublication(publication, ref publishedEvent);
-
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
-            }
+            this.factory.DestroyPublication(publication, ref publishedEvent);
         }
 
         public void RemovePublication<TEventArgs>(object publisher, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs
         {
             this.Clean();
             IPublication publication = this.FindPublication(publisher, CodePublication<TEventArgs>.EventNameOfCodePublication);
-            if (publication != null)
-            {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
 
-                    this.factory.DestroyPublication(publication, ref publishedEvent);
+            this.RemovePublication(publication);
 
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
-            }
+            this.factory.DestroyPublication(publication, ref publishedEvent);
         }
 
         public void RemovePublication(IPublication publication)
         {
-            // this method is a heck to get spontaneous publications with handler restrictions running!!
             this.Clean();
-            if (publication != null)
+            
+            if (publication == null)
             {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
+                return;
+            }
 
-                    this.publications = newPublications;
+            lock (this)
+            {
+                var newPublications = this.publications.Where(p => p != publication).ToList();
 
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
+                this.publications = newPublications;
+
+                this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
             }
         }
 
@@ -428,7 +357,7 @@ namespace Appccelerate.EventBroker.Internals
 
             lock (this)
             {
-                List<IPublication> newPublications = new List<IPublication>(this.publications) { publication };
+                var newPublications = new List<IPublication>(this.publications) { publication };
 
                 this.publications = newPublications;
 
@@ -442,15 +371,17 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="disposing">Should be true when calling from Dispose().</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing)
             {
-                foreach (IPublication publication in this.publications)
-                {
-                    publication.Dispose();
-                }
-
-                this.publications.Clear();
+                return;
             }
+
+            foreach (IPublication publication in this.publications)
+            {
+                publication.Dispose();
+            }
+
+            this.publications.Clear();
         }
 
         /// <summary>
@@ -469,7 +400,7 @@ namespace Appccelerate.EventBroker.Internals
             // therefore do the check on the event args type only.
             if (!subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
             {
-                using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+                using (var writer = new StringWriter(CultureInfo.InvariantCulture))
                 {
                     writer.Write("Publication ");
                     writer.WriteLine();
@@ -527,23 +458,17 @@ namespace Appccelerate.EventBroker.Internals
         /// <returns><code>true</code> if the event has to be relayed.</returns>
         private bool CheckMatchers(IPublication publication, ISubscription subscription, EventArgs e)
         {
-            bool match = true;
-            foreach (var publicationMatcher in publication.PublicationMatchers)
-            {
-                match &= publicationMatcher.Match(publication, subscription, e);
-            }
+            bool match = publication.PublicationMatchers.Aggregate(
+                true, 
+                (current, publicationMatcher) => current & publicationMatcher.Match(publication, subscription, e));
 
-            foreach (var globalMatcher in this.globalMatchersProvider.Matchers)
-            {
-                match &= globalMatcher.Match(publication, subscription, e);
-            }
+            match = this.globalMatchersProvider.Matchers.Aggregate(
+                match, 
+                (current, globalMatcher) => current & globalMatcher.Match(publication, subscription, e));
 
-            foreach (var subscriptionMatcher in subscription.SubscriptionMatchers)
-            {
-                match &= subscriptionMatcher.Match(publication, subscription, e);
-            }
-
-            return match;
+            return subscription.SubscriptionMatchers.Aggregate(
+                match, 
+                (current, subscriptionMatcher) => current & subscriptionMatcher.Match(publication, subscription, e));
         }
 
         /// <summary>
@@ -557,25 +482,8 @@ namespace Appccelerate.EventBroker.Internals
             IPublication publication = this.publications.SingleOrDefault(
                 match => match.Publisher == publisher &&
                          match.EventName == eventName);
-            return publication;
-        }
 
-        /// <summary>
-        /// Gets the handlers of this even topic
-        /// </summary>
-        /// <returns>
-        /// Array of delegates, the handlers for this even topic.
-        /// </returns>
-        private IEnumerable<KeyValuePair<ISubscription, EventTopicFireDelegate>> GetHandlers()
-        {
-            foreach (ISubscription subscription in this.subscriptions)
-            {
-                EventTopicFireDelegate handler = subscription.GetHandler();
-                if (handler != null)
-                {
-                    yield return new KeyValuePair<ISubscription, EventTopicFireDelegate>(subscription, handler);
-                }
-            }
+            return publication;
         }
 
         /// <summary>
@@ -593,6 +501,20 @@ namespace Appccelerate.EventBroker.Internals
         }
 
         /// <summary>
+        /// Gets the handlers of this even topic
+        /// </summary>
+        /// <returns>
+        /// Array of delegates, the handlers for this even topic.
+        /// </returns>
+        private IEnumerable<KeyValuePair<ISubscription, EventTopicFireDelegate>> GetHandlers()
+        {
+            return from subscription in this.subscriptions 
+                   let handler = subscription.GetHandler() 
+                   where handler != null 
+                   select new KeyValuePair<ISubscription, EventTopicFireDelegate>(subscription, handler);
+        }
+
+        /// <summary>
         /// Perform a sanity cleaning of the dead references to publishers and subscribers
         /// </summary>
         /// <devdoc>As the topic maintains <see cref="WeakReference"/> to publishers and subscribers,
@@ -600,54 +522,46 @@ namespace Appccelerate.EventBroker.Internals
         /// deals with that case.</devdoc>
         private void Clean()
         {
-            bool cleanSubscriptions = false;
-            foreach (ISubscription subscription in this.subscriptions)
-            {
-                cleanSubscriptions |= subscription.Subscriber == null;
-            }
+            bool cleanSubscriptions = this.subscriptions.Any(subscription => subscription.Subscriber == null);
+            bool cleanPublications = this.publications.Any(publication => publication.Publisher == null);
 
-            bool cleanPublications = false;
-            foreach (IPublication publication in this.publications.ToArray())
+            if (cleanPublications)
             {
-                cleanPublications |= publication.Publisher == null;
+                this.CleanPublications();
             }
 
             if (cleanSubscriptions)
             {
-                lock (this)
-                {
-                    List<ISubscription> newSubscriptions = new List<ISubscription>();
-                    foreach (ISubscription subscription in this.subscriptions)
-                    {
-                        if (subscription.Subscriber != null)
-                        {
-                            newSubscriptions.Add(subscription);
-                        }
-                    }
-
-                    this.subscriptions = newSubscriptions;
-                }
+                this.CleanSubscriptions();
             }
-            
-            if (cleanPublications)
-            {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication publication in this.publications)
-                    {
-                        if (publication.Publisher != null)
-                        {
-                            newPublications.Add(publication);
-                        }
-                        else
-                        {
-                            publication.Dispose();
-                        }
-                    }
+        }
 
-                    this.publications = newPublications;
+        private void CleanPublications()
+        {
+            lock (this)
+            {
+                var newPublications = new List<IPublication>();
+                foreach (IPublication publication in this.publications)
+                {
+                    if (publication.Publisher != null)
+                    {
+                        newPublications.Add(publication);
+                    }
+                    else
+                    {
+                        publication.Dispose();
+                    }
                 }
+
+                this.publications = newPublications;
+            }
+        }
+
+        private void CleanSubscriptions()
+        {
+            lock (this)
+            {
+                this.subscriptions = this.subscriptions.Where(subscription => subscription.Subscriber != null).ToList();
             }
         }
 

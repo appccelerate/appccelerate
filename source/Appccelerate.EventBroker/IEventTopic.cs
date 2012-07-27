@@ -42,15 +42,6 @@ namespace Appccelerate.EventBroker
         /// <summary>
         /// Adds a publication to the topic.
         /// </summary>
-        /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
-        /// <param name="eventHandler">The event handler that will fire the topic.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        void AddPublication(object publisher, ref EventHandler eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> matchers);
-
-        /// <summary>
-        /// Adds a publication to the topic.
-        /// </summary>
         /// <typeparam name="TEventArgs">The type of the event arguments of the event handler.</typeparam>
         /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
         /// <param name="eventHandler">The event handler that will fire the topic.</param>

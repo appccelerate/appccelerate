@@ -224,12 +224,10 @@ namespace Appccelerate.EventBroker
         public void AddPublication(string topic, object publisher, ref EventHandler publishedEvent, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers)
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-            
-            eventTopic.AddPublication(
-                publisher,
-                ref publishedEvent,
-                handlerRestriction,
-                matchers);
+
+            IPublication publication = this.factory.CreatePublication(eventTopic, publisher, ref publishedEvent, handlerRestriction, matchers);
+
+            eventTopic.AddPublication(publication);
         }
 
         /// <summary>
