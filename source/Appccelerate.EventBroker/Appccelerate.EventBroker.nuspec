@@ -10,17 +10,17 @@
     <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <summary>Notification component for synchronous and asynchronous loosly coupled notification with automatic thread switching</summary>
+    <summary>Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching</summary>
     <description>
-      Notification component for synchronous and asynchronous loosly coupled notification with automatic thread switching:
+      Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching:
       synchronous and asynchronous notification,
       automatic thread switching: to background or UI thread,
       loose coupling of event topic publishers and subscribers,
-      publishers and subscribers are referenced by weak references and can therfore be garbage collected
+      publishers and subscribers are referenced by weak references and can therefore be garbage collected
       multiple publishers and/or subscribers for a single event topic,
       matchers for publications and subscriptions,
       thorough customizable logging,
-      extension support,
+      extension support.
     </description>
     <copyright>Copyright 2012</copyright>
     <tags>Appccelerate EventBroker publisher subscriber events multi-threading thread-switching</tags>
