@@ -19,7 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Esent.Interop">
-      <HintPath>..\packages\Rhino.ServiceBus.References.2.3.3.0\lib\Esent.Interop.dll</HintPath>
+      <HintPath>..\packages\Rhino.ServiceBus.References.2.3.4.0\lib\Esent.Interop.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -31,7 +31,7 @@
       <HintPath>..\packages\Rhino.Queues.1.4.2.0\lib\4.0\Rhino.Queues.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.ServiceBus">
-      <HintPath>..\packages\Rhino.ServiceBus.2.3.3.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+      <HintPath>..\packages\Rhino.ServiceBus.2.3.4.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
