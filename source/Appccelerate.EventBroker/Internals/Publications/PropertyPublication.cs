@@ -41,7 +41,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         private readonly Type eventArgsType;
 
         public PropertyPublication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             EventInfo eventInfo,
             HandlerRestriction handlerRestriction,

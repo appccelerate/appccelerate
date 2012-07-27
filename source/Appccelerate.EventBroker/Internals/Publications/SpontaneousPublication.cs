@@ -40,7 +40,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// <param name="eventArgsType">Type of the event args.</param>
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
-        public SpontaneousPublication(IEventTopic topic, object publisher, Type eventArgsType, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) :
+        public SpontaneousPublication(IEventTopicExecuter topic, object publisher, Type eventArgsType, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) :
             base(topic, publisher, handlerRestriction, publicationMatchers)
         {
             this.eventArgsType = eventArgsType;

@@ -33,7 +33,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// <summary>
         /// The event topic this publication is registered on.
         /// </summary>
-        private readonly IEventTopic topic;
+        private readonly IEventTopicExecuter topic;
 
         /// <summary>
         /// Weak reference to the publisher.
@@ -58,7 +58,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         protected Publication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             HandlerRestriction handlerRestriction,
             IList<IPublicationMatcher> publicationMatchers)

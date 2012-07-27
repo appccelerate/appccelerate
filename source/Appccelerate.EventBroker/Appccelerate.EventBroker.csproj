@@ -63,6 +63,7 @@
     <Compile Include="Internals\GlobalMatchers\IGlobalMatchersHost.cs" />
     <Compile Include="Internals\GlobalMatchers\IGlobalMatchersProvider.cs" />
     <Compile Include="Internals\IEventInspector.cs" />
+    <Compile Include="Internals\IEventTopicExecuter.cs" />
     <Compile Include="Internals\IFactory.cs" />
     <Compile Include="Internals\Publications\CodePublication.cs" />
     <Compile Include="Internals\Publications\PropertyPublication.cs" />

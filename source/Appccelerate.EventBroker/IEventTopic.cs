@@ -28,7 +28,7 @@ namespace Appccelerate.EventBroker
     /// <summary>
     /// Represents a point of communication on a certain topic between the topic publishers and the topic subscribers.
     /// </summary>
-    public interface IEventTopic : IDisposable, IEventTopicInfo
+    public interface IEventTopic : IDisposable, IEventTopicInfo, IEventTopicExecuter
     {
         /// <summary>
         /// Adds a publication to the topic.

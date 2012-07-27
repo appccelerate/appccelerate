@@ -18,7 +18,6 @@
 
 namespace Appccelerate.EventBroker
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -57,14 +56,5 @@ namespace Appccelerate.EventBroker
         /// </summary>
         /// <param name="writer">The writer.</param>
         void DescribeTo(TextWriter writer);
-
-        /// <summary>
-        /// Fires the <see cref="IEventTopic"/>.
-        /// </summary>
-        /// <param name="sender">The object that acts as the sender of the event to the subscribers. 
-        /// Not always the publisher (it's the sender provided in the event call).</param>
-        /// <param name="e">An <see cref="EventArgs"/> instance to be passed to the subscribers.</param>
-        /// <param name="publication">The publication firing the event topic.</param>
-        void Fire(object sender, EventArgs e, IPublication publication);
     }
 }
