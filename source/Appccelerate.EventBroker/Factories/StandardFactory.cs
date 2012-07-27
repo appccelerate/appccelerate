@@ -66,13 +66,18 @@ namespace Appccelerate.EventBroker.Factories
             return new EventInspector(this, this.ExtensionHost);
         }
 
+        public virtual IRegistrar CreateRegistrar(IEventTopic eventTopic)
+        {
+            return new Registrar(this, eventTopic);
+        }
+
         /// <summary>
         /// Creates a new event topic
         /// </summary>
         /// <param name="uri">The URI of the event topic.</param>
         /// <param name="globalMatchersProvider">The global matchers provider.</param>
         /// <returns>A newly created event topic</returns>
-        public virtual IEventTopic CreateEventTopic(string uri, IGlobalMatchersProvider globalMatchersProvider)
+        public virtual IEventTopic CreateEventTopicInternal(string uri, IGlobalMatchersProvider globalMatchersProvider)
         {
             return new EventTopic(uri, this, this.ExtensionHost, globalMatchersProvider);
         }
@@ -87,7 +92,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <param name="publicationMatchers">The publication matchers.</param>
         /// <returns>A newly created publication</returns>
         public virtual IPublication CreatePublication(
-            IEventTopic eventTopic, 
+            IEventTopicExecuter eventTopic, 
             object publisher, 
             EventInfo eventInfo, 
             HandlerRestriction handlerRestriction, 
@@ -106,7 +111,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <param name="publicationMatchers">The matchers.</param>
         /// <returns>A newly created publication</returns>
         public virtual IPublication CreatePublication(
-            IEventTopic eventTopic,
+            IEventTopicExecuter eventTopic,
             object publisher,
             ref EventHandler eventHandler,
             HandlerRestriction handlerRestriction,
@@ -126,7 +131,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <param name="publicationMatchers">The matchers.</param>
         /// <returns>A newly created publication</returns>
         public virtual IPublication CreatePublication<TEventArgs>(
-            IEventTopic eventTopic,
+            IEventTopicExecuter eventTopic,
             object publisher,
             ref EventHandler<TEventArgs> eventHandler,
             HandlerRestriction handlerRestriction,

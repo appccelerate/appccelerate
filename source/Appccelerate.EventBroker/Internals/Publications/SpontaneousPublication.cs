@@ -30,6 +30,8 @@ namespace Appccelerate.EventBroker.Internals.Publications
     /// </summary>
     internal class SpontaneousPublication : Publication
     {
+        public const string SpontaneousEventName = "Fired on event broker";
+
         private readonly Type eventArgsType;
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// <value></value>
         public override string EventName
         {
-            get { return "Fired on event broker"; }
+            get { return SpontaneousEventName; }
         }
 
         /// <summary>

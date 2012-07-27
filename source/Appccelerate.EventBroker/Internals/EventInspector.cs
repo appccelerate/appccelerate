@@ -129,14 +129,15 @@ namespace Appccelerate.EventBroker.Internals
             }
 
             IEventTopic eventTopic = eventTopicHost.GetEventTopic(topic);
+            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
 
             if (register)
             {
-                eventTopic.AddPublication(publisher, eventInfo, handlerRestriction, matchers);
+                registrar.AddPublication(publisher, eventInfo, handlerRestriction, matchers);
             }
             else
             {
-                eventTopic.RemovePublication(publisher, eventInfo);
+                registrar.RemovePublication(publisher, eventInfo);
             }
         }
 
@@ -191,6 +192,8 @@ namespace Appccelerate.EventBroker.Internals
             IEventTopicHost eventTopicHost)
         {
             IEventTopic topic = eventTopicHost.GetEventTopic(attr.Topic);
+            IRegistrar registrar = this.factory.CreateRegistrar(topic);
+
             if (register)
             {
                 List<IPublicationMatcher> matchers = new List<IPublicationMatcher>();
@@ -199,7 +202,7 @@ namespace Appccelerate.EventBroker.Internals
                     matchers.Add(this.factory.CreatePublicationMatcher(type));
                 }
 
-                topic.AddPublication(
+                registrar.AddPublication(
                     publisher, 
                     eventInfo, 
                     attr.HandlerRestriction, 
@@ -207,7 +210,7 @@ namespace Appccelerate.EventBroker.Internals
             }
             else
             {
-                topic.RemovePublication(publisher, eventInfo);
+                registrar.RemovePublication(publisher, eventInfo);
             }
         }
 

@@ -26,7 +26,7 @@ namespace Appccelerate.EventBroker
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
-    /// Represents a subscription to an <see cref="EventTopic"/>.
+    /// Represents a subscription to an <see cref="Registrar"/>.
     /// </summary>
     public interface ISubscription
     {

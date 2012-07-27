@@ -42,6 +42,7 @@
     <Compile Include="IEventBrokerRegisterable.cs" />
     <Compile Include="IEventRegistrar.cs" />
     <Compile Include="IEventTopic.cs" />
+    <Compile Include="IEventTopicExecuter.cs" />
     <Compile Include="IEventTopicHost.cs" />
     <Compile Include="IEventTopicInfo.cs" />
     <Compile Include="IExtensionHost.cs" />
@@ -49,6 +50,8 @@
     <Compile Include="INamedItem.cs" />
     <Compile Include="Internals\EventInspector.cs" />
     <Compile Include="Internals\EventTopic.cs" />
+    <Compile Include="Internals\IRegistrar.cs" />
+    <Compile Include="Internals\Registrar.cs" />
     <Compile Include="Internals\EventTopicHost.cs" />
     <Compile Include="Internals\Exceptions\EventTopicException.cs" />
     <Compile Include="Internals\Exceptions\InvalidPublicationSignatureException.cs" />
@@ -63,7 +66,6 @@
     <Compile Include="Internals\GlobalMatchers\IGlobalMatchersHost.cs" />
     <Compile Include="Internals\GlobalMatchers\IGlobalMatchersProvider.cs" />
     <Compile Include="Internals\IEventInspector.cs" />
-    <Compile Include="Internals\IEventTopicExecuter.cs" />
     <Compile Include="Internals\IFactory.cs" />
     <Compile Include="Internals\Publications\CodePublication.cs" />
     <Compile Include="Internals\Publications\PropertyPublication.cs" />

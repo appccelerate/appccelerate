@@ -59,7 +59,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <param name="subscriptionHandler">The subscription handler.</param>
-        public override void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        public override void Handle(IEventTopicInfo eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
         {
             if (this.RunningOnUserInterfaceThread())
             {
@@ -76,7 +76,7 @@ namespace Appccelerate.EventBroker.Handlers
             return Thread.CurrentThread.ManagedThreadId == this.syncContextHolder.ThreadId;
         }
 
-        private void CallWithoutThreadSwitch(IEventTopic eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
+        private void CallWithoutThreadSwitch(IEventTopicInfo eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Appccelerate.EventBroker.Handlers
             }
         }
 
-        private void CallWithThreadSwitch(IEventTopic eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
+        private void CallWithThreadSwitch(IEventTopicInfo eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
         {
             this.syncContextHolder.SyncContext.Send(
                 delegate(object data)

@@ -48,7 +48,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         public CodePublication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             ref EventHandler eventHandler,
             HandlerRestriction handlerRestriction,
@@ -69,7 +69,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         public CodePublication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             ref EventHandler<TEventArgs> eventHandler,
             HandlerRestriction handlerRestriction,

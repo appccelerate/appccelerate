@@ -58,7 +58,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <param name="subscriptionHandler">The subscription handler.</param>
-        public abstract void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler);
+        public abstract void Handle(IEventTopicInfo eventTopic, object sender, EventArgs e, Delegate subscriptionHandler);
 
         /// <summary>
         /// Handles a subscriber method exception by passing it to all extensions and re-throwing the inner exception in case that none of the
@@ -66,7 +66,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// </summary>
         /// <param name="targetInvocationException">The targetInvocationException.</param>
         /// <param name="eventTopic">The event topic.</param>
-        protected void HandleSubscriberMethodException(TargetInvocationException targetInvocationException, IEventTopic eventTopic)
+        protected void HandleSubscriberMethodException(TargetInvocationException targetInvocationException, IEventTopicInfo eventTopic)
         {
             Ensure.ArgumentNotNull(targetInvocationException, "targetInvocationException");
 

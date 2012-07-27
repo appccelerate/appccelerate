@@ -42,7 +42,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <param name="subscriptionHandler">The subscription handler.</param>
-        public override void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        public override void Handle(IEventTopicInfo eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
         {
             Ensure.ArgumentNotNull(subscriptionHandler, "subscriptionHandler");
 

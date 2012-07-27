@@ -23,12 +23,12 @@ namespace Appccelerate.EventBroker
     using Appccelerate.EventBroker.Internals;
 
     /// <summary>
-    /// Represents the signature for the subscription objects to get called from the <see cref="EventTopic"/> during
+    /// Represents the signature for the subscription objects to get called from the <see cref="Registrar"/> during
     /// a firing sequence.
     /// </summary>
     /// <param name="eventTopic">The event topic that is fired.</param>
     /// <param name="sender">The publisher object firing the topic.</param>
     /// <param name="e">The <see cref="EventArgs"/> data to be passed to the subscribers.</param>
     /// <param name="publication">The publication firing the event.</param>
-    public delegate void EventTopicFireDelegate(IEventTopic eventTopic, object sender, EventArgs e, IPublication publication);
+    public delegate void EventTopicFireDelegate(IEventTopicInfo eventTopic, object sender, EventArgs e, IPublication publication);
 }

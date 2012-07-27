@@ -222,7 +222,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <param name="publication">The publication.</param>
-        private void EventTopicFireHandler(IEventTopic eventTopic, object sender, EventArgs e, IPublication publication)
+        private void EventTopicFireHandler(IEventTopicInfo eventTopic, object sender, EventArgs e, IPublication publication)
         {
             if (this.Subscriber == null)
             {

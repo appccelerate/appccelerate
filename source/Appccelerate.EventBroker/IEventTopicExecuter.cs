@@ -1,4 +1,4 @@
-﻿//-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
 // <copyright file="IEventTopicExecuter.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker.Internals
+namespace Appccelerate.EventBroker
 {
     using System;
 

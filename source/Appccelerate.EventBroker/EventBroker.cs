@@ -187,7 +187,7 @@ namespace Appccelerate.EventBroker
 
                 eventTopic.Fire(sender, eventArgs, spontaneousPublication);
 
-                eventTopic.RemovePublication(spontaneousPublication);
+                eventTopic.RemovePublication(publisher, SpontaneousPublication.SpontaneousEventName);
             }
         }
 
@@ -255,8 +255,9 @@ namespace Appccelerate.EventBroker
         public void AddPublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers) where TEventArgs : EventArgs
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
 
-            eventTopic.AddPublication(
+            registrar.AddPublication(
                 publisher, 
                 ref publishedEvent,
                 handlerRestriction,
@@ -272,8 +273,9 @@ namespace Appccelerate.EventBroker
         public void RemovePublication(string topic, object publisher, ref EventHandler publishedEvent)
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
 
-            eventTopic.RemovePublication(publisher, ref publishedEvent);
+            registrar.RemovePublication(publisher, ref publishedEvent);
         }
 
         /// <summary>
@@ -285,8 +287,9 @@ namespace Appccelerate.EventBroker
         public void RemovePublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
 
-            eventTopic.RemovePublication(publisher, ref publishedEvent);
+            registrar.RemovePublication(publisher, ref publishedEvent);
         }
 
         /// <summary>
