@@ -23,7 +23,7 @@ namespace Appccelerate.EventBroker
     using Appccelerate.EventBroker.Internals;
 
     /// <summary>
-    /// Represents the signature for the subscription objects to get called from the <see cref="Registrar"/> during
+    /// Represents the signature for the subscription objects to get called from the <see cref="EventTopic"/> during
     /// a firing sequence.
     /// </summary>
     /// <param name="eventTopic">The event topic that is fired.</param>

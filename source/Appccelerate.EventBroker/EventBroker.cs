@@ -255,13 +255,9 @@ namespace Appccelerate.EventBroker
         public void AddPublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers) where TEventArgs : EventArgs
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
+            IPublication publication = this.factory.CreatePublication(eventTopic, publisher, ref publishedEvent, handlerRestriction, matchers);
 
-            registrar.AddPublication(
-                publisher, 
-                ref publishedEvent,
-                handlerRestriction,
-                matchers);
+            eventTopic.AddPublication(publication);
         }
 
         /// <summary>
@@ -273,9 +269,14 @@ namespace Appccelerate.EventBroker
         public void RemovePublication(string topic, object publisher, ref EventHandler publishedEvent)
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
 
-            registrar.RemovePublication(publisher, ref publishedEvent);
+            IPublication publication = eventTopic.RemovePublication(publisher, CodePublication<EventArgs>.EventNameOfCodePublication);
+
+            var codePublication = publication as CodePublication<EventArgs>;
+            if (codePublication != null)
+            {
+                codePublication.Unregister(ref publishedEvent);
+            }
         }
 
         /// <summary>
@@ -287,9 +288,14 @@ namespace Appccelerate.EventBroker
         public void RemovePublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs
         {
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-            IRegistrar registrar = this.factory.CreateRegistrar(eventTopic);
 
-            registrar.RemovePublication(publisher, ref publishedEvent);
+            IPublication publication = eventTopic.RemovePublication(publisher, CodePublication<TEventArgs>.EventNameOfCodePublication);
+
+            var codePublication = publication as CodePublication<TEventArgs>;
+            if (codePublication != null)
+            {
+                codePublication.Unregister(ref publishedEvent);
+            }
         }
 
         /// <summary>

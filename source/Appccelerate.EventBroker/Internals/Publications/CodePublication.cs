@@ -20,7 +20,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
 {
     using System;
     using System.Collections.Generic;
-
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>

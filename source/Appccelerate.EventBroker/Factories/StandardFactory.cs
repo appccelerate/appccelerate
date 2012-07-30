@@ -66,11 +66,6 @@ namespace Appccelerate.EventBroker.Factories
             return new EventInspector(this, this.ExtensionHost);
         }
 
-        public virtual IRegistrar CreateRegistrar(IEventTopic eventTopic)
-        {
-            return new Registrar(this, eventTopic);
-        }
-
         /// <summary>
         /// Creates a new event topic
         /// </summary>
@@ -138,35 +133,6 @@ namespace Appccelerate.EventBroker.Factories
             IList<IPublicationMatcher> publicationMatchers) where TEventArgs : EventArgs
         {
             return new CodePublication<TEventArgs>(eventTopic, publisher, ref eventHandler, handlerRestriction, publicationMatchers);
-        }
-
-        /// <summary>
-        /// Destroys the publication.
-        /// </summary>
-        /// <param name="publication">The publication.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        public virtual void DestroyPublication(IPublication publication, ref EventHandler publishedEvent)
-        {
-            CodePublication<EventArgs> codePublication = publication as CodePublication<EventArgs>;
-            if (codePublication != null)
-            {
-                codePublication.Unregister(ref publishedEvent);
-            }
-        }
-
-        /// <summary>
-        /// Destroys the publication.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="publication">The publication.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        public virtual void DestroyPublication<TEventArgs>(IPublication publication, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs
-        {
-            CodePublication<TEventArgs> codePublication = publication as CodePublication<TEventArgs>;
-            if (codePublication != null)
-            {
-                codePublication.Unregister(ref publishedEvent);
-            }
         }
 
         /// <summary>

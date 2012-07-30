@@ -87,21 +87,6 @@ namespace Appccelerate.EventBroker.Internals
         IPublication CreatePublication<TEventArgs>(IEventTopicExecuter eventTopic, object publisher, ref EventHandler<TEventArgs> eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) where TEventArgs : EventArgs;
 
         /// <summary>
-        /// Destroys the publication.
-        /// </summary>
-        /// <param name="publication">The publication.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        void DestroyPublication(IPublication publication, ref EventHandler publishedEvent);
-
-        /// <summary>
-        /// Destroys the publication.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
-        /// <param name="publication">The publication.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        void DestroyPublication<TEventArgs>(IPublication publication, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs;
-
-        /// <summary>
         /// Creates a new subscription
         /// </summary>
         /// <param name="subscriber">The subscriber.</param>
@@ -145,7 +130,5 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="globalMatchersProvider">The global matchers provider.</param>
         /// <returns>A newly created event topic</returns>
         IEventTopic CreateEventTopicInternal(string uri, IGlobalMatchersProvider globalMatchersProvider);
-
-        IRegistrar CreateRegistrar(IEventTopic eventTopic);
     }
 }
