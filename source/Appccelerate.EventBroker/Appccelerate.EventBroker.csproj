@@ -48,8 +48,11 @@
     <Compile Include="IExtensionHost.cs" />
     <Compile Include="IHandler.cs" />
     <Compile Include="INamedItem.cs" />
-    <Compile Include="Internals\EventInspector.cs" />
     <Compile Include="Internals\EventTopic.cs" />
+    <Compile Include="Internals\Inspection\EventInspector.cs" />
+    <Compile Include="Internals\Inspection\PropertyPublicationScanResult.cs" />
+    <Compile Include="Internals\Inspection\PropertySubscriptionScanResult.cs" />
+    <Compile Include="Internals\Inspection\ScanResult.cs" />
     <Compile Include="Internals\Publications\CodePublication.cs" />
     <Compile Include="Internals\EventTopicHost.cs" />
     <Compile Include="Internals\Exceptions\EventTopicException.cs" />

@@ -46,10 +46,6 @@ namespace Appccelerate.EventBroker.Internals
         /// <returns>A newly created event topic host.</returns>
         IEventTopicHost CreateEventTopicHost(IGlobalMatchersProvider globalMatchersProvider);
 
-        /// <summary>
-        /// Creates an event inspector.
-        /// </summary>
-        /// <returns>A newly created event inspector.</returns>
         IEventInspector CreateEventInspector();
 
         /// <summary>

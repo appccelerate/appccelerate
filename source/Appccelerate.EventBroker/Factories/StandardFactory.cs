@@ -24,9 +24,11 @@ namespace Appccelerate.EventBroker.Factories
 
     using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Internals.GlobalMatchers;
+    using Appccelerate.EventBroker.Internals.Inspection;
     using Appccelerate.EventBroker.Internals.Publications;
     using Appccelerate.EventBroker.Internals.Subscriptions;
     using Appccelerate.EventBroker.Matchers;
+    using PropertyPublication = Appccelerate.EventBroker.Internals.Publications.PropertyPublication;
 
     /// <summary>
     /// Standard implementation for the <see cref="IFactory"/> interface.
@@ -63,7 +65,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <returns>A newly created event inspector.</returns>
         public virtual IEventInspector CreateEventInspector()
         {
-            return new EventInspector(this, this.ExtensionHost);
+            return new EventInspector(this.ExtensionHost);
         }
 
         /// <summary>

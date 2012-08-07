@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="IEventInspector.cs" company="Appccelerate">
+// <copyright file="ScanResult.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,22 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker.Internals
+namespace Appccelerate.EventBroker.Internals.Inspection
 {
-    using System.Reflection;
-    using Appccelerate.EventBroker.Internals.Inspection;
-    
-    public interface IEventInspector
-    {
-        ScanResult Scan(object instance);
+    using System.Collections.Generic;
 
-        EventInfo ScanPublisherForEvent(object publisher, string eventName);
+    public class ScanResult
+    {
+        public ScanResult(
+            IEnumerable<PropertyPublicationScanResult> publications, 
+            IEnumerable<PropertySubscriptionScanResult> subscription)
+        {
+            this.Publications = publications;
+            this.Subscription = subscription;
+        }
+
+        public IEnumerable<PropertyPublicationScanResult> Publications { get; private set; }
+
+        public IEnumerable<PropertySubscriptionScanResult> Subscription { get; private set; }
     }
 }

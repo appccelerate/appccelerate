@@ -21,10 +21,12 @@ namespace Appccelerate.EventBroker
     using System;
     using System.Collections.Generic;
     using System.IO;
-
+    using System.Linq;
+    using System.Reflection;
     using Appccelerate.EventBroker.Factories;
     using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Internals.GlobalMatchers;
+    using Appccelerate.EventBroker.Internals.Inspection;
     using Appccelerate.EventBroker.Internals.Publications;
     using Appccelerate.EventBroker.Matchers;
 
@@ -91,14 +93,12 @@ namespace Appccelerate.EventBroker
         /// <param name="item">Item to register with the event broker.</param>
         public void Register(object item)
         {
-            this.eventInspector.ProcessPublisher(item, true, this.eventTopicHost);
-            this.eventInspector.ProcessSubscriber(item, true, this.eventTopicHost);
+            ScanResult scanResult = this.eventInspector.Scan(item);
 
-            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
-            if (eventBrokerRegisterable != null)
-            {
-                eventBrokerRegisterable.Register(this);
-            }
+            this.RegisterPropertyPublications(item, scanResult);
+            this.RegisterPropertySubscriptions(item, scanResult);
+
+            this.CallRegisterIfRegisterableOn(item);
 
             this.extensions.ForEach(extension => extension.RegisteredItem(item));
         }
@@ -109,14 +109,12 @@ namespace Appccelerate.EventBroker
         /// <param name="item">The item to unregister.</param>
         public void Unregister(object item)
         {
-            this.eventInspector.ProcessPublisher(item, false, this.eventTopicHost);
-            this.eventInspector.ProcessSubscriber(item, false, this.eventTopicHost);
+            ScanResult scanResult = this.eventInspector.Scan(item);
 
-            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
-            if (eventBrokerRegisterable != null)
-            {
-                eventBrokerRegisterable.Unregister(this);
-            }
+            this.UnregisterPropertyPublications(item, scanResult.Publications);
+            this.UnregisterPropertySubscriptions(item, scanResult.Subscription);
+
+            this.CallUnregisterIfRegisterableOn(item);
 
             this.extensions.ForEach(extension => extension.UnregisteredItem(item));
         }
@@ -131,12 +129,20 @@ namespace Appccelerate.EventBroker
         /// <param name="matchers">The matchers.</param>
         public void RegisterEvent(string topic, object publisher, string eventName, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers)
         {
-            if (publisher == null)
-            {
-                throw new ArgumentNullException("publisher", "publisher must not be null.");
-            }
+            Ensure.ArgumentNotNull(publisher, "publisher");
+            
+            EventInfo eventInfo = this.eventInspector.ScanPublisherForEvent(publisher, eventName);
 
-            this.eventInspector.ProcessPublisher(topic, publisher, eventName, handlerRestriction, matchers, true, this.eventTopicHost);
+            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+
+            IPublication publication = this.factory.CreatePublication(
+                eventTopic,
+                publisher,
+                eventInfo,
+                handlerRestriction,
+                matchers);
+
+            eventTopic.AddPublication(publication);
         }
 
         /// <summary>
@@ -149,7 +155,11 @@ namespace Appccelerate.EventBroker
         /// <param name="matchers">The matchers.</param>
         public void RegisterHandlerMethod(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
         {
-            this.eventInspector.ProcessSubscriber(topic, subscriber, handlerMethod, handler, matchers, true, this.eventTopicHost);
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+            
+            eventTopic.AddSubscription(subscriber, handlerMethod.Method, handler, matchers);
         }
 
         /// <summary>
@@ -163,7 +173,11 @@ namespace Appccelerate.EventBroker
         /// <param name="matchers">The matchers.</param>
         public void RegisterHandlerMethod<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs
         {
-            this.eventInspector.ProcessSubscriber(topic, subscriber, handlerMethod, handler, matchers, true, this.eventTopicHost);
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+
+            eventTopic.AddSubscription(subscriber, handlerMethod.Method, handler, matchers);
         }
 
         /// <summary>
@@ -445,6 +459,83 @@ namespace Appccelerate.EventBroker
             if (disposing)
             {
                 this.eventTopicHost.Dispose();
+            }
+        }
+
+        private void RegisterPropertyPublications(object item, ScanResult scanResult)
+        {
+            foreach (PropertyPublicationScanResult propertyPublication in scanResult.Publications)
+            {
+                var publicationMatchers = from publicationMatcherType in propertyPublication.PublicationMatcherTypes
+                                          select this.factory.CreatePublicationMatcher(publicationMatcherType);
+
+                IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(propertyPublication.Topic);
+
+                IPublication publication = this.factory.CreatePublication(
+                    eventTopic,
+                    item,
+                    propertyPublication.Event,
+                    propertyPublication.HandlerRestriction,
+                    publicationMatchers.ToList());
+
+                eventTopic.AddPublication(publication);
+            }
+        }
+
+        private void RegisterPropertySubscriptions(object item, ScanResult scanResult)
+        {
+            foreach (PropertySubscriptionScanResult propertySubscription in scanResult.Subscription)
+            {
+                IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(propertySubscription.Topic);
+
+                var subscriptionMatchers = from subscriptionMatcherType in propertySubscription.SubscriptionMatcherTypes
+                                           select this.factory.CreateSubscriptionMatcher(subscriptionMatcherType);
+
+                eventTopic.AddSubscription(
+                    item,
+                    propertySubscription.Method,
+                    this.factory.CreateHandler(propertySubscription.HandlerType),
+                    subscriptionMatchers.ToList());
+            }
+        }
+
+        private void UnregisterPropertyPublications(object publisher, IEnumerable<PropertyPublicationScanResult> propertyPublications)
+        {
+            foreach (PropertyPublicationScanResult propertyPublication in propertyPublications)
+            {
+                IEventTopic topic = this.eventTopicHost.GetEventTopic(propertyPublication.Topic);
+
+                IPublication publication = topic.RemovePublication(publisher, propertyPublication.Event.Name);
+
+                publication.Dispose();
+            }
+        }
+
+        private void UnregisterPropertySubscriptions(object subscriber, IEnumerable<PropertySubscriptionScanResult> propertySubscriptions)
+        {
+            foreach (PropertySubscriptionScanResult propertySubscription in propertySubscriptions)
+            {
+                IEventTopic topic = this.eventTopicHost.GetEventTopic(propertySubscription.Topic);
+
+                topic.RemoveSubscription(subscriber, propertySubscription.Method);
+            }
+        }
+
+        private void CallRegisterIfRegisterableOn(object item)
+        {
+            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
+            if (eventBrokerRegisterable != null)
+            {
+                eventBrokerRegisterable.Register(this);
+            }
+        }
+
+        private void CallUnregisterIfRegisterableOn(object item)
+        {
+            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
+            if (eventBrokerRegisterable != null)
+            {
+                eventBrokerRegisterable.Unregister(this);
             }
         }
     }

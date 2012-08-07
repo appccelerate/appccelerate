@@ -19,8 +19,10 @@
 namespace Appccelerate.EventBroker.Extensions
 {
     using System;
-
+    using System.Collections.Generic;
     using Appccelerate.EventBroker.Exceptions;
+    using Appccelerate.EventBroker.Internals;
+    using Appccelerate.EventBroker.Internals.Inspection;
 
     /// <summary>
     /// Base class for <see cref="IEventBrokerExtension"/>s that implements all members as virtual methods.
@@ -66,13 +68,7 @@ namespace Appccelerate.EventBroker.Extensions
         {
         }
 
-        /// <summary>
-        /// Called after a (potential) publisher was processed.
-        /// </summary>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="register">Whether the publisher is registered; or unregistered.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        public virtual void ProcessedPublisher(object publisher, bool register, IEventTopicHost eventTopicHost)
+        public void ScannedInstanceForPublicationsAndSubscriptions(object publisher, IEnumerable<PropertyPublicationScanResult> foundPublications, IEnumerable<PropertySubscriptionScanResult> foundSubscriptions)
         {
         }
 

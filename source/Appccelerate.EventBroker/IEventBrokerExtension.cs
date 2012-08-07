@@ -19,9 +19,11 @@
 namespace Appccelerate.EventBroker
 {
     using System;
-
+    using System.Collections.Generic;
     using Appccelerate.EventBroker.Exceptions;
-    
+    using Appccelerate.EventBroker.Internals;
+    using Appccelerate.EventBroker.Internals.Inspection;
+
     /// <summary>
     /// Interface for implementing event broker extensions.
     /// </summary>
@@ -57,13 +59,7 @@ namespace Appccelerate.EventBroker
         /// <param name="item">The item that was unregistered.</param>
         void UnregisteredItem(object item);
 
-        /// <summary>
-        /// Called after a (potential) publisher was processed.
-        /// </summary>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="register">Whether the publisher is registered; or unregistered.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        void ProcessedPublisher(object publisher, bool register, IEventTopicHost eventTopicHost);
+        void ScannedInstanceForPublicationsAndSubscriptions(object publisher, IEnumerable<PropertyPublicationScanResult> foundPublications, IEnumerable<PropertySubscriptionScanResult> foundSubscriptions);
 
         /// <summary>
         /// Called after a (potential) subscriber was processed.

@@ -19,10 +19,13 @@
 namespace Appccelerate.EventBroker
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
 
     using Appccelerate.EventBroker.Exceptions;
+    using Appccelerate.EventBroker.Internals;
+    using Appccelerate.EventBroker.Internals.Inspection;
     using Appccelerate.EventBroker.Matchers;
 
     using FluentAssertions;
@@ -55,11 +58,8 @@ namespace Appccelerate.EventBroker
         It should_call_extension_when_subscription_was_added = () =>
             extension.Log.Should().Contain("AddedSubscription");
 
-        It should_call_extension_when_publisher_was_processed = () =>
-            extension.Log.Should().Contain("ProcessedPublisher");
-
-        It should_call_extension_when_subscriber_was_processed = () =>
-            extension.Log.Should().Contain("ProcessedSubscriber");
+        It should_call_extension_when_item_was_scanned = () =>
+            extension.Log.Should().Contain("Scanned");
 
         It should_call_extension_when_item_was_registered = () =>
             extension.Log.Should().Contain("RegisteredItem");
@@ -86,11 +86,8 @@ namespace Appccelerate.EventBroker
         It should_call_extension_when_subscription_was_removed = () =>
             extension.Log.Should().Contain("RemovedSubscription");
         
-        It should_call_extension_when_publisher_was_processed = () =>
-            extension.Log.Should().Contain("ProcessedPublisher");
-
-        It should_call_extension_when_subscriber_was_processed = () =>
-            extension.Log.Should().Contain("ProcessedSubscriber");
+        It should_call_extension_when_item_was_scanned = () =>
+            extension.Log.Should().Contain("Scanned");
 
         It should_call_extension_when_item_was_unregistered = () =>
             extension.Log.Should().Contain("UnregisteredItem");
@@ -247,9 +244,9 @@ namespace Appccelerate.EventBroker
                 this.log.AppendLine("UnregisteredItem");
             }
 
-            public void ProcessedPublisher(object publisher, bool register, IEventTopicHost eventTopicHost)
+            public void ScannedInstanceForPublicationsAndSubscriptions(object publisher, IEnumerable<PropertyPublicationScanResult> foundPublications, IEnumerable<PropertySubscriptionScanResult> foundSubscriptions)
             {
-                this.log.AppendLine("ProcessedPublisher");
+                this.log.AppendLine("Scanned");
             }
 
             public void ProcessedSubscriber(object subscriber, bool register, IEventTopicHost eventTopicHost)
