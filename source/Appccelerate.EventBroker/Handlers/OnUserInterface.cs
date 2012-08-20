@@ -49,6 +49,8 @@ namespace Appccelerate.EventBroker.Handlers
         /// <param name="extensionHost">The extension host.</param>
         public override void Initialize(object subscriber, MethodInfo handlerMethod, IExtensionHost extensionHost)
         {
+            base.Initialize(subscriber, handlerMethod, extensionHost);
+
             this.syncContextHolder.Initalize(subscriber, handlerMethod);
         }
 
