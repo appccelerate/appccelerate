@@ -21,7 +21,6 @@ namespace Appccelerate.EventBroker
     using System;
     using System.Collections.Generic;
     using Appccelerate.EventBroker.Exceptions;
-    using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Internals.Inspection;
 
     /// <summary>
@@ -60,14 +59,6 @@ namespace Appccelerate.EventBroker
         void UnregisteredItem(object item);
 
         void ScannedInstanceForPublicationsAndSubscriptions(object publisher, IEnumerable<PropertyPublicationScanResult> foundPublications, IEnumerable<PropertySubscriptionScanResult> foundSubscriptions);
-
-        /// <summary>
-        /// Called after a (potential) subscriber was processed.
-        /// </summary>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="register">Whether the subscriber is registered; or unregistered.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        void ProcessedSubscriber(object subscriber, bool register, IEventTopicHost eventTopicHost);
 
         /// <summary>
         /// Called after an event topic was created.

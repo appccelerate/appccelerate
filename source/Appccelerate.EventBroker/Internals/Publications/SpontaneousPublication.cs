@@ -34,34 +34,17 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         private readonly Type eventArgsType;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpontaneousPublication"/> class.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventArgsType">Type of the event args.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="publicationMatchers">The publication matchers.</param>
         public SpontaneousPublication(IEventTopicExecuter topic, object publisher, Type eventArgsType, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) :
             base(topic, publisher, handlerRestriction, publicationMatchers)
         {
             this.eventArgsType = eventArgsType;
         }
 
-        /// <summary>
-        /// Gets the name of the event on the <see cref="Publication.Publisher"/>.
-        /// For a spontaneous publication this is null.
-        /// </summary>
-        /// <value></value>
         public override string EventName
         {
             get { return SpontaneousEventName; }
         }
 
-        /// <summary>
-        /// Gets the type of the event handler.
-        /// </summary>
-        /// <value>The type of the event handler.</value>
         public override Type EventArgsType
         {
             get
@@ -70,11 +53,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
             }
         }
 
-        /// <summary>
-        /// Describes this publication
-        /// name, scope, event handler.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
         public override void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");
@@ -82,10 +60,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
             writer.Write(", spontaneous publication");
         }
 
-        /// <summary>
-        /// Implementation of the disposable pattern.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             // nothing to dispose

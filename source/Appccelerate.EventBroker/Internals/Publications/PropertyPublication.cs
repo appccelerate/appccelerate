@@ -69,49 +69,34 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventInfo.AddEventHandler(publisher, handler);
         }
         
-        /// <summary>
-        /// Gets the name of the event on the <see cref="Publication.Publisher"/>.
-        /// </summary>
         public override string EventName
         {
             get { return this.eventInfo.Name; }
         }
 
-        /// <summary>
-        /// Gets the type of the event arguments.
-        /// </summary>
-        /// <value>The type of the event arguments.</value>
         public override Type EventArgsType
         {
             get { return this.eventArgsType; }
         }
 
-        /// <summary>
-        /// Fires the event publication. This method is registered to the event on the publisher.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         public void PublicationHandler(object sender, EventArgs e)
         {
             this.Fire(sender, e);
         }
 
-        /// <summary>
-        /// Describes this publication
-        /// name, scope, event handler.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
         public override void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");
 
-            if (this.IsPublisherAlive)
+            if (!this.IsPublisherAlive)
             {
-                base.DescribeTo(writer);
-                
-                writer.Write(", EventHandler type = ");
-                writer.Write(this.eventInfo.EventHandlerType.FullNameToString());
+                return;
             }
+
+            base.DescribeTo(writer);
+                
+            writer.Write(", EventHandler type = ");
+            writer.Write(this.eventInfo.EventHandlerType.FullNameToString());
         }
 
         /// <summary>
