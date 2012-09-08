@@ -10,7 +10,7 @@ You must enable nuget package restore in order to build appccelerate.
 
 Documentation
 =============
-I can find the documentation at www.appccelerate.com
+You can find the documentation at www.appccelerate.com
 
 
 Your Appccelerate team
