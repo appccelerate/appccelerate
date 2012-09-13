@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <summary>AsyncModules provide a simple way to built active objects.</summary>
-    <description>AsyncModules provide a simple way to built active objects (objects with a dedicated background thread for asynchronous execution of tasks).</description>
+    <summary>AsyncModules provide a simple way to build active objects.</summary>
+    <description>AsyncModules provide a simple way to build active objects (objects with a dedicated background thread for asynchronous execution of tasks).</description>
     <copyright>Copyright 2012</copyright>
     <tags>Appccelerate multi-threading active-objects</tags>
   </metadata>
