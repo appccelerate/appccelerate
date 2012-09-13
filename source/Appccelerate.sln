@@ -117,6 +117,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.SourceTemplate
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FA5D69F8-B71F-478D-9064-450906BC84A5}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\nuget.exe = .nuget\nuget.exe
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject

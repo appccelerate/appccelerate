@@ -10,3 +10,4 @@ _ReSharper*/
 source/Appccelerate.1.2.dotCover
 *.user
 *.suo
+*.orig

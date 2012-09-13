@@ -13,7 +13,7 @@
       <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="FakeItEasy">
-      <HintPath>..\packages\FakeItEasy.1.7.4574.62\lib\NET40\FakeItEasy.dll</HintPath>
+      <HintPath>..\packages\FakeItEasy.1.7.4582.63\lib\NET40\FakeItEasy.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=1.7.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

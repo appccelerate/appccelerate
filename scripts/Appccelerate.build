@@ -14,9 +14,9 @@
   <property name="publish" value="${base_dir}\publish" readonly="true" />
   <property name="tools_dir" value="${base_dir}\tools" />
   <property name="xUnitConsole" value="${sources}\packages\xunit.runners.1.9.1\tools\xunit.console.clr4.x86.exe" />
-  <property name="mspec" value="${sources}\packages\Machine.Specifications.0.5.7\tools\mspec-clr4.exe" />-->
+  <property name="mspec" value="${sources}\packages\Machine.Specifications.0.5.8\tools\mspec-clr4.exe" />-->
   <property name="git" value="${tools_dir}\git\git.exe" />
-  <property name="nuget.console" value="${tools_dir}\NuGet\nuget.exe" />
+  <property name="nuget.console" value="${sources}\.nuget\nuget.exe" />
   
   <property name="build.number" value="0" />
 
@@ -29,6 +29,7 @@
   <property name="parallelBuild" value="true" overwrite="false" readonly="false" />
   
   <sysinfo failonerror="false" />
+  <setenv name="EnableNuGetPackageRestore" value="true" /> <!-- This enables nuget package restore for all processes and child processes spawn by NAnt -->
 
   <!--
   =========================================================
