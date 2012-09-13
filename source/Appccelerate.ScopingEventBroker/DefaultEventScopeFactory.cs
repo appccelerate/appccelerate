@@ -22,24 +22,31 @@ namespace Appccelerate.ScopingEventBroker
 
     public class DefaultEventScopeFactory : IEventScopeFactory
     {
+        private AbstractEventScopeContext scopeContext;
+
         public virtual IEventScopeInternal CreateScope()
         {
-            throw new System.NotImplementedException();
+            return new EventScope();
         }
 
         public virtual IEventScopeContext CreateScopeContext()
         {
-            throw new System.NotImplementedException();
+            return this.GetOrCreate();
         }
 
         public virtual IEventScopeHolder CreateScopeHolder()
         {
-            return new PerCallEventScopeContext(this);
+            return this.GetOrCreate();
         }
 
         public virtual IHandler CreateHandlerDecorator(IHandler handler)
         {
             return new ScopingHandlerDecorator(handler, this.CreateScopeHolder());
+        }
+
+        private AbstractEventScopeContext GetOrCreate()
+        {
+            return this.scopeContext ?? (this.scopeContext = new PerCallEventScopeContext(this));
         }
     }
 }
