@@ -27,8 +27,8 @@ namespace Appccelerate.EventBroker.Subscribers
 
     using Machine.Specifications;
 
-    [Subject("Special subscribers")]
-    public class When_defining_a_handler_method_without_sender_using_registration_by_property
+    [Subject(Subscribers.RegisteringHandlerMethods)]
+    public class When_defining_a_handler_method_without_sender_using_registration_by_attribute
     {
         static readonly EventArgs EventArgs = new EventArgs();
 
@@ -70,63 +70,8 @@ namespace Appccelerate.EventBroker.Subscribers
         }
     }
 
-    [Subject("Special subscribers")]
+    [Subject(Subscribers.RegisteringHandlerMethods)]
     public class When_defining_a_handler_method_without_sender_using_registration_by_registrar
-    {
-        static readonly EventArgs EventArgs = new EventArgs();
-
-        static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static SubscriberWithoutSender subscriber;
-
-        Establish context = () =>
-        {
-            publisher = new SimpleEvent.EventPublisher();
-            subscriber = new SubscriberWithoutSender();
-
-            eventBroker = new EventBroker();
-
-            eventBroker.Register(publisher);
-        };
-
-        Because of = () =>
-            {
-                eventBroker.Register(subscriber);
-
-                publisher.FireEvent(EventArgs);
-
-                eventBroker.Unregister(subscriber);
-
-                publisher.FireEvent(EventArgs);
-            };
-
-        It should_call_handler_method_on_subscriber_with_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgs.Should().Contain(EventArgs);
-
-        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgs.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
-
-        public class SubscriberWithoutSender : SubscriberWithoutSenderBase, IEventBrokerRegisterable
-        {
-            public void Handle(EventArgs e)
-            {
-                this.ReceivedEventArgs.Add(e);
-            }
-
-            public void Register(IEventRegistrar eventRegistrar)
-            {
-                eventRegistrar.AddSubscription(SimpleEvent.EventTopic, this, this.Handle, new OnPublisher());
-            }
-
-            public void Unregister(IEventRegistrar eventRegistrar)
-            {
-                eventRegistrar.RemoveSubscription(SimpleEvent.EventTopic, this, this.Handle);
-            }
-        }
-    }
-
-    [Subject("Special subscribers")]
-    public class When_defining_a_handler_method_without_sender_using_registration_by_event_broker
     {
         static readonly EventArgs EventArgs = new EventArgs();
 

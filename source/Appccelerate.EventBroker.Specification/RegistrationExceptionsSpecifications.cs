@@ -224,10 +224,7 @@ namespace Appccelerate.EventBroker
                 eventBroker.Register(new InvalidPublisherPrivateEvent()));
 
         [Ignore("this is not yet supported.")]
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<NotUserInterfaceThreadException>();
+        It should_throw_exception;
 
         public class InvalidPublisherPrivateEvent
         {

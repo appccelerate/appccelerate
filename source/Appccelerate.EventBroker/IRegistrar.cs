@@ -28,14 +28,18 @@ namespace Appccelerate.EventBroker
 
         void AddSubscription(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
 
-        void AddSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
-
         void AddSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs;
+
+        void AddSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
+        
+        void AddSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
 
         void RemoveSubscription(string topic, object subscriber, EventHandler handlerMethod);
 
-        void RemoveSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod);
-
         void RemoveSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod) where TEventArgs : EventArgs;
+
+        void RemoveSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod);
+        
+        void RemoveSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod);
     }
 }

@@ -19,6 +19,7 @@
 namespace Appccelerate.EventBroker.Subscribers
 {
     using System;
+    using System.Collections.Generic;
 
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.Events;
@@ -27,8 +28,8 @@ namespace Appccelerate.EventBroker.Subscribers
 
     using Machine.Specifications;
 
-    [Subject("Special subscribers")]
-    public class When_registering_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument
+    [Subject(Subscribers.RegisteringHandlerMethods)]
+    public class When_defining_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument_using_registration_by_attribute
     {
         const string Value = "value";
 
@@ -44,34 +45,98 @@ namespace Appccelerate.EventBroker.Subscribers
                 eventBroker = new EventBroker();
 
                 eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
             };
 
-        Because of = () => publisher.FireEvent(Value);
+        Because of = () =>
+            {
+                eventBroker.Register(subscriber);
+
+                publisher.FireEvent(Value);
+
+                eventBroker.Unregister(subscriber);
+
+                publisher.FireEvent(Value);
+            };
 
         It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedValue.Should().Be(Value);
+            subscriber.ReceivedEventArgValues.Should().Contain(Value);
 
-        public class Publisher
+        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
+            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+
+        public class SubscriberWithoutSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
         {
-            [EventPublication(SimpleEvent.EventTopic)]
-            public event EventHandler<EventArgs<string>> Event;
-
-            public void FireEvent(string value)
-            {
-                this.Event(this, new EventArgs<string>(value));
-            }
-        }
-
-        public class SubscriberWithoutSenderAndUnwrappedEventArgs
-        {
-            public string ReceivedValue { get; private set; }
-
             [EventSubscription(SimpleEvent.EventTopic, typeof(OnPublisher))]
             public void Handle(string value)
             {
-                this.ReceivedValue = value;
+                this.ReceivedEventArgValues.Add(value);
             }
         }
+    }
+
+    [Subject(Subscribers.RegisteringHandlerMethods)]
+    public class When_defining_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument_using_registration_by_registrar
+    {
+        const string Value = "value";
+
+        static EventBroker eventBroker;
+        static Publisher publisher;
+        static SubscriberWithoutSenderAndUnwrappedEventArgs subscriber;
+
+        Establish context = () =>
+        {
+            publisher = new Publisher();
+            subscriber = new SubscriberWithoutSenderAndUnwrappedEventArgs();
+
+            eventBroker = new EventBroker();
+
+            eventBroker.Register(publisher);
+        };
+
+        Because of = () =>
+        {
+            eventBroker.SpecialCasesRegistrar.AddSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
+
+            publisher.FireEvent(Value);
+
+            eventBroker.SpecialCasesRegistrar.RemoveSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle);
+
+            publisher.FireEvent(Value);
+        };
+
+        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
+            subscriber.ReceivedEventArgValues.Should().Contain(Value);
+
+        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
+            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+
+        public class SubscriberWithoutSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
+        {
+            public void Handle(string value)
+            {
+                this.ReceivedEventArgValues.Add(value);
+            }
+        }
+    }
+
+    public class Publisher
+    {
+        [EventPublication(SimpleEvent.EventTopic)]
+        public event EventHandler<EventArgs<string>> Event;
+
+        public void FireEvent(string value)
+        {
+            this.Event(this, new EventArgs<string>(value));
+        }
+    }
+
+    public class SubscriberWithoutSenderAndUnwrappedEventArgsBase
+    {
+        public SubscriberWithoutSenderAndUnwrappedEventArgsBase()
+        {
+            this.ReceivedEventArgValues = new List<object>();
+        }
+
+        public List<object> ReceivedEventArgValues { get; private set; }
     }
 }

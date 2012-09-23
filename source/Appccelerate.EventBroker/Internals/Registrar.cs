@@ -221,13 +221,6 @@ namespace Appccelerate.EventBroker.Internals
             this.AddSubscription(topic, subscriber, handler, matchers, handlerMethod.Method);
         }
 
-        public void AddSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            this.AddSubscription(topic, subscriber, handler, matchers, handlerMethod.Method);
-        }
-
         /// <summary>
         /// Adds a subscription. Use this to register subscriptions by code instead of using attributes.
         /// </summary>
@@ -256,6 +249,20 @@ namespace Appccelerate.EventBroker.Internals
             eventTopic.AddSubscription(subscription);
         }
 
+        public void AddSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
+        {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            this.AddSubscription(topic, subscriber, handler, matchers, handlerMethod.Method);
+        }
+
+        public void AddSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
+        {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            this.AddSubscription(topic, subscriber, handler, matchers, handlerMethod.Method);
+        }
+
         /// <summary>
         /// Removes a subscription.
         /// </summary>
@@ -263,13 +270,6 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="subscriber">The subscriber.</param>
         /// <param name="handlerMethod">The handler method.</param>
         public void RemoveSubscription(string topic, object subscriber, EventHandler handlerMethod)
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            this.RemoveSubscription(topic, subscriber, handlerMethod.Method);
-        }
-
-        public void RemoveSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod)
         {
             Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
 
@@ -290,6 +290,20 @@ namespace Appccelerate.EventBroker.Internals
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
 
             eventTopic.RemoveSubscription(subscriber, handlerMethod.Method);
+        }
+
+        public void RemoveSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod)
+        {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            this.RemoveSubscription(topic, subscriber, handlerMethod.Method);
+        }
+
+        public void RemoveSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod)
+        {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            this.RemoveSubscription(topic, subscriber, handlerMethod.Method);
         }
 
         private static void CheckHandlerMethodIsNotStatic(MethodInfo handlerMethod)
