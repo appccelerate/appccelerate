@@ -22,6 +22,8 @@ namespace Appccelerate.EventBroker.Handlers
     using System.Reflection;
     using System.Threading;
 
+    using Appccelerate.EventBroker.Internals.Subscriptions;
+
     /// <summary>
     /// Handler that executes the subscription synchronously on the user interface thread (Send semantics).
     /// </summary>
@@ -52,22 +54,15 @@ namespace Appccelerate.EventBroker.Handlers
             this.syncContextHolder.Initalize(subscriber, handlerMethod);
         }
 
-        /// <summary>
-        /// Executes the subscription synchronously on the user interface thread.
-        /// </summary>
-        /// <param name="eventTopic">The event topic.</param>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <param name="subscriptionHandler">The subscription handler.</param>
-        public override void Handle(IEventTopicInfo eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
             if (this.RunningOnUserInterfaceThread())
             {
-                this.CallWithoutThreadSwitch(eventTopic, subscriptionHandler, sender, e);
+                this.CallWithoutThreadSwitch(eventTopic, subscriber, delegateWrapper, sender, e);
             }
             else
             {
-                this.CallWithThreadSwitch(eventTopic, subscriptionHandler, sender, e);
+                this.CallWithThreadSwitch(eventTopic, subscriber, delegateWrapper, sender, e);
             }
         }
 
@@ -76,11 +71,11 @@ namespace Appccelerate.EventBroker.Handlers
             return Thread.CurrentThread.ManagedThreadId == this.syncContextHolder.ThreadId;
         }
 
-        private void CallWithoutThreadSwitch(IEventTopicInfo eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
+        private void CallWithoutThreadSwitch(IEventTopicInfo eventTopic, object subscriber, IDelegateWrapper delegateWrapper, object sender, EventArgs e)
         {
             try
             {
-                subscriptionHandler.DynamicInvoke(sender, e);
+                delegateWrapper.Invoke(subscriber, sender, e);
             }
             catch (TargetInvocationException exception)
             {
@@ -88,21 +83,21 @@ namespace Appccelerate.EventBroker.Handlers
             }
         }
 
-        private void CallWithThreadSwitch(IEventTopicInfo eventTopic, Delegate subscriptionHandler, object sender, EventArgs e)
+        private void CallWithThreadSwitch(IEventTopicInfo eventTopic, object subscriber, IDelegateWrapper delegateWrapper, object sender, EventArgs e)
         {
             this.syncContextHolder.SyncContext.Send(
                 delegate(object data)
                     {
                         try
                         {
-                            ((Delegate)data).DynamicInvoke(sender, e);
+                            ((IDelegateWrapper)data).Invoke(subscriber, sender, e);
                         }
                         catch (TargetInvocationException exception)
                         {
                             this.HandleSubscriberMethodException(exception, eventTopic);
                         }
                     },
-                subscriptionHandler);
+                delegateWrapper);
         }
     }
 }

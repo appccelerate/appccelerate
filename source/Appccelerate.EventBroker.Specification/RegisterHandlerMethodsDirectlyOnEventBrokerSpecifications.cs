@@ -46,7 +46,7 @@ namespace Appccelerate.EventBroker
 
         Because of = () =>
             {
-                eventBroker.RegisterHandlerMethod(
+                eventBroker.SpecialCasesRegistrar.AddSubscription(
                     SimpleEvent.EventTopic,
                     subscriber,
                     subscriber.Handle,
@@ -92,7 +92,7 @@ namespace Appccelerate.EventBroker
 
         Because of = () =>
         {
-            eventBroker.RegisterEvent(
+            eventBroker.SpecialCasesRegistrar.AddPublication(
                 SimpleEvent.EventTopic,
                 publisher,
                 "Event",

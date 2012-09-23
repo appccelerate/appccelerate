@@ -44,6 +44,10 @@
       <Project>{6B189709-125E-46EC-8FEE-50345375F221}</Project>
       <Name>Appccelerate.EventBroker</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
+      <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
+      <Name>Appccelerate.Fundamentals</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
 </Project>

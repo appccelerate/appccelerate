@@ -87,7 +87,7 @@ namespace Appccelerate.EventBroker
         public class InvalidSubscriberWithWrongSignature
         {
             [EventSubscription("topic", typeof(Handlers.OnPublisher))]
-            public void SimpleEvent(EventArgs e)
+            public void SimpleEvent(int i, EventArgs e)
             {
             }
         }

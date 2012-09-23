@@ -21,6 +21,8 @@ namespace Appccelerate.EventBroker.Handlers
     using System;
     using System.Reflection;
 
+    using Appccelerate.EventBroker.Internals.Subscriptions;
+
     /// <summary>
     /// Handler that executes the subscription asynchronously on the user interface thread (Post semantics).
     /// </summary>
@@ -51,28 +53,21 @@ namespace Appccelerate.EventBroker.Handlers
             this.syncContextHolder.Initalize(subscriber, handlerMethod);
         }
 
-        /// <summary>
-        /// Executes the subscription asynchronously on the user interface thread.
-        /// </summary>
-        /// <param name="eventTopic">The event topic.</param>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <param name="subscriptionHandler">The subscription handler.</param>
-        public override void Handle(IEventTopicInfo eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
             this.syncContextHolder.SyncContext.Post(
                 delegate(object data)
                     {
                         try
                         {
-                            ((Delegate)data).DynamicInvoke(sender, e);
+                            ((IDelegateWrapper)data).Invoke(subscriber, sender, e);
                         }
                         catch (TargetInvocationException exception)
                         {
                             this.HandleSubscriberMethodException(exception, eventTopic);
                         }
                     }, 
-                    subscriptionHandler);
+                    delegateWrapper);
         }
     }
 }

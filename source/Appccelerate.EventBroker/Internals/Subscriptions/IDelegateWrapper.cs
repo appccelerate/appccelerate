@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="IEventTopic.cs" company="Appccelerate">
+// <copyright file="IDelegateWrapper.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +16,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Internals.Subscriptions
 {
     using System;
-    using System.Reflection;
 
-    /// <summary>
-    /// Represents a point of communication on a certain topic between the topic publishers and the topic subscribers.
-    /// </summary>
-    public interface IEventTopic : IDisposable, IEventTopicInfo, IEventTopicExecuter
+    public interface IDelegateWrapper
     {
-        void AddPublication(IPublication publication);
-
-        IPublication RemovePublication(object publisher, string eventName);
-
-        void AddSubscription(ISubscription subscription);
-        
-        void RemoveSubscription(object subscriber, MethodInfo handlerMethod);
+        void Invoke(object subscriber, object sender, EventArgs e);
     }
 }

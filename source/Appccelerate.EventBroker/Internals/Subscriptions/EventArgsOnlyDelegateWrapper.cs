@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="IEventTopic.cs" company="Appccelerate">
+// <copyright file="EventArgsOnlyDelegateWrapper.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +16,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Internals.Subscriptions
 {
     using System;
     using System.Reflection;
 
-    /// <summary>
-    /// Represents a point of communication on a certain topic between the topic publishers and the topic subscribers.
-    /// </summary>
-    public interface IEventTopic : IDisposable, IEventTopicInfo, IEventTopicExecuter
+    public class EventArgsOnlyDelegateWrapper : DelegateWrapper
     {
-        void AddPublication(IPublication publication);
+        public EventArgsOnlyDelegateWrapper(Type eventArgsType, MethodInfo handlerMethod)
+            : base(
+                eventArgsType, 
+                typeof(Action<>).MakeGenericType(eventArgsType),
+                handlerMethod)
+        {
+        }
 
-        IPublication RemovePublication(object publisher, string eventName);
+        public override void Invoke(object subscriber, object sender, EventArgs e)
+        {
+            Delegate d = this.CreateSubscriptionDelegate(subscriber);
 
-        void AddSubscription(ISubscription subscription);
-        
-        void RemoveSubscription(object subscriber, MethodInfo handlerMethod);
+            d.DynamicInvoke(e);
+        }
     }
 }

@@ -28,7 +28,6 @@ namespace Appccelerate.EventBroker.Sample
 
     using Appccelerate.EventBroker.Exceptions;
     using Appccelerate.EventBroker.Extensions;
-    using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Matchers;
 
     public class DebugLogger : EventBrokerExtensionBase
@@ -316,6 +315,9 @@ namespace Appccelerate.EventBroker.Sample
                 "An exception was thrown during handling the topic '{0}': {1}", 
                 eventTopic.Uri,
                 exception);
+
+            exception.PreserveStackTrace();
+            throw exception;
         } 
     }
 }

@@ -76,7 +76,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <returns>A newly created event topic</returns>
         public virtual IEventTopic CreateEventTopicInternal(string uri, IGlobalMatchersProvider globalMatchersProvider)
         {
-            return new EventTopic(uri, this, this.ExtensionHost, globalMatchersProvider);
+            return new EventTopic(uri, this.ExtensionHost, globalMatchersProvider);
         }
 
         /// <summary>
@@ -137,21 +137,13 @@ namespace Appccelerate.EventBroker.Factories
             return new CodePublication<TEventArgs>(eventTopic, publisher, ref eventHandler, handlerRestriction, publicationMatchers);
         }
 
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="subscriptionMatchers">The subscription scope matchers.</param>
-        /// <returns>A newly created subscription</returns>
         public virtual ISubscription CreateSubscription(
             object subscriber,
-            MethodInfo handlerMethod,
+            DelegateWrapper delegateWrapper,
             IHandler handler,
             IList<ISubscriptionMatcher> subscriptionMatchers)
         {
-            return new Subscription(subscriber, handlerMethod, handler, subscriptionMatchers, this.ExtensionHost);
+            return new Subscription(subscriber, delegateWrapper, handler, subscriptionMatchers, this.ExtensionHost);
         }
 
         /// <summary>
@@ -207,6 +199,11 @@ namespace Appccelerate.EventBroker.Factories
         public virtual IGlobalMatchersHost CreateGlobalMatchersHost()
         {
             return new GlobalMatchersHost();
+        }
+
+        public virtual IEventRegistrar CreateRegistrar(IEventTopicHost eventTopicHost, IEventInspector eventInspector, IExtensionHost extensionHost)
+        {
+            return new Registrar(this, eventTopicHost, eventInspector, extensionHost);
         }
 
         /// <summary>

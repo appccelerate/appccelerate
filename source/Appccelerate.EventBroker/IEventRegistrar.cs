@@ -25,7 +25,7 @@ namespace Appccelerate.EventBroker
     /// This interface is passed to the registered publishers and subscribers so that they can register publications
     /// and subscriptions by code.
     /// </summary>
-    public interface IEventRegistrar
+    public interface IEventRegistrar : IRegistrar
     {
         void AddPublication(string topic, object publisher, ref EventHandler publishedEvent, params IPublicationMatcher[] matchers);
 
@@ -36,22 +36,8 @@ namespace Appccelerate.EventBroker
         void AddPublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers) where TEventArgs : EventArgs;
 
         void RemovePublication(string topic, object publisher, ref EventHandler publishedEvent);
-        
+
         void RemovePublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs;
-
-        void AddSubscription(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
-
-        void AddSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs;
-
-        void RemoveSubscription(string topic, object subscriber, EventHandler handlerMethod);
-
-        void RemoveSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod) where TEventArgs : EventArgs;
-
-        void RegisterEvent(string topic, object publisher, string eventName, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers);
-
-        void RegisterHandlerMethod(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
-
-        void RegisterHandlerMethod<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs;
 
         void Register(object item);
 

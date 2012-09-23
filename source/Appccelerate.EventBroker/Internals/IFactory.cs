@@ -23,6 +23,7 @@ namespace Appccelerate.EventBroker.Internals
     using System.Reflection;
 
     using Appccelerate.EventBroker.Internals.GlobalMatchers;
+    using Appccelerate.EventBroker.Internals.Subscriptions;
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
@@ -82,15 +83,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <returns>A newly created publication</returns>
         IPublication CreatePublication<TEventArgs>(IEventTopicExecuter eventTopic, object publisher, ref EventHandler<TEventArgs> eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) where TEventArgs : EventArgs;
 
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="subscriptionMatchers">The subscription scope matchers.</param>
-        /// <returns>A newly created subscription</returns>
-        ISubscription CreateSubscription(object subscriber, MethodInfo handlerMethod, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers);
+        ISubscription CreateSubscription(object subscriber, DelegateWrapper delegateWrapper, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers);
 
         /// <summary>
         /// Creates a subscription execution handler. This handler defines on which thread the subscription is executed.
@@ -126,5 +119,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="globalMatchersProvider">The global matchers provider.</param>
         /// <returns>A newly created event topic</returns>
         IEventTopic CreateEventTopicInternal(string uri, IGlobalMatchersProvider globalMatchersProvider);
+
+        IEventRegistrar CreateRegistrar(IEventTopicHost eventTopicHost, IEventInspector eventInspector, IExtensionHost extensionHost);
     }
 }

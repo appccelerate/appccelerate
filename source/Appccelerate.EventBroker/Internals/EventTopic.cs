@@ -27,21 +27,18 @@ namespace Appccelerate.EventBroker.Internals
     using System.Reflection;
     using Appccelerate.EventBroker.Internals.Exceptions;
     using Appccelerate.EventBroker.Internals.GlobalMatchers;
-    using Appccelerate.EventBroker.Matchers;
 
     public class EventTopic : IEventTopic
     {
-        private readonly IFactory factory;
         private readonly IExtensionHost extensionHost;
         private readonly IGlobalMatchersProvider globalMatchersProvider;
 
         private List<IPublication> publications = new List<IPublication>();
         private List<ISubscription> subscriptions = new List<ISubscription>();
 
-        public EventTopic(string uri, IFactory factory, IExtensionHost extensionHost, IGlobalMatchersProvider globalMatchersProvider)
+        public EventTopic(string uri, IExtensionHost extensionHost, IGlobalMatchersProvider globalMatchersProvider)
         {
             this.Uri = uri;
-            this.factory = factory;
             this.extensionHost = extensionHost;
             this.globalMatchersProvider = globalMatchersProvider;
         }
@@ -107,14 +104,11 @@ namespace Appccelerate.EventBroker.Internals
             return publication;
         }
 
-        public void AddSubscription(object subscriber, MethodInfo handlerMethod, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers)
+        public void AddSubscription(ISubscription subscription)
         {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
             this.Clean();
-            ISubscription subscription = this.factory.CreateSubscription(subscriber, handlerMethod, handler, subscriptionMatchers);
 
-            this.ThrowIfRepeatedSubscription(subscriber, handlerMethod.Name);
+            this.ThrowIfRepeatedSubscription(subscription.Subscriber, subscription.HandlerMethodName);
             foreach (IPublication publication in this.publications)
             {
                 ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);

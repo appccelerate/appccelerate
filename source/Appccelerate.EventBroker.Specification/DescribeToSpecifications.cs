@@ -140,9 +140,9 @@ namespace Appccelerate.EventBroker
                 .Should().Match(
                     "*" +
                     typeof(Subscriber) +
-                    "*EventArgs type = System.EventHandler<System.EventArgs>*" +
+                    "*EventArgs type = System.EventArgs*" +
                     typeof(NamedSubscriber) +
-                    "*EventArgs type = System.EventHandler<Appccelerate.EventBroker.When_describing_an_event_broker+CustomEventArgs>, *");
+                    "*EventArgs type = Appccelerate.EventBroker.When_describing_an_event_broker+CustomEventArgs, *");
         
         Cleanup stuff = () =>
             writer.Dispose();

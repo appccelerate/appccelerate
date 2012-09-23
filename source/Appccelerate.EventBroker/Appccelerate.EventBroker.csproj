@@ -72,8 +72,15 @@
     <Compile Include="Internals\Publications\PropertyPublication.cs" />
     <Compile Include="Internals\Publications\Publication.cs" />
     <Compile Include="Internals\Publications\SpontaneousPublication.cs" />
+    <Compile Include="Internals\Registrar.cs" />
+    <Compile Include="Internals\Subscriptions\DelegateWrapper.cs" />
+    <Compile Include="Internals\Subscriptions\EventArgsOnlyDelegateWrapper.cs" />
+    <Compile Include="Internals\Subscriptions\IDelegateWrapper.cs" />
+    <Compile Include="Internals\Subscriptions\SenderAndEventArgsDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\Subscription.cs" />
+    <Compile Include="Internals\Subscriptions\UnwrappedEventArgsOnlyDelegateWrapper.cs" />
     <Compile Include="IPublication.cs" />
+    <Compile Include="IRegistrar.cs" />
     <Compile Include="ISubscription.cs" />
     <Compile Include="Matchers\IMatcher.cs" />
     <Compile Include="Matchers\IPublicationMatcher.cs" />

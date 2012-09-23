@@ -12,7 +12,7 @@
     <NoWarn>67</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <NoWarn>67</NoWarn>
+    <NoWarn>67, 169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions, Version=1.7.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
@@ -43,6 +43,8 @@
     <Compile Include="GlobalMatchersSpecifications.cs" />
     <Compile Include="RegisterHandlerMethodsDirectlyOnEventBrokerSpecifications.cs" />
     <Compile Include="ScopeEvent.cs" />
+    <Compile Include="Subscribers\SubscribersWithoutSenderAndUnwrappedEventArgsSpecifications.cs" />
+    <Compile Include="Subscribers\SubscribersWithoutSenderSpecifications.cs" />
     <Compile Include="Subjects.cs" />
     <Compile Include="SubscriberExceptionsSpecifications.cs" />
     <Compile Include="SubscriptionMatchersSpecifications.cs" />

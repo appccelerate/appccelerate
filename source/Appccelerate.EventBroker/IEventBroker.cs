@@ -36,6 +36,10 @@ namespace Appccelerate.EventBroker
         /// <param name="writer">The writer.</param>
         void DescribeTo(TextWriter writer);
 
+        void Register(object item);
+
+        void Unregister(object item);
+
         /// <summary>
         /// Fires the specified topic directly on the <see cref="IEventBroker"/> without a real publisher.
         /// This is useful when temporarily created objects need to fire events.
@@ -55,37 +59,6 @@ namespace Appccelerate.EventBroker
         void AddExtension(IEventBrokerExtension extension);
 
         /// <summary>
-        /// Registers the event as publication.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventName">Name of the event.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        void RegisterEvent(string topic, object publisher, string eventName, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers);
-
-        /// <summary>
-        /// Registers a handler method.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The matchers.</param>
-        void RegisterHandlerMethod(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
-
-        /// <summary>
-        /// Registers a handler method.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The matchers.</param>
-        void RegisterHandlerMethod<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs;
-
-        /// <summary>
         /// Removes the specified extension.
         /// </summary>
         /// <param name="extension">The extension.</param>
@@ -95,21 +68,6 @@ namespace Appccelerate.EventBroker
         /// Clears all extensions, including the default logger extension.
         /// </summary>
         void ClearExtensions();
-
-        /// <summary>
-        /// Registers an item with this event broker.
-        /// </summary>
-        /// <remarks>
-        /// The item is scanned for publications and subscriptions and wired to the corresponding invokers and handlers.
-        /// </remarks>
-        /// <param name="item">Item to register with the event broker.</param>
-        void Register(object item);
-
-        /// <summary>
-        /// Unregisters the specified item from this event broker.
-        /// </summary>
-        /// <param name="item">The item to unregister.</param>
-        void Unregister(object item);
 
         /// <summary>
         /// Adds the global matcher.

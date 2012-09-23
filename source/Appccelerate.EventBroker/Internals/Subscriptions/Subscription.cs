@@ -21,9 +21,6 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Reflection;
-
-    using Appccelerate.EventBroker.Internals.Exceptions;
     using Appccelerate.EventBroker.Matchers;
     using Appccelerate.Formatters;
 
@@ -33,50 +30,29 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
     internal class Subscription : ISubscription
     {
         private readonly WeakReference subscriber;
-        private readonly string handlerMethodName;
-        private readonly MethodInfo handlerMethodInfo;
-        private readonly Type eventHandlerType;
         private readonly IList<ISubscriptionMatcher> subscriptionMatchers;
         private readonly IHandler handler;
         private readonly IExtensionHost extensionHost;
-        private readonly Type eventArgsType;
+        
+        private readonly DelegateWrapper delegateWrapper;
 
         public Subscription(
-            object subscriber, 
-            MethodInfo handlerMethod, 
-            IHandler handler, 
+            object subscriber,
+            DelegateWrapper delegateWrapper,
+            IHandler handler,
             IList<ISubscriptionMatcher> subscriptionMatchers,
             IExtensionHost extensionHost)
         {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            CheckHandlerMethodIsNotStatic(handlerMethod);
-
             this.subscriber = new WeakReference(subscriber);
-            this.handlerMethodName = handlerMethod.Name;
-            this.handlerMethodInfo = handlerMethod;
+            this.delegateWrapper = delegateWrapper;
             this.subscriptionMatchers = subscriptionMatchers;
             this.handler = handler;
             this.extensionHost = extensionHost;
-
-            ParameterInfo[] parameters = handlerMethod.GetParameters();
-            if (IsValidEventHandler(parameters))
-            {
-                ParameterInfo parameterInfo = handlerMethod.GetParameters()[1];
-                this.eventArgsType = parameterInfo.ParameterType;
-                this.eventHandlerType = typeof(EventHandler<>).MakeGenericType(this.eventArgsType);
-            }
-            else
-            {
-                throw new InvalidSubscriptionSignatureException(handlerMethod);
-            }
-
-            handler.Initialize(subscriber, handlerMethod, this.extensionHost);
         }
 
         public Type EventArgsType
         {
-            get { return this.eventArgsType; }
+            get { return this.delegateWrapper.EventArgsType; }
         }
 
         public object Subscriber
@@ -86,7 +62,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
 
         public string HandlerMethodName
         {
-            get { return this.handlerMethodName; }
+            get { return this.delegateWrapper.HandlerMethod.Name; }
         }
 
         public IHandler Handler
@@ -108,45 +84,35 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
         {
             Ensure.ArgumentNotNull(writer, "writer");
 
-            if (this.subscriber.IsAlive)
+            if (!this.subscriber.IsAlive)
             {
-                writer.Write(this.Subscriber.GetType().FullName);
+                return;
+            }
 
-                if (this.Subscriber is INamedItem)
-                {
-                    writer.Write(", Name = ");
-                    writer.Write(((INamedItem)this.Subscriber).EventBrokerItemName);
-                }
+            writer.Write(this.Subscriber.GetType().FullName);
 
-                writer.Write(", Handler method = ");
-                writer.Write(this.handlerMethodName);
+            var namedItem = this.Subscriber as INamedItem;
+            if (namedItem != null)
+            {
+                writer.Write(", Name = ");
+                writer.Write(namedItem.EventBrokerItemName);
+            }
+
+            writer.Write(", Handler method = ");
+            writer.Write(this.HandlerMethodName);
                 
-                writer.Write(", Handler = ");
-                writer.Write(this.handler.GetType().FullNameToString());
+            writer.Write(", Handler = ");
+            writer.Write(this.handler.GetType().FullNameToString());
 
-                writer.Write(", EventArgs type = ");
-                writer.Write(this.eventHandlerType.FullNameToString());
+            writer.Write(", EventArgs type = ");
+            writer.Write(this.EventArgsType.FullNameToString());
 
-                writer.Write(", matchers = ");
-                foreach (ISubscriptionMatcher subscriptionMatcher in this.subscriptionMatchers)
-                {
-                    subscriptionMatcher.DescribeTo(writer);
-                    writer.Write(" ");
-                }
-            }
-        }
-
-        private static void CheckHandlerMethodIsNotStatic(MethodInfo handlerMethod)
-        {
-            if (handlerMethod.IsStatic)
+            writer.Write(", matchers = ");
+            foreach (ISubscriptionMatcher subscriptionMatcher in this.subscriptionMatchers)
             {
-                throw new StaticSubscriberHandlerException(handlerMethod);
+                subscriptionMatcher.DescribeTo(writer);
+                writer.Write(" ");
             }
-        }
-
-        private static bool IsValidEventHandler(ParameterInfo[] parameters)
-        {
-            return parameters.Length == 2 && typeof(EventArgs).IsAssignableFrom(parameters[1].ParameterType);
         }
 
         private void EventTopicFireHandler(IEventTopicInfo eventTopic, object sender, EventArgs e, IPublication publication)
@@ -155,23 +121,12 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
             {
                 return;
             }
-            
-            Delegate subscriptionHandler = this.CreateSubscriptionDelegate();
-            if (subscriptionHandler == null)
-            {
-                return;
-            }
-            
+
             this.extensionHost.ForEach(extension => extension.RelayingEvent(eventTopic, publication, this, this.handler, sender, e));
 
-            this.handler.Handle(eventTopic, sender, e, subscriptionHandler);
+            this.handler.Handle(eventTopic, this.Subscriber, sender, e, this.delegateWrapper);
 
             this.extensionHost.ForEach(extension => extension.RelayedEvent(eventTopic, publication, this, this.handler, sender, e));
-        }
-
-        private Delegate CreateSubscriptionDelegate()
-        {
-            return this.Subscriber != null ? Delegate.CreateDelegate(this.eventHandlerType, this.Subscriber, this.handlerMethodInfo) : null;
         }
     }
 }
