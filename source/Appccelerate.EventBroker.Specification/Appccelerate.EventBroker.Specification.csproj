@@ -43,6 +43,8 @@
     <Compile Include="GlobalMatchersSpecifications.cs" />
     <Compile Include="RegisterHandlerMethodsDirectlyOnEventBrokerSpecifications.cs" />
     <Compile Include="ScopeEvent.cs" />
+    <Compile Include="Subscribers\SubscribersWithSenderAndCustomEventArgsSpecifications.cs" />
+    <Compile Include="Subscribers\SubscribersWithSenderAndEventArgsSpecifications.cs" />
     <Compile Include="Subscribers\EventBrokerRegisterableSpecifications.cs" />
     <Compile Include="Subscribers\Subscribers.cs" />
     <Compile Include="Subscribers\SubscribersWithoutSenderAndUnwrappedEventArgsSpecifications.cs" />
