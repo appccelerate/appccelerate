@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Description
 {
     using System;
     using System.Globalization;
@@ -97,7 +97,7 @@ namespace Appccelerate.EventBroker
                     typeof(NamedPublisher) +
                     "*EventHandler type = System.EventHandler*" +
                     typeof(Publisher) +
-                    "*EventHandler type = System.EventHandler<Appccelerate.EventBroker.When_describing_an_event_broker+CustomEventArgs>*");
+                    "*EventHandler type = System.EventHandler<Appccelerate.EventBroker.Description.When_describing_an_event_broker+CustomEventArgs>*");
 
         It should_list_matchers_per_publisher_and_subscriber = () =>
             description
@@ -142,7 +142,7 @@ namespace Appccelerate.EventBroker
                     typeof(Subscriber) +
                     "*EventArgs type = System.EventArgs*" +
                     typeof(NamedSubscriber) +
-                    "*EventArgs type = Appccelerate.EventBroker.When_describing_an_event_broker+CustomEventArgs, *");
+                    "*EventArgs type = Appccelerate.EventBroker.Description.When_describing_an_event_broker+CustomEventArgs, *");
         
         Cleanup stuff = () =>
             writer.Dispose();

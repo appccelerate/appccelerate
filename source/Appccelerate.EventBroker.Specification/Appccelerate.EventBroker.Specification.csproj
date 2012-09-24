@@ -52,10 +52,10 @@
     <Compile Include="Subjects.cs" />
     <Compile Include="SubscriberExceptionsSpecifications.cs" />
     <Compile Include="SubscriptionMatchersSpecifications.cs" />
-    <Compile Include="EventBrokerCleanupSpecifications.cs" />
+    <Compile Include="WeakReferences\EventBrokerCleanupSpecifications.cs" />
     <Compile Include="EventSpecifications.cs" />
     <Compile Include="RegistrarRemoveSubscriptionSpecfications.cs" />
-    <Compile Include="DescribeToSpecifications.cs" />
+    <Compile Include="Description\DescribeToSpecifications.cs" />
     <Compile Include="RegistrarAddPublicationSpecifications.cs" />
     <Compile Include="RegistrarAddSubscriptionSpecifications.cs" />
     <Compile Include="CustomEvent.cs" />
