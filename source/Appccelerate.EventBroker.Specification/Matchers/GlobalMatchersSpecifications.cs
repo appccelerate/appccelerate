@@ -16,13 +16,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Matchers
 {
     using System;
     using System.IO;
-
-    using Appccelerate.EventBroker.Internals;
-    using Appccelerate.EventBroker.Matchers;
 
     using FluentAssertions;
 

@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="SubscriptionMatchersSpecifications.cs" company="Appccelerate">
+// <copyright file="PublicationMatchersSpecifications.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +16,14 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Matchers
 {
     using FluentAssertions;
 
     using Machine.Specifications;
 
     [Subject(Subjects.Matchers)]
-    public class When_firing_an_event
+    public class When_firing_an_event_with_publication_matcher
     {
         protected static EventBroker eventBroker;
         protected static ScopeEvent.NamedPublisher publisher;
@@ -43,14 +43,14 @@ namespace Appccelerate.EventBroker
         };
 
         Because of = () =>
-            publisher.FireEventGlobally();
+            publisher.FireEventToChildrenAndSiblings();
 
-        It should_call_subscriber_method_with_matching_subscriber_matcher = () =>
-            matchingSubscriber.CalledFromParent
+        It should_call_subscriber_method_of_matching_subscriber = () =>
+            matchingSubscriber.CalledGlobally
                 .Should().BeTrue();
 
-        It should_not_call_subscriber_method_with_non_matching_subscriber_matcher = () =>
-            nonMatchingSubscriber.CalledFromParent
+        It should_not_call_subscriber_method_of_non_matching_subscriber = () =>
+            nonMatchingSubscriber.CalledGlobally
                 .Should().BeFalse();
     }
 }

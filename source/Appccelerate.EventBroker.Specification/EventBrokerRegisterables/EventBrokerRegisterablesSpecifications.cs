@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="RegistrarRegistrationSpecifications.cs" company="Appccelerate">
+// <copyright file="EventBrokerRegisterablesSpecifications.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.EventBrokerRegisterables
 {
     using FluentAssertions;
 

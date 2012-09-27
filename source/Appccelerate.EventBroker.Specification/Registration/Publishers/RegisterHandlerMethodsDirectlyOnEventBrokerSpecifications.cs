@@ -25,52 +25,6 @@ namespace Appccelerate.EventBroker
     using Machine.Specifications;
 
     [Subject(Subjects.RegisterDirectlyOnEventBroker)]
-    public class When_firing_an_event_for_which_a_subscriber_was_registered_directly_on_the_event_broker
-    {
-        static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static Subscriber subscriber;
-        static EventArgs sentEventArgs;
-
-        Establish context = () =>
-        {
-            eventBroker = new EventBroker();
-            publisher = new SimpleEvent.EventPublisher();           
-
-            eventBroker.Register(publisher);
-
-            sentEventArgs = new EventArgs();
-
-            subscriber = new Subscriber();
-        };
-
-        Because of = () =>
-            {
-                eventBroker.SpecialCasesRegistrar.AddSubscription(
-                    SimpleEvent.EventTopic,
-                    subscriber,
-                    subscriber.Handle,
-                    new Handlers.OnPublisher());
-
-                publisher.FireEvent(sentEventArgs);
-            };
-
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue();
-
-        public class Subscriber
-        {
-            public bool HandledEvent { get; private set; }
-
-            public void Handle(object sender, EventArgs eventArgs)
-            {
-                this.HandledEvent = true;    
-            }
-        }
-    }
-
-    [Subject(Subjects.RegisterDirectlyOnEventBroker)]
     public class When_firing_an_event_for_which_the_publisher_was_registered_directly_on_the_event_broker
     {
         static EventBroker eventBroker;

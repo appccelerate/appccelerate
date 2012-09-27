@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,6 @@ namespace Appccelerate.EventBroker
     using System.Text;
 
     using Appccelerate.EventBroker.Exceptions;
-    using Appccelerate.EventBroker.Internals;
     using Appccelerate.EventBroker.Internals.Inspection;
     using Appccelerate.EventBroker.Matchers;
 

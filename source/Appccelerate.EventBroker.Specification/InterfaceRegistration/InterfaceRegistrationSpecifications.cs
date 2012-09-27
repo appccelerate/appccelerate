@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.InterfaceRegistration
 {
     using System;
 
@@ -49,7 +49,7 @@ namespace Appccelerate.EventBroker
         Because of = () =>
             publisher.FireEvent();
 
-        It should_call_subscriber = () =>
+        It should_register_the_implementing_event_and_method = () =>
             subscriber.Handled
                 .Should().BeTrue("event should be handled by subscriber");
 
