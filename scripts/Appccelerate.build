@@ -29,7 +29,7 @@
   <property name="parallelBuild" value="true" overwrite="false" readonly="false" />
   
   <sysinfo failonerror="false" />
-  <setenv name="EnableNuGetPackageRestore" value="true" />
+  <setenv name="EnableNuGetPackageRestore" value="true" /> <!-- This enables nuget package restore for all processes and child processes spawn by NAnt -->
 
   <!--
   =========================================================
