@@ -19,9 +19,8 @@
 namespace Appccelerate.IO.Access
 {
     using System;
+    using System.IO;
     using System.Runtime.CompilerServices;
-
-    using Appccelerate.IO.Access.Internals;
 
     [CompilerGenerated]
     public interface IDriveExtension
