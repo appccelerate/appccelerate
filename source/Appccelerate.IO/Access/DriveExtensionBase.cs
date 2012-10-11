@@ -19,8 +19,7 @@
 namespace Appccelerate.IO.Access
 {
     using System;
-
-    using Appccelerate.IO.Access.Internals;
+    using System.IO;
 
     public class DriveExtensionBase : IDriveExtension
     {
