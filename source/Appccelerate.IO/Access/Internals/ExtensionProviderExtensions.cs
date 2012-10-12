@@ -19,6 +19,7 @@
 namespace Appccelerate.IO.Access.Internals
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Globalization;
@@ -51,7 +52,7 @@ namespace Appccelerate.IO.Access.Internals
 
         private const string UnableToDetermineBeginEndOrFailMethodMessage = "Unable to determine Begin-, End- or Fail Method! Please check that you are using proper conventions.";
 
-        private static readonly Cache ReflectionCache = new Cache();
+        private static readonly ConcurrentDictionary<Key, Item> ReflectionCache = new ConcurrentDictionary<Key, Item>();
 
         /// <summary>
         /// Surrounds the specified function expression with extension methods following a certain convention.
@@ -99,7 +100,7 @@ namespace Appccelerate.IO.Access.Internals
 
             var key = new Key(callMethodInfo.MethodHandle, callMethodInfo.Name, callMethodInfo.GetParameterTypes().ToArray());
 
-            Item item = !ReflectionCache.Contains(key) ? CacheItem<TExtension>(methodName, key, hasReturn, typeof(TReturn)) : ReflectionCache[key];
+            Item item = !ReflectionCache.ContainsKey(key) ? CacheItem<TExtension>(methodName, key, hasReturn, typeof(TReturn)) : ReflectionCache[key];
 
             object result;
 
@@ -165,9 +166,9 @@ namespace Appccelerate.IO.Access.Internals
                 throw new InvalidOperationException(UnableToDetermineBeginEndOrFailMethodMessage, exception);
             }
 
-            Item item = new Item(key, beginMethodInfo.MethodHandle, endMethodInfo.MethodHandle, failMethodInfo.MethodHandle);
+            Item item = new Item(beginMethodInfo.MethodHandle, endMethodInfo.MethodHandle, failMethodInfo.MethodHandle);
 
-            ReflectionCache.Add(item);
+            ReflectionCache.AddOrUpdate(key, item, (k, i) => item);
             return item;
         }
 
@@ -247,15 +248,12 @@ namespace Appccelerate.IO.Access.Internals
 
             private readonly RuntimeMethodHandle fail;
 
-            public Item(Key callingMethod, RuntimeMethodHandle begin, RuntimeMethodHandle end, RuntimeMethodHandle fail)
+            public Item(RuntimeMethodHandle begin, RuntimeMethodHandle end, RuntimeMethodHandle fail)
             {
-                this.Method = callingMethod;
                 this.begin = begin;
                 this.end = end;
                 this.fail = fail;
             }
-
-            public Key Method { get; private set; }
 
             public MethodBase Begin
             {
@@ -340,14 +338,6 @@ namespace Appccelerate.IO.Access.Internals
                     result = (result * 397) ^ this.InstanceHandle.GetHashCode();
                     return result;
                 }
-            }
-        }
-
-        private class Cache : KeyedCollection<Key, Item>
-        {
-            protected override Key GetKeyForItem(Item item)
-            {
-                return item.Method;
             }
         }
     }
