@@ -21,7 +21,7 @@ namespace Appccelerate.Bootstrapper.Configuration
     using System.Collections.Generic;
 
     /// <summary>
-    /// Identifies the implemenator as conversion callback provider
+    /// Identifies the implementing class as conversion callback provider
     /// </summary>
     public interface IHaveConversionCallbacks
     {

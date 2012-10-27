@@ -33,7 +33,7 @@ namespace Appccelerate.DistributedEventBroker
         string Serialize(EventArgs eventArgs);
 
         /// <summary>
-        /// Deserializes the specified event args type from its string representation.
+        /// Deserialize the specified event args type from its string representation.
         /// </summary>
         /// <param name="eventArgsType">Type of the event args.</param>
         /// <param name="eventArgs">The event args as string.</param>

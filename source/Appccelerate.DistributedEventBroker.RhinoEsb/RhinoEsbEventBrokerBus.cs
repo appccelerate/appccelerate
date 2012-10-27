@@ -22,7 +22,7 @@ namespace Appccelerate.DistributedEventBroker.RhinoEsb
     using Rhino.ServiceBus;
 
     /// <summary>
-    /// RhinoEsb specific event broker bus implementation
+    /// Rhino Enterprise Service Bus specific event broker bus implementation
     /// </summary>
     public class RhinoEsbEventBrokerBus : IEventBrokerBus
     {

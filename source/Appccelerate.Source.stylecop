@@ -1,4 +1,20 @@
 <StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>async</Value>
+      <Value>args</Value>
+      <Value>bootstrapper</Value>
+      <Value>bootstrapping</Value>
+      <Value>executables</Value>
+      <Value>registerer</Value>
+      <Value>serializer</Value>
+      <Value>serialized</Value>
+      <Value>deserialized</Value>
+      <Value>deserialize</Value>
+      <Value>csv</Value>
+      <Value>remoting</Value>
+    </CollectionProperty>
+  </GlobalSettings>
   <Parsers>
     <Parser ParserId="StyleCop.CSharp.CsParser">
       <ParserSettings>
@@ -55,6 +71,16 @@
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
       <Rules>
         <Rule Name="ElementMustBeginWithUpperCaseLetter">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+	<Analyzer AnalyzerId="StyleCop.CSharp.MaintainabilityRules">
+      <Rules>
+        <Rule Name="CodeAnalysisSuppressionMustHaveJustification">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>

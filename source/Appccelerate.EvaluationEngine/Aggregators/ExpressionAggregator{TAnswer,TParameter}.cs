@@ -22,7 +22,7 @@ namespace Appccelerate.EvaluationEngine.Aggregators
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Aggregates the result of all passed expressions into a single result using an aggregate lamda expression.
+    /// Aggregates the result of all passed expressions into a single result using an aggregate lambda expression.
     /// Use this class if the result type returned by the expressions is the same as the type of the overall result.
     /// </summary>
     /// <typeparam name="TAnswer">The type of the answer.</typeparam>

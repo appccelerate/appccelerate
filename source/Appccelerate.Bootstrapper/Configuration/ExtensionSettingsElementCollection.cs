@@ -42,9 +42,9 @@ namespace Appccelerate.Bootstrapper.Configuration
 
             set
             {
-                if (BaseGet(index) != null)
+                if (this.BaseGet(index) != null)
                 {
-                    BaseRemoveAt(index);
+                    this.BaseRemoveAt(index);
                 }
 
                 this.BaseAdd(index, value);
@@ -67,7 +67,7 @@ namespace Appccelerate.Bootstrapper.Configuration
 
             set
             {
-                BaseAdd(value);
+                this.BaseAdd(value);
             }
         }
 

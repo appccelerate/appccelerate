@@ -149,14 +149,14 @@ namespace Appccelerate.AsyncModule
         public event EventHandler<AfterConsumeMessageEventArgs> AfterConsumeMessage;
 
         /// <summary>
-        /// This event is raised before the message is enqueued. Extensions
-        /// use this event to insert actions after before the message is enqueued.
+        /// This event is raised before the message is queued. Extensions
+        /// use this event to insert actions after before the message is queued.
         /// </summary>
         public event EventHandler<EnqueueMessageEventArgs> BeforeEnqueueMessage;
 
         /// <summary>
-        /// This event is raised after the message is enqueued. Extensions
-        /// use this event to insert actions after before the message is enqueued.
+        /// This event is raised after the message is queued. Extensions
+        /// use this event to insert actions after before the message is queued.
         /// </summary>
         public event EventHandler<EnqueueMessageEventArgs> AfterEnqueueMessage;
 
@@ -340,7 +340,7 @@ namespace Appccelerate.AsyncModule
         /// by this controller.
         /// </summary>
         /// <param name="message">
-        /// The message to be enqueued.
+        /// The message to be queued.
         /// </param>
         public void EnqueueMessage(object message)
         {
@@ -352,7 +352,7 @@ namespace Appccelerate.AsyncModule
         /// by this controller.
         /// </summary>
         /// <param name="message">
-        /// The message to be enqueued.
+        /// The message to be queued.
         /// </param>
         public void EnqueuePriorityMessage(object message)
         {
@@ -477,7 +477,7 @@ namespace Appccelerate.AsyncModule
 
             if (this.IsCurrentThreadAWorkerThread())
             {
-                throw new InvalidOperationException("Async controller can not be stopped on its own worker thread. Either call Stop from a different thread or use a StopMessage.");
+                throw new InvalidOperationException("asynchronous controller can not be stopped on its own worker thread. Either call Stop from a different thread or use a StopMessage.");
             }
 
             this.OnBeforeModuleStop();
@@ -549,11 +549,6 @@ namespace Appccelerate.AsyncModule
             return methodInfos;
         }
 
-        /// <summary>
-        /// Enqueues the message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="priority">if set to <c>true</c> then the message is enqueued at the front; otherwise at the end of the queue.</param>
         private void EnqueueMessage(object message, bool priority)
         {
             lock (this.lockingObject)
@@ -657,11 +652,6 @@ namespace Appccelerate.AsyncModule
             }
         }
 
-        /// <summary>
-        /// Fires the <see cref="BeforeEnqueueMessage"/> event.
-        /// </summary>
-        /// <param name="message">The message that wants to be enqueued.</param>
-        /// <param name="cancel"><c>true</c> to cancel enqueueing of message (message will not be enqueued).</param>
         private void OnBeforeEnqueueMessage(object message, out bool cancel)
         {
             if (this.BeforeEnqueueMessage != null)
@@ -679,7 +669,7 @@ namespace Appccelerate.AsyncModule
         /// <summary>
         /// Fires the <see cref="AfterEnqueueMessage"/> event.
         /// </summary>
-        /// <param name="message">The message that was enqueued.</param>
+        /// <param name="message">The message that was queued.</param>
         private void OnAfterEnqueueMessage(object message)
         {
             if (this.AfterEnqueueMessage != null)
@@ -688,12 +678,6 @@ namespace Appccelerate.AsyncModule
             }
         }
 
-        /// <summary>
-        /// Fires the <see cref="ConsumeMessageExceptionOccurred"/> event.
-        /// </summary>
-        /// <param name="message">The message that caused the exception.</param>
-        /// <param name="exception">The exception that was thrown while consuming the message.</param>
-        /// <returns>Whether the exception was handled.</returns>
         private bool OnConsumeMessageExceptionOccurred(object message, Exception exception)
         {
             bool exceptionHandled = false;

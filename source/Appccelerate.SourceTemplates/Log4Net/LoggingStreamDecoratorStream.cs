@@ -46,15 +46,6 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// </summary>
         private readonly ILog log;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LoggingStreamDecoratorStream"/> class.
-        /// </summary>
-        /// <param name="stream">The stream that is logged.</param>
-        /// <param name="logger">The logger that is used for logging.</param>
-        /// <param name="bytesPerLine">The number of bytes that are written per line in the log.</param>
-        /// <param name="blockLength">The number of bytes that are written as a block. After a block a
-        /// space is written.</param>
-        /// <exception cref="ArgumentNullException">stream or logger is null.</exception>
         public LoggingStreamDecoratorStream(Stream stream, ILog logger, int bytesPerLine, int blockLength)
             : base(stream)
         {
@@ -73,27 +64,6 @@ namespace Appccelerate.SourceTemplates.Log4Net
             this.blockLength = blockLength;
         }
 
-        /// <summary>
-        /// When overridden in a derived class, reads a sequence of bytes from the current stream and advances the
-        /// position within the stream by the number of bytes read.
-        /// </summary>
-        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte
-        /// array with the values between offset and (offset + count - 1) replaced by the bytes read from the current
-        /// source.</param>
-        /// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the
-        /// current stream.</param>
-        /// <param name="count">The maximum number of bytes to be read from the current stream.</param>
-        /// <returns>
-        /// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that
-        /// many bytes are not currently available, or zero (0) if the end of the stream has been reached.
-        /// </returns>
-        /// <exception cref="ArgumentException">The sum of offset and count is larger than the buffer length.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
-        /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
-        /// <exception cref="ArgumentNullException">buffer is null. </exception>
-        /// <exception cref="IOException">An I/O error occurs.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">offset or count is negative.</exception>
         public override int Read(byte[] buffer, int offset, int count)
         {
             int result = base.Read(buffer, offset, count);
@@ -101,16 +71,6 @@ namespace Appccelerate.SourceTemplates.Log4Net
             return result;
         }
 
-        /// <summary>
-        /// Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at 
-        /// the end of the stream.
-        /// </summary>
-        /// <returns>
-        /// The unsigned byte cast to an Int32, or -1 if at the end of the stream.
-        /// </returns>
-        /// <exception cref="NotSupportedException">The stream does not support reading. </exception>
-        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed. 
-        /// </exception>
         public override int ReadByte()
         {
             int result = base.ReadByte();
@@ -118,37 +78,12 @@ namespace Appccelerate.SourceTemplates.Log4Net
             return result;
         }
 
-        /// <summary>
-        /// When overridden in a derived class, writes a sequence of bytes to the current stream and advances the 
-        /// current position within this stream by the number of bytes written.
-        /// </summary>
-        /// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream.
-        /// </param>
-        /// <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current 
-        /// stream.</param>
-        /// <param name="count">The number of bytes to be written to the current stream.</param>
-        /// <exception cref="IOException">An I/O error occurs. </exception>
-        /// <exception cref="NotSupportedException">The stream does not support writing. </exception>
-        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed. 
-        /// </exception>
-        /// <exception cref="ArgumentNullException">buffer is null. </exception>
-        /// <exception cref="ArgumentException">The sum of offset and count is greater than the buffer length.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">offset or count is negative.</exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
             LogHelper.Debug(this.log, "Transmitting: \r\n", buffer, offset, count, this.bytesPerLine, this.blockLength);
             base.Write(buffer, offset, count);
         }
 
-        /// <summary>
-        /// Writes a byte to the current position in the stream and advances the position within the stream by one byte.
-        /// </summary>
-        /// <param name="value">The byte to write to the stream.</param>
-        /// <exception cref="IOException">An I/O error occurs. </exception>
-        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
-        /// <exception cref="NotSupportedException">The stream does not support writing, or the stream is already 
-        /// closed. </exception>
         public override void WriteByte(byte value)
         {
             this.log.DebugFormat("Transmitting: {0:X2}", value);

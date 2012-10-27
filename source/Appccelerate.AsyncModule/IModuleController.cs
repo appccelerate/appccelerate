@@ -64,14 +64,14 @@ namespace Appccelerate.AsyncModule
         event EventHandler<AfterConsumeMessageEventArgs> AfterConsumeMessage;
 
         /// <summary>
-        /// This event is raised before the message is enqueued. Extensions
-        /// use this event to insert actions before the message is enqueued.
+        /// This event is raised before the message is queued. Extensions
+        /// use this event to insert actions before the message is queued.
         /// </summary>
         event EventHandler<EnqueueMessageEventArgs> BeforeEnqueueMessage;
 
         /// <summary>
-        /// This event is raised after a message was enqueued. Extensions
-        /// use this event to insert actions after the message is enqueued.
+        /// This event is raised after a message was queued. Extensions
+        /// use this event to insert actions after the message is queued.
         /// </summary>
         event EventHandler<EnqueueMessageEventArgs> AfterEnqueueMessage;
 
@@ -157,7 +157,7 @@ namespace Appccelerate.AsyncModule
         /// by this controller.
         /// </summary>
         /// <param name="message">
-        /// The message to be enqueued.
+        /// The message to be queued.
         /// </param>
         void EnqueuePriorityMessage(object message);
 

@@ -46,7 +46,7 @@ namespace Appccelerate.StateMachine
         private readonly LinkedList<EventInformation<TEvent>> events;
 
         /// <summary>
-        /// Whether the state machin eis initialized.
+        /// Whether the state machine is initialized.
         /// </summary>
         private bool initialized;
         

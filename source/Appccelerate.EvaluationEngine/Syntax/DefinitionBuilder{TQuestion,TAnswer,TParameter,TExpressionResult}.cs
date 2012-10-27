@@ -129,10 +129,10 @@ namespace Appccelerate.EvaluationEngine.Syntax
         }
 
         /// <summary>
-        /// Bies the evaluating.
+        /// Defines expressions that have to be evaluated to answer the question <typeparamref name="TQuestion"/>.
         /// </summary>
-        /// <param name="expressionProvider">The expression.</param>
-        /// <returns>Constraint syntax</returns>
+        /// <param name="expressionProvider">The expression provider.</param>
+        /// <returns>Constraint syntax.</returns>
         public IConstraintSyntax<TQuestion, TAnswer, TParameter, TExpressionResult> ByEvaluating(Expression<Func<TQuestion, TParameter, TExpressionResult>> expressionProvider)
         {
             var provider = new InlineExpressionProvider<TQuestion, TAnswer, TParameter, TExpressionResult>(expressionProvider);

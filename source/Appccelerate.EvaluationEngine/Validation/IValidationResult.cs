@@ -20,7 +20,7 @@ namespace Appccelerate.EvaluationEngine.Validation
 {
     /// <summary>
     /// The result of a validation.
-    /// Use this interface if the standerd <see cref="IValidationViolation"/> is sufficient; otherwise use <see cref="IValidationResult{TValidationViolation}"/>.
+    /// Use this interface if the standard <see cref="IValidationViolation"/> is sufficient; otherwise use <see cref="IValidationResult{TValidationViolation}"/>.
     /// </summary>
     public interface IValidationResult : IValidationResult<IValidationViolation>
     {

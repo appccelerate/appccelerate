@@ -34,12 +34,12 @@ namespace Appccelerate.EventBroker.Sample
         public const string PongUIFromUIThread = "topic://EventBrokerSample.PongUIFromUIThread";
 
         /// <summary>
-        /// Event topic for ping from UI async.
+        /// Event topic for ping from UI asynchronous.
         /// </summary>
         public const string PingUIFromAsync = "topic://EventBrokerSample.PingUIFromAsync";
 
         /// <summary>
-        /// Event topic for poing from UI async.
+        /// Event topic for pong from UI async.
         /// </summary>
         public const string PongUIFromAsync = "topic://EventBrokerSample.PongUIFromAsync";
     }

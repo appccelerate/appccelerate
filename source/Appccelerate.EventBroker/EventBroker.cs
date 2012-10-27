@@ -30,7 +30,7 @@ namespace Appccelerate.EventBroker
 
     /// <summary>
     /// The <see cref="EventBroker"/> is the facade component to the event broker framework.
-    /// It provides the registration and unregistration functionality for event publisher and subscribers.
+    /// It provides the registration and deregistration functionality for event publisher and subscribers.
     /// </summary>
     public class EventBroker : IEventBroker, IEventRegistrar, IExtensionHost
     {

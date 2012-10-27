@@ -39,7 +39,7 @@ namespace Appccelerate.EvaluationEngine
         /// <typeparam name="TExpressionResult">The type of the expression result.</typeparam>
         /// <param name="syntax">The syntax.</param>
         /// <param name="seed">The seed used in the aggregation.</param>
-        /// <param name="aggregateFunc">The aggregate func.</param>
+        /// <param name="aggregateFunc">The aggregate function.</param>
         /// <returns>Expression syntax.</returns>
         public static IConstraintSyntax<TQuestion, TAnswer, TParameter, TExpressionResult> AggregateWithExpressionAggregator<TQuestion, TAnswer, TParameter, TExpressionResult>(
             this IAggregatorSyntax<TQuestion, TAnswer, TParameter, TExpressionResult> syntax, TAnswer seed, Expression<Func<TAnswer, TExpressionResult, TAnswer>> aggregateFunc)

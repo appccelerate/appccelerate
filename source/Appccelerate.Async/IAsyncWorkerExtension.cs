@@ -28,7 +28,7 @@ namespace Appccelerate.Async
         /// <summary>
         /// Called when an operation is started.
         /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
+        /// <param name="asyncWorker">The asynchronous worker.</param>
         /// <param name="worker">The worker.</param>
         /// <param name="argument">The argument.</param>
         void StartedExecution(AsyncWorker asyncWorker, DoWorkEventHandler worker, object argument);
@@ -36,14 +36,14 @@ namespace Appccelerate.Async
         /// <summary>
         /// Called when an operation is cancelled.
         /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
+        /// <param name="asyncWorker">The asynchronous worker.</param>
         /// <param name="worker">The worker.</param>
         void CancellingExecution(AsyncWorker asyncWorker, DoWorkEventHandler worker);
 
         /// <summary>
         /// Called when an operation reports progress.
         /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
+        /// <param name="asyncWorker">The asynchronous worker.</param>
         /// <param name="worker">The worker.</param>
         /// <param name="progress">The progress.</param>
         /// <param name="userState">State of the user.</param>

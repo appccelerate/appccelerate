@@ -25,13 +25,13 @@ namespace Appccelerate.EventBroker
     {
         /// <summary>
         /// Synchronous handling. The event invoker is blocked until event is handled. 
-        /// The event invoker can evaluate the event args on return.
+        /// The event invoker can evaluate the event arguments on return.
         /// </summary>
         Synchronous = 0,
 
         /// <summary>
         /// Asynchronous handling. The event invoker is not blocked until event is handled. 
-        /// The event invoker must not evaluate the event args on return.
+        /// The event invoker must not evaluate the event arguments on return.
         /// </summary>
         Asynchronous = 1,
     }

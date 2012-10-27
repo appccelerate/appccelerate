@@ -27,7 +27,7 @@ namespace Appccelerate.Bootstrapper.Configuration
         /// Creates the instance which knows the section name.
         /// </summary>
         /// <param name="extension">The extension.</param>
-        /// <returns>The istance.</returns>
+        /// <returns>The instance.</returns>
         IHaveConfigurationSectionName CreateHaveConfigurationSectionName(IExtension extension);
 
         /// <summary>

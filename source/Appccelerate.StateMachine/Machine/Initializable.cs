@@ -21,7 +21,7 @@ namespace Appccelerate.StateMachine.Machine
     using System;
 
     /// <summary>
-    /// An initializable value.
+    /// A value which can be initialized.
     /// </summary>
     /// <typeparam name="T">Type of the value.</typeparam>
     public class Initializable<T>

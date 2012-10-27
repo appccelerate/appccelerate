@@ -21,7 +21,7 @@ namespace Appccelerate.StateMachine.Syntax
     using System;
 
     /// <summary>
-    /// Defines the syntax after Goto.
+    /// Defines the syntax after go to.
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
