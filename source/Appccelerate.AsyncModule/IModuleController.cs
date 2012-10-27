@@ -76,14 +76,14 @@ namespace Appccelerate.AsyncModule
         event EventHandler<EnqueueMessageEventArgs> AfterEnqueueMessage;
 
         /// <summary>
-        /// This event is raised when an excpetion is thrown during consuming a message.
+        /// This event is raised when an exception is thrown during consuming a message.
         /// This event is used to react meaningful to exceptions like a retrying mechanism.
         /// The event handler can return a value indicating whether the exception was handled.
         /// </summary>
         event EventHandler<ConsumeMessageExceptionEventArgs> ConsumeMessageExceptionOccurred;
 
         /// <summary>
-        /// This event is raised when an unhandled exception in a module occured that was not handled
+        /// This event is raised when an unhandled exception in a module occurred that was not handled
         /// by the <see cref="ConsumeMessageExceptionOccurred"/> event.
         /// This event is just for notification, afterwards the module will continue with the next message.
         /// </summary>
@@ -179,7 +179,7 @@ namespace Appccelerate.AsyncModule
         void Stop();
 
         /// <summary>
-        /// Stops the message consumer thread(s) after finshing
+        /// Stops the message consumer thread(s) after finishing
         /// an message currently processed. If the thread is
         /// not responding anymore it is killed.
         /// </summary>

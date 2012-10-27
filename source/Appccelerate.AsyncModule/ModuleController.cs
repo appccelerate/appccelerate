@@ -33,6 +33,17 @@ namespace Appccelerate.AsyncModule
     public class ModuleController : IModuleController
     {
         /// <summary>
+        /// Default number of threads used to consume messages.
+        /// </summary>
+        private const int DefaultNumberOfThreads = 1;
+
+        /// <summary>
+        /// Default timeout that defines how long the controller waits for a consuming message
+        /// before killing the worker thread.
+        /// </summary>
+        private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(10);
+
+        /// <summary>
         /// Lock object the access <see cref="threadStopping"/> field.
         /// </summary>
         private readonly object threadStoppingLock = new object();
@@ -41,17 +52,6 @@ namespace Appccelerate.AsyncModule
         /// Lock object which synchronizes producer and consumer.
         /// </summary>
         private readonly object lockingObject = new object();
-
-        /// <summary>
-        /// Default timeout that defines how long the controller waits for a consuming message
-        /// before killing the worker thread.
-        /// </summary>
-        private static readonly TimeSpan defaultTimeOut = TimeSpan.FromSeconds(10);
-
-        /// <summary>
-        /// Default number of threads used to consume messages.
-        /// </summary>
-        private const int DefaultNumberOfThreads = 1;
 
         /// <summary>
         /// The extensions of the module.
@@ -450,7 +450,7 @@ namespace Appccelerate.AsyncModule
         /// </exception>
         public void Stop()
         {
-            this.Stop(defaultTimeOut);
+            this.Stop(DefaultTimeOut);
         }
 
         /// <summary>
@@ -661,7 +661,7 @@ namespace Appccelerate.AsyncModule
         /// Fires the <see cref="BeforeEnqueueMessage"/> event.
         /// </summary>
         /// <param name="message">The message that wants to be enqueued.</param>
-        /// <param name="cancel"><c>true</c> to cancel enqueuing of message (message will not be enqueued).</param>
+        /// <param name="cancel"><c>true</c> to cancel enqueueing of message (message will not be enqueued).</param>
         private void OnBeforeEnqueueMessage(object message, out bool cancel)
         {
             if (this.BeforeEnqueueMessage != null)

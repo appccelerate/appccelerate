@@ -38,7 +38,7 @@ namespace Appccelerate.AsyncModule.Events
         }
 
         /// <summary>
-        /// Gets the exception, which occured during the call to the 
+        /// Gets the exception, which occurred during the call to the 
         /// message consumer.
         /// </summary>
         public Exception Exception
