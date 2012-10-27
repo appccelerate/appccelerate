@@ -19,6 +19,7 @@
 namespace Appccelerate.SourceTemplates.Log4Net
 {
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -64,7 +65,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
             this.log.DebugFormat(CultureInfo.InvariantCulture, "Getting all drives.");
         }
 
-        public override void EndGetDrives(IO.Access.Internals.DriveInfo[] result)
+        public override void EndGetDrives(DriveInfo[] result)
         {
             this.log.DebugFormat(
                 CultureInfo.InvariantCulture, "Got all drives {0}.", string.Join(";", result.Select(info => info.Name)));
