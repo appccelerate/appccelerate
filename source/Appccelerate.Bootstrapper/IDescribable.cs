@@ -19,7 +19,7 @@
 namespace Appccelerate.Bootstrapper
 {
     /// <summary>
-    /// Marks an implementor as describable.
+    /// Marks an implementing class as describable.
     /// </summary>
     public interface IDescribable
     {

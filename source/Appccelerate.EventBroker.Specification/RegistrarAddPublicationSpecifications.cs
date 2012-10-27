@@ -29,7 +29,7 @@ namespace Appccelerate.EventBroker
     [Subject(Subjects.EventRegistrar)]
     public class When_registering_a_registerable_event_publication_on_the_event_broker
     {
-        static readonly EventArgs sentEventArgs = new EventArgs();
+        static readonly EventArgs SentEventArgs = new EventArgs();
 
         static EventBroker eventBroker;
 
@@ -48,7 +48,7 @@ namespace Appccelerate.EventBroker
                 var publisher = new SimpleEvent.RegisterableEventPublisher();
                 eventBroker.Register(publisher);
 
-                publisher.FireEvent(sentEventArgs);
+                publisher.FireEvent(SentEventArgs);
             };
 
         It should_relay_fired_events_to_registered_subscribers = () =>
@@ -57,13 +57,13 @@ namespace Appccelerate.EventBroker
 
         It should_pass_event_args_to_registered_subscribers = () =>
             subscriber.ReceivedEventArgs
-                .Should().BeSameAs(sentEventArgs, "event args should be passed to subscriber");
+                .Should().BeSameAs(SentEventArgs, "event args should be passed to subscriber");
     }
 
     [Subject(Subjects.EventRegistrar)]
     public class When_registering_an_event_with_custom_event_args_registerable_publication_on_the_event_broker
     {
-        static readonly EventArgs<string> sentEventArgs = new EventArgs<string>("custom");
+        static readonly EventArgs<string> SentEventArgs = new EventArgs<string>("custom");
 
         static EventBroker eventBroker;
 
@@ -82,7 +82,7 @@ namespace Appccelerate.EventBroker
             var publisher = new CustomEvent.RegisterableEventPublisher();
             eventBroker.Register(publisher);
 
-            publisher.FireEvent(sentEventArgs);
+            publisher.FireEvent(SentEventArgs);
         };
 
         It should_relay_fired_events_to_registered_subscribers = () =>
@@ -91,6 +91,6 @@ namespace Appccelerate.EventBroker
 
         It should_pass_event_args_to_registered_subscribers = () =>
             subscriber.ReceivedEventArgs
-                .Should().BeSameAs(sentEventArgs, "event args should be passed to subscriber");
+                .Should().BeSameAs(SentEventArgs, "event args should be passed to subscriber");
     }
 }

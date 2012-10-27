@@ -19,12 +19,12 @@
 namespace Appccelerate.Bootstrapper.Reporting
 {
     /// <summary>
-    /// Marks the implementor as reporter of the bootstrapping process.
+    /// Marks the implementing class as reporter of the bootstrapping process.
     /// </summary>
     public interface IReporter
     {
         /// <summary>
-        /// Reports the whole boostrapping process.
+        /// Reports the whole bootstrapping process.
         /// </summary>
         /// <remarks>The reporter is called right before IBootstrapper disposal.</remarks>
         /// <param name="context">The reporting context containing detailed information about the reporting process.</param>

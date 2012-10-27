@@ -35,7 +35,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         public const string EventNameOfCodePublication = "publication by code";
 
         /// <summary>
-        /// Type of the event args of the published event.
+        /// Type of the event arguments of the published event.
         /// </summary>
         private readonly Type eventArgsType;
 

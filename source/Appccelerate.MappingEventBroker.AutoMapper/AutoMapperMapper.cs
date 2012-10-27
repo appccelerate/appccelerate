@@ -23,7 +23,7 @@ namespace Appccelerate.MappingEventBroker.AutoMapper
     using global::AutoMapper;
 
     /// <summary>
-    /// Delegates the mapping to automapper.
+    /// Delegates the mapping to auto mapper.
     /// </summary>
     public class AutoMapperMapper : IMapper
     {

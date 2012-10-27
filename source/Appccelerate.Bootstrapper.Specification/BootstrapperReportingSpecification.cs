@@ -63,7 +63,7 @@ namespace Appccelerate.Bootstrapper.Specification
         {
             public void Report(IReportingContext context)
             {
-                foreach (IReporter reporter in Items)
+                foreach (IReporter reporter in this.Items)
                 {
                     reporter.Report(context);
                 }

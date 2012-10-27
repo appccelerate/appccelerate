@@ -104,7 +104,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <summary>
         /// Destroys the publication.
         /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
+        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
         /// <param name="publication">The publication.</param>
         /// <param name="publishedEvent">The published event.</param>
         void DestroyPublication<TEventArgs>(IPublication publication, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs;

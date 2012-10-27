@@ -32,7 +32,7 @@ namespace Appccelerate.StateMachine.Extensions
         where TEvent : IComparable
     {
         /// <summary>
-        /// Starteds the state machine.
+        /// Starts the state machine.
         /// </summary>
         /// <param name="stateMachine">The state machine.</param>
         public virtual void StartedStateMachine(IStateMachineInformation<TState, TEvent> stateMachine)
@@ -40,7 +40,7 @@ namespace Appccelerate.StateMachine.Extensions
         }
 
         /// <summary>
-        /// Stoppeds the state machine.
+        /// Stops the state machine.
         /// </summary>
         /// <param name="stateMachine">The state machine.</param>
         public virtual void StoppedStateMachine(IStateMachineInformation<TState, TEvent> stateMachine)

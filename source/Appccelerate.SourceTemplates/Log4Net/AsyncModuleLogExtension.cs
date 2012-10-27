@@ -137,7 +137,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         }
 
         /// <summary>
-        /// Called when a message is enqueued.
+        /// Called when a message is queued.
         /// </summary>
         /// <param name="controlledModule">The controlled module.</param>
         /// <param name="message">The message.</param>

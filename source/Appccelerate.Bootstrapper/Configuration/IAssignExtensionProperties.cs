@@ -19,7 +19,7 @@
 namespace Appccelerate.Bootstrapper.Configuration
 {
     /// <summary>
-    /// Identifies the implemenator as a property assigner for extensions.
+    /// Identifies the implementing class as a property assigner for extensions.
     /// </summary>
     public interface IAssignExtensionProperties
     {

@@ -19,7 +19,7 @@
 namespace Appccelerate.EvaluationEngine.Extensions
 {
     /// <summary>
-    /// Log extension that does notlog anything (empty implementation).
+    /// Log extension that does not log anything (empty implementation).
     /// </summary>
     public class EmptyLogExtension : ILogExtension
     {

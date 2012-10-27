@@ -37,7 +37,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// </summary>
         /// <param name="topic">The topic.</param>
         /// <param name="publisher">The publisher.</param>
-        /// <param name="eventArgsType">Type of the event args.</param>
+        /// <param name="eventArgsType">Type of the event arguments.</param>
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         public SpontaneousPublication(IEventTopic topic, object publisher, Type eventArgsType, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) :

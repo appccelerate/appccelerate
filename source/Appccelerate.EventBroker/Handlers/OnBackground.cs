@@ -64,32 +64,14 @@ namespace Appccelerate.EventBroker.Handlers
                 new CallInBackgroundArguments(sender, e, subscriptionHandler));
         }
 
-        /// <summary>
-        /// Struct that is passed to the background worker thread.
-        /// </summary>
         private struct CallInBackgroundArguments
         {
-            /// <summary>
-            /// The event topic handler method on the subscriber.
-            /// </summary>
             public readonly Delegate Handler;
 
-            /// <summary>
-            /// The publisher sending the event.
-            /// </summary>
             public readonly object Sender;
 
-            /// <summary>
-            /// The event args of the event.
-            /// </summary>
             public readonly EventArgs EventArgs;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="OnBackground.CallInBackgroundArguments"/> struct.
-            /// </summary>
-            /// <param name="sender">The sender.</param>
-            /// <param name="eventArgs">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-            /// <param name="handler">The handler.</param>
             public CallInBackgroundArguments(object sender, EventArgs eventArgs, Delegate handler)
             {
                 this.Sender = sender;

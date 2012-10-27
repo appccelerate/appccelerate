@@ -21,8 +21,7 @@ namespace Appccelerate.AsyncModule.Events
     using System.ComponentModel;
 
     /// <summary>
-    /// The event arguments of the module controller events: 
-    /// BeforeEnqueueMessage and AfterEnqueueMessage.
+    /// The event arguments of the module controller events
     /// </summary>
     public class EnqueueMessageEventArgs : CancelEventArgs
     {

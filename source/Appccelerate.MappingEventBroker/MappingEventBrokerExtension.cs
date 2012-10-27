@@ -229,12 +229,12 @@ namespace Appccelerate.MappingEventBroker
         }
 
         /// <summary>
-        /// Determines whether the the topic must be mapped and refired.
+        /// Determines whether the the topic must be mapped and fired again.
         /// </summary>
         /// <param name="topic">The topic.</param>
         /// <param name="mappedTopic">The mapped topic.</param>
         /// <returns><see langword="true"/> if the topic must be mapped and
-        /// refired.</returns>
+        /// fired again.</returns>
         protected virtual bool MustProceed(string topic, string mappedTopic)
         {
             Ensure.ArgumentNotNullOrEmpty(topic, "topic");

@@ -19,7 +19,7 @@
 namespace Appccelerate.Bootstrapper.Configuration
 {
     /// <summary>
-    /// Identifies the implemenator as default conversion callback provider
+    /// Identifies the implementing class as default conversion callback provider
     /// </summary>
     public interface IHaveDefaultConversionCallback
     {

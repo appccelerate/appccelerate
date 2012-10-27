@@ -49,7 +49,7 @@ namespace Appccelerate.Bootstrapper
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultBootstrapper&lt;TExtension&gt;"/> class.
         /// </summary>
-        /// <param name="reporter">The boostrapping process reporter.</param>
+        /// <param name="reporter">The bootstrapping process reporter.</param>
         public DefaultBootstrapper(IReporter reporter)
             : this(new ExtensionHost<TExtension>(), reporter)
         {
@@ -68,7 +68,7 @@ namespace Appccelerate.Bootstrapper
         /// Initializes a new instance of the <see cref="DefaultBootstrapper{TExtension}"/> class.
         /// </summary>
         /// <param name="extensionHost">The extension host.</param>
-        /// <param name="reporter">The boostrapping process reporter.</param>
+        /// <param name="reporter">The bootstrapping process reporter.</param>
         public DefaultBootstrapper(IExtensionHost<TExtension> extensionHost, IReporter reporter)
         {
             this.extensionHost = extensionHost;

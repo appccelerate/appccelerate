@@ -19,7 +19,7 @@
 namespace Appccelerate.AsyncModule.Extensions
 {
     /// <summary>
-    /// If a module needs to add eventhandlers to the 
+    /// If a module needs to add event handlers to the 
     /// events of the module controller, it has to implement
     /// this interface, so that the module controller can 
     /// call Attach and Detach.

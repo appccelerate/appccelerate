@@ -21,7 +21,7 @@ namespace Appccelerate.StateMachine.Syntax
     using System;
 
     /// <summary>
-    /// Defines the Goto syntax inside an If.
+    /// Defines the go to syntax inside an If.
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
@@ -30,7 +30,7 @@ namespace Appccelerate.StateMachine.Syntax
         /// <summary>
         /// Defines a transition guard. The transition is only taken if the guard is fulfilled.
         /// </summary>
-        /// <typeparam name="T">The type of the guaard argument.</typeparam>
+        /// <typeparam name="T">The type of the guard argument.</typeparam>
         /// <param name="guard">The guard.</param>
         /// <returns>If syntax.</returns>
         IIfSyntax<TState, TEvent> If<T>(Func<T, bool> guard);

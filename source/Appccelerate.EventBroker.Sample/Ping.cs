@@ -29,7 +29,7 @@ namespace Appccelerate.EventBroker.Sample
         public event EventHandler UiFromUiEvent;
 
         /// <summary>
-        /// Occurs when the ping UI from async is fired.
+        /// Occurs when the ping UI from asynchronous is fired.
         /// </summary>
         [EventPublication(EventTopics.PingUIFromAsync)]
         public event EventHandler UiFromAsyncEvent;
@@ -46,20 +46,20 @@ namespace Appccelerate.EventBroker.Sample
         }
 
         /// <summary>
-        /// Handles the pong UI from async event.
+        /// Handles the pong UI from asynchronous event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
         [EventSubscription(EventTopics.PongUIFromAsync, typeof(Handlers.OnUserInterface))]
         public void HandleUiFromAsync(object sender, EventArgs e)
         {
-            this.FeedbackLabel.Text = "UI from async.";
+            this.FeedbackLabel.Text = "UI from asynchronous.";
         }
 
         /// <summary>
         /// Handles the load event.
         /// </summary>
-        /// <param name="e">The load event args.</param>
+        /// <param name="e">The load event argument.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
