@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="PerCallScopeSpecification.cs" company="Appccelerate">
+// <copyright file="PerCallScopeSpecifications.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,7 +84,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
     {
         static PerCallScopeSpecification()
         {
-            scopeFactoryFactory = () => new DefaultEventScopeFactory();
+            ScopingEventBrokerSpecification.scopeFactoryFactory = () => new DefaultEventScopeFactory();
         }
     }
 }
