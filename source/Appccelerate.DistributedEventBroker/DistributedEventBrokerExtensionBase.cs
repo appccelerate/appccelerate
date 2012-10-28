@@ -38,11 +38,11 @@ namespace Appccelerate.DistributedEventBroker
     /// </summary>
     public class DistributedEventBrokerExtensionBase : EventBrokerExtensionBase, IDistributedEventBrokerExtension
     {
+        private static IEventBroker internalEventBroker;
+
         private readonly object locker = new object();
 
         private readonly List<string> topics;
-
-        private static IEventBroker internalEventBroker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DistributedEventBrokerExtensionBase"/> class.
@@ -143,7 +143,6 @@ namespace Appccelerate.DistributedEventBroker
         /// <summary>
         /// Gets the serializer which is responsible for event argument serialization.
         /// </summary>
-        /// <value>The serializer.</value>
         protected IEventArgsSerializer Serializer
         {
             get;

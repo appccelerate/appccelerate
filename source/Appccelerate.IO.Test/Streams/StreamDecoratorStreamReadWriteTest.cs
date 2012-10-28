@@ -27,7 +27,7 @@ namespace Appccelerate.IO.Streams
 
     public class StreamDecoratorStreamReadWriteTest
     {
-        private static readonly Random random = new Random(15865);
+        private static readonly Random Random = new Random(15865);
 
         private readonly StreamDecoratorTestStream streamDecorator;
 
@@ -120,7 +120,7 @@ namespace Appccelerate.IO.Streams
         private static byte[] CreateByteArray(int length)
         {
             byte[] result = new byte[length];
-            random.NextBytes(result);
+            Random.NextBytes(result);
             return result;
         }
     }

@@ -267,17 +267,6 @@
             return this.decoratedStream.Read(buffer, offset, count);
         }
 
-        /// <summary>
-        /// Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at 
-        /// the end of the stream.
-        /// </summary>
-        /// <returns>
-        /// The unsigned byte cast to an Int32, or -1 if at the end of the stream.
-        /// </returns>
-        /// <exception cref="NotSupportedException">The stream does not support reading. </exception>
-        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when no stream is assigned as decorated stream.
-        /// </exception>
         public override int ReadByte()
         {
             this.AssertStreamNotNull();

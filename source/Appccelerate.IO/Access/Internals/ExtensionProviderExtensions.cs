@@ -31,6 +31,7 @@ namespace Appccelerate.IO.Access.Internals
     /// The extension provider extensions greatly simplify the way how calls are intercepted with extensions.
     /// By using a simple set of conventions the correct extension points are automatically found on the extensions.
     /// The conventions are the following:
+    /// <![CDATA[
     /// 1) Methods which return void
     /// i.e. File.Delete(string path) the extension must provide the following three methods:
     /// - BeginDelete(string path)
@@ -40,7 +41,7 @@ namespace Appccelerate.IO.Access.Internals
     /// i.e. File.Exists(string path) the extension must provide the following three methods:
     /// - BeginExists(string path)
     /// - EndExists(bool result, string path)
-    /// - FailExists(ref Exception exception)
+    /// - FailExists(ref Exception exception)]]>
     /// </summary>
     public static class ExtensionProviderExtensions
     {

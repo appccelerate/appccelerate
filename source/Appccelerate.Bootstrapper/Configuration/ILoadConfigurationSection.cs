@@ -21,7 +21,7 @@ namespace Appccelerate.Bootstrapper.Configuration
     using System.Configuration;
 
     /// <summary>
-    /// Identifies the implementor as configuration section loader.
+    /// Identifies the implementing class as configuration section loader.
     /// </summary>
     public interface ILoadConfigurationSection
     {

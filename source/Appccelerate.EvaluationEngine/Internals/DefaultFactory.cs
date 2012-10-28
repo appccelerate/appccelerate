@@ -65,7 +65,7 @@ namespace Appccelerate.EvaluationEngine.Internals
         /// </summary>
         /// <typeparam name="TQuestion">The type of the question.</typeparam>
         /// <typeparam name="TAnswer">The type of the answer.</typeparam>
-        /// <typeparam name="TParameter">The type fo the parameter.</typeparam>
+        /// <typeparam name="TParameter">The type of the parameter.</typeparam>
         /// <typeparam name="TExpressionResult">The type of the expression result.</typeparam>
         /// <param name="expressionProvider">The expression provider.</param>
         /// <returns>Expression provider</returns>

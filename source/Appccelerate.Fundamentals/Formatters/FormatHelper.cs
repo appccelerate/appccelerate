@@ -34,7 +34,7 @@ namespace Appccelerate.Formatters
         /// Replacement for the String.Format method, that throws an exception
         /// when the count of arguments does not match the count of placeholders.
         /// <para>
-        /// If format and/or args are null then still a string is returned.
+        /// If format and/or arguments are null then still a string is returned.
         /// </para>
         /// </summary>
         /// <param name="formatProvider">

@@ -23,7 +23,7 @@ namespace Appccelerate.DistributedEventBroker.NServiceBus.Messages
     using global::NServiceBus;
 
     /// <summary>
-    /// Marker interface for nservicebus specific messages.
+    /// Marker interface for NServiceBus specific messages.
     /// </summary>
     public interface INServiceBusEventFired : IEventFired, IEvent
     {

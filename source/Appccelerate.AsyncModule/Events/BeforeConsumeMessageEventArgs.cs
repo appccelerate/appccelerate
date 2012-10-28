@@ -19,7 +19,7 @@
 namespace Appccelerate.AsyncModule.Events
 {
     /// <summary>
-    /// Event args for the <see cref="IModuleController.BeforeConsumeMessage"/> event.
+    /// Event arguments for the <see cref="IModuleController.BeforeConsumeMessage"/> event.
     /// </summary>
     public class BeforeConsumeMessageEventArgs : ConsumeMessageEventArgs
     {

@@ -151,9 +151,6 @@ namespace Appccelerate.IO.Resources
             stream.Position.Should().Be(0);
         }
 
-        /// <summary>
-        /// When a non-existing resource is loaded as a strema an <see cref="ArgumentException"/> is thrown.
-        /// </summary>
         [Fact]
         public void LoadNotExistingResourceAsStream()
         {

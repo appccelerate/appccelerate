@@ -123,9 +123,9 @@ namespace Appccelerate.StateMachine
     {
         private const int State = 1;
 
-        private static readonly Exception exception2 = new Exception();
-        private static readonly Exception exception3 = new Exception();
-        private static readonly List<Exception> receivedException = new List<Exception>();
+        private static readonly Exception Exception2 = new Exception();
+        private static readonly Exception Exception3 = new Exception();
+        private static readonly List<Exception> ReceivedException = new List<Exception>();
 
         private static PassiveStateMachine<int, int> machine;
 
@@ -147,15 +147,15 @@ namespace Appccelerate.StateMachine
                 .ExecuteOnEntry(() =>
                         {
                             entryAction2Executed = true;
-                            throw exception2;
+                            throw Exception2;
                         })
                 .ExecuteOnEntry(() =>
                         {
                             entryAction3Executed = true;
-                            throw exception3;
+                            throw Exception3;
                         });
 
-            machine.TransitionExceptionThrown += (s, e) => receivedException.Add(e.Exception);
+            machine.TransitionExceptionThrown += (s, e) => ReceivedException.Add(e.Exception);
 
             machine.Initialize(State);
             machine.Start();
@@ -175,8 +175,8 @@ namespace Appccelerate.StateMachine
 
         It should_handle_all_exceptions_of_all_throwing_entry_actions = () =>
         {
-            receivedException
-                .Should().BeEquivalentTo(new[] { exception2, exception3 });
+            ReceivedException
+                .Should().BeEquivalentTo(new[] { Exception2, Exception3 });
         };
     }
 
@@ -292,9 +292,9 @@ namespace Appccelerate.StateMachine
         private const int AnotherState = 2;
         private const int Event = 2;
 
-        private static readonly Exception exception2 = new Exception();
-        private static readonly Exception exception3 = new Exception();
-        private static readonly List<Exception> receivedException = new List<Exception>();
+        private static readonly Exception Exception2 = new Exception();
+        private static readonly Exception Exception3 = new Exception();
+        private static readonly List<Exception> ReceivedException = new List<Exception>();
 
         private static PassiveStateMachine<int, int> machine;
 
@@ -316,16 +316,16 @@ namespace Appccelerate.StateMachine
                 .ExecuteOnExit(() =>
                     {
                         exitAction2Executed = true;
-                        throw exception2;
+                        throw Exception2;
                     })
                 .ExecuteOnExit(() =>
                     {
                         exitAction3Executed = true;
-                        throw exception3;
+                        throw Exception3;
                     })
                 .On(Event).Goto(AnotherState);
 
-            machine.TransitionExceptionThrown += (s, e) => receivedException.Add(e.Exception);
+            machine.TransitionExceptionThrown += (s, e) => ReceivedException.Add(e.Exception);
 
             machine.Initialize(State);
             machine.Start();
@@ -345,8 +345,11 @@ namespace Appccelerate.StateMachine
         };
 
         It should_handle_all_exceptions_of_all_throwing_exit_actions = () =>
-            receivedException
-                .Should().BeEquivalentTo(new[] { exception2, exception3 });
+            ReceivedException
+                .Should().BeEquivalentTo(new[]
+                    {
+                        Exception2, Exception3
+                    });
     }
 
     [Subject(Concern.EntryAndExitActions)]

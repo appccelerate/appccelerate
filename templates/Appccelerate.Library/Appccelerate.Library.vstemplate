@@ -21,6 +21,7 @@
       </Folder>
 	  <ProjectItem ReplaceParameters="true" TargetFileName="Version.txt">Version.txt</ProjectItem>
 	  <ProjectItem ReplaceParameters="true" TargetFileName="Appccelerate.TODO.nuspec">Appccelerate.TODO.nuspec</ProjectItem>
+	  <ProjectItem ReplaceParameters="true" TargetFileName="Settings.stylecop">Settings.stylecop</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

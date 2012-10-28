@@ -23,7 +23,7 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
     using Appccelerate.EventBroker.Exceptions;
 
     /// <summary>
-    /// An <see cref="EventBrokerException"/> thrown when a handler emthod can not be found.
+    /// An <see cref="EventBrokerException"/> thrown when a handler method can not be found.
     /// </summary>
     public class SubscriberHandlerNotFoundException : EventBrokerException
     {

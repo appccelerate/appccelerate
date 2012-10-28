@@ -42,7 +42,7 @@ namespace Appccelerate.EvaluationEngine
 
         /// <summary>
         /// Loads this instance.
-        /// Derrived classes add their solution definition.
+        /// Derived classes add their solution definition.
         /// </summary>
         protected abstract void Load();
 

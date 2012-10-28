@@ -23,7 +23,7 @@ namespace Appccelerate.DistributedEventBroker.NServiceBus
     using global::NServiceBus;
 
     /// <summary>
-    /// The distributed event broker extension for nservice bus.
+    /// The distributed event broker extension for NServiceBus.
     /// </summary>
     public class NServiceBusDistributedEventBrokerExtension : DistributedEventBrokerExtensionBase
     {

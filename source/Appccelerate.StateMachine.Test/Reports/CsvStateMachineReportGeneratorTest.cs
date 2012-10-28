@@ -71,7 +71,7 @@ namespace Appccelerate.StateMachine.Reports
             /// <summary>The door is closed while standing still.</summary>
             DoorClosed,
 
-            /// <summary>The dor is open while standing still.</summary>
+            /// <summary>The door is open while standing still.</summary>
             DoorOpen
         }
 

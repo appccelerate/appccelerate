@@ -21,7 +21,7 @@ namespace Appccelerate.Bootstrapper.Configuration
     using System.Configuration;
 
     /// <summary>
-    /// Identifies the implemenator as configuration section consumer.
+    /// Identifies the implementing class as configuration section consumer.
     /// </summary>
     public interface IConsumeConfigurationSection
     {

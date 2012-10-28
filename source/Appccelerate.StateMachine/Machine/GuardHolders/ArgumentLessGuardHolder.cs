@@ -23,7 +23,7 @@ namespace Appccelerate.StateMachine.Machine.GuardHolders
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// Holds an argumente less guard.
+    /// Holds an argument less guard.
     /// </summary>
     public class ArgumentLessGuardHolder : IGuardHolder
     {
