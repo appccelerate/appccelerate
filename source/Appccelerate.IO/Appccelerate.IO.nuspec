@@ -18,6 +18,10 @@
     </description>
     <copyright>Copyright 2012</copyright>
     <tags>Appccelerate</tags>
+	<releaseNotes>
+      Fixed concurrency issue with extension caching.
+	  Fixed GetDrives to use proper DriveInfo from System.IO.
+    </releaseNotes>
     <dependencies>
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
     </dependencies>
