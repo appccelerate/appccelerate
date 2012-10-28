@@ -49,9 +49,6 @@ namespace Appccelerate.IO.Resources
         /// </summary>
         private readonly FileResourceLoader testee;
 
-        /// <summary>
-        /// The filepath to hold the temporary files
-        /// </summary>
         private readonly string filepath;
 
         /// <summary>

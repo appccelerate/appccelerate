@@ -29,7 +29,7 @@ namespace Appccelerate.EventBroker
         None = -1,
 
         /// <summary>
-        /// Only synchronous handling is allowed, e.g. the publisher wants to evaluate the event args afterwards.
+        /// Only synchronous handling is allowed, e.g. the publisher wants to evaluate the event arguments afterwards.
         /// </summary>
         Synchronous = HandlerKind.Synchronous,
 

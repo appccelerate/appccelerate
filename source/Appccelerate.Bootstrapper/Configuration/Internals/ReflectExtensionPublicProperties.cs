@@ -24,7 +24,7 @@ namespace Appccelerate.Bootstrapper.Configuration.Internals
 
     /// <summary>
     /// IReflectExtensionProperties implementations which gives back PropertyInfo about all public instance 
-    /// properties which are writtable of the reflected extension
+    /// properties which are writeable of the reflected extension
     /// </summary>
     public class ReflectExtensionPublicProperties : IReflectExtensionProperties
     {

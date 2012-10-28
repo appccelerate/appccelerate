@@ -22,7 +22,7 @@ namespace Appccelerate.EvaluationEngine.Expressions
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Encapsulates an inline expression (a lamba expression) as an <see cref="IExpression{TExpressionResult, TParameter}"/>.
+    /// Encapsulates an inline expression (a lambda expression) as an <see cref="IExpression{TExpressionResult, TParameter}"/>.
     /// </summary>
     /// <typeparam name="TQuestion">The type of the question.</typeparam>
     /// <typeparam name="TParameter">The type of the parameter.</typeparam>

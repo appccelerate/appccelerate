@@ -39,7 +39,7 @@ namespace Appccelerate.Bootstrapper.Behavior
         }
 
         /// <summary>
-        /// Diposes all extensions which implement IDisposable.
+        /// Disposes all extensions which implement IDisposable.
         /// </summary>
         /// <param name="extensions">The extensions.</param>
         public void Behave(IEnumerable<IExtension> extensions)

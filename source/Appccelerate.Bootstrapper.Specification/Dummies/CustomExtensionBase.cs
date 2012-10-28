@@ -27,7 +27,7 @@ namespace Appccelerate.Bootstrapper.Specification.Dummies
 
     public abstract class CustomExtensionBase : ICustomExtension
     {
-        private static readonly Queue<string> sequenceQueue = new Queue<string>();
+        private static readonly Queue<string> SequenceQueue = new Queue<string>();
 
         /// <summary>
         /// Gets cleared when accessed.
@@ -36,8 +36,8 @@ namespace Appccelerate.Bootstrapper.Specification.Dummies
         {
             get
             {
-                var result = sequenceQueue.ToList();
-                sequenceQueue.Clear();
+                var result = SequenceQueue.ToList();
+                SequenceQueue.Clear();
 
                 return result;
             }
@@ -128,12 +128,12 @@ namespace Appccelerate.Bootstrapper.Specification.Dummies
 
         internal static void DumpAction(string actionName)
         {
-            sequenceQueue.Enqueue(string.Format(CultureInfo.InvariantCulture, "Action: {0}", actionName));
+            SequenceQueue.Enqueue(string.Format(CultureInfo.InvariantCulture, "Action: {0}", actionName));
         }
 
         private void Dump(string methodName)
         {
-            sequenceQueue.Enqueue(string.Format(CultureInfo.InvariantCulture, "{0}: {1}", this.GetType().Name, methodName));
+            SequenceQueue.Enqueue(string.Format(CultureInfo.InvariantCulture, "{0}: {1}", this.GetType().Name, methodName));
         }
     }
 }

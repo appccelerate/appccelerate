@@ -21,7 +21,7 @@ namespace Appccelerate.Bootstrapper.Configuration
     using System.Collections.Generic;
 
     /// <summary>
-    /// Identifies the implemenator as configuration consumer.
+    /// Identifies the implementing class as configuration consumer.
     /// </summary>
     public interface IConsumeConfiguration
     {

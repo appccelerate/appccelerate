@@ -38,7 +38,7 @@ namespace Appccelerate.EvaluationEngine.ExpressionProviders
         /// <summary>
         /// Initializes a new instance of the <see cref="MultipleExpressionsProvider{TQuestion, TAnswer, TParameter, TExpressionResult}"/> class.
         /// </summary>
-        /// <param name="expressionFunc">The expression func.</param>
+        /// <param name="expressionFunc">The expression function.</param>
         public MultipleExpressionsProvider(Func<TQuestion, IEnumerable<IExpression<TExpressionResult, TParameter>>> expressionFunc)
         {
             this.expressionFunc = expressionFunc;

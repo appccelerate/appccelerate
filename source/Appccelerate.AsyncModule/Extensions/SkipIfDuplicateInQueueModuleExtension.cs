@@ -19,7 +19,7 @@
 namespace Appccelerate.AsyncModule.Extensions
 {
     /// <summary>
-    /// Extension that cancels the consumation of a message if there is a message in the queue that is equal to it.
+    /// Extension that cancels the consumption of a message if there is a message in the queue that is equal to it.
     /// </summary>
     public class SkipIfDuplicateInQueueModuleExtension : IModuleExtension
     {

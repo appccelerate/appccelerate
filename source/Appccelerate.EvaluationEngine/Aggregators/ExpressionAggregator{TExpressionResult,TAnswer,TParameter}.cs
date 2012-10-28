@@ -27,7 +27,7 @@ namespace Appccelerate.EvaluationEngine.Aggregators
     using Appccelerate.EvaluationEngine.Expressions;
     
     /// <summary>
-    /// Aggregates the result of all passed expressions into a single result using an aggregate lamda expression.
+    /// Aggregates the result of all passed expressions into a single result using an aggregate lambda expression.
     /// Use this class if the result type returned by the expressions is different from the type of the overall result.
     /// </summary>
     /// <typeparam name="TExpressionResult">The type of the expression result.</typeparam>

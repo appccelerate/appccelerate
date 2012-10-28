@@ -23,7 +23,7 @@ namespace Appccelerate.Bootstrapper.Reporting
     using Appccelerate.Bootstrapper.Syntax;
 
     /// <summary>
-    /// Marks the implementor as reporting context.
+    /// Marks the implementing class as reporting context.
     /// </summary>
     public interface IReportingContext : IRunExecutionContextFactory, IShutdownExecutionContextFactory, IExtensionContextFactory
     {

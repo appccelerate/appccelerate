@@ -21,7 +21,7 @@ namespace Appccelerate.DistributedEventBroker.RhinoEsb
     using Rhino.ServiceBus;
 
     /// <summary>
-    /// Distributed event broker extension for rhino esb.
+    /// Distributed event broker extension for RhinoESB.
     /// </summary>
     public class RhinoEsbDistributedEventBrokerExtension : DistributedEventBrokerExtensionBase
     {

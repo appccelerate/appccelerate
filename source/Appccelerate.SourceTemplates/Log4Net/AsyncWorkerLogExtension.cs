@@ -60,12 +60,6 @@ namespace Appccelerate.SourceTemplates.Log4Net
             this.log = logger;
         }
 
-        /// <summary>
-        /// Called when an operation is started.
-        /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
-        /// <param name="worker">The worker.</param>
-        /// <param name="argument">The argument.</param>
         public void StartedExecution(AsyncWorker asyncWorker, DoWorkEventHandler worker, object argument)
         {
             if (this.log.IsDebugEnabled)
@@ -80,11 +74,6 @@ namespace Appccelerate.SourceTemplates.Log4Net
             }
         }
 
-        /// <summary>
-        /// Called when an operation is cancelled.
-        /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
-        /// <param name="worker">The worker.</param>
         public void CancellingExecution(AsyncWorker asyncWorker, DoWorkEventHandler worker)
         {
             if (this.log.IsDebugEnabled)
@@ -101,7 +90,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <summary>
         /// Called when an operation reports progress.
         /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
+        /// <param name="asyncWorker">The asynchronous worker.</param>
         /// <param name="worker">The worker.</param>
         /// <param name="progress">The progress.</param>
         /// <param name="userState">State of the user.</param>
@@ -121,7 +110,7 @@ namespace Appccelerate.SourceTemplates.Log4Net
         /// <summary>
         /// Called when an operation was completed.
         /// </summary>
-        /// <param name="asyncWorker">The async worker.</param>
+        /// <param name="asyncWorker">The asynchronous worker.</param>
         /// <param name="worker">The worker.</param>
         /// <param name="completed">The completed handler.</param>
         /// <param name="runWorkerCompletedEventArgs">The <see cref="System.ComponentModel.RunWorkerCompletedEventArgs"/> instance containing the event data.</param>

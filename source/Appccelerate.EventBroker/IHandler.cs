@@ -22,7 +22,7 @@ namespace Appccelerate.EventBroker
     using System.Reflection;
 
     /// <summary>
-    /// A handler defines how a subscription is executed (on which thread, sync, async, ...).
+    /// A handler defines how a subscription is executed (on which thread, sync, asynchronous, ...).
     /// </summary>
     public interface IHandler
     {
