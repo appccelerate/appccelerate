@@ -74,6 +74,15 @@ namespace Appccelerate.EventBroker.Internals
             eventTopic.AddPublication(publication);
         }
 
+        public void RemovePublication(string topic, object publisher, string eventName)
+        {
+            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
+
+            IPublication publication = eventTopic.RemovePublication(publisher, eventName);
+
+            publication.Dispose();
+        }
+
         /// <summary>
         /// Registers an item with this event broker.
         /// </summary>

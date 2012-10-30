@@ -74,7 +74,7 @@ namespace Appccelerate.EventBroker.Internals
 
             foreach (ISubscription subscription in this.subscriptions)
             {
-                ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
+                ThrowIfPublisherAndSubscriberEventArgumentsMismatch(subscription, publication);
                 ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
             }
 
@@ -111,7 +111,7 @@ namespace Appccelerate.EventBroker.Internals
             this.ThrowIfRepeatedSubscription(subscription.Subscriber, subscription.HandlerMethodName);
             foreach (IPublication publication in this.publications)
             {
-                ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
+                ThrowIfPublisherAndSubscriberEventArgumentsMismatch(subscription, publication);
                 ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
             }
 
@@ -132,7 +132,7 @@ namespace Appccelerate.EventBroker.Internals
             this.Clean();
 
             ISubscription subscription = this.FindSubscription(subscriber, handlerMethod.Name);
-            
+
             if (subscription == null)
             {
                 return;
@@ -199,14 +199,14 @@ namespace Appccelerate.EventBroker.Internals
             this.publications.Clear();
         }
 
-        private static void ThrowIfPublisherAndSubscriberEventArgsMismatch(ISubscription subscription, IPublication publication)
+        private static void ThrowIfPublisherAndSubscriberEventArgumentsMismatch(ISubscription subscription, IPublication publication)
         {
             Type publisherEventArgsType = publication.EventArgsType;
             Type subscriberEventArgsType = subscription.EventArgsType;
 
             // check that the T in EventHandler<T> is matching, the IsAssignableFrom method return false event if types can be assigned
-            // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on even thandler type
-            // therefore do the check on the event args type only.
+            // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on event handler type
+            // therefore do the check on the event arguments type only.
             if (!subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
             {
                 using (var writer = new StringWriter(CultureInfo.InvariantCulture))
@@ -224,11 +224,6 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Throws if subscription handler does not match handler restriction of publisher.
-        /// </summary>
-        /// <param name="subscription">The subscription.</param>
-        /// <param name="publication">The publication.</param>
         private static void ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(ISubscription subscription, IPublication publication)
         {
             if (publication.HandlerRestriction == HandlerRestriction.None)
