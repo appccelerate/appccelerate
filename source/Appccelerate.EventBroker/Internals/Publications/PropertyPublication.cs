@@ -40,18 +40,8 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         private readonly Type eventArgsType;
 
-        #region Construction
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyPublication"/> class.
-        /// </summary>
-        /// <param name="topic">The event topic this publication belongs to.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventInfo">The <see cref="EventInfo"/> of the publisher that registers this event topic.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="publicationMatchers">The publication matchers.</param>
         public PropertyPublication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             EventInfo eventInfo,
             HandlerRestriction handlerRestriction,
@@ -79,62 +69,35 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventInfo.AddEventHandler(publisher, handler);
         }
         
-        #endregion
-
-        #region Data
-
-        /// <summary>
-        /// Gets the name of the event on the <see cref="Publication.Publisher"/>.
-        /// </summary>
         public override string EventName
         {
             get { return this.eventInfo.Name; }
         }
 
-        /// <summary>
-        /// Gets the type of the event arguments.
-        /// </summary>
-        /// <value>The type of the event arguments.</value>
         public override Type EventArgsType
         {
             get { return this.eventArgsType; }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Fires the event publication. This method is registered to the event on the publisher.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         public void PublicationHandler(object sender, EventArgs e)
         {
             this.Fire(sender, e);
         }
 
-        #region DescribeTo
-
-        /// <summary>
-        /// Describes this publication
-        /// name, scope, event handler.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
         public override void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");
 
-            if (this.IsPublisherAlive)
+            if (!this.IsPublisherAlive)
             {
-                base.DescribeTo(writer);
-                
-                writer.Write(", EventHandler type = ");
-                writer.Write(this.eventInfo.EventHandlerType.FullNameToString());
+                return;
             }
+
+            base.DescribeTo(writer);
+                
+            writer.Write(", EventHandler type = ");
+            writer.Write(this.eventInfo.EventHandlerType.FullNameToString());
         }
-
-        #endregion
-
-        #region Dispose
 
         /// <summary>
         /// Implementation of the disposable pattern.
@@ -153,15 +116,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
             }
         }
 
-        #endregion
-
-        #region Publication Event Validation
-
-        /// <summary>
-        /// Throws a <see cref="StaticPublisherEventException"/> if the published event is defined static.
-        /// </summary>
-        /// <param name="publishedEvent">The published event.</param>
-        /// <exception cref="StaticPublisherEventException">Thrown if the published event is defined static.</exception>
         private static void ThrowIfEventIsStatic(EventInfo publishedEvent)
         {
             if (publishedEvent.GetAddMethod().IsStatic || publishedEvent.GetRemoveMethod().IsStatic)
@@ -170,12 +124,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
             }
         }
 
-        /// <summary>
-        /// Throws an <see cref="InvalidPublicationSignatureException"/> if defined event handler on publisher
-        /// is not an <see cref="EventHandler"/>.
-        /// </summary>
-        /// <param name="info">The event info of the published event.</param>
-        /// <exception cref="InvalidPublicationSignatureException">Thrown if defined event handler on publisher is not an <see cref="EventHandler"/>.</exception>
         private static void ThrowIfInvalidEventHandler(EventInfo info)
         {
             if (typeof(EventHandler).IsAssignableFrom(info.EventHandlerType) ||
@@ -187,7 +135,5 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
             throw new InvalidPublicationSignatureException(info);
         }
-
-        #endregion
     }
 }

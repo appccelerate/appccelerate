@@ -18,69 +18,13 @@
 
 namespace Appccelerate.EventBroker.Internals
 {
-    using System;
-    using System.Collections.Generic;
-    using Matchers;
-
-    /// <summary>
-    /// An event inspector inspects objects for publications and subscriptions and creates <see cref="IEventTopic"/>s
-    /// for them on the <see cref="IEventTopicHost"/>
-    /// </summary>
+    using System.Reflection;
+    using Appccelerate.EventBroker.Internals.Inspection;
+    
     public interface IEventInspector
     {
-        /// <summary>
-        /// Processes a publishers.
-        /// </summary>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="register">true to register publications, false to unregister them.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        /// <remarks>Scans the members of the <paramref name="publisher"/> and registers or unregisters publications.</remarks>
-        void ProcessPublisher(object publisher, bool register, IEventTopicHost eventTopicHost);
+        ScanResult Scan(object instance);
 
-        /// <summary>
-        /// Processes the subscriber.
-        /// </summary>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="register">true to register subscriptions, false to unregister them.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        /// <remarks>Scans the members of the <paramref name="subscriber"/> and registers or unregisters subscriptions.</remarks>
-        void ProcessSubscriber(object subscriber, bool register, IEventTopicHost eventTopicHost);
-
-        /// <summary>
-        /// Processes the publisher.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventName">Name of the event.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        /// <param name="register">true to register publications, false to unregister them.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        void ProcessPublisher(string topic, object publisher, string eventName, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> matchers, bool register, IEventTopicHost eventTopicHost);
-
-        /// <summary>
-        /// Processes the subscriber.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The matchers.</param>
-        /// <param name="register">true to register subscriptions, false to unregister them.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        void ProcessSubscriber(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, ISubscriptionMatcher[] matchers, bool register, IEventTopicHost eventTopicHost);
-
-        /// <summary>
-        /// Processes the subscriber.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The matchers.</param>
-        /// <param name="register">true to register subscriptions, false to unregister them.</param>
-        /// <param name="eventTopicHost">The event topic host.</param>
-        void ProcessSubscriber<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, ISubscriptionMatcher[] matchers, bool register, IEventTopicHost eventTopicHost) where TEventArgs : EventArgs;
+        EventInfo ScanPublisherForEvent(object publisher, string eventName);
     }
 }

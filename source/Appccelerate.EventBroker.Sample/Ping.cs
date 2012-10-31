@@ -9,6 +9,8 @@ namespace Appccelerate.EventBroker.Sample
     using System;
     using System.Windows.Forms;
 
+    using Appccelerate.Events;
+
     /// <summary>
     /// The ping form.
     /// </summary>
@@ -34,6 +36,9 @@ namespace Appccelerate.EventBroker.Sample
         [EventPublication(EventTopics.PingUIFromAsync)]
         public event EventHandler UiFromAsyncEvent;
 
+        [EventPublication(EventTopics.BurstPing, HandlerRestriction.Asynchronous)]
+        public event EventHandler<EventArgs<int>> BurstEvent;
+
         /// <summary>
         /// Handles the pong UI from UI thread event.
         /// </summary>
@@ -50,10 +55,16 @@ namespace Appccelerate.EventBroker.Sample
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        [EventSubscription(EventTopics.PongUIFromAsync, typeof(Handlers.OnUserInterface))]
+        [EventSubscription(EventTopics.PongUIFromAsync, typeof(Handlers.OnUserInterfaceAsync))]
         public void HandleUiFromAsync(object sender, EventArgs e)
         {
             this.FeedbackLabel.Text = "UI from asynchronous.";
+        }
+
+        [EventSubscription(EventTopics.BurstPong, typeof(Handlers.OnUserInterfaceAsync))]
+        public void HandleBurst(int index)
+        {
+            this.BurstText.Text += " " + index;
         }
 
         /// <summary>
@@ -75,6 +86,16 @@ namespace Appccelerate.EventBroker.Sample
         private void UIFromAsyncButton_Click(object sender, EventArgs e)
         {
             this.UiFromAsyncEvent(this, EventArgs.Empty);
+        }
+
+        private void BurstButton_Click(object sender, EventArgs e)
+        {
+            this.BurstText.Text = string.Empty;
+
+            for (int i = 0; i < 50; i++)
+            {
+                this.BurstEvent(this, new EventArgs<int>(i));
+            }
         }
 
         private void timer_Tick(object sender, EventArgs e)

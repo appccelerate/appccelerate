@@ -42,5 +42,9 @@ namespace Appccelerate.EventBroker.Sample
         /// Event topic for pong from UI async.
         /// </summary>
         public const string PongUIFromAsync = "topic://EventBrokerSample.PongUIFromAsync";
+
+        public const string BurstPing = "topic://EventBrokerSample.BurstPing";
+
+        public const string BurstPong = "topic://EventBrokerSample.BurstPong";
     }
 }

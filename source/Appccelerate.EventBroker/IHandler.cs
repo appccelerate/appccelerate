@@ -21,6 +21,8 @@ namespace Appccelerate.EventBroker
     using System;
     using System.Reflection;
 
+    using Appccelerate.EventBroker.Internals.Subscriptions;
+
     /// <summary>
     /// A handler defines how a subscription is executed (on which thread, sync, asynchronous, ...).
     /// </summary>
@@ -40,13 +42,6 @@ namespace Appccelerate.EventBroker
         /// <param name="extensionHost">Provides access to all registered extensions.</param>
         void Initialize(object subscriber, MethodInfo handlerMethod, IExtensionHost extensionHost);
 
-        /// <summary>
-        /// Executes the subscription.
-        /// </summary>
-        /// <param name="eventTopic">The event topic.</param>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <param name="subscriptionHandler">The subscription handler.</param>
-        void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler);
+        void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper);
     }
 }

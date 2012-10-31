@@ -30,5 +30,5 @@ namespace Appccelerate.EventBroker
     /// <param name="sender">The publisher object firing the topic.</param>
     /// <param name="e">The <see cref="EventArgs"/> data to be passed to the subscribers.</param>
     /// <param name="publication">The publication firing the event.</param>
-    public delegate void EventTopicFireDelegate(IEventTopic eventTopic, object sender, EventArgs e, IPublication publication);
+    public delegate void EventTopicFireDelegate(IEventTopicInfo eventTopic, object sender, EventArgs e, IPublication publication);
 }

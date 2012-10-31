@@ -77,7 +77,7 @@ namespace Appccelerate.EventBroker.Internals
                     return this.eventTopics[topic];
                 }
 
-                IEventTopic eventTopic = this.factory.CreateEventTopic(topic, this.globalMatchersProvider);
+                IEventTopic eventTopic = this.factory.CreateEventTopicInternal(topic, this.globalMatchersProvider);
 
                 // copy
                 this.eventTopics = new Dictionary<string, IEventTopic>(this.eventTopics) { { topic, eventTopic } };

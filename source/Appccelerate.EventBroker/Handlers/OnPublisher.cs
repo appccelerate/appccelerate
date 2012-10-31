@@ -21,6 +21,8 @@ namespace Appccelerate.EventBroker.Handlers
     using System;
     using System.Reflection;
 
+    using Appccelerate.EventBroker.Internals.Subscriptions;
+
     /// <summary>
     /// Handler that executes the subscription on the same thread the publisher is currently running (synchronous).
     /// </summary>
@@ -34,21 +36,14 @@ namespace Appccelerate.EventBroker.Handlers
         {
             get { return HandlerKind.Synchronous; }
         }
-
-        /// <summary>
-        /// Executes the subscription synchronously on the same thread as the publisher is currently running.
-        /// </summary>
-        /// <param name="eventTopic">The event topic.</param>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <param name="subscriptionHandler">The subscription handler.</param>
-        public override void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        
+        public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
-            Ensure.ArgumentNotNull(subscriptionHandler, "subscriptionHandler");
+            Ensure.ArgumentNotNull(delegateWrapper, "delegateWrapper");
 
             try
             {
-                subscriptionHandler.DynamicInvoke(sender, e);
+                delegateWrapper.Invoke(subscriber, sender, e);
             }
             catch (TargetInvocationException ex)
             {

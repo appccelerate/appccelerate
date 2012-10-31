@@ -7,6 +7,9 @@
 namespace Appccelerate.EventBroker.Sample
 {
     using System;
+    using System.Threading;
+
+    using Appccelerate.Events;
 
     /// <summary>
     /// Pong class.
@@ -24,6 +27,9 @@ namespace Appccelerate.EventBroker.Sample
         /// </summary>
         [EventPublication(EventTopics.PongUIFromAsync)]
         public event EventHandler UiFromAsyncEvent;
+
+        [EventPublication(EventTopics.BurstPong, HandlerRestriction.Asynchronous)]
+        public event EventHandler<EventArgs<int>> Burst; 
 
         /// <summary>
         /// Handles a ping.
@@ -47,6 +53,16 @@ namespace Appccelerate.EventBroker.Sample
         {
             Wait();
             this.UiFromAsyncEvent(this, EventArgs.Empty);
+        }
+
+        [EventSubscription(EventTopics.BurstPing, typeof(Handlers.OnBackground))]
+        public void HandleBurst(object sender, EventArgs<int> e)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                Thread.Sleep(50 - i);
+                this.Burst(this, new EventArgs<int>(i * e.Value));
+            }
         }
 
         private static void Wait()

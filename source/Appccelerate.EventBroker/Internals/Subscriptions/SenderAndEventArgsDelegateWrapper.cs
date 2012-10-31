@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="HandlerRestrictionEvent.cs" company="Appccelerate">
+// <copyright file="SenderAndEventArgsDelegateWrapper.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,34 +16,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Internals.Subscriptions
 {
     using System;
+    using System.Reflection;
 
-    public class HandlerRestrictionEvent
+    public class SenderAndEventArgsDelegateWrapper : DelegateWrapper
     {
-        public const string EventTopic = "topic://topic";
-
-        public class PublisherWithSynchronousRestriction
+        public SenderAndEventArgsDelegateWrapper(Type eventArgsType, MethodInfo handlerMethod)
+            : base(
+                eventArgsType,
+                typeof(EventHandler<>).MakeGenericType(eventArgsType), 
+                handlerMethod)
         {
-            [EventPublication(EventTopic, HandlerRestriction.Synchronous)]
-            public event EventHandler Event;
-
-            public void FireEvent()
-            {
-                this.Event(this, EventArgs.Empty);
-            }
         }
 
-        public class SynchronousSubscriber
+        public override void Invoke(object subscriber, object sender, EventArgs e)
         {
-            public bool HandledEvent { get; private set; }
+            Delegate d = this.CreateSubscriptionDelegate(subscriber);
 
-            [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
-            public void Handle(object sender, EventArgs eventArgs)
-            {
-                this.HandledEvent = true;
-            }
+            d.DynamicInvoke(sender, e);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Appccelerate.EventBroker.Internals
     using System.Reflection;
 
     using Appccelerate.EventBroker.Internals.GlobalMatchers;
+    using Appccelerate.EventBroker.Internals.Subscriptions;
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
@@ -46,19 +47,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <returns>A newly created event topic host.</returns>
         IEventTopicHost CreateEventTopicHost(IGlobalMatchersProvider globalMatchersProvider);
 
-        /// <summary>
-        /// Creates an event inspector.
-        /// </summary>
-        /// <returns>A newly created event inspector.</returns>
         IEventInspector CreateEventInspector();
-
-        /// <summary>
-        /// Creates a new event topic
-        /// </summary>
-        /// <param name="uri">The URI of the event topic.</param>
-        /// <param name="globalMatchersProvider">The global matchers provider.</param>
-        /// <returns>A newly created event topic</returns>
-        IEventTopic CreateEventTopic(string uri, IGlobalMatchersProvider globalMatchersProvider);
 
         /// <summary>
         /// Creates a new publication
@@ -69,7 +58,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         /// <returns>A newly created publication</returns>
-        IPublication CreatePublication(IEventTopic eventTopic, object publisher, EventInfo eventInfo, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers);
+        IPublication CreatePublication(IEventTopicExecuter eventTopic, object publisher, EventInfo eventInfo, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers);
 
         /// <summary>
         /// Creates a new publication
@@ -80,7 +69,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         /// <returns>A newly created publication</returns>
-        IPublication CreatePublication(IEventTopic eventTopic, object publisher, ref EventHandler eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers);
+        IPublication CreatePublication(IEventTopicExecuter eventTopic, object publisher, ref EventHandler eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers);
 
         /// <summary>
         /// Creates a new publication
@@ -92,32 +81,9 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="handlerRestriction">The handler restriction.</param>
         /// <param name="publicationMatchers">The publication matchers.</param>
         /// <returns>A newly created publication</returns>
-        IPublication CreatePublication<TEventArgs>(IEventTopic eventTopic, object publisher, ref EventHandler<TEventArgs> eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) where TEventArgs : EventArgs;
+        IPublication CreatePublication<TEventArgs>(IEventTopicExecuter eventTopic, object publisher, ref EventHandler<TEventArgs> eventHandler, HandlerRestriction handlerRestriction, IList<IPublicationMatcher> publicationMatchers) where TEventArgs : EventArgs;
 
-        /// <summary>
-        /// Destroys the publication.
-        /// </summary>
-        /// <param name="publication">The publication.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        void DestroyPublication(IPublication publication, ref EventHandler publishedEvent);
-
-        /// <summary>
-        /// Destroys the publication.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="publication">The publication.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        void DestroyPublication<TEventArgs>(IPublication publication, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs;
-
-        /// <summary>
-        /// Creates a new subscription
-        /// </summary>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="subscriptionMatchers">The subscription scope matchers.</param>
-        /// <returns>A newly created subscription</returns>
-        ISubscription CreateSubscription(object subscriber, MethodInfo handlerMethod, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers);
+        ISubscription CreateSubscription(object subscriber, DelegateWrapper delegateWrapper, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers);
 
         /// <summary>
         /// Creates a subscription execution handler. This handler defines on which thread the subscription is executed.
@@ -145,5 +111,15 @@ namespace Appccelerate.EventBroker.Internals
         /// </summary>
         /// <returns>A newly created global matchers host.</returns>
         IGlobalMatchersHost CreateGlobalMatchersHost();
+
+        /// <summary>
+        /// Creates a new event topic
+        /// </summary>
+        /// <param name="uri">The URI of the event topic.</param>
+        /// <param name="globalMatchersProvider">The global matchers provider.</param>
+        /// <returns>A newly created event topic</returns>
+        IEventTopic CreateEventTopicInternal(string uri, IGlobalMatchersProvider globalMatchersProvider);
+
+        IEventRegistrar CreateRegistrar(IEventTopicHost eventTopicHost, IEventInspector eventInspector, IExtensionHost extensionHost);
     }
 }

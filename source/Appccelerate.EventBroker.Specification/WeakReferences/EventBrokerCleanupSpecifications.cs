@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.WeakReferences
 {
     using System;
 
@@ -60,7 +60,7 @@ namespace Appccelerate.EventBroker
                 GC.Collect();
             };
 
-        It should_garbage_collect_subscribers_registered_by_property = () =>
+        It should_garbage_collect_subscribers_registered_by_attribute = () =>
             referenceOnSubscriberThatIsCollected.IsAlive
                 .Should().BeFalse("subscriber should be collected");
 
@@ -70,11 +70,54 @@ namespace Appccelerate.EventBroker
     }
 
     [Subject(Subjects.Cleanup)]
+    public class When_publishers_are_not_reference_anymore_by_client_code
+    {
+        static EventBroker eventBroker = new EventBroker();
+        static SimpleEvent.EventPublisher publisher;
+        static SimpleEvent.RegisterableEventPublisher registerablePublisher;
+        static SimpleEvent.EventSubscriber subscriber;
+        static WeakReference weakReferenceOnPublisher;
+        static WeakReference weakReferenceOnRegisterablePublisher;
+
+        Establish context = () =>
+        {
+            eventBroker = new EventBroker();
+
+            publisher = new SimpleEvent.EventPublisher();
+            registerablePublisher = new SimpleEvent.RegisterableEventPublisher();
+            subscriber = new SimpleEvent.EventSubscriber();
+
+            eventBroker.Register(publisher);
+            eventBroker.Register(subscriber);
+
+            weakReferenceOnPublisher = new WeakReference(publisher);
+            weakReferenceOnRegisterablePublisher = new WeakReference(registerablePublisher);
+        };
+
+        Because of = () =>
+        {
+            publisher = null;
+            registerablePublisher = null;
+            GC.Collect();
+        };
+
+        It should_garbage_collect_publisher_registered_by_property = () =>
+            weakReferenceOnPublisher.IsAlive
+                .Should().BeFalse("publisher should be collected");
+
+        It should_garbage_collect_subscribers_registered_by_registrar = () =>
+            weakReferenceOnRegisterablePublisher.IsAlive
+                .Should().BeFalse("publisher should be collected");
+    }
+
+    [Subject(Subjects.Cleanup)]
     public class When_the_event_broker_is_disposed
     {
         static EventBroker eventBroker;
         static WeakReference publisher;
         static WeakReference registerablePublisher;
+        static WeakReference subscriber;
+        static WeakReference registerableSubscriber;
 
         Establish context = () =>
             {
@@ -82,12 +125,18 @@ namespace Appccelerate.EventBroker
 
                 var p = new SimpleEvent.EventPublisher();
                 var rp = new SimpleEvent.RegisterableEventPublisher();
+                var s = new SimpleEvent.EventSubscriber();
+                var rs = new SimpleEvent.RegisterableEventSubscriber();
 
                 publisher = new WeakReference(p);
                 registerablePublisher = new WeakReference(rp);
+                subscriber = new WeakReference(s);
+                registerableSubscriber = new WeakReference(rs);
 
                 eventBroker.Register(p);
                 eventBroker.Register(rp);
+                eventBroker.Register(s);
+                eventBroker.Register(rs);
             };
 
         Because of = () =>
@@ -97,12 +146,20 @@ namespace Appccelerate.EventBroker
                 GC.Collect();
             };
 
-        It should_unregister_publishers = () =>
+        It should_unregister_publishers_registered_by_attribute = () =>
             publisher.IsAlive
                 .Should().BeFalse("publisher should not be referenced anymore");
 
-        It should_unregister_registerable_publishers = () =>
+        It should_unregister_publishers_registered_by_registrar = () =>
             registerablePublisher.IsAlive
                 .Should().BeFalse("publisher should not be referenced anymore");
+
+        It should_unregister_subscribers_registered_by_attribtue = () =>
+            subscriber.IsAlive
+                .Should().BeFalse("subscriber should not be referenced anymore");
+
+        It should_unregister_subscribers_registered_by_registrar = () =>
+            registerableSubscriber.IsAlive
+                .Should().BeFalse("subscriber should not be referenced anymore");
     }
 }

@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Registration
 {
     using System;
 
@@ -87,7 +87,7 @@ namespace Appccelerate.EventBroker
         public class InvalidSubscriberWithWrongSignature
         {
             [EventSubscription("topic", typeof(Handlers.OnPublisher))]
-            public void SimpleEvent(EventArgs e)
+            public void SimpleEvent(int i, EventArgs e)
             {
             }
         }
@@ -225,9 +225,7 @@ namespace Appccelerate.EventBroker
 
         [Ignore("this is not yet supported.")]
         It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<NotUserInterfaceThreadException>();
+            true.Should().BeFalse();
 
         public class InvalidPublisherPrivateEvent
         {

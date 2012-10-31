@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.HandlerRestrictions
 {
     using System;
 
@@ -41,10 +41,8 @@ namespace Appccelerate.EventBroker
             eventBroker.Register(subscriber);
         };
 
-        Because of = () =>
-        {
+        Because of = () => 
             eventBroker.Fire(HandlerRestrictionEvent.EventTopic, new object(), HandlerRestriction.Synchronous, new object(), EventArgs.Empty);
-        };
 
         It should_call_subscriber = () =>
             subscriber.HandledEvent

@@ -16,67 +16,19 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker
+namespace Appccelerate.EventBroker.Registration.Publishers
 {
     using System;
-
     using FluentAssertions;
-
     using Machine.Specifications;
 
     [Subject(Subjects.RegisterDirectlyOnEventBroker)]
-    public class When_firing_an_event_for_which_a_subscriber_was_registered_directly_on_the_event_broker
-    {
-        static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static Subscriber subscriber;
-        static EventArgs sentEventArgs;
-
-        Establish context = () =>
-        {
-            eventBroker = new EventBroker();
-            publisher = new SimpleEvent.EventPublisher();           
-
-            eventBroker.Register(publisher);
-
-            sentEventArgs = new EventArgs();
-
-            subscriber = new Subscriber();
-        };
-
-        Because of = () =>
-            {
-                eventBroker.RegisterHandlerMethod(
-                    SimpleEvent.EventTopic,
-                    subscriber,
-                    subscriber.Handle,
-                    new Handlers.OnPublisher());
-
-                publisher.FireEvent(sentEventArgs);
-            };
-
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue();
-
-        public class Subscriber
-        {
-            public bool HandledEvent { get; private set; }
-
-            public void Handle(object sender, EventArgs eventArgs)
-            {
-                this.HandledEvent = true;    
-            }
-        }
-    }
-
-    [Subject(Subjects.RegisterDirectlyOnEventBroker)]
-    public class When_firing_an_event_for_which_the_publisher_was_registered_directly_on_the_event_broker
+    public class When_defining_an_event_publication_using_registration_by_registrar
     {
         static EventBroker eventBroker;
         static Publisher publisher;
         static SimpleEvent.EventSubscriber subscriber;
-        static EventArgs sentEventArgs;
+        static EventArgs sentEventArguments;
 
         Establish context = () =>
         {
@@ -85,18 +37,25 @@ namespace Appccelerate.EventBroker
 
             eventBroker.Register(subscriber);
 
-            sentEventArgs = new EventArgs();
+            sentEventArguments = new EventArgs();
 
             publisher = new Publisher();
         };
 
         Because of = () =>
         {
-            eventBroker.RegisterEvent(
+            eventBroker.SpecialCasesRegistrar.AddPublication(
                 SimpleEvent.EventTopic,
                 publisher,
                 "Event",
                 HandlerRestriction.None);
+
+            publisher.FireEvent();
+
+            eventBroker.SpecialCasesRegistrar.RemovePublication(
+                SimpleEvent.EventTopic,
+                publisher,
+                "Event");
 
             publisher.FireEvent();
         };
@@ -105,9 +64,12 @@ namespace Appccelerate.EventBroker
             subscriber.HandledEvent
                 .Should().BeTrue();
 
+        It should_call_subscriber_only_as_long_as_publisher_is_registered = () =>
+            subscriber.CallCount.Should().Be(1, "event should not be relayed after unregister");
+
         public class Publisher
         {
-            public event EventHandler Event;
+            public event EventHandler Event = delegate { };
 
             public void FireEvent()
             {

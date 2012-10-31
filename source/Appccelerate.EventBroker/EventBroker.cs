@@ -32,7 +32,7 @@ namespace Appccelerate.EventBroker
     /// The <see cref="EventBroker"/> is the facade component to the event broker framework.
     /// It provides the registration and deregistration functionality for event publisher and subscribers.
     /// </summary>
-    public class EventBroker : IEventBroker, IEventRegistrar, IExtensionHost
+    public class EventBroker : IEventBroker, IExtensionHost
     {
         /// <summary>
         /// The inspector used to find publications and subscription within a class.
@@ -55,6 +55,8 @@ namespace Appccelerate.EventBroker
         private readonly List<IEventBrokerExtension> extensions = new List<IEventBrokerExtension>();
 
         private readonly IGlobalMatchersHost globalMatchersHost;
+
+        private readonly IEventRegistrar registrar;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventBroker"/> class.
@@ -80,90 +82,23 @@ namespace Appccelerate.EventBroker
             this.globalMatchersHost = this.factory.CreateGlobalMatchersHost();
             this.eventTopicHost = this.factory.CreateEventTopicHost(this.globalMatchersHost);
             this.eventInspector = this.factory.CreateEventInspector();
+
+            this.registrar = this.factory.CreateRegistrar(this.eventTopicHost, this.eventInspector, this);
         }
 
-        /// <summary>
-        /// Registers an item with this event broker.
-        /// </summary>
-        /// <remarks>
-        /// The item is scanned for publications and subscriptions and wired to the corresponding invokers and handlers.
-        /// </remarks>
-        /// <param name="item">Item to register with the event broker.</param>
+        public IRegistrar SpecialCasesRegistrar
+        {
+            get { return this.registrar; }
+        }
+
         public void Register(object item)
         {
-            this.eventInspector.ProcessPublisher(item, true, this.eventTopicHost);
-            this.eventInspector.ProcessSubscriber(item, true, this.eventTopicHost);
-
-            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
-            if (eventBrokerRegisterable != null)
-            {
-                eventBrokerRegisterable.Register(this);
-            }
-
-            this.extensions.ForEach(extension => extension.RegisteredItem(item));
+            this.registrar.Register(item);
         }
 
-        /// <summary>
-        /// Unregisters the specified item from this event broker.
-        /// </summary>
-        /// <param name="item">The item to unregister.</param>
         public void Unregister(object item)
         {
-            this.eventInspector.ProcessPublisher(item, false, this.eventTopicHost);
-            this.eventInspector.ProcessSubscriber(item, false, this.eventTopicHost);
-
-            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
-            if (eventBrokerRegisterable != null)
-            {
-                eventBrokerRegisterable.Unregister(this);
-            }
-
-            this.extensions.ForEach(extension => extension.UnregisteredItem(item));
-        }
-
-        /// <summary>
-        /// Registers the event as publication.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventName">Name of the event.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void RegisterEvent(string topic, object publisher, string eventName, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers)
-        {
-            if (publisher == null)
-            {
-                throw new ArgumentNullException("publisher", "publisher must not be null.");
-            }
-
-            this.eventInspector.ProcessPublisher(topic, publisher, eventName, handlerRestriction, matchers, true, this.eventTopicHost);
-        }
-
-        /// <summary>
-        /// Registers a handler method.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void RegisterHandlerMethod(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
-        {
-            this.eventInspector.ProcessSubscriber(topic, subscriber, handlerMethod, handler, matchers, true, this.eventTopicHost);
-        }
-
-        /// <summary>
-        /// Registers a handler method.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void RegisterHandlerMethod<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs
-        {
-            this.eventInspector.ProcessSubscriber(topic, subscriber, handlerMethod, handler, matchers, true, this.eventTopicHost);
+            this.registrar.Unregister(item);
         }
 
         /// <summary>
@@ -187,7 +122,7 @@ namespace Appccelerate.EventBroker
 
                 eventTopic.Fire(sender, eventArgs, spontaneousPublication);
 
-                eventTopic.RemovePublication(spontaneousPublication);
+                eventTopic.RemovePublication(publisher, SpontaneousPublication.SpontaneousEventName);
             }
         }
 
@@ -199,169 +134,6 @@ namespace Appccelerate.EventBroker
         public void DescribeTo(TextWriter writer)
         {
             this.eventTopicHost.DescribeTo(writer);
-        }
-
-        /// <summary>
-        /// Adds a publication with no handler restriction. Use this to register publications by code instead of using attributes.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event of the <paramref name="publisher"/>.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication(string topic, object publisher, ref EventHandler publishedEvent, params IPublicationMatcher[] matchers)
-        {
-            this.AddPublication(topic, publisher, ref publishedEvent, HandlerRestriction.None, matchers);
-        }
-
-        /// <summary>
-        /// Adds a publication. Use this to register publications by code instead of using attributes.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event of the <paramref name="publisher"/>.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication(string topic, object publisher, ref EventHandler publishedEvent, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers)
-        {
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-            
-            eventTopic.AddPublication(
-                publisher,
-                ref publishedEvent,
-                handlerRestriction,
-                matchers);
-        }
-
-        /// <summary>
-        /// Adds a publication with no handler restriction. Use this to register publications by code instead of using attributes.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent, params IPublicationMatcher[] matchers) where TEventArgs : EventArgs
-        {
-            this.AddPublication(topic, publisher, ref publishedEvent, HandlerRestriction.None, matchers);
-        }
-
-        /// <summary>
-        /// Adds a publication. Use this to register publications by code instead of using attributes.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent, HandlerRestriction handlerRestriction, params IPublicationMatcher[] matchers) where TEventArgs : EventArgs
-        {
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.AddPublication(
-                publisher, 
-                ref publishedEvent,
-                handlerRestriction,
-                matchers);
-        }
-
-        /// <summary>
-        /// Removes a publication. Publications added with <see cref="AddPublication(string,object,ref EventHandler,HandlerRestriction,IPublicationMatcher[])"/> have to be removed in order that the event broker can be disposed.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        public void RemovePublication(string topic, object publisher, ref EventHandler publishedEvent)
-        {
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.RemovePublication(publisher, ref publishedEvent);
-        }
-
-        /// <summary>
-        /// Removes a publication. Publications added with <see cref="AddPublication(string,object,ref EventHandler,HandlerRestriction,IPublicationMatcher[])"/> have to be removed in order that the event broker can be disposed.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        public void RemovePublication<TEventArgs>(string topic, object publisher, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs
-        {
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.RemovePublication(publisher, ref publishedEvent);
-        }
-
-        /// <summary>
-        /// Adds a subscription. Use this to register subscriptions by code instead of using attributes.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The subscription matchers.</param>
-        public void AddSubscription(string topic, object subscriber, EventHandler handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.AddSubscription(
-                subscriber, 
-                handlerMethod.Method, 
-                handler, 
-                matchers != null ? new List<ISubscriptionMatcher>(matchers) : new List<ISubscriptionMatcher>());
-        }
-
-        /// <summary>
-        /// Adds a subscription. Use this to register subscriptions by code instead of using attributes.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        /// <param name="handler">The handler.</param>
-        /// <param name="matchers">The subscription matchers.</param>
-        public void AddSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers) where TEventArgs : EventArgs
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.AddSubscription(
-                subscriber, 
-                handlerMethod.Method, 
-                handler, 
-                matchers != null ? new List<ISubscriptionMatcher>(matchers) : new List<ISubscriptionMatcher>());
-        }
-
-        /// <summary>
-        /// Removes a subscription.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        public void RemoveSubscription(string topic, object subscriber, EventHandler handlerMethod)
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.RemoveSubscription(subscriber, handlerMethod.Method);
-        }
-
-        /// <summary>
-        /// Removes a subscription.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
-        /// <param name="topic">The topic.</param>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethod">The handler method.</param>
-        public void RemoveSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod) where TEventArgs : EventArgs
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
-
-            eventTopic.RemoveSubscription(subscriber, handlerMethod.Method);
         }
 
         /// <summary>

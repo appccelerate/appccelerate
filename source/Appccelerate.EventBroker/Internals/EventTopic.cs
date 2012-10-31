@@ -25,76 +25,26 @@ namespace Appccelerate.EventBroker.Internals
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using Appccelerate.EventBroker.Internals.Exceptions;
     using Appccelerate.EventBroker.Internals.GlobalMatchers;
-    using Appccelerate.EventBroker.Internals.Publications;
 
-    using Matchers;
-
-    /// <summary>
-    /// Represents a point of communication on a certain topic between the topic publishers and the topic subscribers.
-    /// </summary>
-    internal class EventTopic : IEventTopic
+    public class EventTopic : IEventTopic
     {
-        /// <summary>
-        /// The URI that identifies this event topic uniquely on an event broker.
-        /// </summary>
-        private readonly string uri;
-
-        /// <summary>
-        /// Factory to create publications and subscriptions.
-        /// </summary>
-        private readonly IFactory factory;
-
-        /// <summary>
-        /// Extension host holding all extensions.
-        /// </summary>
         private readonly IExtensionHost extensionHost;
-
         private readonly IGlobalMatchersProvider globalMatchersProvider;
 
-        /// <summary>
-        /// List of all publications that fire this event topic.
-        /// </summary>
         private List<IPublication> publications = new List<IPublication>();
-
-        /// <summary>
-        /// List of all subscriptions that listen to this event topic.
-        /// </summary>
         private List<ISubscription> subscriptions = new List<ISubscription>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EventTopic"/> class.
-        /// </summary>
-        /// <param name="uri">The topic URI.</param>
-        /// <param name="factory">Factory to create publications and subscriptions.</param>
-        /// <param name="extensionHost">The extension host holding all extensions.</param>
-        /// <param name="globalMatchersProvider">The global matchers provider.</param>
-        public EventTopic(string uri, IFactory factory, IExtensionHost extensionHost, IGlobalMatchersProvider globalMatchersProvider)
+        public EventTopic(string uri, IExtensionHost extensionHost, IGlobalMatchersProvider globalMatchersProvider)
         {
-            this.uri = uri;
-            this.factory = factory;
+            this.Uri = uri;
             this.extensionHost = extensionHost;
             this.globalMatchersProvider = globalMatchersProvider;
         }
 
-        /// <summary>
-        /// Gets the topic URI.
-        /// </summary>
-        /// <value>The topic URI.</value>
-        public string Uri
-        {
-            get { return this.uri; }
-        }
+        public string Uri { get; private set; }
 
-        /// <summary>
-        /// Gets the publications for the event topic.
-        /// </summary>
-        /// <remarks>The publications are frequently cleaned internally when
-        /// necessary. Therefore the publications are only valid at the time
-        /// when they are requested and should not be cached or referenced longer
-        /// then necessary.</remarks>
         public IEnumerable<IPublication> Publications
         {
             get
@@ -104,13 +54,6 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Gets the subscriptions for the event topic.
-        /// </summary>
-        /// <remarks>The subscriptions are frequently cleaned internally when
-        /// necessary. Therefore the subscriptions are only valid at the time
-        /// when they are requested and should not be cached or referenced longer
-        /// then necessary.</remarks>
         public IEnumerable<ISubscription> Subscriptions
         {
             get
@@ -120,196 +63,55 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Adds a publication to the topic.
-        /// </summary>
-        /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
-        /// <param name="eventInfo">The <see cref="EventInfo"/> of the publisher that registers this event topic.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">Matchers for publication.</param>
-        public void AddPublication(
-            object publisher,
-            EventInfo eventInfo,
-            HandlerRestriction handlerRestriction,
-            IList<IPublicationMatcher> matchers)
+        public void AddPublication(IPublication publication)
         {
-            Ensure.ArgumentNotNull(eventInfo, "eventInfo");
-
-            IPublication publication = this.factory.CreatePublication(this, publisher, eventInfo, handlerRestriction, matchers);
-            this.Clean();
-            this.ThrowIfRepeatedPublication(publisher, eventInfo.Name);
-            this.AddPublication(publication);
-        }
-
-        /// <summary>
-        /// Adds a publication to the topic.
-        /// </summary>
-        /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
-        /// <param name="eventHandler">The event handler that will fire the topic.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication(
-            object publisher,
-            ref EventHandler eventHandler,
-            HandlerRestriction handlerRestriction,
-            IList<IPublicationMatcher> matchers)
-        {
-            IPublication publication = this.factory.CreatePublication(this, publisher, ref eventHandler, handlerRestriction, matchers);
-            this.Clean();
-            this.AddPublication(publication);
-        }
-
-        /// <summary>
-        /// Adds a publication to the topic.
-        /// </summary>
-        /// <typeparam name="TEventArgs">The type of the event arguments of the event handler.</typeparam>
-        /// <param name="publisher">The object that publishes the event that will fire the topic.</param>
-        /// <param name="eventHandler">The event handler that will fire the topic.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="matchers">The matchers.</param>
-        public void AddPublication<TEventArgs>(
-            object publisher, 
-            ref EventHandler<TEventArgs> eventHandler, 
-            HandlerRestriction handlerRestriction,
-            IList<IPublicationMatcher> matchers) where TEventArgs : EventArgs
-        {
-            IPublication publication = this.factory.CreatePublication(this, publisher, ref eventHandler, handlerRestriction, matchers);
-            this.Clean();
-            this.AddPublication(publication);
-        }
-
-        /// <summary>
-        /// Removes a publication from the topic.
-        /// </summary>
-        /// <param name="publisher">The object that contains the publication.</param>
-        /// <param name="eventInfo">The event on the publisher that fires the topic.</param>
-        public void RemovePublication(object publisher, EventInfo eventInfo)
-        {
-            Ensure.ArgumentNotNull(eventInfo, "eventInfo");
+            Ensure.ArgumentNotNull(publication, "publication");
 
             this.Clean();
-            IPublication publication = this.FindPublication(publisher, eventInfo.Name);
-            if (publication != null)
+            this.ThrowIfRepeatedPublication(publication.Publisher, publication.EventName);
+
+            this.extensionHost.ForEach(extension => extension.CreatedPublication(this, publication));
+
+            foreach (ISubscription subscription in this.subscriptions)
             {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
-                    
-                    publication.Dispose();
-
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
+                ThrowIfPublisherAndSubscriberEventArgumentsMismatch(subscription, publication);
+                ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
             }
-        }
 
-        /// <summary>
-        /// Removes a publication from the topic.
-        /// </summary>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="publishedEvent">The published event.</param>
-        public void RemovePublication(object publisher, ref EventHandler publishedEvent)
-        {
-            this.Clean();
-            IPublication publication = this.FindPublication(publisher, CodePublication<EventArgs>.EventNameOfCodePublication);
-            if (publication != null)
+            lock (this)
             {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
+                var newPublications = new List<IPublication>(this.publications) { publication };
 
-                    this.factory.DestroyPublication(publication, ref publishedEvent);
-
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
+                this.publications = newPublications;
             }
+
+            this.extensionHost.ForEach(extension => extension.AddedPublication(this, publication));
         }
 
-        public void RemovePublication<TEventArgs>(object publisher, ref EventHandler<TEventArgs> publishedEvent) where TEventArgs : EventArgs
+        public IPublication RemovePublication(object publisher, string eventName)
         {
             this.Clean();
-            IPublication publication = this.FindPublication(publisher, CodePublication<TEventArgs>.EventNameOfCodePublication);
-            if (publication != null)
+
+            IPublication publication = this.FindPublication(publisher, eventName);
+
+            if (publication == null)
             {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
-
-                    this.factory.DestroyPublication(publication, ref publishedEvent);
-
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
+                return null;
             }
+
+            this.RemovePublication(publication);
+
+            return publication;
         }
 
-        public void RemovePublication(IPublication publication)
+        public void AddSubscription(ISubscription subscription)
         {
-            // this method is a heck to get spontaneous publications with handler restrictions running!!
             this.Clean();
-            if (publication != null)
-            {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication p in this.publications)
-                    {
-                        if (p != publication)
-                        {
-                            newPublications.Add(p);
-                        }
-                    }
 
-                    this.publications = newPublications;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a subscription to this <see cref="EventTopic"/>.
-        /// </summary>
-        /// <param name="subscriber">The object that contains the method that will handle the <see cref="EventTopic"/>.</param>
-        /// <param name="handlerMethod">The method on the subscriber that will handle the <see cref="EventTopic"/>.</param>
-        /// <param name="handler">The handler that is used to execute the subscription.</param>
-        /// <param name="subscriptionMatchers">Matchers for the subscription.</param>
-        public void AddSubscription(object subscriber, MethodInfo handlerMethod, IHandler handler, IList<ISubscriptionMatcher> subscriptionMatchers)
-        {
-            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
-
-            this.Clean();
-            ISubscription subscription = this.factory.CreateSubscription(subscriber, handlerMethod, handler, subscriptionMatchers);
-            
-            this.ThrowIfRepeatedSubscription(subscriber, handlerMethod.Name);
+            this.ThrowIfRepeatedSubscription(subscription.Subscriber, subscription.HandlerMethodName);
             foreach (IPublication publication in this.publications)
             {
-                ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
+                ThrowIfPublisherAndSubscriberEventArgumentsMismatch(subscription, publication);
                 ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
             }
 
@@ -318,47 +120,27 @@ namespace Appccelerate.EventBroker.Internals
                 this.subscriptions = new List<ISubscription>(this.subscriptions) { subscription };
 
                 this.extensionHost.ForEach(extension => extension.CreatedSubscription(this, subscription));
-
-                this.extensionHost.ForEach(extension => extension.AddedSubscription(this, subscription));
             }
+
+            this.extensionHost.ForEach(extension => extension.AddedSubscription(this, subscription));
         }
 
-        /// <summary>
-        /// Removes a subscription from this <see cref="EventTopic"/>.
-        /// </summary>
-        /// <param name="subscriber">The object that contains the method that will handle the <see cref="EventTopic"/>.</param>
-        /// <param name="handlerMethod">The method on the subscriber that will handle the <see cref="EventTopic"/>.</param>
         public void RemoveSubscription(object subscriber, MethodInfo handlerMethod)
         {
             Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
 
             this.Clean();
+
             ISubscription subscription = this.FindSubscription(subscriber, handlerMethod.Name);
-            if (subscription != null)
+
+            if (subscription == null)
             {
-                lock (this)
-                {
-                    List<ISubscription> newSubscriptions = new List<ISubscription>();
-                    foreach (ISubscription s in this.subscriptions)
-                    {
-                        if (s != subscription)
-                        {
-                            newSubscriptions.Add(s);
-                        }
-                    }
-
-                    this.subscriptions = newSubscriptions;
-
-                    this.extensionHost.ForEach(extension => extension.RemovedSubscription(this, subscription));
-                }
+                return;
             }
+
+            this.RemoveSubscription(subscription);
         }
 
-        /// <summary>
-        /// Describes this event topic:
-        /// publications, subscriptions, names, thread options, scopes, event arguments.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
         public void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");
@@ -382,9 +164,18 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Called to free resources.
-        /// </summary>
+        public void Fire(object sender, EventArgs e, IPublication publication)
+        {
+            this.extensionHost.ForEach(extension => extension.FiringEvent(this, publication, sender, e));
+
+            this.Clean();
+
+            var handlers = this.GetSubscriptionHandlers();
+            this.CallSubscriptionHandlers(sender, e, handlers, publication);
+
+            this.extensionHost.ForEach(extension => extension.FiredEvent(this, publication, sender, e));
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
@@ -393,83 +184,32 @@ namespace Appccelerate.EventBroker.Internals
             this.extensionHost.ForEach(extension => extension.Disposed(this));
         }
 
-        /// <summary>
-        /// Fires the <see cref="IEventTopic"/>.
-        /// </summary>
-        /// <param name="sender">The object that acts as the sender of the event to the subscribers. 
-        /// Not always the publisher (it's the sender provided in the event call).</param>
-        /// <param name="e">An <see cref="EventArgs"/> instance to be passed to the subscribers.</param>
-        /// <param name="publication">The publication firing the event topic.</param>
-        public void Fire(object sender, EventArgs e, IPublication publication)
-        {
-            this.extensionHost.ForEach(extension => extension.FiringEvent(this, publication, sender, e));
-
-            this.Clean();
-
-            var handlers = this.GetHandlers();
-            this.CallSubscriptionHandlers(sender, e, handlers, publication);
-
-            this.extensionHost.ForEach(extension => extension.FiredEvent(this, publication, sender, e));
-        }
-
-        /// <summary>
-        /// Adds the publication.
-        /// </summary>
-        /// <param name="publication">The publication.</param>
-        public void AddPublication(IPublication publication)
-        {
-            this.extensionHost.ForEach(extension => extension.CreatedPublication(this, publication));
-
-            foreach (ISubscription subscription in this.subscriptions)
-            {
-                ThrowIfPublisherAndSubscriberEventArgsMismatch(subscription, publication);
-                ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(subscription, publication);
-            }
-
-            lock (this)
-            {
-                List<IPublication> newPublications = new List<IPublication>(this.publications) { publication };
-
-                this.publications = newPublications;
-
-                this.extensionHost.ForEach(extension => extension.AddedPublication(this, publication));
-            }
-        }
-
-        /// <summary>
-        /// Called to free resources.
-        /// </summary>
-        /// <param name="disposing">Should be true when calling from Dispose().</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing)
             {
-                foreach (IPublication publication in this.publications)
-                {
-                    publication.Dispose();
-                }
-
-                this.publications.Clear();
+                return;
             }
+
+            foreach (IPublication publication in this.publications)
+            {
+                publication.Dispose();
+            }
+
+            this.publications.Clear();
         }
 
-        /// <summary>
-        /// Throws an <see cref="EventTopicException"/> if publisher and subscriber use incompatible event arguments.
-        /// </summary>
-        /// <param name="subscription">The subscription.</param>
-        /// <param name="publication">The publication.</param>
-        /// <exception cref="EventTopicException">Thrown if publisher and subscriber use incompatible event arguments.</exception>
-        private static void ThrowIfPublisherAndSubscriberEventArgsMismatch(ISubscription subscription, IPublication publication)
+        private static void ThrowIfPublisherAndSubscriberEventArgumentsMismatch(ISubscription subscription, IPublication publication)
         {
             Type publisherEventArgsType = publication.EventArgsType;
             Type subscriberEventArgsType = subscription.EventArgsType;
 
             // check that the T in EventHandler<T> is matching, the IsAssignableFrom method return false event if types can be assigned
-            // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on even thandler type
-            // therefore do the check on the event args type only.
+            // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on event handler type
+            // therefore do the check on the event arguments type only.
             if (!subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
             {
-                using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+                using (var writer = new StringWriter(CultureInfo.InvariantCulture))
                 {
                     writer.Write("Publication ");
                     writer.WriteLine();
@@ -484,11 +224,6 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Throws if subscription handler does not match handler restriction of publisher.
-        /// </summary>
-        /// <param name="subscription">The subscription.</param>
-        /// <param name="publication">The publication.</param>
         private static void ThrowIfSubscriptionHandlerDoesNotMatchHandlerRestrictionOfPublisher(ISubscription subscription, IPublication publication)
         {
             if (publication.HandlerRestriction == HandlerRestriction.None)
@@ -501,7 +236,7 @@ namespace Appccelerate.EventBroker.Internals
                 return;
             }
 
-            using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+            using (var writer = new StringWriter(CultureInfo.InvariantCulture))
             {
                 writer.Write("Publication ");
                 writer.WriteLine();
@@ -518,152 +253,60 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Checks whether the event of the publisher has to be relayed to the subscriber (Matchers).
-        /// </summary>
-        /// <param name="publication">The publication.</param>
-        /// <param name="subscription">The subscription.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <returns><code>true</code> if the event has to be relayed.</returns>
-        private bool CheckMatchers(IPublication publication, ISubscription subscription, EventArgs e)
+        private void RemovePublication(IPublication publication)
         {
-            bool match = true;
-            foreach (var publicationMatcher in publication.PublicationMatchers)
+            lock (this)
             {
-                match &= publicationMatcher.Match(publication, subscription, e);
+                var newPublications = this.publications.Where(p => p != publication).ToList();
+
+                this.publications = newPublications;
             }
 
-            foreach (var globalMatcher in this.globalMatchersProvider.Matchers)
-            {
-                match &= globalMatcher.Match(publication, subscription, e);
-            }
-
-            foreach (var subscriptionMatcher in subscription.SubscriptionMatchers)
-            {
-                match &= subscriptionMatcher.Match(publication, subscription, e);
-            }
-
-            return match;
+            this.extensionHost.ForEach(extension => extension.RemovedPublication(this, publication));
         }
 
-        /// <summary>
-        /// Searches for a already registered publication for the same publisher and event.
-        /// </summary>
-        /// <param name="publisher">The publisher that will be registered newly.</param>
-        /// <param name="eventName">Name of the published event.</param>
-        /// <returns>The publication that is already registered.</returns>
+        private void RemoveSubscription(ISubscription subscription)
+        {
+            lock (this)
+            {
+                var newSubscriptions = this.subscriptions.Where(s => s != subscription).ToList();
+
+                this.subscriptions = newSubscriptions;
+            }
+
+            this.extensionHost.ForEach(extension => extension.RemovedSubscription(this, subscription));
+        }
+
         private IPublication FindPublication(object publisher, string eventName)
         {
             IPublication publication = this.publications.SingleOrDefault(
                 match => match.Publisher == publisher &&
                          match.EventName == eventName);
+
             return publication;
         }
 
-        /// <summary>
-        /// Gets the handlers of this even topic
-        /// </summary>
-        /// <returns>
-        /// Array of delegates, the handlers for this even topic.
-        /// </returns>
-        private IEnumerable<KeyValuePair<ISubscription, EventTopicFireDelegate>> GetHandlers()
-        {
-            foreach (ISubscription subscription in this.subscriptions)
-            {
-                EventTopicFireDelegate handler = subscription.GetHandler();
-                if (handler != null)
-                {
-                    yield return new KeyValuePair<ISubscription, EventTopicFireDelegate>(subscription, handler);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns the subscription of the specified subscriber.
-        /// </summary>
-        /// <param name="subscriber">The subscriber to look for.</param>
-        /// <param name="handlerMethodName">Name of the handler method to look for.</param>
-        /// <returns>The subscription for the specified subscriber and handler method, null if not found.</returns>
         private ISubscription FindSubscription(object subscriber, string handlerMethodName)
         {
-            this.Clean();
-
             return this.subscriptions.SingleOrDefault(
                 match => match.Subscriber == subscriber && match.HandlerMethodName == handlerMethodName);
         }
 
-        /// <summary>
-        /// Perform a sanity cleaning of the dead references to publishers and subscribers
-        /// </summary>
-        /// <devdoc>As the topic maintains <see cref="WeakReference"/> to publishers and subscribers,
-        /// those instances that are finished but hadn't been removed from the topic will leak. This method
-        /// deals with that case.</devdoc>
-        private void Clean()
+        private IEnumerable<KeyValuePair<ISubscription, EventTopicFireDelegate>> GetSubscriptionHandlers()
         {
-            bool cleanSubscriptions = false;
-            foreach (ISubscription subscription in this.subscriptions)
-            {
-                cleanSubscriptions |= subscription.Subscriber == null;
-            }
-
-            bool cleanPublications = false;
-            foreach (IPublication publication in this.publications.ToArray())
-            {
-                cleanPublications |= publication.Publisher == null;
-            }
-
-            if (cleanSubscriptions)
-            {
-                lock (this)
-                {
-                    List<ISubscription> newSubscriptions = new List<ISubscription>();
-                    foreach (ISubscription subscription in this.subscriptions)
-                    {
-                        if (subscription.Subscriber != null)
-                        {
-                            newSubscriptions.Add(subscription);
-                        }
-                    }
-
-                    this.subscriptions = newSubscriptions;
-                }
-            }
-            
-            if (cleanPublications)
-            {
-                lock (this)
-                {
-                    List<IPublication> newPublications = new List<IPublication>();
-                    foreach (IPublication publication in this.publications)
-                    {
-                        if (publication.Publisher != null)
-                        {
-                            newPublications.Add(publication);
-                        }
-                        else
-                        {
-                            publication.Dispose();
-                        }
-                    }
-
-                    this.publications = newPublications;
-                }
-            }
+            return from subscription in this.subscriptions
+                   let handler = subscription.GetHandler()
+                   where handler != null
+                   select new KeyValuePair<ISubscription, EventTopicFireDelegate>(subscription, handler);
         }
 
-        /// <summary>
-        /// Calls the subscription handlers.
-        /// </summary>
-        /// <param name="sender">The publisher.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <param name="handlers">The handlers to call.</param>
-        /// <param name="publication">The publication firing the event topic.</param>
         private void CallSubscriptionHandlers(object sender, EventArgs e, IEnumerable<KeyValuePair<ISubscription, EventTopicFireDelegate>> handlers, IPublication publication)
         {
             foreach (var handler in handlers)
             {
                 ISubscription subscription = handler.Key;
                 EventTopicFireDelegate handlerMethod = handler.Value;
+
                 if (this.CheckMatchers(publication, subscription, e))
                 {
                     handlerMethod(this, sender, e, publication);
@@ -671,21 +314,78 @@ namespace Appccelerate.EventBroker.Internals
                 else
                 {
                     this.extensionHost.ForEach(extension => extension.SkippedEvent(
-                                                                this,
-                                                                publication,
-                                                                subscription,
-                                                                sender,
-                                                                e));
+                        this,
+                        publication,
+                        subscription,
+                        sender,
+                        e));
                 }
             }
         }
 
         /// <summary>
-        /// Throws a <see cref="RepeatedPublicationException"/> if a duplicate publication is detected.
+        /// Checks whether the event of the publisher has to be relayed to the subscriber (Matchers).
         /// </summary>
-        /// <param name="publisher">The publisher to add.</param>
-        /// <param name="eventName">Name of the event to add.</param>
-        /// <exception cref="RepeatedPublicationException">Thrown if a duplicate publication is detected.</exception>
+        private bool CheckMatchers(IPublication publication, ISubscription subscription, EventArgs e)
+        {
+            bool match = publication.PublicationMatchers.Aggregate(
+                true,
+                (current, publicationMatcher) => current & publicationMatcher.Match(publication, subscription, e));
+
+            match = this.globalMatchersProvider.Matchers.Aggregate(
+                match,
+                (current, globalMatcher) => current & globalMatcher.Match(publication, subscription, e));
+
+            return subscription.SubscriptionMatchers.Aggregate(
+                match,
+                (current, subscriptionMatcher) => current & subscriptionMatcher.Match(publication, subscription, e));
+        }
+
+        private void Clean()
+        {
+            bool cleanSubscriptions = this.subscriptions.Any(subscription => subscription.Subscriber == null);
+            bool cleanPublications = this.publications.Any(publication => publication.Publisher == null);
+
+            if (cleanPublications)
+            {
+                this.CleanPublications();
+            }
+
+            if (cleanSubscriptions)
+            {
+                this.CleanSubscriptions();
+            }
+        }
+
+        private void CleanPublications()
+        {
+            lock (this)
+            {
+                var newPublications = new List<IPublication>();
+                foreach (IPublication publication in this.publications)
+                {
+                    if (publication.Publisher != null)
+                    {
+                        newPublications.Add(publication);
+                    }
+                    else
+                    {
+                        publication.Dispose();
+                    }
+                }
+
+                this.publications = newPublications;
+            }
+        }
+
+        private void CleanSubscriptions()
+        {
+            lock (this)
+            {
+                this.subscriptions = this.subscriptions.Where(subscription => subscription.Subscriber != null).ToList();
+            }
+        }
+
         private void ThrowIfRepeatedPublication(object publisher, string eventName)
         {
             if (this.FindPublication(publisher, eventName) != null)
@@ -694,11 +394,6 @@ namespace Appccelerate.EventBroker.Internals
             }
         }
 
-        /// <summary>
-        /// Throws a <see cref="RepeatedSubscriptionException"/> if a duplicate subscription is detected.
-        /// </summary>
-        /// <param name="subscriber">The subscriber.</param>
-        /// <param name="handlerMethodName">Name of the handler method.</param>
         private void ThrowIfRepeatedSubscription(object subscriber, string handlerMethodName)
         {
             if (this.FindSubscription(subscriber, handlerMethodName) != null)

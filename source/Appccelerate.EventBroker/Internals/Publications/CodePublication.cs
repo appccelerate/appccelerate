@@ -20,7 +20,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
 {
     using System;
     using System.Collections.Generic;
-
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
@@ -34,21 +33,10 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// </summary>
         public const string EventNameOfCodePublication = "publication by code";
 
-        /// <summary>
-        /// Type of the event arguments of the published event.
-        /// </summary>
         private readonly Type eventArgsType;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CodePublication{TEventArgs}"/> class.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventHandler">The event handler.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="publicationMatchers">The publication matchers.</param>
         public CodePublication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             ref EventHandler eventHandler,
             HandlerRestriction handlerRestriction,
@@ -60,16 +48,8 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventArgsType = typeof(EventArgs);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CodePublication{TEventArgs}"/> class.
-        /// </summary>
-        /// <param name="topic">The topic.</param>
-        /// <param name="publisher">The publisher.</param>
-        /// <param name="eventHandler">The event handler.</param>
-        /// <param name="handlerRestriction">The handler restriction.</param>
-        /// <param name="publicationMatchers">The publication matchers.</param>
         public CodePublication(
-            IEventTopic topic,
+            IEventTopicExecuter topic,
             object publisher,
             ref EventHandler<TEventArgs> eventHandler,
             HandlerRestriction handlerRestriction,
@@ -81,54 +61,30 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventArgsType = eventHandler.GetType().GetGenericArguments()[0];
         }
 
-        /// <summary>
-        /// Gets the name of the event on the <see cref="Publication.Publisher"/>.
-        /// </summary>
         public override string EventName
         {
             get { return EventNameOfCodePublication; }
         }
 
-        /// <summary>
-        /// Gets the type of the event arguments.
-        /// </summary>
-        /// <value>The type of the event arguments.</value>
         public override Type EventArgsType
         {
             get { return this.eventArgsType; }
         }
 
-        /// <summary>
-        /// Unregisters the specified published event.
-        /// </summary>
-        /// <param name="publishedEvent">The published event.</param>
         public void Unregister(ref EventHandler publishedEvent)
         {
             publishedEvent -= this.PublicationHandler;
         }
 
-        /// <summary>
-        /// Unregisters the specified published event.
-        /// </summary>
-        /// <param name="publishedEvent">The published event.</param>
         public void Unregister(ref EventHandler<TEventArgs> publishedEvent)
         {
             publishedEvent -= this.PublicationHandler;    
         }
 
-        /// <summary>
-        /// Implementation of the disposable pattern.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
         }
 
-        /// <summary>
-        /// Fires the event publication. This method is registered to the event on the publisher.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void PublicationHandler(object sender, EventArgs e)
         {
             this.Fire(sender, e);

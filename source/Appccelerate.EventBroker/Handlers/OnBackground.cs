@@ -22,6 +22,8 @@ namespace Appccelerate.EventBroker.Handlers
     using System.Reflection;
     using System.Threading;
 
+    using Appccelerate.EventBroker.Internals.Subscriptions;
+
     /// <summary>
     /// Handler that executes the subscription on a thread pool worker process (asynchronous).
     /// </summary>
@@ -39,14 +41,7 @@ namespace Appccelerate.EventBroker.Handlers
             }
         }
 
-        /// <summary>
-        /// Executes the subscription on a thread pool worker thread.
-        /// </summary>
-        /// <param name="eventTopic">The event topic.</param>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        /// <param name="subscriptionHandler">The subscription handler.</param>
-        public override void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
             ThreadPool.QueueUserWorkItem(
                 delegate(object state)
@@ -54,29 +49,32 @@ namespace Appccelerate.EventBroker.Handlers
                         try
                         {
                             var args = (CallInBackgroundArguments)state;
-                            args.Handler.DynamicInvoke(args.Sender, args.EventArgs);
+                            args.DelegateWrapper.Invoke(args.Subscriber, args.Sender, args.EventArgs);
                         }
                         catch (TargetInvocationException exception)
                         {
                             this.HandleSubscriberMethodException(exception, eventTopic);
                         }
                     },
-                new CallInBackgroundArguments(sender, e, subscriptionHandler));
+                new CallInBackgroundArguments(subscriber, sender, e, delegateWrapper));
         }
 
         private struct CallInBackgroundArguments
         {
-            public readonly Delegate Handler;
+            public readonly IDelegateWrapper DelegateWrapper;
+
+            public readonly object Subscriber;
 
             public readonly object Sender;
 
             public readonly EventArgs EventArgs;
 
-            public CallInBackgroundArguments(object sender, EventArgs eventArgs, Delegate handler)
+            public CallInBackgroundArguments(object subscriber, object sender, EventArgs eventArgs, IDelegateWrapper delegateWrapper)
             {
+                this.Subscriber = subscriber;
                 this.Sender = sender;
                 this.EventArgs = eventArgs;
-                this.Handler = handler;
+                this.DelegateWrapper = delegateWrapper;
             }
         }
     }
