@@ -28,17 +28,17 @@ namespace Appccelerate.ScopingEventBroker
 
     public class DefaultEventScopeFactoryTest
     {
-        private readonly DefaultEventScopeFactory eventScopeFactory;
+        private readonly DefaultEventScopeFactory testee;
 
         public DefaultEventScopeFactoryTest()
         {
-            this.eventScopeFactory = new DefaultEventScopeFactory();
+            this.testee = new DefaultEventScopeFactory();
         }
 
         [Fact]
         public void CreateHandlerDecorator_ShouldCreateDefaultDecorator()
         {
-            IHandler decorator = this.eventScopeFactory.CreateHandlerDecorator(A.Fake<IHandler>());
+            IHandler decorator = this.testee.CreateHandlerDecorator(A.Fake<IHandler>());
 
             decorator.Should().BeOfType<ScopingHandlerDecorator>();
         }
@@ -46,9 +46,34 @@ namespace Appccelerate.ScopingEventBroker
         [Fact]
         public void CreateScopeHolder_ShouldCreateDefaultPerCallScopeHolder()
         {
-            IEventScopeHolder scopeHolder = this.eventScopeFactory.CreateScopeHolder();
+            IEventScopeHolder scopeHolder = this.testee.CreateScopeHolder();
 
             scopeHolder.Should().BeOfType<PerCallEventScopeContext>();
+        }
+
+        [Fact]
+        public void CreateScopeContext_ShouldCreateDefaultPerCallScopeHolder()
+        {
+            IEventScopeContext scopeContext = this.testee.CreateScopeContext();
+
+            scopeContext.Should().BeOfType<PerCallEventScopeContext>();
+        }
+
+        [Fact]
+        public void ScopeHolderAndScopeContext_ShouldBeSameInstance()
+        {
+            var scopeContext = this.testee.CreateScopeContext();
+            var scopeHolder = this.testee.CreateScopeHolder();
+
+            scopeContext.Should().BeSameAs(scopeHolder);
+        }
+
+        [Fact]
+        public void CreateScope_ShoudlCreateDefaultEventScope()
+        {
+            IEventScope eventScope = this.testee.CreateScope();
+
+            eventScope.Should().BeOfType<EventScope>();
         }
     }
 }

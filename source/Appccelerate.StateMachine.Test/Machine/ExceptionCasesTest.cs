@@ -75,7 +75,7 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// When a guard throws an exception then it is catched and the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event is fired.
+        /// When a guard throws an exception then it is captured and the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event is fired.
         /// The transition is not executed and if there is no other transition then the state machine remains in the same state.
         /// </summary>
         [Fact]
@@ -102,7 +102,7 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// When a transition throws an exception then the exception is catched and the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event is fired.
+        /// When a transition throws an exception then the exception is captured and the <see cref="StateMachine{TState,TEvent}.ExceptionThrown"/> event is fired.
         /// The transition is executed and the state machine is in the target state.
         /// </summary>
         [Fact]

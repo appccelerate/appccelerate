@@ -25,7 +25,7 @@ namespace Appccelerate.Async
     /// <summary>
     /// The <see cref="AsyncWorker"/> is a small wrapper around the <see cref="BackgroundWorker"/> for easier usage
     /// outside of UI components.
-    /// The async worker has to be created on the UI thread.
+    /// The asynchronous worker has to be created on the UI thread.
     /// </summary>
     public class AsyncWorker : IAsyncWorker
     {

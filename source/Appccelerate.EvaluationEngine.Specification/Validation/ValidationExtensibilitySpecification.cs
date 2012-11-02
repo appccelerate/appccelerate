@@ -141,8 +141,8 @@ namespace Appccelerate.EvaluationEngine.Validation
                     result.Valid = false;
 
                     var validationViolation = this.Factory.CreateValidationViolation();
-                    validationViolation.Reason = NameIsEmptyReason;
-                    validationViolation.ViolationHint = Hint;
+                    validationViolation.Reason = ValidationExtensibilityContext.NameIsEmptyReason;
+                    validationViolation.ViolationHint = ValidationExtensibilityContext.Hint;
                     result.AddViolation(validationViolation);
                 }
 

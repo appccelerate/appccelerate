@@ -74,7 +74,7 @@ namespace Appccelerate.EvaluationEngine.Syntax
     }
 
     /// <summary>
-    /// Syntax used to define a contraint.
+    /// Syntax used to define a constraint.
     /// </summary>
     /// <typeparam name="TQuestion">The type of the question.</typeparam>
     /// <typeparam name="TAnswer">The type of the answer.</typeparam>

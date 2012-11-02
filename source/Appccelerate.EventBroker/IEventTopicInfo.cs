@@ -53,7 +53,7 @@ namespace Appccelerate.EventBroker
 
         /// <summary>
         /// Describes this event topic:
-        /// publications, subscriptions, names, thread options, scopes, event args.
+        /// publications, subscriptions, names, thread options, scopes, event arguments.
         /// </summary>
         /// <param name="writer">The writer.</param>
         void DescribeTo(TextWriter writer);

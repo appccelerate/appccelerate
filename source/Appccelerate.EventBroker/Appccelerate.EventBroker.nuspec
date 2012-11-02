@@ -22,6 +22,9 @@
       thorough customizable logging,
       extension support,
     </description>
+    <releaseNotes>
+      Fixed missing call to base.Initialize in OnUserInterface and OnUserInterfaceAsync handlers resulting in NullReferenceExceptions on ExtensionHost.
+    </releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Appccelerate EventBroker publisher subscriber events multi-threading thread-switching</tags>
     <dependencies>

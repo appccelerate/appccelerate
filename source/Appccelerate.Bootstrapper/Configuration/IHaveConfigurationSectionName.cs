@@ -19,7 +19,7 @@
 namespace Appccelerate.Bootstrapper.Configuration
 {
     /// <summary>
-    /// Identifies the implemenator as section name provider.
+    /// Identifies the implementing class as section name provider.
     /// </summary>
     public interface IHaveConfigurationSectionName
     {

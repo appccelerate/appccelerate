@@ -49,7 +49,7 @@ namespace Appccelerate.Async
         private AsyncResult asyncResult;
 
         /// <summary>
-        /// The async state that was passed in the callback function.
+        /// The asynchronous state that was passed in the callback function.
         /// </summary>
         private int callback;
 
@@ -157,7 +157,7 @@ namespace Appccelerate.Async
             Thread.Sleep(20); // Give callback function time to finish
             
             this.callback
-                .Should().Be(AsyncState, "the wrong async state should be passed to the callback function.");
+                .Should().Be(AsyncState, "the wrong asynchronous state should be passed to the callback function.");
         }
 
         /// <summary>
@@ -223,13 +223,13 @@ namespace Appccelerate.Async
         /// <summary>
         /// Verifies that the asyncResult is completed and that the type of completion is as specified.
         /// </summary>
-        /// <param name="expectAsyncronousCompletion">if set to <c>true</c> an asyncronous completion is expected.
+        /// <param name="expectAsynchronousCompletion">if set to <c>true</c> an asynchronous completion is expected.
         /// </param>
         /// <param name="asyncStateIsNull">if set to <c>true</c> it is verified that the AsyncState is null.</param>
-        private void VerifyAsyncResultCompleted(bool expectAsyncronousCompletion, bool asyncStateIsNull)
+        private void VerifyAsyncResultCompleted(bool expectAsynchronousCompletion, bool asyncStateIsNull)
         {
             this.asyncResult.IsCompleted.Should().BeTrue("the asyncResult is expected to be completed.");
-            if (expectAsyncronousCompletion)
+            if (expectAsynchronousCompletion)
             {
                 this.asyncResult.CompletedSynchronously.Should().BeFalse("asynchronous completion is expected.");
             }

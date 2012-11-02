@@ -22,7 +22,7 @@ namespace Appccelerate.AsyncModule
 
     /// <summary>
     /// If a method is marked with this attribute, it is 
-    /// recoginzed by the ModuleCoordinator as sink for 
+    /// recognized by the ModuleCoordinator as sink for 
     /// messages.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]

@@ -139,7 +139,7 @@ namespace Appccelerate.StateMachine
     [Subject(Concern.ExceptionHandling)]
     public class When_transition_throws_exception_and_no_transition_exception_even_handler_is_registered
     {
-        static readonly Exception exception = new Exception();
+        static readonly Exception Exception = new Exception();
 
         static PassiveStateMachine<int, int> machine;
 
@@ -150,7 +150,7 @@ namespace Appccelerate.StateMachine
                 machine = new PassiveStateMachine<int, int>();
 
                 machine.In(Values.Source)
-                    .On(Values.Event).Execute(() => { throw exception; });
+                    .On(Values.Event).Execute(() => { throw Exception; });
 
                 machine.Initialize(Values.Source);
                 machine.Start();
@@ -171,14 +171,14 @@ namespace Appccelerate.StateMachine
         It should_throw_exception = () =>
             {
                 catchedException
-                    .Should().BeSameAs(exception);
+                    .Should().BeSameAs(Exception);
             };
     }
 
     [Subject(Concern.ExceptionHandling)]
     public class When_exception_is_thrown_and_no_exception_even_handler_is_registered
     {
-        static readonly Exception exception = new Exception();
+        static readonly Exception Exception = new Exception();
 
         static PassiveStateMachine<int, int> machine;
 
@@ -189,7 +189,7 @@ namespace Appccelerate.StateMachine
             machine = new PassiveStateMachine<int, int>();
 
             machine.In(Values.Source)
-                .ExecuteOnEntry(() => { throw exception; });
+                .ExecuteOnEntry(() => { throw Exception; });
 
             machine.Initialize(Values.Source);
         };
@@ -209,7 +209,7 @@ namespace Appccelerate.StateMachine
         It should_throw_exception = () =>
         {
             catchedException
-                .Should().BeSameAs(exception);
+                .Should().BeSameAs(Exception);
         };
     }
 

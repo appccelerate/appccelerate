@@ -44,7 +44,7 @@ namespace Appccelerate.StateMachine
         /// <summary>
         /// Initializes a new instance of the <see cref="StateMachineTestBase&lt;TStateMachine&gt;"/> class.
         /// </summary>
-        /// <param name="testee">The testee.</param>
+        /// <param name="testee">The subject under test.</param>
         protected StateMachineTestBase(TStateMachine testee)
         {
             this.testee = testee;
@@ -81,9 +81,6 @@ namespace Appccelerate.StateMachine
         /// </summary>
         protected List<TransitionEventArgs<States, Events>> TransitionDeclinedMessages { get; private set; }
 
-        /// <summary>
-        /// Stops the testee.
-        /// </summary>
         public void Dispose()
         {
             this.testee.Stop();
@@ -243,7 +240,7 @@ namespace Appccelerate.StateMachine
 
         /// <summary>
         /// When the state machine is stopped then no events are processed.
-        /// All events enqueued are processed when state machine is started.
+        /// All events queued are processed when state machine is started.
         /// </summary>
         [Fact]
         public void StopAndRestart()

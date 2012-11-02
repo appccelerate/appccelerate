@@ -31,7 +31,7 @@ namespace Appccelerate.StateMachine.Syntax
         /// Defines the target state of the transition.
         /// </summary>
         /// <param name="target">The target.</param>
-        /// <returns>Goto syntax</returns>
+        /// <returns>Go to syntax</returns>
         IGotoSyntax<TState, TEvent> Goto(TState target);
         
         /// <summary>

@@ -64,7 +64,7 @@ namespace Appccelerate.Windows
             /// The SwitchToThisWindow function is called to switch focus to a specified window and bring it to the foreground.
             /// </summary>
             /// <param name="windowHandle">Handle to the window being switched to.</param>
-            /// <param name="altTab">A TRUE for this parameter indicates that the window is being switched to using the Alt/Ctl+Tab key sequence. This parameter should be FALSE otherwise.</param>
+            /// <param name="altTab">A TRUE for this parameter indicates that the window is being switched to using the Alt/Ctrl+Tab key sequence. This parameter should be FALSE otherwise.</param>
             [DllImport("user32.dll", SetLastError = true)]
             internal static extern void SwitchToThisWindow(IntPtr windowHandle, bool altTab);
 
@@ -73,7 +73,7 @@ namespace Appccelerate.Windows
             /// </summary>
             /// <param name="windowHandle">Handle to the window.</param>
             /// <param name="showWindowCommand">Specifies how the window is to be shown. For a list of possible values, see the description of the ShowWindow function.</param>
-            /// <returns>The async handle</returns>
+            /// <returns>The asynchronous handle</returns>
             [DllImport("User32.dll")]
             internal static extern int ShowWindowAsync(IntPtr windowHandle, int showWindowCommand);
 

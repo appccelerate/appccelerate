@@ -22,7 +22,6 @@ namespace Appccelerate.Events
 
     /// <summary>
     /// Generic EventArgs
-    /// Use like : event EventHandler&lt;EventArgs&lt;int&gt;&gt; clickedyclick
     /// </summary>
     /// <typeparam name="T">Type of the contained value.</typeparam>
     [Serializable]
