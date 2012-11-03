@@ -19,17 +19,14 @@
 namespace Appccelerate.ScopingEventBroker.Specification
 {
     using System;
+    using System.Reflection;
 
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Handlers;
 
-    using Machine.Specifications;
-
     public class ScopingEventBrokerSpecification
     {
         protected static EventBroker eventBroker;
-
-        protected static Func<IEventScopeFactory> scopeFactoryFactory;
 
         protected static IEventScopeContext scopeContext;
 
@@ -37,21 +34,25 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
         protected static Subscriber subscriber;
 
-        Establish context = () =>
-            {
-                publisher = new Publisher();
-                subscriber = new Subscriber();
+        protected static void SetupScopingEventBrokerWithDefaultFactory()
+        {
+            SetupScopingEventBrokerWith(new DefaultEventScopeFactory());
+        }
 
-                var defaultEventScopeFactory = scopeFactoryFactory();
-                scopeContext = defaultEventScopeFactory.CreateScopeContext();
+        protected static void SetupScopingEventBrokerWith(IEventScopeFactory scopeFactory)
+        {
+            publisher = new Publisher();
+            subscriber = new Subscriber();
 
-                var factory = new EventScopingStandardFactory(defaultEventScopeFactory);
+            scopeContext = scopeFactory.CreateScopeContext();
 
-                eventBroker = new EventBroker(factory);
+            var factory = new EventScopingStandardFactory(scopeFactory);
 
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
-            };
+            eventBroker = new EventBroker(factory);
+
+            eventBroker.Register(publisher);
+            eventBroker.Register(subscriber);
+        }
 
         protected class Publisher
         {
@@ -66,21 +67,49 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
         protected class Subscriber
         {
-            public bool OnBackgroundWasCalled { get; private set; }
+            public bool OnAsynchronousWasCalled { get; private set; }
 
-            public bool OnPublisherWasCalled { get; private set; }
+            public bool OnSynchronousWasCalled { get; private set; }
 
-            [EventSubscription("topic://Event", typeof(OnBackground))]
+            [EventSubscription("topic://Event", typeof(FakeHandler))]
             public void HandleAsyncOnBackground(object sender, EventArgs e)
             {
-                this.OnBackgroundWasCalled = true;
+                this.OnAsynchronousWasCalled = true;
             }
 
             [EventSubscription("topic://Event", typeof(OnPublisher))]
             public void HandleSyncOnPublisher(object sender, EventArgs e)
             {
-                this.OnPublisherWasCalled = true;
+                this.OnSynchronousWasCalled = true;
             }
-        } 
+        }
+
+        private class FakeHandler : IHandler
+        {
+            private readonly OnPublisher handler;
+
+            public FakeHandler()
+            {
+                this.handler = new OnPublisher();
+            }
+
+            public HandlerKind Kind
+            {
+                get
+                {
+                    return HandlerKind.Asynchronous;
+                }
+            }
+
+            public void Initialize(object subscriber, MethodInfo handlerMethod, IExtensionHost extensionHost)
+            {
+                this.handler.Initialize(subscriber, handlerMethod, extensionHost);
+            }
+
+            public void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+            {
+                this.handler.Handle(eventTopic, sender, e, subscriptionHandler);
+            }
+        }
     }
 }

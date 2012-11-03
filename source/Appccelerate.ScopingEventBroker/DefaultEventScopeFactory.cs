@@ -44,9 +44,14 @@ namespace Appccelerate.ScopingEventBroker
             return new ScopingHandlerDecorator(handler, this.CreateScopeHolder());
         }
 
+        protected virtual AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory)
+        {
+            return new PerCallEventScopeContext(eventScopeFactory);
+        }
+
         private AbstractEventScopeContext GetOrCreate()
         {
-            return this.scopeContext ?? (this.scopeContext = new PerCallEventScopeContext(this));
+            return this.scopeContext ?? (this.scopeContext = this.CreateScope(this));
         }
     }
 }

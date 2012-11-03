@@ -38,13 +38,13 @@
     <Content Include="Version.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Appccelerate.TODO.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
       <Project>{6b189709-125e-46ec-8fee-50345375f221}</Project>
       <Name>Appccelerate.EventBroker</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.ScopingEventBroker.nuspec" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
 </Project>

@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="PerCallScopeSpecifications.cs" company="Appccelerate">
+// <copyright file="PerThreadScopeSpecifications.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
     using Machine.Specifications;
 
-    public class when_no_scope_acquired : PerCallScopeSpecification
+    public class when_no_scope_acquired2 : PerThreadScopeSpecification
     {
         Because of = () => publisher.Publish();
 
@@ -31,24 +31,24 @@ namespace Appccelerate.ScopingEventBroker.Specification
         It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
     }
 
-    public class when_scope_cancelled : PerCallScopeSpecification
+    public class when_scope_cancelled2 : PerThreadScopeSpecification
     {
         Because of = () =>
+        {
+            using (IEventScope scope = scopeContext.Acquire())
             {
-                using (IEventScope scope = scopeContext.Acquire())
-                {
-                    publisher.Publish();
+                publisher.Publish();
 
-                    scope.Cancel();
-                }
-            };
+                scope.Cancel();
+            }
+        };
 
         It should_not_invoke_asynchronous_subscriber = () => subscriber.OnAsynchronousWasCalled.Should().BeFalse();
 
         It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
     }
 
-    public class when_scope_disposed_and_not_released : PerCallScopeSpecification
+    public class when_scope_disposed_and_not_released2 : PerThreadScopeSpecification
     {
         Because of = () =>
         {
@@ -63,7 +63,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
         It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
     }
 
-    public class when_scope_released : PerCallScopeSpecification
+    public class when_scope_released2 : PerThreadScopeSpecification
     {
         Because of = () =>
         {
@@ -80,8 +80,16 @@ namespace Appccelerate.ScopingEventBroker.Specification
         It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
     }
 
-    public class PerCallScopeSpecification : ScopingEventBrokerSpecification
+    public class PerThreadScopeSpecification : ScopingEventBrokerSpecification
     {
-        Establish context = () => SetupScopingEventBrokerWithDefaultFactory();
+        Establish context = () => SetupScopingEventBrokerWith(new PerThreadScopeFactory());
+
+        private class PerThreadScopeFactory : DefaultEventScopeFactory
+        {
+            protected override AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory)
+            {
+                return new PerThreadEventScopeContext(eventScopeFactory);
+            }
+        }
     }
 }
