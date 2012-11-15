@@ -148,7 +148,7 @@ Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteA
 
 }
 
-Task ResetAssemblyInfo -precondition { return $publish } -depends Clean, WriteAssemblyInfo, Build, Test, CopyBinaries {
+Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depends Clean, WriteAssemblyInfo, Build, Test, CopyBinaries {
     CoreProjects | 
     Foreach-Object { 
        $assemblyInfoFile = $_.fullname + "\Properties\$assemblyInfoFileName"
