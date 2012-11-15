@@ -72,8 +72,8 @@ Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
         $minor = $majorMinor[1]
         $assemblyVersion = 'AssemblyVersionAttribute("' + (VersionNumber $major $minor 0 0 ) + '")'
         $fileVersion = 'AssemblyFileVersionAttribute("' + (VersionNumber $major $minor $buildNumber 0 ) + '")'
-
-        Write-Host "updating" $assemblyInfoFile
+        
+        Write-Host "updating" $assemblyInfoFile "with Assembly version:" (VersionNumber $major $minor 0 0 ) "Assembly file version:" (VersionNumber $major $minor $buildNumber 0)
 
         (Get-Content $assemblyInfoFile) | ForEach-Object {
             % {$_ -replace $assemblyVersionPattern, $assemblyVersion } |
