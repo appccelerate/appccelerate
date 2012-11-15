@@ -21,6 +21,7 @@ Properties {
   $mspecRunner = "$sourceDir\packages\Machine.Specifications.0.5.8\tools\mspec-clr4.exe"
   $nugetConsole = "$sourceDir\.nuget\nuget.exe"
   
+  $teamcity = $false
   $publish = $false
   $parallelBuild = $true
   
@@ -96,7 +97,7 @@ Task Build -depends Clean, WriteAssemblyInfo {
         }
     }
 
-    Exec { msbuild $slnFile "/p:Configuration=$buildConfig" "/p:Platform=Any CPU" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam}
+    Exec { msbuild $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam}
     
 }
 
@@ -112,7 +113,7 @@ Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteA
         $project = $_.fullname
         $projectName = $_.name
         $projectBinaries = "$project\bin\$buildConfig\" 
-        $dependencies_file = "$project\$dependenciesFileName"
+        $dependenciesFile = "$project\$dependenciesFileName"
 
         Get-Childitem $projectBinaries -Include "$projectName.dll", "$projectName.xml", "$projectName.pdb" -Recurse |
         Foreach-Object {
@@ -127,8 +128,8 @@ Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteA
             Copy-Item $_.fullname $destination -force
         }
         
-         if(Test-Path $dependencies_file){
-            (Get-Content $dependencies_file) | ForEach-Object {
+         if(Test-Path $dependenciesFile){
+            (Get-Content $dependenciesFile) | ForEach-Object {
         		Get-Childitem $projectBinaries -Include $_ -Recurse |
                 Foreach-Object {
                     $endpath = $_.fullname.Replace($projectBinaries, "").Replace($_.name, "")
@@ -169,7 +170,7 @@ Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, 
         $versions = $allVersions.Get_Item($projectName)
         $fileVersion = $versions[2].Substring(0,$versions[2].Length-2)+$preVersion
         
-        Write-Host "copying and updating" $nuspecFile
+        Write-Host "copying and updating" $nuspecFile "v.$fileVersion"
         
         $newNuspecContent = (Get-Content $nuspecFile) | ForEach-Object {$_ -replace ("%"+$projectName+"FileVersion%"), $fileVersion }
         $isBinaryPackage = -not ($newNuspecContent | Select-String "/files" -quiet)
@@ -209,9 +210,9 @@ Function RunUnitTest {
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Test\bin\$buildConfig\*Test.dll" } |
     Foreach-Object {
-            $testFile = $_.fullname
-            Write-Host "testing" $testFile 
-            exec { cmd /c "$xunitRunner $testFile" }
+        $testFile = $_.fullname
+        Write-Host "testing" $testFile 
+        exec { cmd /c "$xunitRunner $testFile" }
     }
     
 }
@@ -220,10 +221,15 @@ Function RunMSpecTest {
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
     Foreach-Object {
-            $testFile = $_.fullname
+        $testFile = $_.fullname
+        
+        if($teamcity){
             $htmlPath = $binariesDir +"\"+ $_.name + ".html"
-            Write-Host "testing" $testFile 
-            exec { cmd /c "$mspecRunner --html $htmlPath --teamcity $testFile" }
+            $additionalParams = "--html $htmlPath --teamcity"
+        }
+ 
+        Write-Host "testing" $testFile 
+        exec { cmd /c "$mspecRunner $additionalParams $testFile" }
     }
 }
 
