@@ -17,8 +17,8 @@ Properties {
   $dependenciesFileName = "Dependencies.txt"
   $assemblyInfoFileName = "VersionInfo.g.cs"
 
-  $xunitRunner = "$sourceDir\packages\xunit.runners.1.9.1\tools\xunit.console.clr4.x86.exe"
-  $mspecRunner = "$sourceDir\packages\Machine.Specifications.0.5.8\tools\mspec-clr4.exe"
+  $xunitRunner = "$sourceDir\packages\xunit.runners.*\tools\xunit.console.clr4.x86.exe"
+  $mspecRunner = "$sourceDir\packages\Machine.Specifications.*\tools\mspec-clr4.exe"
   $nugetConsole = "$sourceDir\.nuget\nuget.exe"
   
   $teamcity = $false
@@ -203,10 +203,14 @@ Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, 
        Write-Host "moving" $_.fullname "to" $NugetDir
        Move-Item $_.fullname $NugetDir
     }
-
 }
 
 Function RunUnitTest {
+    #get newest xunit runner
+    Get-Item $xunitRunner | Sort-Object | Foreach-Object {
+        $xunitRunner = $_.fullname
+    }
+    
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Test\bin\$buildConfig\*Test.dll" } |
     Foreach-Object {
@@ -214,10 +218,14 @@ Function RunUnitTest {
         Write-Host "testing" $testFile 
         exec { cmd /c "$xunitRunner $testFile" }
     }
-    
 }
 
 Function RunMSpecTest {
+    #get newest mspec runner
+    Get-Item $mspecRunner | Sort-Object | Foreach-Object {
+        $mspecRunner = $_.fullname
+    }
+    
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
     Foreach-Object {
