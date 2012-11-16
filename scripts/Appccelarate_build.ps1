@@ -1,5 +1,4 @@
-﻿
-Properties {
+﻿Properties {
   $projectName ="Appccelerate"
   
   $baseDir = Resolve-Path ..
@@ -7,7 +6,8 @@ Properties {
   $publishDir = "$baseDir\publish"
   $sourceDir = "$baseDir\source"
   $scriptsDir = "$baseDir\scripts"
-  $NugetDir = "$publishDir\NuGet"
+  $nugetDir = "$publishDir\NuGet"
+  $packagesDir = "$sourceDir\packages"
   
   $slnFile = "$sourceDir\$projectName.sln"
   $nugetSymbolsFile = "$scriptsDir\nuget.symbols.txt"
@@ -17,8 +17,8 @@ Properties {
   $dependenciesFileName = "Dependencies.txt"
   $assemblyInfoFileName = "VersionInfo.g.cs"
 
-  $xunitRunner = "$sourceDir\packages\xunit.runners.*\tools\xunit.console.clr4.x86.exe"
-  $mspecRunner = "$sourceDir\packages\Machine.Specifications.*\tools\mspec-clr4.exe"
+  $xunitRunner = "$packagesDir\xunit.runners.*\tools\xunit.console.clr4.x86.exe"
+  $mspecRunner = "$packagesDir\Machine.Specifications.*\tools\mspec-clr4.exe"
   $nugetConsole = "$sourceDir\.nuget\nuget.exe"
   
   $teamcity = $false
@@ -55,7 +55,7 @@ Task Clean {
 Task Init -depends Clean {
     New-Item $binariesDir -type directory -force
     New-Item $publishDir -type directory -force
-    New-Item $NugetDir -type directory -force
+    New-Item $nugetDir -type directory -force
 }
 
 Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
@@ -200,16 +200,14 @@ Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, 
 
     Get-Childitem $scriptsDir -Filter *.nupkg | 
     Foreach-Object{
-       Write-Host "moving" $_.fullname "to" $NugetDir
-       Move-Item $_.fullname $NugetDir
+       Write-Host "moving" $_.fullname "to" $nugetDir
+       Move-Item $_.fullname $nugetDir
     }
 }
 
 Function RunUnitTest {
     #get newest xunit runner
-    Get-Item $xunitRunner | Sort-Object | Foreach-Object {
-        $xunitRunner = $_.fullname
-    }
+    $xunitRunner = Get-Item $xunitRunner | Sort-Object @{Expression={$_.fullname.Replace($packagesDir, "").Replace($_.name, "")}; Ascending=$false} | Select-Object -first 1
     
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Test\bin\$buildConfig\*Test.dll" } |
@@ -222,9 +220,7 @@ Function RunUnitTest {
 
 Function RunMSpecTest {
     #get newest mspec runner
-    Get-Item $mspecRunner | Sort-Object | Foreach-Object {
-        $mspecRunner = $_.fullname
-    }
+    $mspecRunner= Get-Item $mspecRunner | Sort-Object @{Expression={$_.fullname.Replace($packagesDir, "").Replace($_.name, "")}; Ascending=$false} | Select-Object -first 1 
     
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
