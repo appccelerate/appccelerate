@@ -18,7 +18,7 @@
   $assemblyInfoFileName = "VersionInfo.g.cs"
 
   $xunitRunner = "$packagesDir\xunit.runners.*\tools\xunit.console.clr4.x86.exe"
-  $mspecRunner = "$packagesDir\Machine.Specifications.*\tools\mspec-clr4.exe"
+  $mspecConsole = "$packagesDir\Machine.Specifications.*\tools\mspec-clr4.exe"
   $nugetConsole = "$sourceDir\.nuget\nuget.exe"
   
   $teamcity = $false
@@ -152,7 +152,7 @@ Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depend
     CoreProjects | 
     Foreach-Object { 
        $assemblyInfoFile = $_.fullname + "\Properties\$assemblyInfoFileName"
-       Write-Host "reseting" $assemblyInfoFile
+       Write-Host "resetting" $assemblyInfoFile
        exec { cmd /c "git checkout $assemblyInfoFile" }
     }
     
@@ -207,20 +207,22 @@ Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, 
 
 Function RunUnitTest {
     #get newest xunit runner
-    $xunitRunner = Get-Item $xunitRunner | Sort-Object @{Expression={$_.fullname.Replace($packagesDir, "").Replace($_.name, "")}; Ascending=$false} | Select-Object -first 1
+    $newestRunner = GetNewest($xunitRunner)
+    Write-Host "using" $newestRunner
     
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Test\bin\$buildConfig\*Test.dll" } |
     Foreach-Object {
         $testFile = $_.fullname
         Write-Host "testing" $testFile 
-        exec { cmd /c "$xunitRunner $testFile" }
+        exec { cmd /c "$newestRunner $testFile" }
     }
 }
 
 Function RunMSpecTest {
     #get newest mspec runner
-    $mspecRunner= Get-Item $mspecRunner | Sort-Object @{Expression={$_.fullname.Replace($packagesDir, "").Replace($_.name, "")}; Ascending=$false} | Select-Object -first 1 
+    $newestConsole = GetNewest($mspecConsole)
+    Write-Host "using" $newestConsole
     
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
@@ -233,7 +235,7 @@ Function RunMSpecTest {
         }
  
         Write-Host "testing" $testFile 
-        exec { cmd /c "$mspecRunner $additionalParams $testFile" }
+        exec { cmd /c "$newestConsole $additionalParams $testFile" }
     }
 }
 
@@ -250,4 +252,20 @@ Function CoreProjects {
 
 Function VersionNumber([string] $n1,[string] $n2,[string] $n3,[string] $n4){
     "$n1.$n2.$n3.$n4"
+}
+
+Function GetNewest($path){
+    $firstPart = $path.split("*")[0]
+    $secondPart = $path.split("*")[1]
+    
+    $highestVersion = [version] "0.0"
+    Get-Item $path | Foreach-Object {
+        $currentVersion = [version] $_.fullname.Replace($firstPart, "").Replace($secondPart, "")
+        if($currentVersion.CompareTo($highestVersion) -gt 0){
+            $highestVersion = $currentVersion
+            $newest = $_.fullname
+        }
+    }
+    
+    return $newest
 }
