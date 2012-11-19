@@ -34,22 +34,22 @@
 
 FormatTaskName (("-"*70) + [Environment]::NewLine + "[{0}]"  + [Environment]::NewLine + ("-"*70))
 
-Task default –depends Clean, Init, WriteAssemblyInfo, Build, Test, CopyBinaries, ResetAssemblyInfo, Nuget
+Task default –depends Clean, Init, CheckHintPaths, WriteAssemblyInfo, Build, Test, CopyBinaries, ResetAssemblyInfo, Nuget
 
 Task Clean { 
 
-    Get-Childitem $sourceDir -include bin, obj -Recurse | 
+    Get-Childitem $sourceDir -Include bin, obj -Recurse | 
     Where {$_.psIsContainer -eq $true} | 
     Foreach-Object { 
         Write-Host "deleting" $_.fullname
-        Remove-Item $_.fullname -force -recurse -ErrorAction SilentlyContinue
+        Remove-Item $_.fullname -Force -Recurse -ErrorAction SilentlyContinue
     }
     
     Write-Host "deleting" $publishDir
-    Remove-Item $publishDir -force -recurse -ErrorAction SilentlyContinue
+    Remove-Item $publishDir -Force -Recurse -ErrorAction SilentlyContinue
     
     Write-Host "deleting" $binariesDir
-    Remove-Item $binariesDir -force -recurse -ErrorAction SilentlyContinue
+    Remove-Item $binariesDir -Force -Recurse -ErrorAction SilentlyContinue
 }
 
 Task Init -depends Clean {
@@ -58,7 +58,61 @@ Task Init -depends Clean {
     New-Item $nugetDir -type directory -force
 }
 
-Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
+Task CheckHintPaths -depends Clean, Init {
+
+    $exclude = "System*|Microsoft*"
+    $startPatterns = @("..\packages\", ".\Libs\")
+    
+    $ns = @{ defaultNamespace = "http://schemas.microsoft.com/developer/msbuild/2003" }
+
+    Get-ChildItem $sourceDir -Include "*.csproj" -Recurse | Foreach-Object{
+        $projectFile = $_.fullname
+        $projectDir = $_.fullname.replace($_.name, "")
+        
+        Write-Host "checking" $projectFile
+        
+        try{
+            Select-Xml $projectFile -XPath "//defaultNamespace:Reference" -Namespace $ns | 
+            Select -ExpandProperty Node | 
+            Foreach-Object {
+                if($_.Include -match $exclude){
+                    return
+                }
+                
+                $assemblyName = $_.Include.split(",")[0]
+                $hintPath = $_.HintPath
+                
+                if(!$hintPath){
+                    throw "The HintPath of the `"$assemblyName`" reference is missing."
+                }
+
+                $startOk = $startPatterns | Foreach-Object{
+                    if($hintPath.StartsWith($_)){
+                        return $true
+                    }
+                }
+                
+                if(!$startOk){
+                    throw "The HintPath of the `"$assemblyName`" reference doesn't match one of the start patterns."
+                }
+                
+                if(!$hintPath.Contains($assemblyName)){
+                    throw "The HintPath of the `"$assemblyName`" reference doesn't contain the assembly name."
+                }
+
+                if(!(Test-Path($projectDir+$hintPath))){
+                    throw "The HintPath of the `"$assemblyName`" reference is incorrect. The referenced file doesn't exist."
+                }
+            }
+        }catch{
+            throw "Reference-Error: " + $_
+        }
+
+    } 
+
+}
+
+Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init, CheckHintPaths {
     $assemblyVersionPattern = 'AssemblyVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
 	$fileVersionPattern = 'AssemblyFileVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
 
@@ -86,7 +140,7 @@ Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
     }
 }
 
-Task Build -depends Clean, WriteAssemblyInfo {
+Task Build -depends Clean, CheckHintPaths, WriteAssemblyInfo {
     Write-Host "building" $slnFile
     
     if($parallelBuild){
