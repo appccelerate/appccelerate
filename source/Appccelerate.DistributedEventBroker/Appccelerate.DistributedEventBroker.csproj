@@ -10,6 +10,10 @@
     <ProjectGuid>{3197BFBC-30E8-4188-B2CF-64E7472B6995}</ProjectGuid>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\lib\Net40\</OutputPath>
     <DocumentationFile>bin\Release\lib\Net40\Appccelerate.DistributedEventBroker.XML</DocumentationFile>
@@ -63,4 +67,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

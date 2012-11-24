@@ -5,6 +5,10 @@
     <AppccelerateProjectType>Source</AppccelerateProjectType>
   </PropertyGroup>
   <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup>
     <ProjectGuid>{FEE0505A-32D5-49D6-AC41-FF09F13102E9}</ProjectGuid>
     <OutputType>Library</OutputType>
   </PropertyGroup>
@@ -59,4 +63,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
