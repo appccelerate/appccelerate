@@ -7,6 +7,10 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup>
     <ProjectGuid>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</ProjectGuid>
     <OutputType>Library</OutputType>
   </PropertyGroup>
@@ -40,4 +44,5 @@
     <None Include="Appccelerate.Fundamentals.nuspec" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
