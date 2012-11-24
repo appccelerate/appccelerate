@@ -21,8 +21,7 @@ namespace Appccelerate.EvaluationEngine.Internals
     using System.Reflection;
 
     using FluentAssertions;
-    using FluentAssertions.Assertions;
-
+    using FluentAssertions.Primitives;
     using Moq;
 
     using Xunit;
@@ -44,7 +43,7 @@ namespace Appccelerate.EvaluationEngine.Internals
             var definitionOfParent = CreateDefinition();
             this.parent.AddDefinition(definitionOfParent);
 
-            var definition = this.testee.FindInHierarchyAndCloneDefinition(new TestQuestion());
+            IDefinition definition = this.testee.FindInHierarchyAndCloneDefinition(new TestQuestion());
 
             definition.Should().BeACloneOf(definitionOfParent);
         }
