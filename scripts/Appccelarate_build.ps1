@@ -89,8 +89,6 @@ Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
 Task Build -depends Clean, WriteAssemblyInfo {
     Write-Host "building" $slnFile
     
-	[Environment]::SetEnvironmentVariable("EnableNuGetPackageRestore", "true", "User")
-	
     if($parallelBuild){
         $parallelBuildParam = "/m"
         $maxCpuCount = [Environment]::GetEnvironmentVariable("MAX_CPU_COUNT","User")
