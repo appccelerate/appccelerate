@@ -10,6 +10,10 @@
     <ProjectGuid>{2D0CDEDE-6004-48A4-878E-9B8AC5A67CAE}</ProjectGuid>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\lib\Net40\</OutputPath>
     <DocumentationFile>bin\Release\lib\Net40\Appccelerate.Async.XML</DocumentationFile>
@@ -45,4 +49,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
