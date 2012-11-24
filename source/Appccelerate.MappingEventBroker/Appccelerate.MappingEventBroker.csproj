@@ -7,6 +7,10 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup>
     <ProjectGuid>{AE29ED13-EA6A-49CA-905F-503B0F8CA78B}</ProjectGuid>
     <OutputType>Library</OutputType>
   </PropertyGroup>
@@ -53,4 +57,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

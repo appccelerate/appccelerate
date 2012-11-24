@@ -34,7 +34,7 @@
 
 FormatTaskName (("-"*70) + [Environment]::NewLine + "[{0}]"  + [Environment]::NewLine + ("-"*70))
 
-Task default –depends Clean, Init, CheckHintPaths, WriteAssemblyInfo, Build, Test, CopyBinaries, ResetAssemblyInfo, Nuget
+Task default –depends Clean, Init, WriteAssemblyInfo, Build, CheckHintPaths, Test, CopyBinaries, ResetAssemblyInfo, Nuget
 
 Task Clean { 
 
@@ -58,7 +58,50 @@ Task Init -depends Clean {
     New-Item $nugetDir -type directory -force
 }
 
-Task CheckHintPaths -depends Clean, Init {
+Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
+    $assemblyVersionPattern = 'AssemblyVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
+	$fileVersionPattern = 'AssemblyFileVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
+
+    CoreProjects | 
+    Foreach-Object { 
+		$project = $_.fullname
+        $versionFile = "$project\$versionFileName"
+        $assemblyInfoFile = "$project\Properties\$assemblyInfoFileName"
+           
+        $majorMinor = (Get-Content $versionFile).split(".")
+        $major = $majorMinor[0]
+        $minor = $majorMinor[1]
+        $assemblyVersion = 'AssemblyVersionAttribute("' + (VersionNumber $major $minor 0 0 ) + '")'
+        $fileVersion = 'AssemblyFileVersionAttribute("' + (VersionNumber $major $minor $buildNumber 0 ) + '")'
+        
+        Write-Host "updating" $assemblyInfoFile "with Assembly version:" (VersionNumber $major $minor 0 0 ) "Assembly file version:" (VersionNumber $major $minor $buildNumber 0)
+
+        (Get-Content $assemblyInfoFile) | ForEach-Object {
+            % {$_ -replace $assemblyVersionPattern, $assemblyVersion } |
+            % {$_ -replace $fileVersionPattern, $fileVersion }
+        } | Set-Content $assemblyInfoFile
+		
+		#temporary save all version numbers in a map
+        $allVersions.Add($_.name, @((VersionNumber $major $minor 0 0), (VersionNumber (1+$major) $minor 0 0), (VersionNumber $major $minor $buildNumber 0 )))
+    }
+}
+
+Task Build -depends Clean, WriteAssemblyInfo {
+    Write-Host "building" $slnFile
+    
+    if($parallelBuild){
+        $parallelBuildParam = "/m"
+        $maxCpuCount = [Environment]::GetEnvironmentVariable("MAX_CPU_COUNT","User")
+        if($maxCpuCount){
+            $parallelBuildParam += ":$maxCpuCount"
+        }
+    }
+
+    Exec { msbuild $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam}
+    
+}
+
+Task CheckHintPaths -depends Clean, Init, WriteAssemblyInfo, Build {
 
     $exclude = "System*|Microsoft*"
     $startPatterns = @("..\packages\", ".\Libs\")
@@ -112,55 +155,12 @@ Task CheckHintPaths -depends Clean, Init {
 
 }
 
-Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init, CheckHintPaths {
-    $assemblyVersionPattern = 'AssemblyVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
-	$fileVersionPattern = 'AssemblyFileVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
-
-    CoreProjects | 
-    Foreach-Object { 
-		$project = $_.fullname
-        $versionFile = "$project\$versionFileName"
-        $assemblyInfoFile = "$project\Properties\$assemblyInfoFileName"
-           
-        $majorMinor = (Get-Content $versionFile).split(".")
-        $major = $majorMinor[0]
-        $minor = $majorMinor[1]
-        $assemblyVersion = 'AssemblyVersionAttribute("' + (VersionNumber $major $minor 0 0 ) + '")'
-        $fileVersion = 'AssemblyFileVersionAttribute("' + (VersionNumber $major $minor $buildNumber 0 ) + '")'
-        
-        Write-Host "updating" $assemblyInfoFile "with Assembly version:" (VersionNumber $major $minor 0 0 ) "Assembly file version:" (VersionNumber $major $minor $buildNumber 0)
-
-        (Get-Content $assemblyInfoFile) | ForEach-Object {
-            % {$_ -replace $assemblyVersionPattern, $assemblyVersion } |
-            % {$_ -replace $fileVersionPattern, $fileVersion }
-        } | Set-Content $assemblyInfoFile
-		
-		#temporary save all version numbers in a map
-        $allVersions.Add($_.name, @((VersionNumber $major $minor 0 0), (VersionNumber (1+$major) $minor 0 0), (VersionNumber $major $minor $buildNumber 0 )))
-    }
-}
-
-Task Build -depends Clean, CheckHintPaths, WriteAssemblyInfo {
-    Write-Host "building" $slnFile
-    
-    if($parallelBuild){
-        $parallelBuildParam = "/m"
-        $maxCpuCount = [Environment]::GetEnvironmentVariable("MAX_CPU_COUNT","User")
-        if($maxCpuCount){
-            $parallelBuildParam += ":$maxCpuCount"
-        }
-    }
-
-    Exec { msbuild $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam}
-    
-}
-
-Task Test -depends Clean, Init, Build {
+Task Test -depends Clean, Init, Build, CheckHintPaths {
     RunUnitTest
     RunMSpecTest
 }
 
-Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteAssemblyInfo, Build, Test {
+Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteAssemblyInfo, Build, CheckHintPaths, Test {
 
     CoreProjects |  
     Foreach-Object { 
@@ -202,7 +202,7 @@ Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteA
 
 }
 
-Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depends Clean, WriteAssemblyInfo, Build, Test, CopyBinaries {
+Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depends Clean, WriteAssemblyInfo, Build, CheckHintPaths, Test, CopyBinaries {
     CoreProjects | 
     Foreach-Object { 
        $assemblyInfoFile = $_.fullname + "\Properties\$assemblyInfoFileName"
@@ -212,7 +212,7 @@ Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depend
     
 }
 
-Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, Build, Test, CopyBinaries {
+Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, Build, CheckHintPaths, Test, CopyBinaries {
     
     CoreProjects | 
     Foreach-Object { 
