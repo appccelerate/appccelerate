@@ -19,11 +19,13 @@
 namespace Appccelerate.IO.Streams
 {
     using FluentAssertions;
+    using FluentAssertions.Collections;
+    using FluentAssertions.Execution;
 
     public static class ByteArrayFluentAssertionsExtensionMethods
     {
         public static void Be(
-            this FluentAssertions.Assertions.GenericCollectionAssertions<byte> assertions,
+            this GenericCollectionAssertions<byte> assertions,
             byte[] expected,
             int startIndex,
             int length)
