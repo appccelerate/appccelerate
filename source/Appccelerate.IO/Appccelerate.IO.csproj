@@ -25,6 +25,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsoluteFilePath.cs" />
+    <Compile Include="AbsoluteFolderPath.cs" />
+    <Compile Include="AbsolutePath.cs" />
     <Compile Include="Access\DirectoryExtensionBase.cs" />
     <Compile Include="Access\DriveExtensionBase.cs" />
     <Compile Include="Access\Internals\Drive.cs" />
