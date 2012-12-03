@@ -3,6 +3,8 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.ScopingEventBroker.Test</AppccelerateProjectName>
     <AppccelerateProjectType>Test</AppccelerateProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{5F2E88D4-26F8-4F8D-8D79-F0C4159275E0}</ProjectGuid>
@@ -59,4 +61,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

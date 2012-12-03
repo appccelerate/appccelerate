@@ -21,6 +21,8 @@ namespace Appccelerate.ScopingEventBroker
     using System;
     using System.Reflection;
     using Appccelerate.EventBroker;
+    using Appccelerate.EventBroker.Internals.Subscriptions;
+
     using FakeItEasy;
     using FluentAssertions;
     using Xunit;
@@ -66,12 +68,12 @@ namespace Appccelerate.ScopingEventBroker
         public void Handle_WhenNotScopeAvailable_MustExecuteHandler()
         {
             var eventTopic = A.Fake<IEventTopic>();
-            var subscriptionHandler = new Action(() => { });
+            var delegateWrapper = A.Fake<IDelegateWrapper>();
             A.CallTo(() => this.scopeHolder.Current).Returns(null);
 
-            this.testee.Handle(eventTopic, null, EventArgs.Empty, subscriptionHandler);
+            this.testee.Handle(eventTopic, null, null, EventArgs.Empty, delegateWrapper);
 
-            A.CallTo(() => this.handler.Handle(eventTopic, null, EventArgs.Empty, subscriptionHandler)).MustHaveHappened();
+            A.CallTo(() => this.handler.Handle(eventTopic, null, null, EventArgs.Empty, delegateWrapper)).MustHaveHappened();
         }
 
         [Fact]
@@ -79,9 +81,9 @@ namespace Appccelerate.ScopingEventBroker
         {
             A.CallTo(() => this.scopeHolder.Current).Returns(A.Fake<IEventScopeInternal>());
 
-            this.testee.Handle(A.Fake<IEventTopic>(), null, EventArgs.Empty, new Action(() => { }));
+            this.testee.Handle(A.Fake<IEventTopic>(), null, null, EventArgs.Empty,  A.Fake<IDelegateWrapper>());
 
-            A.CallTo(() => this.handler.Handle(A<IEventTopic>.Ignored, A<object>.Ignored, A<EventArgs>.Ignored, A<Delegate>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => this.handler.Handle(A<IEventTopic>.Ignored, A<object>.Ignored, A<object>.Ignored, A<EventArgs>.Ignored, A<IDelegateWrapper>.Ignored)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -93,10 +95,10 @@ namespace Appccelerate.ScopingEventBroker
             A.CallTo(() => registry.Register(A<Action>.Ignored)).Invokes((Action a) => a());
             A.CallTo(() => this.scopeHolder.Current).Returns(registry);
 
-            var subscriptionHandler = new Action(() => { });
-            this.testee.Handle(eventTopic, null, EventArgs.Empty, subscriptionHandler);
+            var delegateWrapper = A.Fake<IDelegateWrapper>();
+            this.testee.Handle(eventTopic, null, null, EventArgs.Empty, delegateWrapper);
 
-            A.CallTo(() => this.handler.Handle(eventTopic, null, EventArgs.Empty, subscriptionHandler)).MustHaveHappened();
+            A.CallTo(() => this.handler.Handle(eventTopic, null, null, EventArgs.Empty, delegateWrapper)).MustHaveHappened();
         }
     }
 }

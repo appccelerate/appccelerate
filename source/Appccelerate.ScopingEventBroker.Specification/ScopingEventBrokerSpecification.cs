@@ -23,6 +23,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Handlers;
+    using Appccelerate.EventBroker.Internals.Subscriptions;
 
     public class ScopingEventBrokerSpecification
     {
@@ -106,9 +107,9 @@ namespace Appccelerate.ScopingEventBroker.Specification
                 this.handler.Initialize(subscriber, handlerMethod, extensionHost);
             }
 
-            public void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+            public void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
             {
-                this.handler.Handle(eventTopic, sender, e, subscriptionHandler);
+                this.handler.Handle(eventTopic, subscriber, sender, e, delegateWrapper);
             }
         }
     }

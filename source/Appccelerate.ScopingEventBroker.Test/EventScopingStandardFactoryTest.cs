@@ -23,6 +23,7 @@ namespace Appccelerate.ScopingEventBroker
     using System.Reflection;
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Handlers;
+    using Appccelerate.EventBroker.Internals.Subscriptions;
 
     using FluentAssertions;
 
@@ -114,7 +115,7 @@ namespace Appccelerate.ScopingEventBroker
             {
             }
 
-            public void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+            public void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
             {
             }
         }

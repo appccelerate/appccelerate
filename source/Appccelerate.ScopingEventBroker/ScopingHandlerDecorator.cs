@@ -21,10 +21,12 @@ namespace Appccelerate.ScopingEventBroker
     using System;
     using System.Reflection;
     using Appccelerate.EventBroker;
+    using Appccelerate.EventBroker.Internals.Subscriptions;
 
     public class ScopingHandlerDecorator : IHandler
     {
         private readonly IHandler handler;
+
         private readonly IEventScopeHolder scopeHolder;
 
         public ScopingHandlerDecorator(IHandler handler, IEventScopeHolder scopeHolder)
@@ -43,17 +45,17 @@ namespace Appccelerate.ScopingEventBroker
             this.handler.Initialize(subscriber, handlerMethod, extensionHost);
         }
 
-        public void Handle(IEventTopic eventTopic, object sender, EventArgs e, Delegate subscriptionHandler)
+        public void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
             IEventScopeRegistry registry = this.scopeHolder.Current;
 
             if (registry != null)
             {
-                registry.Register(() => this.handler.Handle(eventTopic, sender, e, subscriptionHandler));
+                registry.Register(() => this.handler.Handle(eventTopic, subscriber, sender, e, delegateWrapper));
             }
             else
             {
-                this.handler.Handle(eventTopic, sender, e, subscriptionHandler);
+                this.handler.Handle(eventTopic, subscriber, sender, e, delegateWrapper);
             }
         }
     }
