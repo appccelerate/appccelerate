@@ -26,9 +26,9 @@ namespace Appccelerate.ScopingEventBroker.Specification
     {
         Because of = () => publisher.Publish();
 
-        It should_invoke_asynchronous_subscriber = () => subscriber.OnAsynchronousWasCalled.Should().BeTrue();
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(Called);
 
-        It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(Called);
     }
 
     public class when_scope_cancelled : PerCallScopeSpecification
@@ -43,9 +43,9 @@ namespace Appccelerate.ScopingEventBroker.Specification
                 }
             };
 
-        It should_not_invoke_asynchronous_subscriber = () => subscriber.OnAsynchronousWasCalled.Should().BeFalse();
+        It should_not_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(NotCalled);
 
-        It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(Called);
     }
 
     public class when_scope_disposed_and_not_released : PerCallScopeSpecification
@@ -58,9 +58,9 @@ namespace Appccelerate.ScopingEventBroker.Specification
             }
         };
 
-        It should_not_invoke_asynchronous_subscriber = () => subscriber.OnAsynchronousWasCalled.Should().BeFalse();
+        It should_not_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(NotCalled);
 
-        It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(Called);
     }
 
     public class when_scope_released : PerCallScopeSpecification
@@ -75,13 +75,17 @@ namespace Appccelerate.ScopingEventBroker.Specification
             }
         };
 
-        It should_invoke_asynchronous_subscriber = () => subscriber.OnAsynchronousWasCalled.Should().BeTrue();
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(Called);
 
-        It should_invoke_synchronous_subscriber = () => subscriber.OnSynchronousWasCalled.Should().BeTrue();
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(Called);
     }
 
     public class PerCallScopeSpecification : ScopingEventBrokerSpecification
     {
+        protected static long Called = 1;
+
+        protected static long NotCalled = 0;
+
         Establish context = () => SetupScopingEventBrokerWithDefaultFactory();
     }
 }

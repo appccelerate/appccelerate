@@ -20,10 +20,13 @@ namespace Appccelerate.ScopingEventBroker.Specification
 {
     using System;
     using System.Reflection;
+    using System.Threading;
 
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.EventBroker.Internals.Subscriptions;
+
+    using Machine.Specifications;
 
     public class ScopingEventBrokerSpecification
     {
@@ -34,6 +37,12 @@ namespace Appccelerate.ScopingEventBroker.Specification
         protected static Publisher publisher;
 
         protected static Subscriber subscriber;
+
+        Cleanup cleanup = () =>
+        {
+            eventBroker.Unregister(publisher);
+            eventBroker.Unregister(subscriber);
+        };
 
         protected static void SetupScopingEventBrokerWithDefaultFactory()
         {
@@ -68,20 +77,35 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
         protected class Subscriber
         {
-            public bool OnAsynchronousWasCalled { get; private set; }
+            private long asynchronous;
+            private long synchronous;
 
-            public bool OnSynchronousWasCalled { get; private set; }
+            public long Asynchronous
+            {
+                get
+                {
+                    return Interlocked.Read(ref this.asynchronous);
+                }
+            }
+
+            public long Synchronous
+            {
+                get
+                {
+                    return Interlocked.Read(ref this.synchronous);
+                }
+            }
 
             [EventSubscription("topic://Event", typeof(FakeHandler))]
             public void HandleAsyncOnBackground(object sender, EventArgs e)
             {
-                this.OnAsynchronousWasCalled = true;
+                Interlocked.Increment(ref this.asynchronous);
             }
 
             [EventSubscription("topic://Event", typeof(OnPublisher))]
             public void HandleSyncOnPublisher(object sender, EventArgs e)
             {
-                this.OnSynchronousWasCalled = true;
+                Interlocked.Increment(ref this.synchronous);
             }
         }
 
