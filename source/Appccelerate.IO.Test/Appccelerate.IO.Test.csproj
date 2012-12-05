@@ -37,6 +37,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsoluteFilePathTest.cs" />
+    <Compile Include="AbsoluteFolderPathTest.cs" />
+    <Compile Include="AbsolutePathTest.cs" />
     <Compile Include="Access\Internals\ExtensionProviderExtensionsTest.cs" />
     <Compile Include="Csv\CsvParserTest.cs" />
     <Compile Include="Csv\CsvWriterTest.cs" />
