@@ -25,7 +25,7 @@ namespace Appccelerate.StateMachine
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
-    public interface IStateMachineInformation<TState, TEvent>
+    public interface IStateMachineInformation<out TState, TEvent>
         where TState : IComparable
         where TEvent : IComparable
     {

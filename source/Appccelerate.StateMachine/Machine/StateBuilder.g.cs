@@ -190,7 +190,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IOtherwiseExecuteSyntax<TState, TEvent> IOtherwiseExecuteSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.ExecuteInternal<T>(action);
+            return this.ExecuteInternal(action);
         }
 
         IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute(Action action)
@@ -200,7 +200,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IGotoInIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.ExecuteInternal<T>(action);
+            return this.ExecuteInternal(action);
         }
 
         IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute(Action action)
@@ -210,7 +210,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IGotoSyntax<TState, TEvent> IGotoSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.ExecuteInternal<T>(action);
+            return this.ExecuteInternal(action);
         }
 
         IIfOrOtherwiseSyntax<TState, TEvent> IIfSyntax<TState, TEvent>.Execute(Action action)
@@ -220,7 +220,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IIfOrOtherwiseSyntax<TState, TEvent> IIfSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.ExecuteInternal<T>(action);
+            return this.ExecuteInternal(action);
         }
 
         IOnExecuteSyntax<TState, TEvent> IOnExecuteSyntax<TState, TEvent>.Execute(Action action)
@@ -230,7 +230,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IOnExecuteSyntax<TState, TEvent> IOnExecuteSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.ExecuteInternal<T>(action);
+            return this.ExecuteInternal(action);
         }
 
         IIfSyntax<TState, TEvent> IGotoInIfSyntax<TState, TEvent>.If<T>(Func<T, bool> guard)
@@ -265,7 +265,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IIfOrOtherwiseSyntax<TState, TEvent> IIfOrOtherwiseSyntax<TState, TEvent>.Execute<T>(Action<T> action)
         {
-            return this.ExecuteInternal<T>(action);
+            return this.ExecuteInternal(action);
         }
 
         private StateBuilder<TState, TEvent> ExecuteInternal(Action action)
@@ -288,7 +288,7 @@ namespace Appccelerate.StateMachine.Machine
 
         IIfSyntax<TState, TEvent> IOnSyntax<TState, TEvent>.If<T>(Func<T, bool> guard)
         {
-            this.SetGuard<T>(guard);
+            this.SetGuard(guard);
 
             return this;
         }
@@ -304,7 +304,7 @@ namespace Appccelerate.StateMachine.Machine
         {
             this.CreateTransition();
 
-            this.SetGuard<T>(guard);
+            this.SetGuard(guard);
 
             return this;
         }
@@ -344,22 +344,20 @@ namespace Appccelerate.StateMachine.Machine
 
         private void CheckGuards()
         {
-            var byEvent = this.state.Transitions.GetTransitions().GroupBy(t => t.EventId).ToList();
-            var withMoreThenOneTransitionWithoutGuard = byEvent.Where(g => g.Count(t => t.Guard == null) > 1);
+            var transitionsByEvent = this.state.Transitions.GetTransitions().GroupBy(t => t.EventId).ToList();
+            var withMoreThenOneTransitionWithoutGuard = transitionsByEvent.Where(g => g.Count(t => t.Guard == null) > 1);
 
             if (withMoreThenOneTransitionWithoutGuard.Any())
             {
                 throw new InvalidOperationException(ExceptionMessages.OnlyOneTransitionMayHaveNoGuard);
             }
 
-            foreach (var group in byEvent)
+            if ((from grouping in transitionsByEvent 
+                 let transition = grouping.SingleOrDefault(t => t.Guard == null) 
+                 where transition != null && grouping.LastOrDefault() != transition 
+                 select grouping).Any())
             {
-                var transition = group.SingleOrDefault(t => t.Guard == null);
-
-                if (transition != null && group.LastOrDefault() != transition)
-                {
-                    throw new InvalidOperationException(ExceptionMessages.TransitionWithoutGuardHasToBeLast);
-                }
+                throw new InvalidOperationException(ExceptionMessages.TransitionWithoutGuardHasToBeLast);
             }
         }
     }

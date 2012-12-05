@@ -173,8 +173,8 @@ namespace Appccelerate.StateMachine
 
             this.testee.DefineHierarchyOn(StateMachine.States.C1)
                 .WithHistoryType(HistoryType.Shallow)
-                .WithInitialSubState(StateMachine.States.C1a)
-                .WithSubState(StateMachine.States.C1b);
+                .WithInitialSubState(StateMachine.States.C1A)
+                .WithSubState(StateMachine.States.C1B);
 
             this.testee.DefineHierarchyOn(StateMachine.States.D)
                 .WithHistoryType(HistoryType.Deep)
@@ -183,8 +183,8 @@ namespace Appccelerate.StateMachine
 
             this.testee.DefineHierarchyOn(StateMachine.States.D1)
                 .WithHistoryType(HistoryType.Deep)
-                .WithInitialSubState(StateMachine.States.D1a)
-                .WithSubState(StateMachine.States.D1b);
+                .WithInitialSubState(StateMachine.States.D1A)
+                .WithSubState(StateMachine.States.D1B);
 
             this.testee.In(States.A)
                 .On(Events.B).Goto(States.B);

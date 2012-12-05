@@ -23,7 +23,6 @@ namespace Appccelerate.StateMachine.Machine
 
     using Appccelerate.StateMachine.Machine.ActionHolders;
     using Appccelerate.StateMachine.Machine.GuardHolders;
-    using Appccelerate.StateMachine.Machine.States;
 
     /// <summary>
     /// Represents a transition in the state machine.

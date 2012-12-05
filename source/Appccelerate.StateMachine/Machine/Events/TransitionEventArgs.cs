@@ -21,8 +21,6 @@ namespace Appccelerate.StateMachine.Machine.Events
     using System;
     using System.Globalization;
 
-    using Appccelerate.StateMachine.Machine.Transitions;
-
     /// <summary>
     /// Event arguments providing a transition context.
     /// </summary>

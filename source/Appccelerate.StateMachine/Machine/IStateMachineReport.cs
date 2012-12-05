@@ -21,8 +21,6 @@ namespace Appccelerate.StateMachine.Machine
     using System;
     using System.Collections.Generic;
 
-    using Appccelerate.StateMachine.Machine.States;
-
     /// <summary>
     /// Generates a report of the state machine.
     /// </summary>

@@ -64,8 +64,8 @@ namespace Appccelerate.StateMachine.Machine
             
             this.testee.DefineHierarchyOn(StateMachine.States.C1)
                 .WithHistoryType(HistoryType.Shallow)
-                .WithInitialSubState(StateMachine.States.C1a)
-                .WithSubState(StateMachine.States.C1b);
+                .WithInitialSubState(StateMachine.States.C1A)
+                .WithSubState(StateMachine.States.C1B);
             
             this.testee.DefineHierarchyOn(StateMachine.States.D)
                 .WithHistoryType(HistoryType.Deep)
@@ -74,8 +74,8 @@ namespace Appccelerate.StateMachine.Machine
             
             this.testee.DefineHierarchyOn(StateMachine.States.D1)
                 .WithHistoryType(HistoryType.Deep)
-                .WithInitialSubState(StateMachine.States.D1a)
-                .WithSubState(StateMachine.States.D1b);
+                .WithInitialSubState(StateMachine.States.D1A)
+                .WithSubState(StateMachine.States.D1B);
 
             this.testee.In(StateMachine.States.A)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.A))
@@ -99,7 +99,7 @@ namespace Appccelerate.StateMachine.Machine
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.B2))
                 .ExecuteOnExit(() => this.RecordExit(StateMachine.States.B2))
                 .On(StateMachine.Events.A).Goto(StateMachine.States.A)
-                .On(StateMachine.Events.C1b).Goto(StateMachine.States.C1b);
+                .On(StateMachine.Events.C1B).Goto(StateMachine.States.C1B);
 
             this.testee.In(StateMachine.States.C)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C))
@@ -109,19 +109,19 @@ namespace Appccelerate.StateMachine.Machine
             this.testee.In(StateMachine.States.C1)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C1))
                 .ExecuteOnExit(() => this.RecordExit(StateMachine.States.C1))
-                .On(StateMachine.Events.C1b).Goto(StateMachine.States.C1b);
+                .On(StateMachine.Events.C1B).Goto(StateMachine.States.C1B);
 
             this.testee.In(StateMachine.States.C2)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C2))
                 .ExecuteOnExit(() => this.RecordExit(StateMachine.States.C2));
 
-            this.testee.In(StateMachine.States.C1a)
-                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C1a))
-                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.C1a));
+            this.testee.In(StateMachine.States.C1A)
+                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C1A))
+                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.C1A));
 
-            this.testee.In(StateMachine.States.C1b)
-                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C1b))
-                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.C1b));
+            this.testee.In(StateMachine.States.C1B)
+                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.C1B))
+                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.C1B));
 
             this.testee.In(StateMachine.States.D)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D))
@@ -131,13 +131,13 @@ namespace Appccelerate.StateMachine.Machine
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D1))
                 .ExecuteOnExit(() => this.RecordExit(StateMachine.States.D1));
             
-            this.testee.In(StateMachine.States.D1a)
-                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D1a))
-                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.D1a));
+            this.testee.In(StateMachine.States.D1A)
+                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D1A))
+                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.D1A));
 
-            this.testee.In(StateMachine.States.D1b)
-                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D1b))
-                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.D1b))
+            this.testee.In(StateMachine.States.D1B)
+                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D1B))
+                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.D1B))
                 .On(StateMachine.Events.A).Goto(StateMachine.States.A)
                 .On(StateMachine.Events.B1).Goto(StateMachine.States.B1);
 
@@ -178,14 +178,14 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void InitializeToNestedState()
         {
-            this.testee.Initialize(StateMachine.States.D1b);
+            this.testee.Initialize(StateMachine.States.D1B);
             this.testee.EnterInitialState();
 
-            Assert.Equal(StateMachine.States.D1b, this.testee.CurrentStateId);
+            Assert.Equal(StateMachine.States.D1B, this.testee.CurrentStateId);
 
             this.CheckRecord<EntryRecord>(StateMachine.States.D);
             this.CheckRecord<EntryRecord>(StateMachine.States.D1);
-            this.CheckRecord<EntryRecord>(StateMachine.States.D1b);
+            this.CheckRecord<EntryRecord>(StateMachine.States.D1B);
             this.CheckNoRemainingRecords();
         }
 
@@ -199,11 +199,11 @@ namespace Appccelerate.StateMachine.Machine
             this.testee.Initialize(StateMachine.States.D);
             this.testee.EnterInitialState();
 
-            Assert.Equal(StateMachine.States.D1a, this.testee.CurrentStateId);
+            Assert.Equal(StateMachine.States.D1A, this.testee.CurrentStateId);
 
             this.CheckRecord<EntryRecord>(StateMachine.States.D);
             this.CheckRecord<EntryRecord>(StateMachine.States.D1);
-            this.CheckRecord<EntryRecord>(StateMachine.States.D1a);
+            this.CheckRecord<EntryRecord>(StateMachine.States.D1A);
             this.CheckNoRemainingRecords();
         }
 
@@ -265,15 +265,15 @@ namespace Appccelerate.StateMachine.Machine
             
             this.ClearRecords();
             
-            this.testee.Fire(StateMachine.Events.C1b);
+            this.testee.Fire(StateMachine.Events.C1B);
 
-            Assert.Equal(StateMachine.States.C1b, this.testee.CurrentStateId);
+            Assert.Equal(StateMachine.States.C1B, this.testee.CurrentStateId);
 
             this.CheckRecord<ExitRecord>(StateMachine.States.B2);
             this.CheckRecord<ExitRecord>(StateMachine.States.B);
             this.CheckRecord<EntryRecord>(StateMachine.States.C);
             this.CheckRecord<EntryRecord>(StateMachine.States.C1);
-            this.CheckRecord<EntryRecord>(StateMachine.States.C1b);
+            this.CheckRecord<EntryRecord>(StateMachine.States.C1B);
             this.CheckNoRemainingRecords();
         }
 
@@ -285,7 +285,7 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void ExecuteTransitionBetweenStatesOnDifferentLevelsUpwards()
         {
-            this.testee.Initialize(StateMachine.States.D1b);
+            this.testee.Initialize(StateMachine.States.D1B);
             this.testee.EnterInitialState();
 
             this.ClearRecords();
@@ -294,7 +294,7 @@ namespace Appccelerate.StateMachine.Machine
 
             Assert.Equal(StateMachine.States.B1, this.testee.CurrentStateId);
 
-            this.CheckRecord<ExitRecord>(StateMachine.States.D1b);
+            this.CheckRecord<ExitRecord>(StateMachine.States.D1B);
             this.CheckRecord<ExitRecord>(StateMachine.States.D1);
             this.CheckRecord<ExitRecord>(StateMachine.States.D);
             this.CheckRecord<EntryRecord>(StateMachine.States.B);
@@ -352,7 +352,7 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void ExecuteTransitionWithHistoryTypeShallow()
         {
-            this.testee.Initialize(StateMachine.States.C1b);
+            this.testee.Initialize(StateMachine.States.C1B);
             this.testee.EnterInitialState();
             this.testee.Fire(StateMachine.Events.A);
 
@@ -360,12 +360,12 @@ namespace Appccelerate.StateMachine.Machine
 
             this.testee.Fire(StateMachine.Events.C);
 
-            Assert.Equal(StateMachine.States.C1a, this.testee.CurrentStateId);
+            Assert.Equal(StateMachine.States.C1A, this.testee.CurrentStateId);
 
             this.CheckRecord<ExitRecord>(StateMachine.States.A);
             this.CheckRecord<EntryRecord>(StateMachine.States.C);
             this.CheckRecord<EntryRecord>(StateMachine.States.C1);
-            this.CheckRecord<EntryRecord>(StateMachine.States.C1a);
+            this.CheckRecord<EntryRecord>(StateMachine.States.C1A);
             this.CheckNoRemainingRecords();
         }
 
@@ -376,7 +376,7 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void ExecuteTransitionWithHistoryTypeDeep()
         {
-            this.testee.Initialize(StateMachine.States.D1b);
+            this.testee.Initialize(StateMachine.States.D1B);
             this.testee.EnterInitialState();
             this.testee.Fire(StateMachine.Events.A);
 
@@ -384,12 +384,12 @@ namespace Appccelerate.StateMachine.Machine
 
             this.testee.Fire(StateMachine.Events.D);
 
-            Assert.Equal(StateMachine.States.D1b, this.testee.CurrentStateId);
+            Assert.Equal(StateMachine.States.D1B, this.testee.CurrentStateId);
 
             this.CheckRecord<ExitRecord>(StateMachine.States.A);
             this.CheckRecord<EntryRecord>(StateMachine.States.D);
             this.CheckRecord<EntryRecord>(StateMachine.States.D1);
-            this.CheckRecord<EntryRecord>(StateMachine.States.D1b);
+            this.CheckRecord<EntryRecord>(StateMachine.States.D1B);
             this.CheckNoRemainingRecords();
         }
 
@@ -399,7 +399,7 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void ExecuteTransitionHandledBySuperState()
         {
-            this.testee.Initialize(StateMachine.States.C1b);
+            this.testee.Initialize(StateMachine.States.C1B);
             this.testee.EnterInitialState();
             
             this.ClearRecords();
@@ -408,7 +408,7 @@ namespace Appccelerate.StateMachine.Machine
 
             Assert.Equal(StateMachine.States.A, this.testee.CurrentStateId);
 
-            this.CheckRecord<ExitRecord>(StateMachine.States.C1b);
+            this.CheckRecord<ExitRecord>(StateMachine.States.C1B);
             this.CheckRecord<ExitRecord>(StateMachine.States.C1);
             this.CheckRecord<ExitRecord>(StateMachine.States.C);
             this.CheckRecord<EntryRecord>(StateMachine.States.A);
@@ -449,16 +449,16 @@ namespace Appccelerate.StateMachine.Machine
         [Fact]
         public void ExecuteTransitionToNephew()
         {
-            this.testee.Initialize(StateMachine.States.C1a);
+            this.testee.Initialize(StateMachine.States.C1A);
             this.testee.EnterInitialState();
             this.ClearRecords();
 
-            this.testee.Fire(StateMachine.Events.C1b);
+            this.testee.Fire(StateMachine.Events.C1B);
 
-            Assert.Equal(StateMachine.States.C1b, this.testee.CurrentStateId);
+            Assert.Equal(StateMachine.States.C1B, this.testee.CurrentStateId);
 
-            this.CheckRecord<ExitRecord>(StateMachine.States.C1a);
-            this.CheckRecord<EntryRecord>(StateMachine.States.C1b);
+            this.CheckRecord<ExitRecord>(StateMachine.States.C1A);
+            this.CheckRecord<EntryRecord>(StateMachine.States.C1B);
             this.CheckNoRemainingRecords();
         }
 

@@ -353,7 +353,7 @@ namespace Appccelerate.StateMachine
     }
 
     [Subject(Concern.EntryAndExitActions)]
-    public class When_calling_Fire_with_an_event_argument
+    public class When_calling_fire_with_an_event_argument
     {
         private const int State = 1;
         private const int AnotherState = 2;
