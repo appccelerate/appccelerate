@@ -268,7 +268,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
         protected static long NotCalled = 0;
 
-        Establish context = () => SetupScopingEventBrokerWith(new PerThreadScopeFactory());
+        Establish context = () => SetupScopingEventBrokerWith(new EventScopingStandardFactory(new PerThreadEventScopeFactory()));
 
         protected static void ExecuteOnDifferentThreads(Action firstThreadAction, Action secondThreadAction)
         {
@@ -286,14 +286,6 @@ namespace Appccelerate.ScopingEventBroker.Specification
             Task.WaitAll(firstScopeTask, secondScopeTask);
 
             return new Tuple<IEventScope, IEventScope>(firstScopeTask.Result, secondScopeTask.Result);
-        }
-
-        private class PerThreadScopeFactory : DefaultEventScopeFactory
-        {
-            protected override AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory)
-            {
-                return new PerThreadEventScopeContext(eventScopeFactory);
-            }
         }
     }
 }

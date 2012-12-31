@@ -46,19 +46,17 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
         protected static void SetupScopingEventBrokerWithDefaultFactory()
         {
-            SetupScopingEventBrokerWith(new DefaultEventScopeFactory());
+            SetupScopingEventBrokerWith(new EventScopingStandardFactory());
         }
 
-        protected static void SetupScopingEventBrokerWith(IEventScopeFactory scopeFactory)
+        protected static void SetupScopingEventBrokerWith(EventScopingStandardFactory scopingStandardFactory)
         {
             publisher = new Publisher();
             subscriber = new Subscriber();
 
-            scopeContext = scopeFactory.CreateScopeContext();
+            scopeContext = scopingStandardFactory.CreateScopeContext();
 
-            var factory = new EventScopingStandardFactory(scopeFactory);
-
-            eventBroker = new EventBroker(factory);
+            eventBroker = new EventBroker(scopingStandardFactory);
 
             eventBroker.Register(publisher);
             eventBroker.Register(subscriber);

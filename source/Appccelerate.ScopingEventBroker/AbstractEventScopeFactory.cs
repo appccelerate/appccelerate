@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="DefaultEventScopeFactory.cs" company="Appccelerate">
+// <copyright file="AbstractEventScopeFactory.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ namespace Appccelerate.ScopingEventBroker
 {
     using Appccelerate.EventBroker;
 
-    public class DefaultEventScopeFactory : IEventScopeFactory
+    public abstract class AbstractEventScopeFactory : IEventScopeFactory
     {
         private AbstractEventScopeContext scopeContext;
 
@@ -44,10 +44,7 @@ namespace Appccelerate.ScopingEventBroker
             return new ScopingHandlerDecorator(handler, this.CreateScopeHolder());
         }
 
-        protected virtual AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory)
-        {
-            return new PerCallEventScopeContext(eventScopeFactory);
-        }
+        protected abstract AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory);
 
         private AbstractEventScopeContext GetOrCreate()
         {

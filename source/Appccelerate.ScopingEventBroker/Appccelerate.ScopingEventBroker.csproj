@@ -19,9 +19,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractEventScopeContext.cs" />
-    <Compile Include="DefaultEventScopeFactory.cs" />
+    <Compile Include="AbstractEventScopeFactory.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IEventScopeContextFactory.cs" />
     <Compile Include="IEventScopeFactory.cs" />
     <Compile Include="PerCallEventScopeContext.cs" />
+    <Compile Include="PerCallEventScopeFactory.cs" />
+    <Compile Include="PerThreadEventScopeFactory.cs" />
     <Compile Include="ScopingHandlerDecorator.cs" />
     <Compile Include="EventScopingStandardFactory.cs" />
     <Compile Include="EventScope.cs" />

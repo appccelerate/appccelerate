@@ -25,8 +25,11 @@ namespace Appccelerate.ScopingEventBroker
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.EventBroker.Internals.Subscriptions;
 
+    using FakeItEasy;
+
     using FluentAssertions;
 
+    using Xunit;
     using Xunit.Extensions;
 
     public class EventScopingStandardFactoryTest
@@ -34,11 +37,18 @@ namespace Appccelerate.ScopingEventBroker
         private const bool Decorated = true;
         private const bool NotDecorated = false;
 
-        private readonly EventScopingStandardFactory testee;
-
-        public EventScopingStandardFactoryTest()
+        [Fact]
+        public void CreateScopeContext_ShouldDelegateToDecorated()
         {
-            this.testee = new EventScopingStandardFactory(new FakeDecoratorCreatingEventScopeFactory());
+            var scopeContext = A.Fake<IEventScopeContext>();
+            var eventScopeFactory = A.Fake<IEventScopeFactory>();
+            A.CallTo(() => eventScopeFactory.CreateScopeContext()).Returns(scopeContext);
+
+            var testee = new EventScopingStandardFactory(eventScopeFactory);
+
+            var result = testee.CreateScopeContext();
+
+            result.Should().BeSameAs(scopeContext);
         }
 
         [Theory]
@@ -47,8 +57,10 @@ namespace Appccelerate.ScopingEventBroker
         [InlineData(typeof(OnUserInterfaceAsync), Decorated)]
         [InlineData(typeof(OnPublisher), NotDecorated)]
         public void CreateHandler_ShouldDecorateWhenHandlerAsynchronous(Type handlerType, bool decorated)
-        {               
-            IHandler handler = this.testee.CreateHandler(handlerType);
+        {
+            var testee = new EventScopingStandardFactory(new FakeDecoratorCreatingEventScopeFactory());
+
+            IHandler handler = testee.CreateHandler(handlerType);
 
             ShouldBe(handler, decorated, handlerType);
         }

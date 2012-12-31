@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractEventScopeContextTest.cs" />
-    <Compile Include="DefaultEventScopeFactoryTest.cs" />
+    <Compile Include="EventScopeFactoryTest.cs" />
     <Compile Include="PerCallEventScopeContextTest.cs" />
     <Compile Include="ScopingHandlerDecoratorTest.cs" />
     <Compile Include="EventScopingStandardFactoryTest.cs" />

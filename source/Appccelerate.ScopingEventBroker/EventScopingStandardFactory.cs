@@ -22,18 +22,23 @@ namespace Appccelerate.ScopingEventBroker
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Factories;
 
-    public class EventScopingStandardFactory : StandardFactory
+    public class EventScopingStandardFactory : StandardFactory, IEventScopeContextFactory
     {
         private readonly IEventScopeFactory eventScopeFactory;
 
         public EventScopingStandardFactory()
-            : this(new DefaultEventScopeFactory())
+            : this(new PerCallEventScopeFactory())
         {
         }
 
         public EventScopingStandardFactory(IEventScopeFactory eventScopeFactory)
         {
             this.eventScopeFactory = eventScopeFactory;
+        }
+
+        public IEventScopeContext CreateScopeContext()
+        {
+            return this.eventScopeFactory.CreateScopeContext();
         }
 
         protected override IHandler ActivateHandler(Type handlerType)
