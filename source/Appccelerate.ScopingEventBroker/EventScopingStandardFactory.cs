@@ -26,6 +26,11 @@ namespace Appccelerate.ScopingEventBroker
     {
         private readonly IEventScopeFactory eventScopeFactory;
 
+        public EventScopingStandardFactory()
+            : this(new DefaultEventScopeFactory())
+        {
+        }
+
         public EventScopingStandardFactory(IEventScopeFactory eventScopeFactory)
         {
             this.eventScopeFactory = eventScopeFactory;
