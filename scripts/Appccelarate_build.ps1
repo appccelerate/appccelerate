@@ -32,7 +32,7 @@
   $allVersions = @{}
 }
 
-FormatTaskName (("-"*70) + [Environment]::NewLine + "[{0}]"  + [Environment]::NewLine + ("-"*70))
+FormatTaskName (("-"*70) + ([Environment]::NewLine) + "[{0}]" + ([Environment]::NewLine) + ("-"*70))
 
 Task default –depends Clean, Init, WriteAssemblyInfo, Build, CheckHintPaths, Test, CopyBinaries, ResetAssemblyInfo, Nuget
 
@@ -264,13 +264,46 @@ Function RunUnitTest {
     $newestRunner = GetNewest($xunitRunner)
     Write-Host "using" $newestRunner
     
+	$jobs = @()
+	
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Test\bin\$buildConfig\*Test.dll" } |
     Foreach-Object {
         $testFile = $_.fullname
-        Write-Host "testing" $testFile 
-        exec { cmd /c "$newestRunner $testFile" }
+		
+		$executeUnitTest = { 
+			param($runner, $assembly)
+				$output = & $runner $assembly
+				Write-Output "Testing Assembly: " $assembly " ExitCode: " $lastexitcode ([Environment]::NewLine)
+
+				if ($lastexitcode -ne 0) {
+                        throw $output
+				}
+				else 
+				{
+					Write-Output $output
+				}
+            }
+            
+            $jobs += Start-Job -Name $_.BaseName -ScriptBlock $executeUnitTest -ArgumentList $newestRunner, $testFile
     }
+	
+	Wait-Job -Job $jobs | Out-Null
+	
+	$failed = $false
+	foreach ($job in $jobs) {
+		if ($job.State -eq 'Failed') {
+			Write-Host ($job.ChildJobs[0].JobStateInfo.Reason.Message) -ForegroundColor Red
+			$failed = $true
+		} else {
+			Write-Host (Receive-Job $job)
+			Write-Host
+		}
+	}
+
+	if($failed) {
+		throw "Unit tests failed!"
+	}
 }
 
 Function RunMSpecTest {
@@ -278,6 +311,8 @@ Function RunMSpecTest {
     $newestConsole = GetNewest($mspecConsole)
     Write-Host "using" $newestConsole
     
+	$jobs = @()
+	
     Get-Childitem $sourceDir -Recurse |
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
     Foreach-Object {
@@ -287,10 +322,43 @@ Function RunMSpecTest {
             $htmlPath = $binariesDir +"\"+ $_.name + ".html"
             $additionalParams = "--html $htmlPath --teamcity"
         }
- 
-        Write-Host "testing" $testFile 
-        exec { cmd /c "$newestConsole $additionalParams $testFile" }
+ 	
+		$executeMSpecTest = { 
+			param($runner, $assembly, $params)
+				$output = & $runner `
+					$params `
+					$assembly
+
+				Write-Output "Testing Assembly: " $assembly " ExitCode: " $lastexitcode ([Environment]::NewLine)
+
+				if ($lastexitcode -ne 0) {
+					throw $output
+				}
+				else 
+				{
+					Write-Output $output
+				}
+		}
+		
+		$jobs += Start-Job -Name $spec.BaseName -ScriptBlock $executeMSpecTest -ArgumentList $newestConsole, $testFile, $additionalParams
     }
+	
+	Wait-Job -Job $jobs | Out-Null
+	
+	$failed = $false
+	foreach ($job in $jobs) {
+		if ($job.State -eq 'Failed') {
+			Write-Host ($job.ChildJobs[0].JobStateInfo.Reason.Message) -ForegroundColor Red
+			$failed = $true
+		} else {
+			Write-Host (Receive-Job $job)
+			Write-Host
+		}
+	}
+
+	if($failed) {
+		throw "MSpec tests failed!"
+	}
 }
 
 Function CoreProjects {
