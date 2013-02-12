@@ -317,16 +317,13 @@ Function RunMSpecTest {
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
     Foreach-Object {
         $testFile = $_.fullname
-        
-        if($teamcity){
-            $htmlPath = $binariesDir +"\"+ $_.name + ".html"
-            $additionalParams = "--html $htmlPath --teamcity"
-        }
- 	
+		$htmlPath = $binariesDir +"\"+ $_.name + ".html"
+			
 		$executeMSpecTest = { 
-			param($runner, $assembly, $params)
+			param($runner, $assembly, $path)
+					
 				$output = & $runner `
-					$params `
+					--html $path --teamcity `
 					$assembly
 
 				Write-Output "Testing Assembly: " $assembly " ExitCode: " $lastexitcode ([Environment]::NewLine)
@@ -340,7 +337,7 @@ Function RunMSpecTest {
 				}
 		}
 		
-		$jobs += Start-Job -Name $spec.BaseName -ScriptBlock $executeMSpecTest -ArgumentList $newestConsole, $testFile, $additionalParams
+		$jobs += Start-Job -Name $spec.BaseName -ScriptBlock $executeMSpecTest -ArgumentList $newestConsole, $testFile, $htmlPath
     }
 	
 	Wait-Job -Job $jobs | Out-Null
