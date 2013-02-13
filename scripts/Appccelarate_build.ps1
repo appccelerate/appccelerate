@@ -158,8 +158,8 @@ Task CheckHintPaths -depends Clean, Init, WriteAssemblyInfo, Build {
 }
 
 Task Test -depends Clean, Init, Build, CheckHintPaths {
-    #RunUnitTest
-    #RunMSpecTest
+    RunUnitTest
+    RunMSpecTest
 }
 
 Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteAssemblyInfo, Build, CheckHintPaths, Test {
