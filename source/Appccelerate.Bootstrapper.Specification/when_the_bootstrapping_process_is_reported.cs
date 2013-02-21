@@ -20,6 +20,7 @@ namespace Appccelerate.Bootstrapper.Specification
 {
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
     using Appccelerate.Bootstrapper.Reporting;
     using Appccelerate.Bootstrapper.Specification.Helpers;
@@ -158,7 +159,7 @@ namespace Appccelerate.Bootstrapper.Specification
             {
                 var builder = new StringBuilder();
 
-                context.Extensions.ForEach(e => Dump(e.Name, e.Description, builder, 0));
+                context.Extensions.ToList().ForEach(e => Dump(e.Name, e.Description, builder, 0));
 
                 Dump(context.Run, builder);
                 Dump(context.Shutdown, builder);
@@ -179,7 +180,7 @@ namespace Appccelerate.Bootstrapper.Specification
                 {
                     Dump(executableContext.Name, executableContext.Description, sb, 6);
 
-                    executableContext.Behaviors.ForEach(b => Dump(b.Name, b.Description, sb, 9));
+                    executableContext.Behaviors.ToList().ForEach(b => Dump(b.Name, b.Description, sb, 9));
                 }
             }
 
