@@ -185,6 +185,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
   <Import Project="..\Tools\StyleCopMsBuildTask\StyleCop.targets"/>
   <Import Project="..\tools\FxCop\Msbuild\Microsoft.CodeAnalysis.Targets"/>
+  <Import Project="..\tools\Pepita\PepitaGet.targets"/>
     
   <!--<Target Name="BeforeBuild"></Target>-->
   <!--<Target Name="AfterBuild"></Target>-->
