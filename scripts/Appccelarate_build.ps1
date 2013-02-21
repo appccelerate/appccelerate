@@ -285,8 +285,12 @@ Function RunMSpecTest {
     Where{$_.fullname -like "*.Specification\bin\$buildConfig\*Specification.dll" } |
     Foreach-Object {
         $testFile = $_.fullname
-		$htmlPath = $binariesDir +"\"+ $_.name + ".html"
- 
+        
+        if($teamcity){
+            $htmlPath = $binariesDir +"\"+ $_.name + ".html"
+            $additionalParams = "--html $htmlPath --teamcity"
+        }
+ 	
         Write-Host "testing" $testFile 
         exec { cmd /c "$newestConsole $additionalParams $testFile" }
 					
