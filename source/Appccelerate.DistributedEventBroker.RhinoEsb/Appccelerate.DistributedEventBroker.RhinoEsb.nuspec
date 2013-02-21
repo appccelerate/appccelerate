@@ -21,7 +21,7 @@
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
       <dependency id="Appccelerate.EventBroker" version="%Appccelerate.EventBroker%"/>
       <dependency id="Appccelerate.DistributedEventBroker" version="%Appccelerate.DistributedEventBroker%"/>
-      <dependency id="Rhino.ServiceBus" version="2.2"/>
+      <dependency id="Rhino.ServiceBus" version="3.0"/>
     </dependencies>
   </metadata>
 </package>
