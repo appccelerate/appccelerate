@@ -130,7 +130,7 @@ namespace Appccelerate.ScopingEventBroker
             {
             }
 
-            protected override ScopeDecorator CurrentScope
+            protected override IEventScopeInternal CurrentScope
             {
                 get;
                 set;

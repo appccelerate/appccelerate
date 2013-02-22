@@ -27,15 +27,15 @@ namespace Appccelerate.ScopingEventBroker
     public class PerThreadEventScopeContext : AbstractEventScopeContext, IDisposable
     {
         private readonly object disposeLock = new object();
-        private ThreadLocal<ScopeDecorator> current;
+        private ThreadLocal<IEventScopeInternal> current;
 
         public PerThreadEventScopeContext(IEventScopeFactory eventScopeFactory)
             : base(eventScopeFactory)
         {
-            this.current = new ThreadLocal<ScopeDecorator>();
+            this.current = new ThreadLocal<IEventScopeInternal>();
         }
 
-        protected override ScopeDecorator CurrentScope
+        protected override IEventScopeInternal CurrentScope
         {
             get { return this.current.Value; }
             set { this.current.Value = value; }

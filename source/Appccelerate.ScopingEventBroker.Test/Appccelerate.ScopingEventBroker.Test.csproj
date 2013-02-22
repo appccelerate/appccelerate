@@ -28,6 +28,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit">
@@ -41,6 +42,7 @@
     <Compile Include="AbstractEventScopeContextTest.cs" />
     <Compile Include="EventScopeFactoryTest.cs" />
     <Compile Include="PerCallEventScopeContextTest.cs" />
+    <Compile Include="PerTransactionScopeContextTest.cs" />
     <Compile Include="ScopingHandlerDecoratorTest.cs" />
     <Compile Include="EventScopingStandardFactoryTest.cs" />
     <Compile Include="EventScopeTest.cs" />

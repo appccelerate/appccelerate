@@ -25,6 +25,6 @@ namespace Appccelerate.ScopingEventBroker
         {
         }
 
-        protected override ScopeDecorator CurrentScope { get; set; }
+        protected override IEventScopeInternal CurrentScope { get; set; }
     }
 }
