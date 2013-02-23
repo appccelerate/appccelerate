@@ -37,13 +37,13 @@ namespace Appccelerate.ScopingEventBroker
         {
             get
             {
-                return (IEventScopeInternal) this.Acquire();
+                return (IEventScopeInternal)this.Acquire();
             }
+
             set
             {
                 throw new InvalidOperationException("Current scope should never be set!");
             }
-
         }
 
         public override IEventScope Acquire()
@@ -56,7 +56,9 @@ namespace Appccelerate.ScopingEventBroker
             {
                 var localIdentifier = transaction.TransactionInformation.LocalIdentifier;
 
-                scope = new SinglePhaseScopeDecorator(this.ScopeFactory.CreateScope(), () =>
+                scope = new SinglePhaseScopeDecorator(
+                    this.ScopeFactory.CreateScope(), 
+                    () =>
                     {
                         SinglePhaseScopeDecorator removed;
                         this.scopesToTransactionIdentifier.TryRemove(localIdentifier, out removed);
