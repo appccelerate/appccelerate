@@ -1,5 +1,7 @@
 ﻿namespace Appccelerate.ScopingEventBroker.Specification
 {
+    using System;
+    using System.Threading.Tasks;
     using System.Transactions;
 
     using FluentAssertions;
@@ -38,8 +40,191 @@
         It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(Called);
     }
 
+    public class when_nested_scope_completed_but_outer_not : TransactionScopeSpecification
+    {
+        Because of = () =>
+        {
+            using (var outer = new TransactionScope(TransactionScopeOption.Required))
+            {
+                using (var nested = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    publisher.Publish();
+
+                    nested.Complete();
+                }
+
+                publisher.Publish();
+            }
+        };
+
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(Called);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
+    public class when_nested_scope_and_outer_complete : TransactionScopeSpecification
+    {
+        Because of = () =>
+        {
+            using (var outer = new TransactionScope(TransactionScopeOption.Required))
+            {
+                using (var nested = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    publisher.Publish();
+
+                    nested.Complete();
+                }
+
+                publisher.Publish();
+
+                outer.Complete();
+            }
+        };
+
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(CalledForInnerAndOuter);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
+    public class when_nested_scope_not_completed_but_outer : TransactionScopeSpecification
+    {
+        Because of = () =>
+        {
+            using (var outer = new TransactionScope(TransactionScopeOption.Required))
+            {
+                using (var nested = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    publisher.Publish();
+                }
+
+                publisher.Publish();
+
+                outer.Complete();
+            }
+        };
+
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(Called);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
+    public class when_nested_scope_suppressed_but_not_completed : TransactionScopeSpecification
+    {
+        Because of = () =>
+        {
+            using (var outer = new TransactionScope(TransactionScopeOption.Required))
+            {
+                using (var nested = new TransactionScope(TransactionScopeOption.Suppress))
+                {
+                    publisher.Publish();
+                }
+
+                publisher.Publish();
+
+                outer.Complete();
+            }
+        };
+
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(CalledForInnerAndOuter);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
+    public class when_nested_scope_suppressed_and_completed : TransactionScopeSpecification
+    {
+        Because of = () =>
+        {
+            using (var outer = new TransactionScope(TransactionScopeOption.Required))
+            {
+                using (var nested = new TransactionScope(TransactionScopeOption.Suppress))
+                {
+                    publisher.Publish();
+
+                    nested.Complete();
+                }
+
+                publisher.Publish();
+
+                outer.Complete();
+            }
+        };
+
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(CalledForInnerAndOuter);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
+    public class when_dependent_scope_and_all_completed : TransactionScopeSpecification
+    {
+        Because of = () =>
+        {
+            using (var outer = new TransactionScope(TransactionScopeOption.Required))
+            {
+                Task.Factory.StartNew(
+                    state =>
+                        {
+                            var dtx = (DependentTransaction)state;
+
+                            using (var nested = new TransactionScope(dtx))
+                            {
+                                publisher.Publish();
+
+                                nested.Complete();
+                            }
+
+                            dtx.Complete();
+
+                        }, Transaction.Current.DependentClone(DependentCloneOption.BlockCommitUntilComplete)
+                    );
+
+                publisher.Publish();
+
+                outer.Complete();
+            }
+        };
+
+        It should_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(CalledForInnerAndOuter);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
+    public class when_dependent_scope_nested_not_completed : TransactionScopeSpecification
+    {
+        Because of = () => Catch.Exception(
+            () =>
+                {
+                    using (var outer = new TransactionScope(TransactionScopeOption.Required))
+                    {
+                        Task.Factory.StartNew(
+                            state =>
+                                {
+                                    var dtx = (DependentTransaction)state;
+
+                                    using (var nested = new TransactionScope(dtx))
+                                    {
+                                        publisher.Publish();
+                                    }
+
+                                    dtx.Complete();
+
+                                },
+                            Transaction.Current.DependentClone(DependentCloneOption.BlockCommitUntilComplete));
+
+                        publisher.Publish();
+
+                        outer.Complete();
+                    }
+                });
+
+        It should_not_invoke_asynchronous_subscriber = () => subscriber.Asynchronous.Should().Be(NotCalled);
+
+        It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
+    }
+
     public class TransactionScopeSpecification : ScopingEventBrokerSpecification
     {
+        protected static long CalledForInnerAndOuter = 2;
+
         protected static long Called = 1;
 
         protected static long NotCalled = 0;
