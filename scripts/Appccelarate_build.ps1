@@ -99,6 +99,8 @@ Task Build -depends Clean, WriteAssemblyInfo {
         }
     }
 
+    Write-Host "building using msbuild" $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam
+
     Exec { msbuild $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam}
     
 }
