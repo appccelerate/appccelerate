@@ -19,7 +19,7 @@
 
   $xunitRunner = "$packagesDir\xunit.runners.*\tools\xunit.console.clr4.x86.exe"
   $mspecConsole = "$packagesDir\Machine.Specifications.*\tools\mspec-clr4.exe"
-  $nugetConsole = "$sourceDir\.nuget\nuget.exe"
+  $nugetConsole = "$baseDir\tools\nuget\nuget.exe"
   
   $teamcity = $false
   $publish = $false
