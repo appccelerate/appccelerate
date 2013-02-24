@@ -19,6 +19,7 @@
 namespace Appccelerate.ScopingEventBroker
 {
     using Appccelerate.EventBroker;
+    using Appccelerate.ScopingEventBroker.Internals;
 
     public interface IEventScopeFactory : IEventScopeContextFactory
     {

@@ -39,14 +39,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractEventScopeContextTest.cs" />
     <Compile Include="EventScopeFactoryTest.cs" />
-    <Compile Include="PerCallEventScopeContextTest.cs" />
-    <Compile Include="PerTransactionScopeContextTest.cs" />
-    <Compile Include="ScopingHandlerDecoratorTest.cs" />
+    <Compile Include="Internals\Context\AbstractEventScopeContextTest.cs" />
+    <Compile Include="Internals\Context\PerCallEventScopeContextTest.cs" />
+    <Compile Include="Internals\Context\PerThreadEventScopeContextTest.cs" />
+    <Compile Include="Internals\Context\PerTransactionScopeContextTest.cs" />
+    <Compile Include="Internals\EventScopeTest.cs" />
+    <Compile Include="Internals\ScopingHandlerDecoratorTest.cs" />
     <Compile Include="EventScopingStandardFactoryTest.cs" />
-    <Compile Include="EventScopeTest.cs" />
-    <Compile Include="PerThreadEventScopeContextTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

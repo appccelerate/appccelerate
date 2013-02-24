@@ -16,10 +16,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals
 {
     using System;
+
     using FluentAssertions;
+
     using Xunit;
 
     public class EventScopeTest : IDisposable

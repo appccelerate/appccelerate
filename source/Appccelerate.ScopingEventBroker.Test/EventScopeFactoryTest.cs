@@ -23,6 +23,8 @@ namespace Appccelerate.ScopingEventBroker
     using System.Collections.Generic;
 
     using Appccelerate.EventBroker;
+    using Appccelerate.ScopingEventBroker.Internals;
+    using Appccelerate.ScopingEventBroker.Internals.Context;
 
     using FakeItEasy;
 

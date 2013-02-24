@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using System;
     using System.Threading;

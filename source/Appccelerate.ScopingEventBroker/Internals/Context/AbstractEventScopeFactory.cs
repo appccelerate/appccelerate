@@ -16,13 +16,13 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using Appccelerate.EventBroker;
 
     public abstract class AbstractEventScopeFactory : IEventScopeFactory
     {
-        private AbstractEventScopeContext scopeContext;
+        private IEventScopeContextInternal scopeContext;
 
         public virtual IEventScopeInternal CreateScope()
         {
@@ -44,9 +44,9 @@ namespace Appccelerate.ScopingEventBroker
             return new ScopingHandlerDecorator(handler, this.CreateScopeHolder());
         }
 
-        protected abstract AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory);
+        protected abstract IEventScopeContextInternal CreateScope(IEventScopeFactory eventScopeFactory);
 
-        private AbstractEventScopeContext GetOrCreate()
+        private IEventScopeContextInternal GetOrCreate()
         {
             return this.scopeContext ?? (this.scopeContext = this.CreateScope(this));
         }

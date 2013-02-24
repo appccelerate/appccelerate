@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="IEventScopeInternal.cs" company="Appccelerate">
+// <copyright file="IEventScopeContextInternal.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
-    /// <summary>
-    /// Marker interface which implements <see cref="IEventScope"/> and <see cref="IEventScopeRegistry"/>
-    /// </summary>
-    public interface IEventScopeInternal : IEventScope, IEventScopeRegistry
+    public interface IEventScopeContextInternal : IEventScopeContext, IEventScopeHolder
     {
     }
 }

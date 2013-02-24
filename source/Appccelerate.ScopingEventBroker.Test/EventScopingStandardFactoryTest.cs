@@ -24,6 +24,8 @@ namespace Appccelerate.ScopingEventBroker
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.EventBroker.Internals.Subscriptions;
+    using Appccelerate.ScopingEventBroker.Internals;
+    using Appccelerate.ScopingEventBroker.Internals.Context;
 
     using FakeItEasy;
 

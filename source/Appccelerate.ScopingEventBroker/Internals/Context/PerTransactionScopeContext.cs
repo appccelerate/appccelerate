@@ -16,37 +16,33 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Transactions;
 
-    public sealed class PerTransactionScopeContext : AbstractEventScopeContext
+    public class PerTransactionScopeContext : IEventScopeContextInternal
     {
-        private readonly ConcurrentDictionary<string, SinglePhaseScopeDecorator> scopesToTransactionIdentifier; 
+        private readonly ConcurrentDictionary<string, SinglePhaseScopeDecorator> scopesToTransactionIdentifier;
 
-        public PerTransactionScopeContext(IEventScopeFactory eventScopeFactory)
-            : base(eventScopeFactory)
+        private readonly IEventScopeFactory scopeFactory;
+
+        public PerTransactionScopeContext(IEventScopeFactory scopeFactory)
         {
-            this.scopesToTransactionIdentifier = new ConcurrentDictionary<string, SinglePhaseScopeDecorator>();            
+            this.scopeFactory = scopeFactory;
+            this.scopesToTransactionIdentifier = new ConcurrentDictionary<string, SinglePhaseScopeDecorator>();
         }
 
-        protected override IEventScopeInternal CurrentScope
+        public IEventScopeInternal Current
         {
             get
             {
                 return (IEventScopeInternal)this.Acquire();
             }
-
-            set
-            {
-                throw new InvalidOperationException("Current scope should never be set!");
-            }
         }
 
-        public override IEventScope Acquire()
+        public IEventScope Acquire()
         {
             SinglePhaseScopeDecorator scope = null;
             Transaction transaction = Transaction.Current;
@@ -57,7 +53,7 @@ namespace Appccelerate.ScopingEventBroker
                 var localIdentifier = transaction.TransactionInformation.LocalIdentifier;
 
                 scope = new SinglePhaseScopeDecorator(
-                    this.ScopeFactory.CreateScope(), 
+                    this.scopeFactory.CreateScope(), 
                     () =>
                     {
                         SinglePhaseScopeDecorator removed;
@@ -72,11 +68,6 @@ namespace Appccelerate.ScopingEventBroker
             return scope;
         }
 
-        protected override void ResetAction()
-        {
-            // no-op
-        }
-        
         private class SinglePhaseScopeDecorator : IEventScopeInternal, ISinglePhaseNotification
         {
             private readonly IEventScopeInternal scope;

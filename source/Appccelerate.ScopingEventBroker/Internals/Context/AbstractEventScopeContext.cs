@@ -16,14 +16,14 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using System;
 
     /// <summary>
     /// Abstract scope which handles the creation of the current scope.
     /// </summary>
-    public abstract class AbstractEventScopeContext : IEventScopeContext, IEventScopeHolder
+    public abstract class AbstractEventScopeContext : IEventScopeContextInternal
     {
         protected AbstractEventScopeContext(IEventScopeFactory eventScopeFactory)
         {

@@ -16,11 +16,14 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using System;
+
     using FakeItEasy;
+
     using FluentAssertions;
+
     using Xunit;
 
     public class AbstractEventScopeContextTest

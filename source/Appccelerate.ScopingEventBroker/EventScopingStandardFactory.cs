@@ -21,6 +21,7 @@ namespace Appccelerate.ScopingEventBroker
     using System;
     using Appccelerate.EventBroker;
     using Appccelerate.EventBroker.Factories;
+    using Appccelerate.ScopingEventBroker.Internals.Context;
 
     public class EventScopingStandardFactory : StandardFactory, IEventScopeContextFactory
     {

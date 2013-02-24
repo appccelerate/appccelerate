@@ -18,9 +18,11 @@
 
 namespace Appccelerate.ScopingEventBroker
 {
+    using Appccelerate.ScopingEventBroker.Internals.Context;
+
     public class PerThreadEventScopeFactory : AbstractEventScopeFactory
     {
-        protected override AbstractEventScopeContext CreateScope(IEventScopeFactory eventScopeFactory)
+        protected override IEventScopeContextInternal CreateScope(IEventScopeFactory eventScopeFactory)
         {
             return new PerThreadEventScopeContext(eventScopeFactory);
         }

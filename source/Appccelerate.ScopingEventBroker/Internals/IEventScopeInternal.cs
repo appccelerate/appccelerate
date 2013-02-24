@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="TransactionScopeAwareEventScopeFactory.cs" company="Appccelerate">
+// <copyright file="IEventScopeInternal.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals
 {
-    using Appccelerate.ScopingEventBroker.Internals.Context;
-
-    public class TransactionScopeAwareEventScopeFactory : AbstractEventScopeFactory
+    /// <summary>
+    /// Marker interface which implements <see cref="IEventScope"/> and <see cref="IEventScopeRegistry"/>
+    /// </summary>
+    public interface IEventScopeInternal : IEventScope, IEventScopeRegistry
     {
-        protected override IEventScopeContextInternal CreateScope(IEventScopeFactory eventScopeFactory)
-        {
-            return new PerTransactionScopeContext(eventScopeFactory);
-        }
     }
 }

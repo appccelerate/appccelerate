@@ -16,12 +16,15 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.ScopingEventBroker
+namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using System;
     using System.Threading;
+
     using FakeItEasy;
+
     using FluentAssertions;
+
     using Xunit;
 
     public class PerThreadEventScopeContextTest : IDisposable
