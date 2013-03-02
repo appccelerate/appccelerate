@@ -18,6 +18,7 @@
 
 namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
+    using System;
     using System.Transactions;
 
     using FakeItEasy;
@@ -28,11 +29,18 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
 
     public class PerTransactionScopeContextTest
     {
+        private readonly IEventScopeInternal eventScope;
+
+        private readonly IEventScopeFactory eventScopeFactory;
+
         private readonly PerTransactionScopeContext testee;
 
         public PerTransactionScopeContextTest()
         {
-            this.testee = new PerTransactionScopeContext(A.Fake<IEventScopeFactory>());
+            this.eventScope = A.Fake<IEventScopeInternal>();
+            this.eventScopeFactory = A.Fake<IEventScopeFactory>();
+
+            this.testee = new PerTransactionScopeContext(this.eventScopeFactory);
         }
 
         [Fact]
@@ -64,6 +72,136 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
 
                 firstScope.Should().BeSameAs(secondScope);
             }
+        }
+
+        [Fact]
+        public void Acquire_WithSupressedScope_ShouldReturnNull()
+        {
+            using (var tx = new TransactionScope(TransactionScopeOption.Suppress))
+            {
+                var scope = this.testee.Acquire();
+
+                scope.Should().BeNull();
+            }
+        }
+
+        [Fact]
+        public void Current_WhenConstructed_ShouldBeNull()
+        {
+            this.SetupFactoryCreatesScope();
+
+            this.testee.Current.Should().BeNull();
+        }
+
+        [Fact]
+        public void Acquire_WithTransactionScope_ShouldSetCurrent()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+
+                this.testee.Current.Should().NotBeNull();
+            }
+        }
+
+        [Fact]
+        public void Acquire_WithoutTransactionScope_ShouldNotSetCurrent()
+        {
+            this.SetupFactoryCreatesScope();
+
+            this.testee.Acquire();
+
+            this.testee.Current.Should().BeNull();
+        }
+
+        [Fact]
+        public void Dispose_RemoveCurrent()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+            }
+
+            this.testee.Current.Should().BeNull();
+        }
+
+        [Fact]
+        public void Dispose_ShouldDisposeInner()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+            }
+
+            A.CallTo(() => this.eventScope.Dispose()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void Dispose_ShouldCancelInner()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+            }
+
+            A.CallTo(() => this.eventScope.Cancel()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void Complete_ShouldReleaseInner()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+
+                tx.Complete();
+            }
+
+            A.CallTo(() => this.eventScope.Release()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void Complete_ShouldDisposeInner()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+
+                tx.Complete();
+            }
+
+            A.CallTo(() => this.eventScope.Dispose()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void Register_WhenCurrent_ShouldRegisterOnAcquired()
+        {
+            this.SetupFactoryCreatesScope();
+
+            using (var tx = new TransactionScope())
+            {
+                this.testee.Acquire();
+                this.testee.Current.Register(() => { });
+            }
+
+            A.CallTo(() => this.eventScope.Register(A<Action>.Ignored)).MustHaveHappened();
+        }
+
+        private void SetupFactoryCreatesScope()
+        {
+            A.CallTo(() => this.eventScopeFactory.CreateScope()).Returns(this.eventScope);
         }
     }
 }

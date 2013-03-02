@@ -111,6 +111,7 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
             public void Rollback(Enlistment enlistment)
             {
                 this.Cancel();
+                this.Dispose();
             }
 
             public void InDoubt(Enlistment enlistment)
