@@ -183,6 +183,16 @@ namespace Appccelerate.IO.Access
 
         void EndReadAllText(string result, string path);
 
+        void BeginReadLines(string path);
+
+        void EndReadLines(IEnumerable<string> result, string path);
+
+        void FailReadLines(ref Exception exception);
+
+        void BeginReadLines(string path, Encoding encoding);
+
+        void EndReadLines(IEnumerable<string> result, string path, Encoding encoding);
+
         void BeginWriteAllLines(string path, IEnumerable<string> contents, Encoding encoding);
 
         void EndWriteAllLines(string path, IEnumerable<string> contents, Encoding encoding);
@@ -222,6 +232,16 @@ namespace Appccelerate.IO.Access
         void BeginOpen(string path, FileMode mode, FileAccess access, FileShare share);
 
         void EndOpen(FileStream result, string path, FileMode mode, FileAccess access, FileShare share);
+
+        void BeginAppendAllLines(string path, IEnumerable<string> contents);
+
+        void EndAppendAllLines(string path, IEnumerable<string> contents);
+
+        void FailAppendAllLines(ref Exception exception);
+
+        void BeginAppendAllLines(string path, IEnumerable<string> contents, Encoding encoding);
+
+        void EndAppendAllLines(string path, IEnumerable<string> contents, Encoding encoding);
 
         void BeginAppendAllText(string path, string contents);
 

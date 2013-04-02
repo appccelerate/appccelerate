@@ -129,6 +129,18 @@ namespace Appccelerate.IO.Access.Internals
         }
 
         /// <inheritdoc />
+        public IEnumerable<string> ReadLines(string path)
+        {
+            return this.SurroundWithExtension(() => System.IO.File.ReadLines(path), path);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> ReadLines(string path, Encoding encoding)
+        {
+            return this.SurroundWithExtension(() => System.IO.File.ReadLines(path), path, encoding);
+        }
+
+        /// <inheritdoc />
         public void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
             this.SurroundWithExtension(() => System.IO.File.WriteAllLines(path, contents, encoding), path, contents, encoding);
@@ -176,6 +188,18 @@ namespace Appccelerate.IO.Access.Internals
         public Stream Open(string path, FileMode mode, System.IO.FileAccess access, FileShare share)
         {
             return this.SurroundWithExtension(() => System.IO.File.Open(path, mode, access, share), path, mode, access, share);
+        }
+
+        /// <inheritdoc />
+        public void AppendAllLines(string path, IEnumerable<string> contents)
+        {
+            this.SurroundWithExtension(() => System.IO.File.AppendAllLines(path, contents), path, contents);
+        }
+
+        /// <inheritdoc />
+        public void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
+        {
+            this.SurroundWithExtension(() => System.IO.File.AppendAllLines(path, contents, encoding), path, contents, encoding);
         }
 
         /// <inheritdoc />
