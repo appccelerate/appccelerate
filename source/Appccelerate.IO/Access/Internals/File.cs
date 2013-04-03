@@ -137,7 +137,7 @@ namespace Appccelerate.IO.Access.Internals
         /// <inheritdoc />
         public IEnumerable<string> ReadLines(string path, Encoding encoding)
         {
-            return this.SurroundWithExtension(() => System.IO.File.ReadLines(path), path, encoding);
+            return this.SurroundWithExtension(() => System.IO.File.ReadLines(path, encoding), path, encoding);
         }
 
         /// <inheritdoc />
