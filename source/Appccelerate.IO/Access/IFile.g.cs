@@ -56,6 +56,10 @@ namespace Appccelerate.IO.Access
 
         string ReadAllText(string path);
 
+        IEnumerable<string> ReadLines(string path);
+
+        IEnumerable<string> ReadLines(string path, Encoding encoding);
+
         void WriteAllLines(string path, IEnumerable<string> contents, Encoding encoding);
 
         void WriteAllLines(string path, IEnumerable<string> contents);
@@ -71,6 +75,10 @@ namespace Appccelerate.IO.Access
         Stream Open(string path, FileMode mode, FileAccess access);
 
         Stream Open(string path, FileMode mode, FileAccess access, FileShare share);
+
+        void AppendAllLines(string path, IEnumerable<string> contents);
+
+        void AppendAllLines(string path, IEnumerable<string> contents, Encoding encoding);
 
         void AppendAllText(string path, string contents);
 
