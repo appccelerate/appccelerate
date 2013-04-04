@@ -73,6 +73,14 @@
     <Compile Include="TemporaryFileHolder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Access\IDirectoryInfo.doc.xml" />
+    <Content Include="Access\IDirectory.doc.xml" />
+    <Content Include="Access\IDriveInfo.doc.xml" />
+    <Content Include="Access\IFile.doc.xml" />
+    <Content Include="Access\IFileInfo.doc.xml" />
+    <Content Include="Access\IFileSystemInfo.doc.xml" />
+    <Content Include="Access\IPath.doc.xml" />
+    <Content Include="Access\IEnvironment.doc.xml" />
     <Content Include="Version.txt" />
   </ItemGroup>
   <ItemGroup>
