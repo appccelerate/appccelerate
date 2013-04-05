@@ -35,7 +35,7 @@
     <Compile Include="Access\FileExtensionBase.cs" />
     <Compile Include="Access\IDirectory.g.cs" />
     <Compile Include="Access\IDirectoryExtension.g.cs" />
-    <Compile Include="Access\IDirectoryInfo.cs" />
+    <Compile Include="Access\IDirectoryInfo.g.cs" />
     <Compile Include="Access\IDrive.g.cs" />
     <Compile Include="Access\IDriveInfo.cs" />
     <Compile Include="Access\IEnvironment.cs" />

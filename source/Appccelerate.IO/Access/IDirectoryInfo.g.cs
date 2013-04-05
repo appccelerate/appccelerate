@@ -18,15 +18,21 @@
 
 namespace Appccelerate.IO.Access
 {
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// Interface which simplifies the access to the directory info.
     /// </summary>
+    [CompilerGenerated]
     public interface IDirectoryInfo : IFileSystemInfo
     {
+        /// <include file='IDirectoryInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DirectoryInfo.Parent"]' />
         IDirectoryInfo Parent { get; }
 
+        /// <include file='IDirectoryInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DirectoryInfo.Root"]' />
         IDirectoryInfo Root { get; }
 
+        /// <include file='IDirectoryInfo.doc.xml' path='doc/members/member[@name="M:System.IO.DirectoryInfo.Create"]' />
         void Create();
     }
 }
