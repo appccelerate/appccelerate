@@ -19,27 +19,37 @@
 namespace Appccelerate.IO.Access
 {
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
 
     /// <summary>
     /// Interface which simplifies the access to directory info.
     /// </summary>
+    [CompilerGenerated]
     public interface IDriveInfo : ISerializable
     {
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.AvailableFreeSpace"]' />
         long AvailableFreeSpace { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.DriveFormat"]' />
         string DriveFormat { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.DriveType"]' />
         DriveType DriveType { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.IsReady"]' />
         bool IsReady { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.RootDirectory"]' />
         IDirectoryInfo RootDirectory { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.TotalFreeSpace"]' />
         long TotalFreeSpace { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.TotalSize"]' />
         long TotalSize { get; }
 
+        /// <include file='IDriveInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DriveInfo.Name"]' />
         string Name { get; }
     }
 }
