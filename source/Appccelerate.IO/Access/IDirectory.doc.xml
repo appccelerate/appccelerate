@@ -366,7 +366,7 @@
         <paramref name="path" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars" />. -or- <paramref name="searchPattern" /> does not contain a valid pattern.
       </exception>
       <exception cref="T:System.ArgumentNullException">
-        <paramref name="path" /> or <paramref name="searchpattern" /> is null.
+        <paramref name="path" /> or <paramref name="searchPattern" /> is null.
       </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="searchOption" /> is not a valid <see cref="T:System.IO.SearchOption" /> value.
@@ -627,7 +627,7 @@
       <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters and file names must be less than 260 characters. </exception>
       <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="creationTime" /> specifies a value outside the range of dates or times permitted for this operation.
+        <paramref name="creationTimeUtc" /> specifies a value outside the range of dates or times permitted for this operation.
       </exception>
       <exception cref="T:System.PlatformNotSupportedException">The current operating system is not Microsoft Windows NT or later.</exception>
       <filterpriority>2</filterpriority>
