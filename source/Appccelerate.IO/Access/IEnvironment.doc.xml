@@ -57,6 +57,11 @@
       <summary>Terminates a process but does not execute any active try-finally blocks or finalizers.</summary>
       <param name="message">A message that explains why the process was terminated, or null if no explanation is provided. </param>
     </member>
+    <member name="M:System.Environment.FailFast(System.String,System.Exception)">
+      <summary>[SECURITY CRITICAL] Immediately terminates a process after writing a message to the Windows Application event log, and then includes the message and exception information in error reporting to Microsoft.</summary>
+      <param name="message">A message that explains why the process was terminated, or null if no explanation is provided.</param>
+      <param name="exception">An exception that represents the error that caused the termination. This is typically the exception in a catch block.</param>
+    </member>
     <member name="M:System.Environment.GetCommandLineArgs">
       <summary>Returns a string array containing the command-line arguments for the current process.</summary>
       <returns>An array of string where each element contains a command-line argument. The first element is the executable file name, and the following zero or more elements contain the remaining command-line arguments.</returns>
@@ -153,7 +158,21 @@
       <PermissionSet>
         <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
       </PermissionSet>
-    </member>
+    </member>    
+    <member name="M:System.Environment.GetFolderPath(System.Environment.SpecialFolder,System.Environment.SpecialFolderOption)">
+      <summary>Gets the path to the system special folder that is identified by the specified enumeration, and uses a specified option for accessing special folders.</summary>
+      <returns>The path to the specified system special folder, if that folder physically exists on your computer; otherwise, an empty string ("").A folder will not physically exist if the operating system did not create it, the existing folder was deleted, or the folder is a virtual directory, such as My Computer, which does not correspond to a physical path.</returns>
+      <param name="folder">An enumerated constant that identifies a system special folder. </param>
+      <param name="option">Specifies options to use for accessing a special folder. </param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="folder" /> is not a member of <see cref="T:System.Environment.SpecialFolder" />.
+      </exception>
+      <exception cref="T:System.PlatformNotSupportedException">The current platform is not supported.</exception>
+      <filterpriority>1</filterpriority>
+      <PermissionSet>
+        <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+      </PermissionSet>
+    </member>    
     <member name="M:System.Environment.GetLogicalDrives">
       <summary>Returns an array of string containing the names of the logical drives on the current computer.</summary>
       <returns>An array of strings where each element contains the name of a logical drive. For example, if the computer's hard drive is the first logical drive, the first element returned is "C:\".</returns>
@@ -168,6 +187,20 @@
       <summary>Gets a value indicating whether the common language runtime is shutting down or the current application domain is unloading.</summary>
       <returns>
         true if the common language runtime is shutting down or the current <see cref="T:System.AppDomain" /> is unloading; otherwise, false.The current application domain is the <see cref="T:System.AppDomain" /> that contains the object that is calling <see cref="P:System.Environment.HasShutdownStarted" />.
+      </returns>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.Environment.Is64BitOperatingSystem">
+      <summary>Determines whether the current operating system is a 64-bit operating system.</summary>
+      <returns>
+        true if the operating system is 64-bit; otherwise, false.
+      </returns>
+      <filterpriority>1</filterpriority>
+    </member>    
+    <member name="P:System.Environment.Is64BitProcess">
+      <summary>Determines whether the current process is a 64-bit process.</summary>
+      <returns>
+        true if the process is 64-bit; otherwise, false.
       </returns>
       <filterpriority>1</filterpriority>
     </member>
@@ -268,6 +301,14 @@
       <filterpriority>1</filterpriority>
       <PermissionSet>
         <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+      </PermissionSet>
+    </member>
+    <member name="P:System.Environment.SystemPageSize">
+      <summary>Gets the amount of memory for an operating system's page file.</summary>
+      <returns>The number of bytes in a system page file.</returns>
+      <filterpriority>1</filterpriority>
+      <PermissionSet>
+        <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
       </PermissionSet>
     </member>
     <member name="P:System.Environment.TickCount">
