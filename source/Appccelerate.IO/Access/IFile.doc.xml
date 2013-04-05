@@ -128,7 +128,7 @@
       <returns>A StreamWriter that appends UTF-8 encoded text to an existing file.</returns>
       <param name="path">The path to the file to append to. </param>
       <exception cref="T:System.UnauthorizedAccessException">
-        The caller does not have the required permission.-OR-<paramref name="destFileName" /> is read-only.
+        The caller does not have the required permission.-OR-<paramref name="path" /> is read-only.
       </exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="path" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="F:System.IO.Path.InvalidPathChars" />.
@@ -1215,7 +1215,7 @@
       <exception cref="T:System.IO.PathTooLongException">The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters. </exception>
       <exception cref="T:System.IO.IOException">An I/O error occurred while performing the operation. </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="creationTime" /> specifies a value outside the range of dates, times, or both permitted for this operation.
+        <paramref name="creationTimeUtc" /> specifies a value outside the range of dates, times, or both permitted for this operation.
       </exception>
       <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
       <exception cref="T:System.NotSupportedException">
