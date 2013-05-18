@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="IDriveInfo.cs" company="Appccelerate">
+// <copyright file="IDirectoryInfo.cs" company="Appccelerate">
 //   Copyright (c) 2008-2012
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,28 +18,21 @@
 
 namespace Appccelerate.IO.Access
 {
-    using System.IO;
-    using System.Runtime.Serialization;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// Interface which simplifies the access to directory info.
+    /// Interface which simplifies the access to the directory info.
     /// </summary>
-    public interface IDriveInfo : ISerializable
+    [CompilerGenerated]
+    public interface IDirectoryInfo : IFileSystemInfo
     {
-        long AvailableFreeSpace { get; }
+        /// <include file='IDirectoryInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DirectoryInfo.Parent"]' />
+        IDirectoryInfo Parent { get; }
 
-        string DriveFormat { get; }
+        /// <include file='IDirectoryInfo.doc.xml' path='doc/members/member[@name="P:System.IO.DirectoryInfo.Root"]' />
+        IDirectoryInfo Root { get; }
 
-        DriveType DriveType { get; }
-
-        bool IsReady { get; }
-
-        IDirectoryInfo RootDirectory { get; }
-
-        long TotalFreeSpace { get; }
-
-        long TotalSize { get; }
-
-        string Name { get; }
+        /// <include file='IDirectoryInfo.doc.xml' path='doc/members/member[@name="M:System.IO.DirectoryInfo.Create"]' />
+        void Create();
     }
 }

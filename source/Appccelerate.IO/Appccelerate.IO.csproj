@@ -30,15 +30,15 @@
     <Compile Include="AbsolutePath.cs" />
     <Compile Include="Access\DirectoryExtensionBase.cs" />
     <Compile Include="Access\DriveExtensionBase.cs" />
+    <Compile Include="Access\IDriveInfo.g.cs" />
     <Compile Include="Access\Internals\Drive.cs" />
     <Compile Include="Access\EnvironmentExtensionBase.cs" />
     <Compile Include="Access\FileExtensionBase.cs" />
     <Compile Include="Access\IDirectory.g.cs" />
     <Compile Include="Access\IDirectoryExtension.g.cs" />
-    <Compile Include="Access\IDirectoryInfo.cs" />
+    <Compile Include="Access\IDirectoryInfo.g.cs" />
     <Compile Include="Access\IDrive.g.cs" />
-    <Compile Include="Access\IDriveInfo.cs" />
-    <Compile Include="Access\IEnvironment.cs" />
+    <Compile Include="Access\IEnvironment.g.cs" />
     <Compile Include="Access\IEnvironmentExtension.g.cs" />
     <Compile Include="Access\IFile.g.cs" />
     <Compile Include="Access\IFileExtension.g.cs" />
@@ -73,6 +73,14 @@
     <Compile Include="TemporaryFileHolder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Access\IDirectoryInfo.doc.xml" />
+    <Content Include="Access\IDirectory.doc.xml" />
+    <Content Include="Access\IDriveInfo.doc.xml" />
+    <Content Include="Access\IFile.doc.xml" />
+    <Content Include="Access\IFileInfo.doc.xml" />
+    <Content Include="Access\IFileSystemInfo.doc.xml" />
+    <Content Include="Access\IPath.doc.xml" />
+    <Content Include="Access\IEnvironment.doc.xml" />
     <Content Include="Version.txt" />
   </ItemGroup>
   <ItemGroup>

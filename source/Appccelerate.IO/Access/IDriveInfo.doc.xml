@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <members>
+    <member name="T:System.IO.DriveInfo">
+      <summary>Provides access to information on a drive.</summary>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="M:System.IO.DriveInfo.#ctor(System.String)">
+      <summary>Provides access to information on the specified drive.</summary>
+      <param name="driveName">A valid drive path or drive letter. This can be either uppercase or lowercase, 'a' to 'z'. A null value is not valid. </param>
+      <exception cref="T:System.ArgumentNullException">The drive letter cannot be null. </exception>
+      <exception cref="T:System.ArgumentException">
+        The first letter of <paramref name="driveName" /> is not an uppercase or lowercase letter from 'a' to 'z'.-or-<paramref name="driveName" /> does not refer to a valid drive.
+      </exception>
+    </member>
+    <member name="P:System.IO.DriveInfo.AvailableFreeSpace">
+      <summary>Indicates the amount of available free space on a drive.</summary>
+      <returns>The amount of free space available on the drive, in bytes.</returns>
+      <exception cref="T:System.UnauthorizedAccessException">Access to the drive information is denied.</exception>
+      <exception cref="T:System.IO.IOException">An I/O error occurred (for example, a disk error or a drive was not ready). </exception>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.DriveFormat">
+      <summary>Gets the name of the file system, such as NTFS or FAT32.</summary>
+      <returns>The name of the file system on the specified drive.</returns>
+      <exception cref="T:System.UnauthorizedAccessException">Access to the drive information is denied.</exception>
+      <exception cref="T:System.IO.DriveNotFoundException">The drive does not exist or is not mapped.</exception>
+      <exception cref="T:System.IO.IOException">An I/O error occurred (for example, a disk error or a drive was not ready). </exception>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.DriveType">
+      <summary>Gets the drive type.</summary>
+      <returns>
+        One of the <see cref="T:System.IO.DriveType" /> values.
+      </returns>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="M:System.IO.DriveInfo.GetDrives">
+      <summary>Retrieves the drive names of all logical drives on a computer.</summary>
+      <returns>
+        An array of type <see cref="T:System.IO.DriveInfo" /> that represents the logical drives on a computer.
+      </returns>
+      <exception cref="T:System.IO.IOException">An I/O error occurred (for example, a disk error or a drive was not ready). </exception>
+      <exception cref="T:System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
+      <filterpriority>1</filterpriority>
+      <PermissionSet>
+        <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+        <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" />
+      </PermissionSet>
+    </member>
+    <member name="P:System.IO.DriveInfo.IsReady">
+      <summary>Gets a value indicating whether a drive is ready.</summary>
+      <returns>true if the drive is ready; false if the drive is not ready.</returns>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.Name">
+      <summary>Gets the name of a drive.</summary>
+      <returns>The name of the drive.</returns>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.RootDirectory">
+      <summary>Gets the root directory of a drive.</summary>
+      <returns>
+        A <see cref="T:System.IO.DirectoryInfo" /> object that contains the root directory of the drive.
+      </returns>
+      <filterpriority>1</filterpriority>
+      <PermissionSet>
+        <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+      </PermissionSet>
+    </member>
+    <member name="M:System.IO.DriveInfo.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+        Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object with the data needed to serialize the target object.
+      </summary>
+      <param name="info">
+        The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object to populate with data.
+      </param>
+      <param name="context">
+        The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />) for this serialization.
+      </param>
+    </member>
+    <member name="M:System.IO.DriveInfo.ToString">
+      <summary>Returns a drive name as a string.</summary>
+      <returns>The name of the drive.</returns>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.TotalFreeSpace">
+      <summary>Gets the total amount of free space available on a drive.</summary>
+      <returns>The total free space available on a drive, in bytes.</returns>
+      <exception cref="T:System.UnauthorizedAccessException">Access to the drive information is denied.</exception>
+      <exception cref="T:System.IO.IOException">An I/O error occurred (for example, a disk error or a drive was not ready). </exception>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.TotalSize">
+      <summary>Gets the total size of storage space on a drive.</summary>
+      <returns>The total size of the drive, in bytes.</returns>
+      <exception cref="T:System.UnauthorizedAccessException">Access to the drive information is denied.</exception>
+      <exception cref="T:System.IO.IOException">An I/O error occurred (for example, a disk error or a drive was not ready). </exception>
+      <filterpriority>1</filterpriority>
+    </member>
+    <member name="P:System.IO.DriveInfo.VolumeLabel">
+      <summary>Gets or sets the volume label of a drive.</summary>
+      <returns>The volume label.</returns>
+      <exception cref="T:System.UnauthorizedAccessException">Access to the drive information is denied.-or-The volume label is being set on a network or CD-ROM drive.</exception>
+      <exception cref="T:System.IO.IOException">An I/O error occurred (for example, a disk error or a drive was not ready). </exception>
+      <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+      <filterpriority>1</filterpriority>
+      <PermissionSet>
+        <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+      </PermissionSet>
+    </member>
+  </members>
+</doc>
