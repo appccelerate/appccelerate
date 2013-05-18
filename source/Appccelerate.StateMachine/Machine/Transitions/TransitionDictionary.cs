@@ -21,8 +21,6 @@ namespace Appccelerate.StateMachine.Machine.Transitions
     using System;
     using System.Collections.Generic;
 
-    using Appccelerate.StateMachine.Machine.States;
-
     /// <summary>
     /// Manages the transitions of a state.
     /// </summary>

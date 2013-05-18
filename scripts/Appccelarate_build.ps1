@@ -19,7 +19,7 @@
 
   $xunitRunner = "$packagesDir\xunit.runners.*\tools\xunit.console.clr4.x86.exe"
   $mspecConsole = "$packagesDir\Machine.Specifications.*\tools\mspec-clr4.exe"
-  $nugetConsole = "$sourceDir\.nuget\nuget.exe"
+  $nugetConsole = "$baseDir\tools\nuget\nuget.exe"
   
   $teamcity = $false
   $publish = $false
@@ -30,6 +30,8 @@
   $preVersion = "-alpha"
   
   $allVersions = @{}
+  
+  $projects = CoreProjects
 }
 
 FormatTaskName (("-"*70) + [Environment]::NewLine + "[{0}]"  + [Environment]::NewLine + ("-"*70))
@@ -62,7 +64,7 @@ Task WriteAssemblyInfo -precondition { return $publish } -depends Clean, Init {
     $assemblyVersionPattern = 'AssemblyVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
 	$fileVersionPattern = 'AssemblyFileVersionAttribute\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
 
-    CoreProjects | 
+    $projects | 
     Foreach-Object { 
 		$project = $_.fullname
         $versionFile = "$project\$versionFileName"
@@ -96,6 +98,8 @@ Task Build -depends Clean, WriteAssemblyInfo {
             $parallelBuildParam += ":$maxCpuCount"
         }
     }
+
+    Write-Host "building using msbuild" $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam
 
     Exec { msbuild $slnFile "/p:Configuration=$buildConfig" "/verbosity:minimal" "/fileLogger" "/fileLoggerParameters:LogFile=$baseDir/msbuild.log" $parallelBuildParam}
     
@@ -162,7 +166,7 @@ Task Test -depends Clean, Init, Build, CheckHintPaths {
 
 Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteAssemblyInfo, Build, CheckHintPaths, Test {
 
-    CoreProjects |  
+    $projects |  
     Foreach-Object { 
         $project = $_.fullname
         $projectName = $_.name
@@ -183,6 +187,7 @@ Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteA
         }
         
          if(Test-Path $dependenciesFile){
+		    Write-Host "copying additional dependencies:"
             (Get-Content $dependenciesFile) | ForEach-Object {
         		Get-Childitem $projectBinaries -Include $_ -Recurse |
                 Foreach-Object {
@@ -203,7 +208,7 @@ Task CopyBinaries -precondition { return $publish } -depends Clean, Init, WriteA
 }
 
 Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depends Clean, WriteAssemblyInfo, Build, CheckHintPaths, Test, CopyBinaries {
-    CoreProjects | 
+    $projects | 
     Foreach-Object { 
        $assemblyInfoFile = $_.fullname + "\Properties\$assemblyInfoFileName"
        Write-Host "resetting" $assemblyInfoFile
@@ -214,7 +219,7 @@ Task ResetAssemblyInfo -precondition { return $publish -and !$teamcity } -depend
 
 Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, Build, CheckHintPaths, Test, CopyBinaries {
     
-    CoreProjects | 
+    $projects | 
     Foreach-Object { 
         $project = $_.fullname
         $projectName = $_.name
@@ -246,9 +251,9 @@ Task Nuget -precondition { return $publish } -depends Clean, WriteAssemblyInfo, 
         Copy-Item $licenseFile $destination -force 
         
         if($isBinaryPackage){
-            exec { cmd /c "$nugetConsole pack $newNuspecFile -symbols" }
+            Exec { & $nugetConsole "pack" $newNuspecFile "-symbols" }
         }else{
-            exec { cmd /c "$nugetConsole pack $newNuspecFile" }
+            Exec { & $nugetConsole "pack" $newNuspecFile }
         }
     }
 
@@ -287,9 +292,10 @@ Function RunMSpecTest {
             $htmlPath = $binariesDir +"\"+ $_.name + ".html"
             $additionalParams = "--html $htmlPath --teamcity"
         }
- 
+ 	
         Write-Host "testing" $testFile 
         exec { cmd /c "$newestConsole $additionalParams $testFile" }
+					
     }
 }
 

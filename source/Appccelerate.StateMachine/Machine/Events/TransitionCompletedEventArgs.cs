@@ -20,8 +20,6 @@ namespace Appccelerate.StateMachine.Machine.Events
 {
     using System;
 
-    using Appccelerate.StateMachine.Machine.Transitions;
-
     /// <summary>
     /// Provides information about a completed transition.
     /// </summary>

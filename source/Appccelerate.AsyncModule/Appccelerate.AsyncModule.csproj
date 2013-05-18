@@ -50,5 +50,4 @@
     <None Include="Appccelerate.AsyncModule.nuspec" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

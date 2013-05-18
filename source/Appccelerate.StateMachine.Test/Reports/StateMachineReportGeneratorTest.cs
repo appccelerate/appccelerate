@@ -47,8 +47,8 @@ namespace Appccelerate.StateMachine.Reports
             
             this.machine.DefineHierarchyOn(States.C1)
                 .WithHistoryType(HistoryType.Shallow)
-                .WithInitialSubState(States.C1a)
-                .WithSubState(States.C1b);
+                .WithInitialSubState(States.C1A)
+                .WithSubState(States.C1B);
             
             this.machine.DefineHierarchyOn(States.D)
                 .WithHistoryType(HistoryType.Deep)
@@ -57,8 +57,8 @@ namespace Appccelerate.StateMachine.Reports
             
             this.machine.DefineHierarchyOn(States.D1)
                 .WithHistoryType(HistoryType.Deep)
-                .WithInitialSubState(States.D1a)
-                .WithSubState(States.D1b);
+                .WithInitialSubState(States.D1A)
+                .WithSubState(States.D1B);
 
             this.machine.In(States.A)
                 .ExecuteOnEntry(EnterA)
@@ -101,13 +101,13 @@ namespace Appccelerate.StateMachine.Reports
     C: initial state = C1 history type = Shallow
         entry action: 
         exit action: 
-        C1: initial state = C1a history type = Shallow
+        C1: initial state = C1A history type = Shallow
             entry action: 
             exit action: 
-            C1a: initial state = None history type = None
+            C1A: initial state = None history type = None
                 entry action: 
                 exit action: 
-            C1b: initial state = None history type = None
+            C1B: initial state = None history type = None
                 entry action: 
                 exit action: 
         C2: initial state = None history type = None
@@ -116,13 +116,13 @@ namespace Appccelerate.StateMachine.Reports
     D: initial state = D1 history type = Deep
         entry action: 
         exit action: 
-        D1: initial state = D1a history type = Deep
+        D1: initial state = D1A history type = Deep
             entry action: 
             exit action: 
-            D1a: initial state = None history type = None
+            D1A: initial state = None history type = None
                 entry action: 
                 exit action: 
-            D1b: initial state = None history type = None
+            D1B: initial state = None history type = None
                 entry action: 
                 exit action: 
         D2: initial state = None history type = None

@@ -21,8 +21,6 @@ namespace Appccelerate.StateMachine.Machine
     using System;
     using System.Collections.Generic;
 
-    using Appccelerate.StateMachine.Machine.States;
-
     /// <summary>
     /// Manages the states of a state machine.
     /// </summary>

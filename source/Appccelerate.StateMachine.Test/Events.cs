@@ -23,28 +23,13 @@ namespace Appccelerate.StateMachine
     /// </summary>
     public enum Events
     {
-        /// <summary>Test event A.</summary>
         A,
-
-        /// <summary>Test event B.</summary>
         B,
-
-        /// <summary>Test event B1.</summary>
         B1,
-
-        /// <summary>Test event B2.</summary>
         B2,
-
-        /// <summary>Test event C.</summary>
         C,
-
-        /// <summary>Test event C1b.</summary>
-        C1b,
-
-        /// <summary>Test event D.</summary>
+        C1B,
         D,
-
-        /// <summary>Test event E.</summary>
         E
     }
 }

@@ -501,6 +501,34 @@ namespace Appccelerate.SourceTemplates.Log4Net
         }
 
         /// <inheritdoc />
+        public override void BeginReadLines(string path)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void EndReadLines(IEnumerable<string> result, string path)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void FailReadLines(ref Exception exception)
+        {
+            base.FailReadLines(ref exception);
+
+            this.log.Error("Exception occurred while reading lines.", exception);
+        }
+
+        /// <inheritdoc />
+        public override void BeginReadLines(string path, Encoding encoding)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void EndReadLines(IEnumerable<string> result, string path, Encoding encoding)
+        {
+        }
+
+        /// <inheritdoc />
         public override void FailReadAllText(ref Exception exception)
         {
             base.FailReadAllText(ref exception);
@@ -617,6 +645,34 @@ namespace Appccelerate.SourceTemplates.Log4Net
 
         /// <inheritdoc />
         public override void EndOpen(FileStream result, string path, FileMode mode, FileAccess access, FileShare share)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void BeginAppendAllLines(string path, IEnumerable<string> contents)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void EndAppendAllLines(string path, IEnumerable<string> contents)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void FailAppendAllLines(ref Exception exception)
+        {
+            base.FailAppendAllLines(ref exception);
+
+            this.log.Error("Exception occurred while appending all lines.", exception);
+        }
+
+        /// <inheritdoc />
+        public override void BeginAppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void EndAppendAllLines(string path, IEnumerable<string> contents, Encoding encoding)
         {
         }
 

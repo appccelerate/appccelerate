@@ -23,49 +23,20 @@ namespace Appccelerate.StateMachine
     /// </summary>
     public enum States
     {
-        /// <summary>Test state A.</summary>
         A,
-
-        /// <summary>Test state B.</summary>
         B,
-
-        /// <summary>Test state B1.</summary>
         B1,
-
-        /// <summary>Test state B2.</summary>
         B2,
-
-        /// <summary>Test state C.</summary>
         C,
-
-        /// <summary>Test state C1.</summary>
         C1,
-
-        /// <summary>Test state C1a.</summary>
-        C1a,
-
-        /// <summary>Test state C1b.</summary>
-        C1b,
-
-        /// <summary>Test state C2.</summary>
+        C1A,
+        C1B,
         C2,
-
-        /// <summary>Test state D.</summary>
         D,
-
-        /// <summary>Test state D1.</summary>
         D1,
-
-        /// <summary>Test state D1a.</summary>
-        D1a,
-
-        /// <summary>Test state D1b.</summary>
-        D1b,
-
-        /// <summary>Test state D2.</summary>
+        D1A,
+        D1B,
         D2,
-
-        /// <summary>Test state E.</summary>
         E,
     }   
 }
