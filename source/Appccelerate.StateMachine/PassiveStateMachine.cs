@@ -23,6 +23,7 @@ namespace Appccelerate.StateMachine
 
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -61,7 +62,7 @@ namespace Appccelerate.StateMachine
         /// Initializes a new instance of the <see cref="PassiveStateMachine&lt;TState, TEvent&gt;"/> class.
         /// </summary>
         public PassiveStateMachine()
-            : this(null)
+            : this(default(string))
         {
         }
 
@@ -259,6 +260,20 @@ namespace Appccelerate.StateMachine
         public void AddExtension(IExtension<TState, TEvent> extension)
         {
             this.stateMachine.AddExtension(extension);
+        }
+
+        public void Save(IStateMachineSaver<TState, TEvent> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            this.stateMachine.Save(stateMachineSaver);
+        }
+
+        public void Load(IStateMachineLoader<TState, TEvent> stateMachineLoader)
+        {
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+
+            stateMachineLoader.VisitStateMachine(this);
         }
 
         private void CheckThatNotAlreadyInitialized()

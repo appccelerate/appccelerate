@@ -23,6 +23,7 @@ namespace Appccelerate.StateMachine.Machine
     using System.Reflection;
 
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -307,6 +308,16 @@ namespace Appccelerate.StateMachine.Machine
             Ensure.ArgumentNotNull(reportGenerator, "reportGenerator");
 
             reportGenerator.Report(this.ToString(), this.states.GetStates(), this.initialStateId);
+        }
+
+        public void Save(IStateMachineSaver<TState, TEvent> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            foreach (IState<TState, TEvent> state in this.states.GetStates())
+            {
+                stateMachineSaver.VisitState(state);
+            }
         }
 
         /// <summary>
