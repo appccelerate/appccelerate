@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="TypeExtensions.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,8 +19,7 @@
 namespace Appccelerate.Formatters
 {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
+    using System.Linq;
 
     /// <summary>
     /// Contains extension methods for Type.
@@ -41,21 +40,9 @@ namespace Appccelerate.Formatters
                 return type.FullName;
             }
 
-            string value = type.FullName.Substring(0, type.FullName.IndexOf('`')) + "<";
-            Type[] genericArgs = type.GetGenericArguments();
-            var list = new List<string>();
-
-            for (int i = 0; i < genericArgs.Length; i++)
-            {
-                value += "{" + i + "},";
-                string s = FullNameToString(genericArgs[i]);
-                list.Add(s);
-            }
-
-            value = value.TrimEnd(',');
-            value += ">";
-            value = string.Format(CultureInfo.InvariantCulture, value, list.ToArray());
-            return value;
+            var partName = type.FullName.Substring(0, type.FullName.IndexOf('`'));
+            var genericArgumentNames = type.GetGenericArguments().Select(arg => arg.FullNameToString());
+            return string.Concat(partName, "<", string.Join(",", genericArgumentNames), ">");
         }
     }
 }
