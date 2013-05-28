@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="PersistanceSpecification.cs" company="Appccelerate">
+// <copyright file="PersistenceSpecification.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,8 @@ namespace Appccelerate.StateMachine
         static PassiveStateMachine<State, Event> loadedMachine;
         static StateMachineSaver<State> saver;
         static StateMachineLoader<State> loader;
-        static State currentState;
+        static State sourceState;
+        static State targetState;
 
         Establish context = () =>
             {
@@ -40,7 +41,8 @@ namespace Appccelerate.StateMachine
                 DefineMachine(machine);
                 machine.Initialize(State.A);
                 machine.Start();
-                machine.Fire(Event.B);
+                machine.Fire(Event.S2); // set history of super state S
+                machine.Fire(Event.B);  // set current state to B
 
                 saver = new StateMachineSaver<State>();
                 loader = new StateMachineLoader<State>();
@@ -50,40 +52,55 @@ namespace Appccelerate.StateMachine
             {
                 machine.Save(saver);
                 loader.SetCurrentState(saver.CurrentStateId);
+                loader.SetHistoryStates(saver.HistoryStates);
                 
                 loadedMachine = new PassiveStateMachine<State, Event>();
                 DefineMachine(loadedMachine);
                 loadedMachine.Load(loader);
 
-                loadedMachine.TransitionCompleted += (sender, args) => currentState = args.NewStateId;
+                loadedMachine.TransitionCompleted += (sender, args) =>
+                    {
+                        sourceState = args.StateId;
+                        targetState = args.NewStateId;
+                    };
                 
                 loadedMachine.Start();
-                loadedMachine.Fire(Event.X);
+                loadedMachine.Fire(Event.S);
             };
 
         It should_reset_current_state = () =>
-            currentState.Should().Be(State.B);
+            sourceState.Should().Be(State.B);
 
-        It should_reset_all_history_states_of_super_states;
+        It should_reset_all_history_states_of_super_states = () =>
+            targetState.Should().Be(State.S2);
 
         enum State
         {
-            A, B
+            A, B, S, S1, S2
         }
 
         enum Event
         {
-            B, X
+            B, X, S2, S
         }
 
         private static void DefineMachine(IStateMachine<State, Event> fsm)
         {
             fsm.In(State.A)
-                   .On(Event.B).Goto(State.B)
+                   .On(Event.S2).Goto(State.S2)
                    .On(Event.X);
 
             fsm.In(State.B)
-                   .On(Event.X);
+                .On(Event.S).Goto(State.S)
+                .On(Event.X);
+
+            fsm.DefineHierarchyOn(State.S)
+               .WithHistoryType(HistoryType.Deep)
+               .WithInitialSubState(State.S1)
+               .WithSubState(State.S2);
+
+            fsm.In(State.S)
+                .On(Event.B).Goto(State.B);
         }
     }
 
@@ -91,23 +108,39 @@ namespace Appccelerate.StateMachine
         where TState : IComparable
     {
         public Initializable<TState> CurrentStateId { get; private set; }
+        
+        public IDictionary<TState, TState> HistoryStates { get; private set; }
 
         public void SaveCurrentState(Initializable<TState> currentState)
         {
             this.CurrentStateId = currentState;
+        }
+
+        public void SaveHistoryStates(IDictionary<TState, TState> historyStates)
+        {
+            this.HistoryStates = historyStates;
         }
     }
 
     public class StateMachineLoader<TState> : IStateMachineLoader<TState>
         where TState : IComparable
     {
-        private IEnumerable<TState> states;
-
         private Initializable<TState> currentState;
+        private IDictionary<TState, TState> historyStates;
 
         public void SetCurrentState(Initializable<TState> state)
         {
             this.currentState = state;    
+        }
+
+        public void SetHistoryStates(IDictionary<TState, TState> states)
+        {
+            this.historyStates = states;
+        }
+
+        public IDictionary<TState, TState> GetHistoryStates()
+        {
+            return this.historyStates;
         }
 
         public Initializable<TState> GetCurrentState()

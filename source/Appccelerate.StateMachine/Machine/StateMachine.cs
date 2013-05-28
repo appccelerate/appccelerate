@@ -20,6 +20,7 @@ namespace Appccelerate.StateMachine.Machine
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Appccelerate.StateMachine.Machine.Events;
@@ -317,6 +318,17 @@ namespace Appccelerate.StateMachine.Machine
             stateMachineSaver.SaveCurrentState(this.currentState != null ? 
                 new Initializable<TState> { Value = this.currentState.Id } : 
                 new Initializable<TState>());
+
+            IEnumerable<IState<TState, TEvent>> superStatesWithLastActiveState = this.states.GetStates()
+                .Where(s => s.SubStates.Any())
+                .Where(s => s.LastActiveState != null)
+                .ToList();
+
+            var historyStates = superStatesWithLastActiveState.ToDictionary(
+                s => s.Id,
+                s => s.LastActiveState.Id);
+
+            stateMachineSaver.SaveHistoryStates(historyStates);
         }
 
         // TODO: check not already initialized
@@ -328,6 +340,13 @@ namespace Appccelerate.StateMachine.Machine
             Initializable<TState> loadedCurrentState = stateMachineLoader.GetCurrentState();
 
             this.currentState = loadedCurrentState.IsInitialized ? this.states[loadedCurrentState.Value] : null;
+
+            IDictionary<TState, TState> historyStates = stateMachineLoader.GetHistoryStates();
+            foreach (KeyValuePair<TState, TState> historyState in historyStates)
+            {
+                // TODO: check whether historyState is actually a sub state
+                this.states[historyState.Key].LastActiveState = this.states[historyState.Value];
+            }
         }
 
         /// <summary>
