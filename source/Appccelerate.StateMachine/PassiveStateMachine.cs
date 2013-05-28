@@ -262,18 +262,20 @@ namespace Appccelerate.StateMachine
             this.stateMachine.AddExtension(extension);
         }
 
-        public void Save(IStateMachineSaver<TState, TEvent> stateMachineSaver)
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
         {
             Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
 
             this.stateMachine.Save(stateMachineSaver);
         }
 
-        public void Load(IStateMachineLoader<TState, TEvent> stateMachineLoader)
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
         {
             Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
 
-            stateMachineLoader.VisitStateMachine(this);
+            this.stateMachine.Load(stateMachineLoader);
+
+            this.initialized = true;
         }
 
         private void CheckThatNotAlreadyInitialized()

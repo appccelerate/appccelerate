@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="PersistanceSpecification.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ namespace Appccelerate.StateMachine
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Persistence;
     using FluentAssertions;
@@ -31,51 +30,41 @@ namespace Appccelerate.StateMachine
     {
         static PassiveStateMachine<State, Event> machine;
         static PassiveStateMachine<State, Event> loadedMachine;
-        static StateMachineSaver<State, Event> saver;
-        static StateMachineLoader<State, Event> loader;
-        static Reporter before;
-        static Reporter after;
+        static StateMachineSaver<State> saver;
+        static StateMachineLoader<State> loader;
+        static State currentState;
 
         Establish context = () =>
             {
                 machine = new PassiveStateMachine<State, Event>();
-
-                machine.In(State.A)
-                    .On(Event.B).Goto(State.B);
-
+                DefineMachine(machine);
                 machine.Initialize(State.A);
+                machine.Start();
+                machine.Fire(Event.B);
 
-                saver = new StateMachineSaver<State, Event>();
-                loader = new StateMachineLoader<State, Event>();
-
-                before = new Reporter();
-                machine.Report(before);
-
-                after = new Reporter();
+                saver = new StateMachineSaver<State>();
+                loader = new StateMachineLoader<State>();
             };
 
         Because of = () =>
             {
                 machine.Save(saver);
-                loader.SetStates(saver.StateIds);
-
+                loader.SetCurrentState(saver.CurrentStateId);
+                
                 loadedMachine = new PassiveStateMachine<State, Event>();
+                DefineMachine(loadedMachine);
                 loadedMachine.Load(loader);
 
-                loadedMachine.Report(after);
+                loadedMachine.TransitionCompleted += (sender, args) => currentState = args.NewStateId;
+                
+                loadedMachine.Start();
+                loadedMachine.Fire(Event.X);
             };
 
-        It should_reset_all_states = () =>
-            before.States.Select(state => state.Id)
-                .Should().BeEquivalentTo(after.States.Select(state => state.Id));
+        It should_reset_current_state = () =>
+            currentState.Should().Be(State.B);
 
-        It should_reset_all_transistions;
-
-        It should_reset_all_history_states;
-
-        It should_reset_all_guards;
-
-        It should_reset_current_state;
+        It should_reset_all_history_states_of_super_states;
 
         enum State
         {
@@ -84,54 +73,46 @@ namespace Appccelerate.StateMachine
 
         enum Event
         {
-            B
+            B, X
         }
 
-        private class Reporter : IStateMachineReport<State, Event>
+        private static void DefineMachine(IStateMachine<State, Event> fsm)
         {
-            public IEnumerable<IState<State, Event>> States { get; private set; }
+            fsm.In(State.A)
+                   .On(Event.B).Goto(State.B)
+                   .On(Event.X);
 
-            public void Report(string name, IEnumerable<IState<State, Event>> states, Initializable<State> initialStateId)
-            {
-                this.States = states;
-            }
+            fsm.In(State.B)
+                   .On(Event.X);
         }
     }
 
-    public class StateMachineSaver<TState, TEvent> : IStateMachineSaver<TState, TEvent>
+    public class StateMachineSaver<TState> : IStateMachineSaver<TState>
         where TState : IComparable
-        where TEvent : IComparable
     {
-        public StateMachineSaver()
-        {
-            this.StateIds = new List<TState>();
-        }
+        public Initializable<TState> CurrentStateId { get; private set; }
 
-        public IList<TState> StateIds { get; private set; } 
-
-        public void VisitState(IState<TState, TEvent> state)
+        public void SaveCurrentState(Initializable<TState> currentState)
         {
-            this.StateIds.Add(state.Id);
+            this.CurrentStateId = currentState;
         }
     }
 
-    public class StateMachineLoader<TState, TEvent> : IStateMachineLoader<TState, TEvent>
+    public class StateMachineLoader<TState> : IStateMachineLoader<TState>
         where TState : IComparable
-        where TEvent : IComparable
     {
         private IEnumerable<TState> states;
 
-        public void SetStates(IEnumerable<TState> stateIds)
+        private Initializable<TState> currentState;
+
+        public void SetCurrentState(Initializable<TState> state)
         {
-            this.states = stateIds;
+            this.currentState = state;    
         }
 
-        public void VisitStateMachine(IStateMachine<TState, TEvent> machine)
+        public Initializable<TState> GetCurrentState()
         {
-            foreach (TState state in this.states)
-            {
-                machine.In(state);  
-            }
+            return this.currentState;
         }
     }
 }

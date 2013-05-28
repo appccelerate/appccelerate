@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="IStateMachineLoader.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@
 namespace Appccelerate.StateMachine.Persistence
 {
     using System;
+    using Appccelerate.StateMachine.Machine;
 
-    public interface IStateMachineLoader<TState, TEvent>
+    public interface IStateMachineLoader<TState>
         where TState : IComparable
-        where TEvent : IComparable
     {
-        void VisitStateMachine(IStateMachine<TState, TEvent> machine);
+        Initializable<TState> GetCurrentState();
     }
 }

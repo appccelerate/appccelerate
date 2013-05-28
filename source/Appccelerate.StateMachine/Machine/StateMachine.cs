@@ -310,14 +310,24 @@ namespace Appccelerate.StateMachine.Machine
             reportGenerator.Report(this.ToString(), this.states.GetStates(), this.initialStateId);
         }
 
-        public void Save(IStateMachineSaver<TState, TEvent> stateMachineSaver)
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
         {
             Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
 
-            foreach (IState<TState, TEvent> state in this.states.GetStates())
-            {
-                stateMachineSaver.VisitState(state);
-            }
+            stateMachineSaver.SaveCurrentState(this.currentState != null ? 
+                new Initializable<TState> { Value = this.currentState.Id } : 
+                new Initializable<TState>());
+        }
+
+        // TODO: check not already initialized
+        // TODO: check not already started
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+
+            Initializable<TState> loadedCurrentState = stateMachineLoader.GetCurrentState();
+
+            this.currentState = loadedCurrentState.IsInitialized ? this.states[loadedCurrentState.Value] : null;
         }
 
         /// <summary>
@@ -390,7 +400,7 @@ namespace Appccelerate.StateMachine.Machine
 
         private void CheckThatStateMachineIsInitialized()
         {
-            if (!this.initialStateId.IsInitialized)
+            if (this.currentState == null && !this.initialStateId.IsInitialized)
             {
                 throw new InvalidOperationException(ExceptionMessages.StateMachineNotInitialized);
             }

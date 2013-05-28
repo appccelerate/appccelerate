@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="IStateMachineSaver.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,10 +21,9 @@ namespace Appccelerate.StateMachine.Persistence
     using System;
     using Appccelerate.StateMachine.Machine;
 
-    public interface IStateMachineSaver<TState, TEvent>
+    public interface IStateMachineSaver<TState>
         where TState : IComparable
-        where TEvent : IComparable
     {
-        void VisitState(IState<TState, TEvent> state);
+        void SaveCurrentState(Initializable<TState> currentStateId);
     }
 }
