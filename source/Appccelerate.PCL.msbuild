@@ -51,11 +51,6 @@
     <!-- Output Path is set ResultsPath\Configuration\ (\debug\). -->
     <OutputPath Condition="'$(OutputPath)' == ''">$(AppccelerateResultsPath)$(Configuration)\</OutputPath>
  
-    <!-- Code and Source Analysis settings is set to common files depending on project type (overridable in Project File). -->
-    <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
-    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisRuleSet)' == ''">$(AppccelerateSourcePath)Appccelerate.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisPath>..\..\tools\FxCop\</CodeAnalysisPath>
-    <SourceAnalysisOverrideSettingsFile Condition="'$(SourceAnalysisOverrideSettingsFile)' == ''">$(AppccelerateSourcePath)Appccelerate.$(AppccelerateProjectType).stylecop</SourceAnalysisOverrideSettingsFile>
   </PropertyGroup>
 
   
@@ -107,7 +102,6 @@
 
     <!-- Do not treat warnings as errors. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
 
     <!-- Disable Source Analysis. -->
@@ -130,14 +124,8 @@
 
     <!-- Do not treat warnings as errors. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
 
-      <!-- Enable Source Analysis. -->
-    <RunSourceAnalysis>true</RunSourceAnalysis>
-
-    <!-- Enable Code Analysis when Project Type is 'Source'. -->
-    <RunCodeAnalysis Condition="'$(AppccelerateProjectType)' == 'Source'">true</RunCodeAnalysis>
   </PropertyGroup>
 
 
@@ -153,14 +141,7 @@
 
     <!-- Treat all warnings as errors. -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <SourceAnalysisTreatErrorsAsWarnings>false</SourceAnalysisTreatErrorsAsWarnings>
-
-    <!-- Enable Source Analysis. -->
-    <RunSourceAnalysis>true</RunSourceAnalysis>
-
-    <!-- Enable Code Analysis when Project Type is 'Source'. -->
-    <RunCodeAnalysis Condition="'$(AppccelerateProjectType)' == 'Source' And '$(RunCodeAnalysis)' == ''">true</RunCodeAnalysis>
 
     <!-- Documentation File is set ResultsPath\Configuration\DeploymentType\AssemblyName.xml when Project Type is 'Source'. -->
     <DocumentationFile Condition="'$(AppccelerateProjectType)' == 'Source'">$(OutputPath)$(AssemblyName).xml</DocumentationFile>
@@ -186,7 +167,6 @@
 
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\Tools\StyleCopMsBuildTask\StyleCop.targets"/>
-  <Import Project="..\tools\FxCop\Msbuild\Microsoft.CodeAnalysis.Targets"/>
   <Import Project="..\tools\Pepita\PepitaGet.targets"/>
     
   <!--<Target Name="BeforeBuild"></Target>-->
