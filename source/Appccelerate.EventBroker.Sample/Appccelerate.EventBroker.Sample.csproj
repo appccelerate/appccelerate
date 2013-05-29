@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="DebugLogger.cs" />
     <Compile Include="EventTopics.cs" />
+    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Ping.cs">
       <SubType>Form</SubType>

@@ -16,7 +16,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate
+namespace Appccelerate.EventBroker
 {
     using System;
     using System.Reflection;

@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="EventArgs{T}.cs" company="Appccelerate">
+// <copyright file="ExceptionExtensionMethods.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +16,29 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.Events
+namespace Appccelerate.IO
 {
     using System;
+    using System.Reflection;
 
-    /// <summary>
-    /// Generic EventArgs
-    /// </summary>
-    /// <typeparam name="T">Type of the contained value.</typeparam>
-    public class EventArgs<T> : EventArgs
+    public static class ExceptionExtensionMethods
     {
         /// <summary>
-        /// The contained value.
+        /// Preserves the stack trace of the exception.
         /// </summary>
-        private readonly T value;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EventArgs{T}"/> class.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public EventArgs(T value)
+        /// <param name="exception">The exception.</param>
+        /// <returns>Returns the specified exception to allow writing throw exception.preserveStackTrace().</returns>
+        public static Exception PreserveStackTrace(this Exception exception)
         {
-            this.value = value;
-        }
+            Ensure.ArgumentNotNull(exception, "exception");
 
-        /// <summary>
-        /// Gets the contained value.
-        /// </summary>
-        public T Value
-        {
-            get { return this.value; }
+#if !SILVERLIGHT
+            var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            remoteStackTraceString.SetValue(exception, exception.StackTrace + Environment.NewLine);
+#endif
+
+            return exception;
         }
     }
 }

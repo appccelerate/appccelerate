@@ -25,6 +25,7 @@
     <Compile Include="AsyncResult{TResult}.cs" />
     <Compile Include="AsyncWorker.cs" />
     <Compile Include="AsyncWorkerException.cs" />
+    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IAsyncWorker.cs" />
     <Compile Include="IAsyncWorkerExtension.cs" />

@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.Fundamentals</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-   <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -36,7 +34,6 @@
   <ItemGroup>
     <Compile Include="Ensure.cs" />
     <Compile Include="Events\EventArgs{T}.cs" />
-    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="Formatters\FormatHelper.cs" />
     <Compile Include="Formatters\StringTruncationFormatter.cs" />
     <Compile Include="Formatters\TypeExtensions.cs" />
@@ -50,5 +47,5 @@
   <ItemGroup>
     <None Include="Appccelerate.Fundamentals.nuspec" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\Appccelerate.PCL.msbuild" />
 </Project>

@@ -24,6 +24,7 @@
     <Compile Include="EventPublicationAttribute.cs" />
     <Compile Include="EventSubscriptionAttribute.cs" />
     <Compile Include="EventTopicFireDelegate.cs" />
+    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="Exceptions\EventBrokerException.cs" />
     <Compile Include="Exceptions\ExceptionHandlingContext.cs" />
     <Compile Include="Extensions\EventBrokerExtensionBase.cs" />
