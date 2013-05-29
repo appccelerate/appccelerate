@@ -39,31 +39,11 @@ namespace Appccelerate.StateMachine.Machine
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The dictionary of all states.
-        /// </summary>
         private readonly IStateDictionary<TState, TEvent> states;
-
         private readonly IFactory<TState, TEvent> factory;
-
-        /// <summary>
-        /// The initial state of the state machine.
-        /// </summary>
         private readonly Initializable<TState> initialStateId;
-
-        /// <summary>
-        /// Name of this state machine used in log messages.
-        /// </summary>
         private readonly string name;
-
-        /// <summary>
-        /// Extensions of this state machine.
-        /// </summary>
         private readonly List<IExtension<TState, TEvent>> extensions;
-
-        /// <summary>
-        /// The current state.
-        /// </summary>
         private IState<TState, TEvent> currentState;
 
         /// <summary>
@@ -161,7 +141,7 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// Adds the extension.
+        /// Adds the <paramref name="extension"/>.
         /// </summary>
         /// <param name="extension">The extension.</param>
         public void AddExtension(IExtension<TState, TEvent> extension)
@@ -178,7 +158,7 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// Executes the specified action for all extensions.
+        /// Executes the specified <paramref name="action"/> for all extensions.
         /// </summary>
         /// <param name="action">The action to execute.</param>
         public void ForEach(Action<IExtension<TState, TEvent>> action)
@@ -331,22 +311,13 @@ namespace Appccelerate.StateMachine.Machine
             stateMachineSaver.SaveHistoryStates(historyStates);
         }
 
-        // TODO: check not already initialized
-        // TODO: check not already started
         public void Load(IStateMachineLoader<TState> stateMachineLoader)
         {
             Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+            this.CheckThatStateMachineIsNotAlreadyInitialized();
 
-            Initializable<TState> loadedCurrentState = stateMachineLoader.GetCurrentState();
-
-            this.currentState = loadedCurrentState.IsInitialized ? this.states[loadedCurrentState.Value] : null;
-
-            IDictionary<TState, TState> historyStates = stateMachineLoader.GetHistoryStates();
-            foreach (KeyValuePair<TState, TState> historyState in historyStates)
-            {
-                // TODO: check whether historyState is actually a sub state
-                this.states[historyState.Key].LastActiveState = this.states[historyState.Value];
-            }
+            this.LoadCurrentState(stateMachineLoader);
+            this.LoadHistoryStates(stateMachineLoader);
         }
 
         /// <summary>
@@ -372,6 +343,30 @@ namespace Appccelerate.StateMachine.Machine
             if (exceptionHandler == null)
             {
                 throw exception.PreserveStackTrace();
+            }
+        }
+
+        private void LoadCurrentState(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Initializable<TState> loadedCurrentState = stateMachineLoader.GetCurrentState();
+
+            this.currentState = loadedCurrentState.IsInitialized ? this.states[loadedCurrentState.Value] : null;
+        }
+
+        private void LoadHistoryStates(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            IDictionary<TState, TState> historyStates = stateMachineLoader.GetHistoryStates();
+            foreach (KeyValuePair<TState, TState> historyState in historyStates)
+            {
+                IState<TState, TEvent> superState = this.states[historyState.Key];
+                IState<TState, TEvent> lastActiveState = this.states[historyState.Value];
+
+                if (!superState.SubStates.Contains(lastActiveState))
+                {
+                    throw new InvalidOperationException(ExceptionMessages.CannotSetALastActiveStateThatIsNotASubState);
+                }
+
+                superState.LastActiveState = lastActiveState;
             }
         }
 
@@ -422,6 +417,14 @@ namespace Appccelerate.StateMachine.Machine
             if (this.currentState == null && !this.initialStateId.IsInitialized)
             {
                 throw new InvalidOperationException(ExceptionMessages.StateMachineNotInitialized);
+            }
+        }
+
+        private void CheckThatStateMachineIsNotAlreadyInitialized()
+        {
+            if (this.currentState != null || this.initialStateId.IsInitialized)
+            {
+                throw new InvalidOperationException(ExceptionMessages.StateMachineIsAlreadyInitialized);
             }
         }
 

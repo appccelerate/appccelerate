@@ -262,6 +262,10 @@ namespace Appccelerate.StateMachine
             this.stateMachine.AddExtension(extension);
         }
 
+        /// <summary>
+        /// saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// </summary>
+        /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
         public void Save(IStateMachineSaver<TState> stateMachineSaver)
         {
             Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
@@ -269,8 +273,15 @@ namespace Appccelerate.StateMachine
             this.stateMachine.Save(stateMachineSaver);
         }
 
+        /// <summary>
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
+        /// The loader should return exactly the data that was passed to the saver.
+        /// </summary>
+        /// <param name="stateMachineLoader">Loader providing persisted data.</param>
         public void Load(IStateMachineLoader<TState> stateMachineLoader)
         {
+            this.CheckThatNotAlreadyInitialized();
+
             Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
 
             this.stateMachine.Load(stateMachineLoader);

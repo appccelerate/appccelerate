@@ -22,10 +22,13 @@ namespace Appccelerate.StateMachine
     using System.Collections.Generic;
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Persistence;
+
+    using FakeItEasy;
+
     using FluentAssertions;
     using global::Machine.Specifications;
 
-    [Subject("Persistence")]
+    [Subject(Concern.Persistence)]
     public class When_resetting_a_state_machine_from_persisted_data
     {
         static PassiveStateMachine<State, Event> machine;
@@ -147,5 +150,29 @@ namespace Appccelerate.StateMachine
         {
             return this.currentState;
         }
+    }
+
+    [Subject(Concern.Persistence)]
+    public class When_loading_an_already_initialized_state_machine
+    {
+        static PassiveStateMachine<string, int> machine;
+        static Exception receivedException;
+
+        Establish context = () =>
+            {
+                machine = new PassiveStateMachine<string, int>();
+                machine.Initialize("initial");
+            };
+
+        Because of = () =>
+            {
+                receivedException = Catch.Exception(() => machine.Load(A.Fake<IStateMachineLoader<string>>()));
+            };
+
+        It should_throw_invalid_operation_exception = () =>
+            {
+                receivedException.Should().BeOfType<InvalidOperationException>();
+                receivedException.Message.Should().Be(ExceptionMessages.StateMachineIsAlreadyInitialized);
+            };
     }
 }

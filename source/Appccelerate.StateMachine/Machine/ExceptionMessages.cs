@@ -63,6 +63,8 @@ namespace Appccelerate.StateMachine.Machine
         /// </summary>
         public const string TransitionWithoutGuardHasToBeLast = "The transition without guard has to be the last defined transition because state machine checks transitions in order of declaration.";
 
+        public const string CannotSetALastActiveStateThatIsNotASubState = "The state that is set as the last active state of a super state has to be a sub state";
+
         /// <summary>
         /// State cannot be its own super-state..
         /// </summary>
