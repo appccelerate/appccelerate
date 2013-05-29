@@ -14,8 +14,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.DistributedEventBroker.RhinoEsb.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\Net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net45\Appccelerate.DistributedEventBroker.RhinoEsb.XML</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
