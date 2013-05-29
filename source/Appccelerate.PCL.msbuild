@@ -165,7 +165,7 @@
     <CodeAnalysisDictionary Include="$(AppccelerateSourcePath)CodeAnalysisDictionary.xml" />
   </ItemGroup>
 
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\Tools\PCLMsBuildTasks\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\Tools\StyleCopMsBuildTask\StyleCop.targets"/>
   <Import Project="..\tools\Pepita\PepitaGet.targets"/>
     
