@@ -161,7 +161,7 @@ namespace Appccelerate.EventBroker
                 "{0} {1} per event {2:0.000}",
                 message,
                 stopwatch.ElapsedMilliseconds,
-                ((double)stopwatch.ElapsedMilliseconds / actualNumberOfEvents)));
+                (double)stopwatch.ElapsedMilliseconds / actualNumberOfEvents));
         }
     }
 }

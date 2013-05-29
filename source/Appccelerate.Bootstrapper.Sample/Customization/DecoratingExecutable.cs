@@ -25,7 +25,7 @@ namespace Appccelerate.Bootstrapper.Sample.Customization
     using Appccelerate.Bootstrapper.Syntax;
 
     /// <summary>
-    /// Decorates an executable and outputs additonal information on the console.
+    /// Decorates an executable and outputs additional information on the console.
     /// </summary>
     /// <typeparam name="TExtension">The type of the extension.</typeparam>
     public class DecoratingExecutable<TExtension> : IExecutable<TExtension>

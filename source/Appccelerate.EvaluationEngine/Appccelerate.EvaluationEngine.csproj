@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Appccelerate.EvaluationEngine.nuspec" />
+    <None Include="Settings.stylecop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">

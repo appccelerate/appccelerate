@@ -53,5 +53,8 @@
       <Name>Appccelerate.Fundamentals</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.stylecop" />
+  </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
 </Project>

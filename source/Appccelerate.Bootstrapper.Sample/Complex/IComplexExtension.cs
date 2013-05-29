@@ -41,7 +41,7 @@ namespace Appccelerate.Bootstrapper.Sample.Complex
         /// <summary>
         /// Called when the Container is created. Allows to resolve dependencies during bootstrapping.
         /// </summary>
-        /// <param name="container">The cotainer which allows resolves</param>
+        /// <param name="container">The container which allows resolves</param>
         void ContainerInitialized(Container container);
 
         /// <summary>

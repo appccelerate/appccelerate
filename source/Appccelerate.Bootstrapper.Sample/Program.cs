@@ -26,7 +26,7 @@ namespace Appccelerate.Bootstrapper.Sample
     using Appccelerate.Bootstrapper.Sample.Simple;
 
     /// <summary>
-    /// The program whic is executed
+    /// The program which is executed
     /// </summary>
     public static class Program
     {

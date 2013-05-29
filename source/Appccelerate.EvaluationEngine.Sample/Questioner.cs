@@ -22,7 +22,7 @@ namespace Appccelerate.EvaluationEngine
     using System.Globalization;
 
     /// <summary>
-    /// Asks questions wihtout knowing how they are answered.
+    /// Asks questions without knowing how they are answered.
     /// </summary>
     public class Questioner
     {

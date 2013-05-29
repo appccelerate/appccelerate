@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Appccelerate.EventBroker.nuspec" />
+    <None Include="Settings.stylecop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">

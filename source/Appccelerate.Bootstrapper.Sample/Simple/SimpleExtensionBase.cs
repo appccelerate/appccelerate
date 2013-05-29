@@ -21,7 +21,7 @@ namespace Appccelerate.Bootstrapper.Sample.Simple
     using Appccelerate.Formatters;
 
     /// <summary>
-    /// Base class for ISimpleExtension implementors.
+    /// Base class for <see cref="ISimpleExtension"/> implementations.
     /// </summary>
     public abstract class SimpleExtensionBase : ISimpleExtension
     {

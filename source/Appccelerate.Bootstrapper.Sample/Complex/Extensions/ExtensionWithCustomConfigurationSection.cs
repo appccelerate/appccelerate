@@ -28,7 +28,7 @@ namespace Appccelerate.Bootstrapper.Sample.Complex.Extensions
     using log4net;
 
     /// <summary>
-    /// Extension which consumes a costum configuration section.
+    /// Extension which consumes a custom configuration section.
     /// </summary>
     public class ExtensionWithCustomConfigurationSection : ComplexExtensionBase, IConsumeConfigurationSection
     {
