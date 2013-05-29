@@ -22,6 +22,7 @@ namespace Appccelerate.StateMachine
 
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     using AsyncModule;
@@ -210,6 +211,33 @@ namespace Appccelerate.StateMachine
             this.stateMachine.Initialize(initialState);
 
             this.moduleController.EnqueueMessage(new InitializationInformation());
+        }
+
+        /// <summary>
+        /// saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// </summary>
+        /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            this.stateMachine.Save(stateMachineSaver);
+        }
+
+        /// <summary>
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
+        /// The loader should return exactly the data that was passed to the saver.
+        /// </summary>
+        /// <param name="stateMachineLoader">Loader providing persisted data.</param>
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            this.CheckThatNotAlreadyInitialized();
+
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+
+            this.stateMachine.Load(stateMachineLoader);
+
+            this.initialized = true;
         }
 
         /// <summary>
