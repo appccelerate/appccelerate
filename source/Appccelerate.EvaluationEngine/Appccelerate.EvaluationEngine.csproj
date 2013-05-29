@@ -95,5 +95,5 @@
       <Name>Appccelerate.Fundamentals</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\Appccelerate.PCL.msbuild" />
 </Project>
