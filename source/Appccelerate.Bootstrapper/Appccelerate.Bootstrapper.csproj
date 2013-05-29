@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.Bootstrapper</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{B1FB577F-4616-4CE1-8D9A-F72021323FBB}</ProjectGuid>

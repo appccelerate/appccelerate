@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.EvaluationEngine</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

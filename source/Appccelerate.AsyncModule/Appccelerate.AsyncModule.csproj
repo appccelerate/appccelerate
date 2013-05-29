@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.AsyncModule</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{94C83FE2-1698-4749-9B07-354C9F24D45B}</ProjectGuid>
