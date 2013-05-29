@@ -42,7 +42,7 @@ namespace Appccelerate.Formatters
             }
 
             var partName = type.FullName.Substring(0, type.FullName.IndexOf('`'));
-            var genericArgumentNames = type.GetTypeInfo().GenericTypeParameters.Select(arg => arg.FullNameToString());
+            var genericArgumentNames = type.GetTypeInfo().GenericTypeArguments.Select(arg => arg.FullNameToString());
             return string.Concat(partName, "<", string.Join(",", genericArgumentNames), ">");
         }
     }
