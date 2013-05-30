@@ -29,5 +29,7 @@ namespace Appccelerate.StateMachine
         public const string EntryAndExitActions = "Entry and exit actions";
 
         public const string ExceptionHandling = "Exception Handling";
+        
+        public const string Persistence = "Persistence";
     }
 }

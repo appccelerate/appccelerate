@@ -43,6 +43,8 @@ namespace Appccelerate.StateMachine.Machine
 
             set
             {
+                this.CheckNotAlreadyInitialized();
+
                 this.IsInitialized = true;
 
                 this.value = value;
@@ -61,6 +63,14 @@ namespace Appccelerate.StateMachine.Machine
             if (!this.IsInitialized)
             {
                 throw new InvalidOperationException(ExceptionMessages.ValueNotInitialized);
+            }
+        }
+
+        private void CheckNotAlreadyInitialized()
+        {
+            if (this.IsInitialized)
+            {
+                throw new InvalidOperationException(ExceptionMessages.ValueAlreadyInitialized);
             }
         }
     }
