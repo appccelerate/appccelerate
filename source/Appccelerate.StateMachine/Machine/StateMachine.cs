@@ -348,14 +348,14 @@ namespace Appccelerate.StateMachine.Machine
 
         private void LoadCurrentState(IStateMachineLoader<TState> stateMachineLoader)
         {
-            Initializable<TState> loadedCurrentState = stateMachineLoader.GetCurrentState();
+            Initializable<TState> loadedCurrentState = stateMachineLoader.LoadCurrentState();
 
             this.currentState = loadedCurrentState.IsInitialized ? this.states[loadedCurrentState.Value] : null;
         }
 
         private void LoadHistoryStates(IStateMachineLoader<TState> stateMachineLoader)
         {
-            IDictionary<TState, TState> historyStates = stateMachineLoader.GetHistoryStates();
+            IDictionary<TState, TState> historyStates = stateMachineLoader.LoadHistoryStates();
             foreach (KeyValuePair<TState, TState> historyState in historyStates)
             {
                 IState<TState, TEvent> superState = this.states[historyState.Key];

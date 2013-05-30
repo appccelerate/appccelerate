@@ -141,12 +141,12 @@ namespace Appccelerate.StateMachine
             this.historyStates = states;
         }
 
-        public IDictionary<TState, TState> GetHistoryStates()
+        public IDictionary<TState, TState> LoadHistoryStates()
         {
             return this.historyStates;
         }
 
-        public Initializable<TState> GetCurrentState()
+        public Initializable<TState> LoadCurrentState()
         {
             return this.currentState;
         }
