@@ -40,12 +40,13 @@ namespace Appccelerate.StateMachine
         where TEvent : IComparable
     {
         private readonly StateMachine<TState, TEvent> stateMachine;
+        private readonly ActionBlock<Action> enqueuer;
+        private readonly LinkedList<QueueItem> queue;
 
         private bool initialized;
 
-        private ActionBlock<Action> enqueuer;
         private Task worker;
-        private LinkedList<object> queue;
+        private CancellationTokenSource stopToken;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveStateMachine{TState, TEvent}"/> class.
@@ -73,7 +74,7 @@ namespace Appccelerate.StateMachine
         {
             this.stateMachine = new StateMachine<TState, TEvent>(name, factory);
 
-            this.queue = new LinkedList<object>();
+            this.queue = new LinkedList<QueueItem>();
             this.enqueuer = new ActionBlock<Action>(
                 action =>
                 {
@@ -168,7 +169,7 @@ namespace Appccelerate.StateMachine
         {
             this.CheckThatStateMachineIsInitialized();
 
-            this.enqueuer.Post(() => this.queue.AddLast(new EventInformation<TEvent>(eventId, eventArgument)));
+            this.enqueuer.Post(() => this.queue.AddLast(new EventInformation(eventId, eventArgument)));
             
             this.stateMachine.ForEach(extension => extension.EventQueued(this.stateMachine, eventId, eventArgument));
         }
@@ -191,7 +192,7 @@ namespace Appccelerate.StateMachine
         {
             this.CheckThatStateMachineIsInitialized();
 
-            this.enqueuer.Post(() => this.queue.AddFirst(new EventInformation<TEvent>(eventId, eventArgument)));
+            this.enqueuer.Post(() => this.queue.AddFirst(new EventInformation(eventId, eventArgument)));
 
             this.stateMachine.ForEach(extension => extension.EventQueuedWithPriority(this.stateMachine, eventId, eventArgument));
         }
@@ -252,44 +253,10 @@ namespace Appccelerate.StateMachine
                 return;
             }
 
-            this.worker = Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    object message;
-                    lock (this.queue)
-                    {
-                        if (this.queue.Count > 0)
-                        {
-                            message = this.queue.First.Value;
-                            this.queue.RemoveFirst();
-                        }
-                        else
-                        {
-                            Monitor.Wait(this.queue);
-                            continue;
-                        }
-                    }
-
-                    EventInformation<TEvent> eventInformation = message as EventInformation<TEvent>;
-                    if (eventInformation != null)
-                    {
-                        this.stateMachine.Fire(eventInformation.EventId, eventInformation.EventArgument);
-                    }
-
-                    InitializationInformation initializationInformation = message as InitializationInformation;
-                    if (initializationInformation != null)
-                    {
-                        this.stateMachine.EnterInitialState();
-                    }
-
-                    StopMessage stopMessage = message as StopMessage;
-                    if (stopMessage != null)
-                    {
-                        return;
-                    }
-                }
-            });
+            this.stopToken = new CancellationTokenSource();
+            this.worker = Task.Factory.StartNew(
+                () => this.ProcessQueueItems(this.stopToken.Token),
+                this.stopToken.Token);
 
             this.stateMachine.ForEach(extension => extension.StartedStateMachine(this.stateMachine));
         }
@@ -299,15 +266,30 @@ namespace Appccelerate.StateMachine
         /// </summary>
         public void Stop()
         {
-            if (this.worker == null || this.worker.IsCompleted)
+            if (!this.IsRunning || this.stopToken.IsCancellationRequested)
             {
                 return;
             }
 
-            this.enqueuer.Post(() => this.queue.AddFirst(new StopMessage()));
-
-            this.worker.Wait();
-
+            this.stopToken.Cancel();
+            lock (this.queue)
+            {
+                Monitor.Pulse(this.queue); // wake up task to get a chance to stop
+            }
+            
+            try
+            {
+                this.worker.Wait();
+            }
+            catch (AggregateException)
+            {
+                // in case the task was stopped before it could actually start, it will be canceled.
+                if (this.worker.IsFaulted)
+                {
+                    throw;
+                }
+            }
+            
             this.stateMachine.ForEach(extension => extension.StoppedStateMachine(this.stateMachine));
         }
 
@@ -348,6 +330,29 @@ namespace Appccelerate.StateMachine
             return this.stateMachine.Name ?? this.GetType().FullName;
         }
 
+        private void ProcessQueueItems(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                QueueItem queueItem;
+                lock (this.queue)
+                {
+                    if (this.queue.Count > 0)
+                    {
+                        queueItem = this.queue.First.Value;
+                        this.queue.RemoveFirst();
+                    }
+                    else
+                    {
+                        Monitor.Wait(this.queue);
+                        continue;
+                    }
+                }
+
+                queueItem.Execute(this.stateMachine);
+            }
+        }
+
         private void CheckThatNotAlreadyInitialized()
         {
             if (this.initialized)
@@ -364,8 +369,35 @@ namespace Appccelerate.StateMachine
             }
         }
 
-        private class StopMessage
+        private abstract class QueueItem
         {
+            public abstract void Execute(StateMachine<TState, TEvent> stateMachine);
+        }
+
+        private class EventInformation : QueueItem
+        {
+            public EventInformation(TEvent eventId, object eventArgument)
+            {
+                this.EventId = eventId;
+                this.EventArgument = eventArgument;
+            }
+
+            public TEvent EventId { get; private set; }
+
+            public object EventArgument { get; private set; }
+
+            public override void Execute(StateMachine<TState, TEvent> stateMachine)
+            {
+                stateMachine.Fire(this.EventId, this.EventArgument);
+            }
+        }
+
+        private class InitializationInformation : QueueItem
+        {
+            public override void Execute(StateMachine<TState, TEvent> stateMachine)
+            {
+                stateMachine.EnterInitialState();
+            }
         }
     }
 }

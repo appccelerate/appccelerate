@@ -44,7 +44,7 @@ namespace Appccelerate.StateMachine
         /// <summary>
         /// List of all queued events.
         /// </summary>
-        private readonly LinkedList<EventInformation<TEvent>> events;
+        private readonly LinkedList<EventInformation> events;
 
         /// <summary>
         /// Whether the state machine is initialized.
@@ -83,7 +83,7 @@ namespace Appccelerate.StateMachine
         public PassiveStateMachine(string name, IFactory<TState, TEvent> factory)
         {
             this.stateMachine = new StateMachine<TState, TEvent>(name, factory);
-            this.events = new LinkedList<EventInformation<TEvent>>();
+            this.events = new LinkedList<EventInformation>();
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Appccelerate.StateMachine
         /// <param name="eventArgument">The event argument.</param>
         public void Fire(TEvent eventId, object eventArgument)
         {
-            this.events.AddLast(new EventInformation<TEvent>(eventId, eventArgument));
+            this.events.AddLast(new EventInformation(eventId, eventArgument));
 
             this.stateMachine.ForEach(extension => extension.EventQueued(this.stateMachine, eventId, eventArgument));
 
@@ -189,7 +189,7 @@ namespace Appccelerate.StateMachine
         /// <param name="eventArgument">The event argument.</param>
         public void FirePriority(TEvent eventId, object eventArgument)
         {
-            this.events.AddFirst(new EventInformation<TEvent>(eventId, eventArgument));
+            this.events.AddFirst(new EventInformation(eventId, eventArgument));
 
             this.stateMachine.ForEach(extension => extension.EventQueuedWithPriority(this.stateMachine, eventId, eventArgument));
             
@@ -354,9 +354,9 @@ namespace Appccelerate.StateMachine
         /// Gets the next event to process for the queue.
         /// </summary>
         /// <returns>The next queued event.</returns>
-        private EventInformation<TEvent> GetNextEventToProcess()
+        private EventInformation GetNextEventToProcess()
         {
-            EventInformation<TEvent> e = this.events.First.Value;
+            EventInformation e = this.events.First.Value;
             this.events.RemoveFirst();
             return e;
         }
@@ -365,9 +365,22 @@ namespace Appccelerate.StateMachine
         /// Fires the event on state machine.
         /// </summary>
         /// <param name="e">The event to fire.</param>
-        private void FireEventOnStateMachine(EventInformation<TEvent> e)
+        private void FireEventOnStateMachine(EventInformation e)
         {
             this.stateMachine.Fire(e.EventId, e.EventArgument);
+        }
+
+        private class EventInformation
+        {
+            public EventInformation(TEvent eventId, object eventArgument)
+            {
+                this.EventId = eventId;
+                this.EventArgument = eventArgument;
+            }
+
+            public TEvent EventId { get; private set; }
+
+            public object EventArgument { get; private set; }
         }
     }
 }
