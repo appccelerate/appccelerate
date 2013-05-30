@@ -19,6 +19,7 @@ namespace Appccelerate.StateMachine.Machine.GuardHolders
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
 
     /// <summary>
@@ -59,7 +60,7 @@ namespace Appccelerate.StateMachine.Machine.GuardHolders
         /// <returns>Description of the guard.</returns>
         public string Describe()
         {
-            return this.guard.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.guard.Method.Name;
+            return this.guard.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.guard.GetMethodInfo().Name;
         }
     }
 }

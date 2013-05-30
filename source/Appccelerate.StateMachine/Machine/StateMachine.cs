@@ -342,7 +342,7 @@ namespace Appccelerate.StateMachine.Machine
         {
             if (exceptionHandler == null)
             {
-                throw exception.PreserveStackTrace();
+                throw new StateMachineException("No exception listener is registerd. Exception: ", exception);
             }
         }
 

@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="ArgumentLessActionHolder.cs" company="Appccelerate">
+// <copyright file="StateMachineException.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,30 +16,15 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.StateMachine.Machine.ActionHolders
+namespace Appccelerate.StateMachine.Machine
 {
     using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
 
-    public class ArgumentLessActionHolder : IActionHolder
+    public class StateMachineException : Exception
     {
-        private readonly Action action;
-
-        public ArgumentLessActionHolder(Action action)
+        public StateMachineException(string message, Exception innerException)
+            : base(message, innerException)
         {
-            this.action = action;
-        }
-
-        public void Execute(object argument)
-        {
-            this.action();
-        }
-
-        public string Describe()
-        {
-            return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.GetMethodInfo().Name;
         }
     }
 }

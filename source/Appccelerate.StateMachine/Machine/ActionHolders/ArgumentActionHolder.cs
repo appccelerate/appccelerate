@@ -51,7 +51,7 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
 
         public string Describe()
         {
-            return this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name;
+            return this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.GetMethodInfo().Name;
         }
     }
 }
