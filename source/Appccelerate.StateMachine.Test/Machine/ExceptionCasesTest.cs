@@ -256,7 +256,7 @@ namespace Appccelerate.StateMachine.Machine
 
             var loader = A.Fake<IStateMachineLoader<StateMachine.States>>();
 
-            A.CallTo(() => loader.GetHistoryStates())
+            A.CallTo(() => loader.LoadHistoryStates())
                 .Returns(new Dictionary<StateMachine.States, StateMachine.States>()
                              {
                                  { StateMachine.States.B, StateMachine.States.A }

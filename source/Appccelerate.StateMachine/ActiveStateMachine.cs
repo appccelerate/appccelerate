@@ -213,7 +213,7 @@ namespace Appccelerate.StateMachine
         }
 
         /// <summary>
-        /// saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// Saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
         /// </summary>
         /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
         public void Save(IStateMachineSaver<TState> stateMachineSaver)
@@ -230,9 +230,9 @@ namespace Appccelerate.StateMachine
         /// <param name="stateMachineLoader">Loader providing persisted data.</param>
         public void Load(IStateMachineLoader<TState> stateMachineLoader)
         {
-            this.CheckThatNotAlreadyInitialized();
-
             Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+            
+            this.CheckThatNotAlreadyInitialized();
 
             this.stateMachine.Load(stateMachineLoader);
 

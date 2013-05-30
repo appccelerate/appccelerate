@@ -136,13 +136,13 @@ namespace Appccelerate.StateMachine
         void Report(IStateMachineReport<TState, TEvent> reportGenerator);
 
         /// <summary>
-        /// saves the current state and history states to a persisted state. Can be restored using <see cref="ActiveStateMachine{TState,TEvent}.Load"/>.
+        /// Saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
         /// </summary>
         /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
         void Save(IStateMachineSaver<TState> stateMachineSaver);
 
         /// <summary>
-        /// Loads the current state and history states from a persisted state (<see cref="ActiveStateMachine{TState,TEvent}.Save"/>).
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
         /// The loader should return exactly the data that was passed to the saver.
         /// </summary>
         /// <param name="stateMachineLoader">Loader providing persisted data.</param>

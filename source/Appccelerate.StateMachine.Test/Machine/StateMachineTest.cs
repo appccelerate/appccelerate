@@ -220,7 +220,7 @@ namespace Appccelerate.StateMachine.Machine
         {
             var loader = A.Fake<IStateMachineLoader<StateMachine.States>>();
 
-            A.CallTo(() => loader.GetCurrentState())
+            A.CallTo(() => loader.LoadCurrentState())
                 .Returns(new Initializable<StateMachine.States> { Value = StateMachine.States.C });
 
             this.testee.Load(loader);
@@ -234,7 +234,7 @@ namespace Appccelerate.StateMachine.Machine
         {
             var loader = A.Fake<IStateMachineLoader<StateMachine.States>>();
 
-            A.CallTo(() => loader.GetHistoryStates())
+            A.CallTo(() => loader.LoadHistoryStates())
                 .Returns(new Dictionary<StateMachine.States, StateMachine.States>()
                              {
                                  { StateMachine.States.D, StateMachine.States.D2 }
