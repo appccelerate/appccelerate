@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="DecoratingExecutable.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ namespace Appccelerate.Bootstrapper.Sample.Customization
     using Appccelerate.Bootstrapper.Syntax;
 
     /// <summary>
-    /// Decorates an executable and outputs additonal information on the console.
+    /// Decorates an executable and outputs additional information on the console.
     /// </summary>
     /// <typeparam name="TExtension">The type of the extension.</typeparam>
     public class DecoratingExecutable<TExtension> : IExecutable<TExtension>

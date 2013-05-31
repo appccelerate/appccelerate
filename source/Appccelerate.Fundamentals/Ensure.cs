@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="Ensure.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ namespace Appccelerate
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Reflection;
 
     /// <summary>
     /// Provides several methods for validating arguments and throwing appropriate exceptions.
@@ -100,7 +101,7 @@ namespace Appccelerate
             Ensure.ArgumentNotNull(targetType, "targetType");
             Ensure.ArgumentNotNull(argumentValue, argumentName);
 
-            if (!targetType.IsAssignableFrom(argumentValue.GetType()))
+            if (!targetType.GetTypeInfo().IsAssignableFrom(argumentValue.GetType().GetTypeInfo()))
             {
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Ensure.ArgumentMustBeAssignable, targetType), argumentName);
             }
@@ -122,7 +123,7 @@ namespace Appccelerate
             Ensure.ArgumentNotNull(targetType, "targetType");
             Ensure.ArgumentNotNull(argumentValue, argumentName);
 
-            if (!targetType.IsAssignableFrom(argumentValue))
+            if (!targetType.GetTypeInfo().IsAssignableFrom(argumentValue.GetTypeInfo()))
             {
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Ensure.TypeMustBeAssignable, argumentValue, targetType), argumentName);
             }
@@ -137,7 +138,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="condition"/> evaluates to <c>false</c>.</exception>
-        public static void ArgumentInRange(bool condition, [Localizable(false)] string message)
+        public static void ArgumentInRange(bool condition, string message)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
 
@@ -161,7 +162,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="condition"/> evaluates to <c>false</c>.</exception>
-        public static void ArgumentInRange<T>(bool condition, T argumentValue, string argumentName, [Localizable(false)] string message)
+        public static void ArgumentInRange<T>(bool condition, T argumentValue, string argumentName, string message)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
 
@@ -180,7 +181,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.
         /// - or - The <paramref name="condition"/> evaluates to <c>false</c>.</exception>
-        public static void ArgumentMatches(bool condition, [Localizable(false)] string message)
+        public static void ArgumentMatches(bool condition, string message)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
 
@@ -204,7 +205,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.
         /// - or - The <paramref name="condition"/> evaluates to <c>false</c>.</exception>
-        public static void ArgumentMatches<T>(bool condition, T argumentValue, string argumentName, [Localizable(false)] string message)
+        public static void ArgumentMatches<T>(bool condition, T argumentValue, string argumentName, string message)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
 
@@ -222,7 +223,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.</exception>
         /// <exception cref="InvalidOperationException">This exception is always thrown.</exception>
-        public static void OperationNotValid([Localizable(false)] string message, params object[] arguments)
+        public static void OperationNotValid(string message, params object[] arguments)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
             Ensure.OperationValid(false, message, arguments);
@@ -238,7 +239,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.</exception>
         /// <exception cref="InvalidOperationException">The <paramref name="condition"/> evaluates to <c>false</c>.</exception>
-        public static void OperationValid(bool condition, [Localizable(false)] string message, params object[] arguments)
+        public static void OperationValid(bool condition, string message, params object[] arguments)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
 
@@ -262,7 +263,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.</exception>
         /// <exception cref="NotSupportedException">This exception is always thrown.</exception>
-        public static void OperationNotSupported([Localizable(false)] string message, params object[] arguments)
+        public static void OperationNotSupported(string message, params object[] arguments)
         {
             Ensure.OperationSupported(false, message, arguments);
         }
@@ -277,7 +278,7 @@ namespace Appccelerate
         /// <exception cref="ArgumentNullException">The <paramref name="message"/> parameter is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="message"/> parameter is an empty string.</exception>
         /// <exception cref="NotSupportedException">The <paramref name="condition"/> evaluates to <c>false</c>.</exception>
-        public static void OperationSupported(bool condition, [Localizable(false)] string message, params object[] arguments)
+        public static void OperationSupported(bool condition, string message, params object[] arguments)
         {
             Ensure.ArgumentNotNullOrEmpty(message, "message");
 

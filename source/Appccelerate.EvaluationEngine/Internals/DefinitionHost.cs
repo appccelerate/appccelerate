@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DefinitionHost.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ namespace Appccelerate.EvaluationEngine.Internals
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Host for definitions.
@@ -72,7 +73,7 @@ namespace Appccelerate.EvaluationEngine.Internals
         /// </returns>
         public IDefinition FindInHierarchyAndCloneDefinition<TAnswer, TParameter>(IQuestion<TAnswer, TParameter> question)
         {
-            var def = this.definitions.SingleOrDefault(d => d.QuestionType.IsAssignableFrom(question.GetType()));
+            var def = this.definitions.SingleOrDefault(d => d.QuestionType.GetTypeInfo().IsAssignableFrom(question.GetType().GetTypeInfo()));
 
             if (this.parent == null)
             {
@@ -106,12 +107,12 @@ namespace Appccelerate.EvaluationEngine.Internals
         /// <returns>The matching definition or null.</returns>
         public IDefinition FindDefinition<TAnswer>(Type questionType)
         {
-            return this.definitions.SingleOrDefault(d => d.QuestionType.IsAssignableFrom(questionType));
+            return this.definitions.SingleOrDefault(d => d.QuestionType.GetTypeInfo().IsAssignableFrom(questionType.GetTypeInfo()));
         }
 
         private void CheckThatNoDefinitionWithSameQuestionTypeAlreadyExists(IDefinition definition)
         {
-            if (this.definitions.Any(d => d.QuestionType.IsAssignableFrom(definition.QuestionType)))
+            if (this.definitions.Any(d => d.QuestionType.GetTypeInfo().IsAssignableFrom(definition.QuestionType.GetTypeInfo())))
             {
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "A definition for question {0} was already added.", definition.QuestionType));
             }

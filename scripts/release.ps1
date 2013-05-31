@@ -1,4 +1,4 @@
-$nuget = "..\source\.nuget\nuget.exe"
+$nuget = "..\tools\nuget\nuget.exe"
 $apikey = read-host 'Api Key:'
 & $nuget SetApiKey $apikey 
 $packages = get-childitem ..\publish\Nuget | where {$_.extension -eq ".nupkg" -and !$_.Name.EndsWith("symbols.nupkg")}

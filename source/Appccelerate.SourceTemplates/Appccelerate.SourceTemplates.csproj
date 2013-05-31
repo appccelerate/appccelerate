@@ -27,8 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Log4Net\AsyncModuleLogExtension.cs" />
-    <Compile Include="Log4Net\AsyncWorkerLogExtension.cs" />
     <Compile Include="Log4Net\DriveLogExtension.cs" />
     <Compile Include="Log4Net\EnvironmentLogExtension.cs" />
     <Compile Include="Log4Net\EvaluationEngineLogExtension.cs" />
@@ -38,7 +36,6 @@
     <Compile Include="Log4Net\PathLogExtension.cs" />
     <Compile Include="Log4Net\LoggingStreamDecoratorStream.cs" />
     <Compile Include="Log4Net\StateMachineLogExtension.cs" />
-    <Compile Include="Log4Net\UserInterfaceThreadSynchronizerLogExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\VersionInfo.g.cs" />
   </ItemGroup>
@@ -50,14 +47,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Appccelerate.AsyncModule\Appccelerate.AsyncModule.csproj">
-      <Project>{94C83FE2-1698-4749-9B07-354C9F24D45B}</Project>
-      <Name>Appccelerate.AsyncModule</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Appccelerate.Async\Appccelerate.Async.csproj">
-      <Project>{2D0CDEDE-6004-48A4-878E-9B8AC5A67CAE}</Project>
-      <Name>Appccelerate.Async</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appccelerate.Bootstrapper\Appccelerate.Bootstrapper.csproj">
       <Project>{B1FB577F-4616-4CE1-8D9A-F72021323FBB}</Project>
       <Name>Appccelerate.Bootstrapper</Name>

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="InitializationSpecification.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@ namespace Appccelerate.StateMachine
     using System;
 
     using Appccelerate.StateMachine.Machine;
+    using Appccelerate.StateMachine.Persistence;
+
+    using FakeItEasy;
 
     using FluentAssertions;
     using global::Machine.Specifications;
@@ -52,15 +55,11 @@ namespace Appccelerate.StateMachine
                 machine.Start();
             };
 
-        It should_set_current_state_of_state_machine_to_state_to_which_it_is_initialized = () =>
-            {
-                testExtension.CurrentState.Should().Be(TestState);
-            };
+        It should_set_current_state_of_state_machine_to_state_to_which_it_is_initialized = () => 
+            testExtension.CurrentState.Should().Be(TestState);
 
-        It should_execute_entry_action_of_state_to_which_state_machine_is_initialized = () =>
-            {
-                entryActionExecuted.Should().BeTrue();
-            };
+        It should_execute_entry_action_of_state_to_which_state_machine_is_initialized = () => 
+            entryActionExecuted.Should().BeTrue();
     }
 
     [Subject(Concern.Initialization)]
@@ -84,15 +83,11 @@ namespace Appccelerate.StateMachine
                     .ExecuteOnEntry(() => entryActionExecuted = true);
             };
 
-        Because of = () =>
-            {
-                machine.Initialize(TestState);
-            };
+        Because of = () => 
+            machine.Initialize(TestState);
 
-        It should_not_yet_execute_any_entry_actions = () =>
-            {
-                entryActionExecuted.Should().BeFalse();
-            };
+        It should_not_yet_execute_any_entry_actions = () => 
+            entryActionExecuted.Should().BeFalse();
     }
 
     [Subject(Concern.Initialization)]
@@ -161,6 +156,37 @@ namespace Appccelerate.StateMachine
                 .Should().BeAssignableTo<InvalidOperationException>();
             receivedException.Message
                 .Should().Be(ExceptionMessages.StateMachineNotInitialized);
+        };
+    }
+
+    [Subject(Concern.Initialization)]
+    public class When_a_loaded_state_machine_is_initialized
+    {
+        private const int TestState = 1;
+
+        static PassiveStateMachine<int, int> machine;
+        static IStateMachineLoader<int> loader;
+        static Exception receivedException;
+
+        Establish context = () =>
+        {
+            machine = new PassiveStateMachine<int, int>();
+
+            loader = A.Fake<IStateMachineLoader<int>>();
+            machine.Load(loader);
+        };
+
+        Because of = () =>
+        {
+            receivedException = Catch.Exception(() => machine.Initialize(0));
+        };
+
+        It should_throw_an_invalid_operation_exception = () =>
+        {
+            receivedException
+                .Should().BeAssignableTo<InvalidOperationException>();
+            receivedException.Message
+                .Should().Be(ExceptionMessages.StateMachineIsAlreadyInitialized);
         };
     }
 }

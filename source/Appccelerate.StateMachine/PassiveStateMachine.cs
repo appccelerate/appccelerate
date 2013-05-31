@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="PassiveStateMachine.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ namespace Appccelerate.StateMachine
 
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -43,7 +44,7 @@ namespace Appccelerate.StateMachine
         /// <summary>
         /// List of all queued events.
         /// </summary>
-        private readonly LinkedList<EventInformation<TEvent>> events;
+        private readonly LinkedList<EventInformation> events;
 
         /// <summary>
         /// Whether the state machine is initialized.
@@ -61,7 +62,7 @@ namespace Appccelerate.StateMachine
         /// Initializes a new instance of the <see cref="PassiveStateMachine&lt;TState, TEvent&gt;"/> class.
         /// </summary>
         public PassiveStateMachine()
-            : this(null)
+            : this(default(string))
         {
         }
 
@@ -82,7 +83,7 @@ namespace Appccelerate.StateMachine
         public PassiveStateMachine(string name, IFactory<TState, TEvent> factory)
         {
             this.stateMachine = new StateMachine<TState, TEvent>(name, factory);
-            this.events = new LinkedList<EventInformation<TEvent>>();
+            this.events = new LinkedList<EventInformation>();
         }
 
         /// <summary>
@@ -165,7 +166,7 @@ namespace Appccelerate.StateMachine
         /// <param name="eventArgument">The event argument.</param>
         public void Fire(TEvent eventId, object eventArgument)
         {
-            this.events.AddLast(new EventInformation<TEvent>(eventId, eventArgument));
+            this.events.AddLast(new EventInformation(eventId, eventArgument));
 
             this.stateMachine.ForEach(extension => extension.EventQueued(this.stateMachine, eventId, eventArgument));
 
@@ -188,7 +189,7 @@ namespace Appccelerate.StateMachine
         /// <param name="eventArgument">The event argument.</param>
         public void FirePriority(TEvent eventId, object eventArgument)
         {
-            this.events.AddFirst(new EventInformation<TEvent>(eventId, eventArgument));
+            this.events.AddFirst(new EventInformation(eventId, eventArgument));
 
             this.stateMachine.ForEach(extension => extension.EventQueuedWithPriority(this.stateMachine, eventId, eventArgument));
             
@@ -261,6 +262,33 @@ namespace Appccelerate.StateMachine
             this.stateMachine.AddExtension(extension);
         }
 
+        /// <summary>
+        /// Saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// </summary>
+        /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            this.stateMachine.Save(stateMachineSaver);
+        }
+
+        /// <summary>
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
+        /// The loader should return exactly the data that was passed to the saver.
+        /// </summary>
+        /// <param name="stateMachineLoader">Loader providing persisted data.</param>
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+            
+            this.CheckThatNotAlreadyInitialized();
+
+            this.stateMachine.Load(stateMachineLoader);
+
+            this.initialized = true;
+        }
+
         private void CheckThatNotAlreadyInitialized()
         {
             if (this.initialized)
@@ -326,9 +354,9 @@ namespace Appccelerate.StateMachine
         /// Gets the next event to process for the queue.
         /// </summary>
         /// <returns>The next queued event.</returns>
-        private EventInformation<TEvent> GetNextEventToProcess()
+        private EventInformation GetNextEventToProcess()
         {
-            EventInformation<TEvent> e = this.events.First.Value;
+            EventInformation e = this.events.First.Value;
             this.events.RemoveFirst();
             return e;
         }
@@ -337,9 +365,22 @@ namespace Appccelerate.StateMachine
         /// Fires the event on state machine.
         /// </summary>
         /// <param name="e">The event to fire.</param>
-        private void FireEventOnStateMachine(EventInformation<TEvent> e)
+        private void FireEventOnStateMachine(EventInformation e)
         {
             this.stateMachine.Fire(e.EventId, e.EventArgument);
+        }
+
+        private class EventInformation
+        {
+            public EventInformation(TEvent eventId, object eventArgument)
+            {
+                this.EventId = eventId;
+                this.EventArgument = eventArgument;
+            }
+
+            public TEvent EventId { get; private set; }
+
+            public object EventArgument { get; private set; }
         }
     }
 }

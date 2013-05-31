@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="DebugLogger.cs" />
     <Compile Include="EventTopics.cs" />
+    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Ping.cs">
       <SubType>Form</SubType>
@@ -52,6 +53,9 @@
       <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
       <Name>Appccelerate.Fundamentals</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.stylecop" />
   </ItemGroup>
   <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
 </Project>

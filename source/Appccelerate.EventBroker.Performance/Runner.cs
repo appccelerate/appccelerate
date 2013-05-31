@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Runner.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -161,7 +161,7 @@ namespace Appccelerate.EventBroker
                 "{0} {1} per event {2:0.000}",
                 message,
                 stopwatch.ElapsedMilliseconds,
-                ((double)stopwatch.ElapsedMilliseconds / actualNumberOfEvents)));
+                (double)stopwatch.ElapsedMilliseconds / actualNumberOfEvents));
         }
     }
 }

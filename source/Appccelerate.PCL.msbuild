@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Custom Appccelerate properties. -->
+  <PropertyGroup>
+    
+    <!-- Specifies the name of the Project. -->
+    <AppccelerateProjectName Condition="'$(AppccelerateProjectName)' == ''">Project.Name</AppccelerateProjectName>
+
+    <!-- Specifies the type of the Project (Source, Test, Specification). -->
+    <AppccelerateProjectType Condition="'$(AppccelerateProjectType)' == ''">Source</AppccelerateProjectType>
+
+    <!-- Root path to the source code-->
+    <AppccelerateSourcePath>..\</AppccelerateSourcePath>
+
+    <!-- Path to the results directory -->
+    <AppccelerateResultsPath>bin\</AppccelerateResultsPath>
+    
+  </PropertyGroup>
+
+  <!-- Default Visual Studio Project properties. -->
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+
+    <FileAlignment>512</FileAlignment>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+
+    <AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == ''">..\Appccelerate.snk</AssemblyOriginatorKeyFile>
+    
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+  </PropertyGroup>
+
+  <!-- Default Visual Studio Project properties customized for Appccelerate. -->
+  <PropertyGroup>
+    
+    <!-- Root Namespace is set to Project Name (overridable in Project File). -->
+    <RootNamespace Condition="'$(RootNamespace)' == ''">$(AppccelerateProjectName)</RootNamespace>
+
+    <!-- Output Path is set ResultsPath\Configuration\ (\debug\). -->
+    <OutputPath Condition="'$(OutputPath)' == ''">$(AppccelerateResultsPath)$(Configuration)\</OutputPath>
+ 
+  </PropertyGroup>
+
+  
+  <!-- Default Visual Studio Project properties when project type is 'Source'. -->
+  <PropertyGroup Condition="'$(AppccelerateProjectType)' == 'Source'">
+
+    <!-- Assembly Name is set to Project Name (overridable in Project File). -->
+    <AssemblyName Condition="'$(AssemblyName)' == ''">$(AppccelerateProjectName)</AssemblyName>
+
+    <SignAssembly Condition="'$(SignAssembly)' == ''">true</SignAssembly>
+    
+    <!-- Surpesses warning when informational version is set. -->
+    <NoWarn>1607,1591$(AppccelerateSuppressedWarnings)</NoWarn>
+  </PropertyGroup>
+  
+  <!-- Default Visual Studio Project properties when project type is 'Test'. -->
+  <PropertyGroup Condition="'$(AppccelerateProjectType)' == 'Test'">
+
+    <!-- Assembly Name is set to Project Name + '.Test' (overridable in Project File). -->
+    <AssemblyName Condition="'$(AssemblyName)' == ''">$(AppccelerateProjectName).Test</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Default Visual Studio Project properties when project type is 'Specification'. -->
+  <PropertyGroup Condition="'$(AppccelerateProjectType)' == 'Specification'">
+    
+    <!-- Assembly Name is set to Project Name + '.Specification' (overridable in Project File). -->
+    <AssemblyName Condition="'$(AssemblyName)' == ''">$(AppccelerateProjectName).Specification</AssemblyName>
+  </PropertyGroup>
+  
+  <!-- 
+       Debug|Any CPU = Debug|Any CPU
+       Debug|Mixed Platforms = Debug|Mixed Platforms
+       Debug|x86 = Debug|x86
+       Release|Any CPU = Release|Any CPU
+       Release|Mixed Platforms = Release|Mixed Platforms
+       Release|x86 = Release|x86
+  -->
+
+  <!-- Default Visual Studio Project properties when configuration is 'Debug'. -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    
+    <!-- Set Conditional Constants. -->
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+
+    <!-- Set Debugging Options. -->
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+
+    <!-- Do not treat warnings as errors. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
+
+    <!-- Disable Source Analysis. -->
+    <RunSourceAnalysis>true</RunSourceAnalysis>
+
+    <!-- Disable Code Analysis. -->
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+
+  <!-- Default Visual Studio Project properties when configuration is 'DebugWithCodeAnalysis'. -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugWithCodeAnalysis|AnyCPU'">
+
+    <!-- Set Conditional Constants. -->
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+
+    <!-- Set Debugging Options. -->
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+
+    <!-- Do not treat warnings as errors. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
+
+  </PropertyGroup>
+
+
+  <!-- Default Visual Studio Project properties when configuration is 'Release'. -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+
+    <!-- Set Conditional Constants -->
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+
+    <!-- Set Debugging Options. -->
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+
+    <!-- Treat all warnings as errors. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <SourceAnalysisTreatErrorsAsWarnings>false</SourceAnalysisTreatErrorsAsWarnings>
+
+    <!-- Documentation File is set ResultsPath\Configuration\DeploymentType\AssemblyName.xml when Project Type is 'Source'. -->
+    <DocumentationFile Condition="'$(AppccelerateProjectType)' == 'Source'">$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <!-- Common linked files for each project. -->
+  <ItemGroup>
+    <Compile Include="$(AppccelerateSourcePath)GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(AppccelerateProjectType)' == 'Source'">
+    <None Include="..\Appccelerate.snk">
+      <Link>Appccelerate.snk</Link>
+    </None>
+  </ItemGroup>
+
+  <!-- Custom Dictionary linked files for all Projects of Type 'Source'. -->
+  <ItemGroup Condition="'$(AppccelerateProjectType)' == 'Source'">
+    <CodeAnalysisDictionary Include="$(AppccelerateSourcePath)CodeAnalysisDictionary.xml" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\Tools\StyleCopMsBuildTask\StyleCop.targets"/>
+  <Import Project="..\tools\Pepita\PepitaGet.targets"/>
+    
+  <!--<Target Name="BeforeBuild"></Target>-->
+  <!--<Target Name="AfterBuild"></Target>-->
+</Project>

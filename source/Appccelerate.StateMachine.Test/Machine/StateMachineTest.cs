@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="StateMachineTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,8 +19,11 @@
 namespace Appccelerate.StateMachine.Machine
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
+
+    using Appccelerate.StateMachine.Persistence;
 
     using FakeItEasy;
 
@@ -141,6 +144,11 @@ namespace Appccelerate.StateMachine.Machine
                 .On(StateMachine.Events.A).Goto(StateMachine.States.A)
                 .On(StateMachine.Events.B1).Goto(StateMachine.States.B1);
 
+            this.testee.In(StateMachine.States.D2)
+                .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.D2))
+                .ExecuteOnExit(() => this.RecordExit(StateMachine.States.D2))
+                .On(StateMachine.Events.A).Goto(StateMachine.States.A);
+
             this.testee.In(StateMachine.States.E)
                 .ExecuteOnEntry(() => this.RecordEntry(StateMachine.States.E))
                 .ExecuteOnExit(() => this.RecordExit(StateMachine.States.E))
@@ -205,6 +213,41 @@ namespace Appccelerate.StateMachine.Machine
             this.CheckRecord<EntryRecord>(StateMachine.States.D1);
             this.CheckRecord<EntryRecord>(StateMachine.States.D1A);
             this.CheckNoRemainingRecords();
+        }
+
+        [Fact]
+        public void SetsCurrentStateOnLoadingFromPersistedState()
+        {
+            var loader = A.Fake<IStateMachineLoader<StateMachine.States>>();
+
+            A.CallTo(() => loader.LoadCurrentState())
+                .Returns(new Initializable<StateMachine.States> { Value = StateMachine.States.C });
+
+            this.testee.Load(loader);
+
+            this.testee.CurrentStateId
+                .Should().Be(StateMachine.States.C);
+        }
+
+        [Fact]
+        public void SetsHistoryStatesOnLoadingFromPersistedState()
+        {
+            var loader = A.Fake<IStateMachineLoader<StateMachine.States>>();
+
+            A.CallTo(() => loader.LoadHistoryStates())
+                .Returns(new Dictionary<StateMachine.States, StateMachine.States>()
+                             {
+                                 { StateMachine.States.D, StateMachine.States.D2 }
+                             });
+
+            this.testee.Load(loader);
+            this.testee.Initialize(StateMachine.States.A);
+            this.testee.EnterInitialState();
+            this.testee.Fire(StateMachine.Events.D); // should go to loaded last active state D2, not initial state D1
+            this.ClearRecords();
+            this.testee.Fire(StateMachine.Events.A);
+
+            this.CheckRecord<ExitRecord>(StateMachine.States.D2);
         }
 
         /// <summary>
@@ -542,6 +585,7 @@ namespace Appccelerate.StateMachine.Machine
         /// <summary>
         /// A record of something that happened.
         /// </summary>
+        [DebuggerDisplay("Message = {Message}")]
         private abstract class Record
         {
             /// <summary>
@@ -568,7 +612,7 @@ namespace Appccelerate.StateMachine.Machine
             /// <value>The message.</value>
             public override string Message
             {
-                get { return "State " + this.State + "not entered."; }
+                get { return "State " + this.State + " not entered."; }
             }
         }
 
@@ -583,7 +627,7 @@ namespace Appccelerate.StateMachine.Machine
             /// <value>The message.</value>
             public override string Message
             {
-                get { return "State " + this.State + "not exited."; }
+                get { return "State " + this.State + " not exited."; }
             }
         }
     }

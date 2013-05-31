@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ExceptionMessages.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -34,6 +34,11 @@ namespace Appccelerate.StateMachine.Machine
         public const string ValueNotInitialized = "Value is not initialized";
 
         /// <summary>
+        /// Value is already initialized.
+        /// </summary>
+        public const string ValueAlreadyInitialized = "Value is already initialized";
+
+        /// <summary>
         /// State machine is already initialized.
         /// </summary>
         public const string StateMachineIsAlreadyInitialized = "state machine is already initialized";
@@ -57,6 +62,8 @@ namespace Appccelerate.StateMachine.Machine
         /// Transition without guard has to be last declared one.
         /// </summary>
         public const string TransitionWithoutGuardHasToBeLast = "The transition without guard has to be the last defined transition because state machine checks transitions in order of declaration.";
+
+        public const string CannotSetALastActiveStateThatIsNotASubState = "The state that is set as the last active state of a super state has to be a sub state";
 
         /// <summary>
         /// State cannot be its own super-state..
