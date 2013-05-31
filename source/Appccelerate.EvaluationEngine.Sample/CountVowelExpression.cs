@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="CountVowelExpression.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -30,14 +30,14 @@ namespace Appccelerate.EvaluationEngine
         /// <summary>
         /// Gets or sets the vowel to count.
         /// </summary>
-        /// <value>The vowel tocount.</value>
+        /// <value>The vowel to count.</value>
         public char Vowel { get; set; }
 
         /// <summary>
         /// Evaluates the number of <see cref="Vowel"/> in the passed parameter.
         /// </summary>
         /// <param name="parameter">The parameter.</param>
-        /// <returns>The number of occurences.</returns>
+        /// <returns>The number of occurrences.</returns>
         public int Evaluate(string parameter)
         {
             return parameter.Count(c => c == this.Vowel);

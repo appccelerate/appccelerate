@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="IStateMachine.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ namespace Appccelerate.StateMachine
 
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -133,5 +134,18 @@ namespace Appccelerate.StateMachine
         /// </summary>
         /// <param name="reportGenerator">The report generator.</param>
         void Report(IStateMachineReport<TState, TEvent> reportGenerator);
+
+        /// <summary>
+        /// Saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// </summary>
+        /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
+        void Save(IStateMachineSaver<TState> stateMachineSaver);
+
+        /// <summary>
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
+        /// The loader should return exactly the data that was passed to the saver.
+        /// </summary>
+        /// <param name="stateMachineLoader">Loader providing persisted data.</param>
+        void Load(IStateMachineLoader<TState> stateMachineLoader);
     }
 }

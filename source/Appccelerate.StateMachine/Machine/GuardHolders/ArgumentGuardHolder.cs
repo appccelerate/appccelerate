@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ArgumentGuardHolder.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ namespace Appccelerate.StateMachine.Machine.GuardHolders
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
 
     /// <summary>
@@ -59,7 +60,7 @@ namespace Appccelerate.StateMachine.Machine.GuardHolders
         /// <returns>Description of the guard.</returns>
         public string Describe()
         {
-            return this.guard.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.guard.Method.Name;
+            return this.guard.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.guard.GetMethodInfo().Name;
         }
     }
 }

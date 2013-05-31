@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ExceptionHandlingSpecification.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -158,21 +158,12 @@ namespace Appccelerate.StateMachine
 
         Because of = () =>
             {
-                try
-                {
-                    machine.Fire(Values.Event);
-                }
-                catch (Exception e)
-                {
-                    catchedException = e;
-                }
+                catchedException = Catch.Exception(() => machine.Fire(Values.Event));
             };
 
         It should_throw_exception = () =>
-            {
-                catchedException
-                    .Should().BeSameAs(Exception);
-            };
+            catchedException.InnerException
+                .Should().BeSameAs(Exception);
     }
 
     [Subject(Concern.ExceptionHandling)]
@@ -196,21 +187,12 @@ namespace Appccelerate.StateMachine
 
         Because of = () =>
         {
-            try
-            {
-                machine.Start();
-            }
-            catch (Exception e)
-            {
-                catchedException = e;
-            }
+            catchedException = Catch.Exception(() => machine.Start());
         };
 
-        It should_throw_exception = () =>
-        {
-            catchedException
+        It should_throw_exception = () => 
+            catchedException.InnerException
                 .Should().BeSameAs(Exception);
-        };
     }
 
     [Behaviors]

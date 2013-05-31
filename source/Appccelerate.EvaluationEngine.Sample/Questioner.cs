@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Questioner.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace Appccelerate.EvaluationEngine
     using System.Globalization;
 
     /// <summary>
-    /// Asks questions wihtout knowing how they are answered.
+    /// Asks questions without knowing how they are answered.
     /// </summary>
     public class Questioner
     {

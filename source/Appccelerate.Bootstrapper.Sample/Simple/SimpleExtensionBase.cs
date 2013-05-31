@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="SimpleExtensionBase.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ namespace Appccelerate.Bootstrapper.Sample.Simple
     using Appccelerate.Formatters;
 
     /// <summary>
-    /// Base class for ISimpleExtension implementors.
+    /// Base class for <see cref="ISimpleExtension"/> implementations.
     /// </summary>
     public abstract class SimpleExtensionBase : ISimpleExtension
     {

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Initializable.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -43,6 +43,8 @@ namespace Appccelerate.StateMachine.Machine
 
             set
             {
+                this.CheckNotAlreadyInitialized();
+
                 this.IsInitialized = true;
 
                 this.value = value;
@@ -61,6 +63,14 @@ namespace Appccelerate.StateMachine.Machine
             if (!this.IsInitialized)
             {
                 throw new InvalidOperationException(ExceptionMessages.ValueNotInitialized);
+            }
+        }
+
+        private void CheckNotAlreadyInitialized()
+        {
+            if (this.IsInitialized)
+            {
+                throw new InvalidOperationException(ExceptionMessages.ValueAlreadyInitialized);
             }
         }
     }

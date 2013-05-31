@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="EventArgs{T}.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ namespace Appccelerate.Events
     /// Generic EventArgs
     /// </summary>
     /// <typeparam name="T">Type of the contained value.</typeparam>
-    [Serializable]
     public class EventArgs<T> : EventArgs
     {
         /// <summary>
