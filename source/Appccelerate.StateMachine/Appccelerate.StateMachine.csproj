@@ -13,8 +13,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net45\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net45\Appccelerate.StateMachine.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\portable-windows8+net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\portable-windows8+net45\Appccelerate.StateMachine.xml</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
