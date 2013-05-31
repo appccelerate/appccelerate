@@ -24,6 +24,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <NoWarn>169</NoWarn>
   </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>Appccelerate.StateMachine.Specification</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
