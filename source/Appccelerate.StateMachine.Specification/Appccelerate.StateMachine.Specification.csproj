@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <AppccelerateProjectName>Appccelerate.StateMachine.Specification</AppccelerateProjectName>
+    <AppccelerateProjectName>Appccelerate.StateMachine</AppccelerateProjectName>
     <AppccelerateProjectType>Specification</AppccelerateProjectType>
   </PropertyGroup>
   <PropertyGroup>
@@ -11,9 +11,6 @@
   <PropertyGroup>
     <ProjectGuid>{80C0A59F-4FA8-4D04-80B6-217E8A7EEAF3}</ProjectGuid>
     <OutputType>Library</OutputType>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>Appccelerate.StateMachine</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <NoWarn>169</NoWarn>
