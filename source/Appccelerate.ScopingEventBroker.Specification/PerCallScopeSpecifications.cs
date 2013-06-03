@@ -80,6 +80,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
         It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(Called);
     }
 
+    [Subject("Per Call Scope")]
     public class PerCallScopeSpecification : ScopingEventBrokerSpecification
     {
         protected static long Called = 1;

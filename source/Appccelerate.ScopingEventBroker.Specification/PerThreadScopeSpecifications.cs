@@ -260,6 +260,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
         It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledTwice);
     }
 
+    [Subject("Per Thread Scope")]
     public class PerThreadScopeSpecification : ScopingEventBrokerSpecification
     {
         protected static long CalledTwice = 2;

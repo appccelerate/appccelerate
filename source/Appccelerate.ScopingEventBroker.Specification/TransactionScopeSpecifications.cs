@@ -237,6 +237,7 @@ namespace Appccelerate.ScopingEventBroker.Specification
         It should_invoke_synchronous_subscriber = () => subscriber.Synchronous.Should().Be(CalledForInnerAndOuter);
     }
 
+    [Subject("Transaction Scope")]
     public class TransactionScopeSpecification : ScopingEventBrokerSpecification
     {
         protected static long CalledForInnerAndOuter = 2;
