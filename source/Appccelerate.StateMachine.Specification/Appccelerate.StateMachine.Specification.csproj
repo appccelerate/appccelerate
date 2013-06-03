@@ -24,6 +24,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <NoWarn>169</NoWarn>
   </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>Appccelerate.StateMachine.Specification</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FakeItEasy">
       <HintPath>..\packages\FakeItEasy.1.12.0\lib\net40\FakeItEasy.dll</HintPath>
