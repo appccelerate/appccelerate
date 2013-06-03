@@ -30,14 +30,13 @@ namespace Appccelerate.ScopingEventBroker
 
     using FluentAssertions;
 
-    using Xunit;
     using Xunit.Extensions;
 
     public class EventScopeFactoryTest
     {
         [Theory]
         [ClassData(typeof(EventScopeFactoriesAndTheirScopes))]
-        public void CreateHandlerDecorator_ShouldCreateDefaultDecorator(IEventScopeFactory factory, Type scopeType)
+        public void CreateHandlerDecorator_CreatesDefaultDecorator(IEventScopeFactory factory, Type scopeType)
         {
             IHandler decorator = factory.CreateHandlerDecorator(A.Fake<IHandler>());
 
@@ -46,7 +45,7 @@ namespace Appccelerate.ScopingEventBroker
 
         [Theory]
         [ClassData(typeof(EventScopeFactoriesAndTheirScopes))]
-        public void CreateScopeHolder_ShouldCreateScopeHolderOfType(IEventScopeFactory factory, Type scopeType)
+        public void CreateScopeHolder_CreatesScopeHolderOfType(IEventScopeFactory factory, Type scopeType)
         {
             IEventScopeHolder scopeHolder = factory.CreateScopeHolder();
 
@@ -55,7 +54,7 @@ namespace Appccelerate.ScopingEventBroker
 
         [Theory]
         [ClassData(typeof(EventScopeFactoriesAndTheirScopes))]
-        public void CreateScopeContext_ShouldCreateScopeHolderOfType(IEventScopeFactory factory, Type scopeType)
+        public void CreateScopeContext_CreatesScopeHolderOfType(IEventScopeFactory factory, Type scopeType)
         {
             IEventScopeContext scopeContext = factory.CreateScopeContext();
 
@@ -64,7 +63,7 @@ namespace Appccelerate.ScopingEventBroker
 
         [Theory]
         [ClassData(typeof(EventScopeFactoriesAndTheirScopes))]
-        public void ScopeHolderAndScopeContext_ShouldBeSameInstance(IEventScopeFactory factory, Type scopeType)
+        public void ScopeHolderAndScopeContext_BeSameInstance(IEventScopeFactory factory, Type scopeType)
         {
             var scopeContext = factory.CreateScopeContext();
             var scopeHolder = factory.CreateScopeHolder();
@@ -74,7 +73,7 @@ namespace Appccelerate.ScopingEventBroker
 
         [Theory]
         [ClassData(typeof(EventScopeFactoriesAndTheirScopes))]
-        public void CreateScope_ShoudlCreateDefaultEventScope(IEventScopeFactory factory, Type scopeType)
+        public void CreateScope_CreatesDefaultEventScope(IEventScopeFactory factory, Type scopeType)
         {
             IEventScope eventScope = factory.CreateScope();
 
