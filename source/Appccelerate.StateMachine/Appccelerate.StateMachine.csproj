@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveStateMachine.cs" />
+    <Compile Include="EventInformation.cs" />
     <Compile Include="Extensions\ExtensionBase.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HistoryType.cs" />
