@@ -37,7 +37,7 @@ namespace Appccelerate.ScopingEventBroker.Internals
 
         public void Release()
         {
-            foreach (Action callback in this.callbacks)
+            foreach (Action callback in new Collection<Action>(this.callbacks))
             {
                 callback();
             }
