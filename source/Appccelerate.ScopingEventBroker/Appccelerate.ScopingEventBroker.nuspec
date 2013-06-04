@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<summary>Scoping event broker allows to cancel asynchronous events.</summary>
     <description>The scoping event broker adds a notion of an unit of work to your event broker usage which allows to cancel asynchronous events.</description>
-    <copyright>Copyright 2012</copyright>
+    <copyright>Copyright 2013</copyright>
     <tags>Appccelerate event-broker transactions unitofwork scoping</tags>
 	<dependencies>
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
