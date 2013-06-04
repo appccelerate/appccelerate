@@ -52,13 +52,7 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
             {
                 var localIdentifier = transaction.TransactionInformation.LocalIdentifier;
 
-                scope = new SinglePhaseScopeDecorator(
-                    this.scopeFactory.CreateScope(), 
-                    () =>
-                    {
-                        SinglePhaseScopeDecorator removed;
-                        this.scopesToTransactionIdentifier.TryRemove(localIdentifier, out removed);
-                    });
+                scope = this.CreateSinglePhaseScopeDecoratorFor(localIdentifier);
 
                 transaction.EnlistVolatile(scope, EnlistmentOptions.None);
 
@@ -66,6 +60,17 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
             }
 
             return scope;
+        }
+
+        private SinglePhaseScopeDecorator CreateSinglePhaseScopeDecoratorFor(string localIdentifier)
+        {
+            return new SinglePhaseScopeDecorator(
+                this.scopeFactory.CreateScope(), 
+                () =>
+                    {
+                        SinglePhaseScopeDecorator removed;
+                        this.scopesToTransactionIdentifier.TryRemove(localIdentifier, out removed);
+                    });
         }
 
         private class SinglePhaseScopeDecorator : IEventScopeInternal, ISinglePhaseNotification
