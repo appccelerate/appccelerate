@@ -31,12 +31,12 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
 
         public virtual IEventScopeContext CreateScopeContext()
         {
-            return this.GetOrCreate();
+            return this.GetOrCreateScopeContext();
         }
 
         public virtual IEventScopeHolder CreateScopeHolder()
         {
-            return this.GetOrCreate();
+            return this.GetOrCreateScopeContext();
         }
 
         public virtual IHandler CreateHandlerDecorator(IHandler handler)
@@ -46,7 +46,7 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
 
         protected abstract IEventScopeContextInternal CreateScope(IEventScopeFactory eventScopeFactory);
 
-        private IEventScopeContextInternal GetOrCreate()
+        private IEventScopeContextInternal GetOrCreateScopeContext()
         {
             return this.scopeContext ?? (this.scopeContext = this.CreateScope(this));
         }
