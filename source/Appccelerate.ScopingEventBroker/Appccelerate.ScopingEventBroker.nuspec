@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Appccelerate.ScopingEventBroker</id>
+    <version>%Appccelerate.ScopingEventBrokerFileVersion%</version>
+    <title>Appccelerate.ScopingEventBroker</title>
+    <authors>Appccelerate team</authors>
+    <owners>Appccelerate team</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/appccelerate/appccelerate</projectUrl>
+    <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<summary>Scoping event broker allows to cancel asynchronous events.</summary>
+    <description>The scoping event broker adds a notion of an unit of work to your event broker usage which allows to cancel asynchronous events.</description>
+    <copyright>Copyright 2013</copyright>
+    <tags>Appccelerate event-broker transactions unitofwork scoping</tags>
+	<dependencies>
+      <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
+      <dependency id="Appccelerate.EventBroker" version="%Appccelerate.EventBroker%"/>
+    </dependencies>
+  </metadata>
+</package>
