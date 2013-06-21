@@ -22,30 +22,32 @@ namespace Appccelerate.DistributedEventBroker.Strategies
 
     using Appccelerate.EventBroker;
 
-    using EventBroker.Internals;
-    using Moq;
+    using FakeItEasy;
+
+    using FluentAssertions;
+
     using Xunit;
 
     public class FuncTopicSelectionStrategyTest
     {
         [Fact]
-        public void SelectTopic_WhenFuncReturnsTrue_MustReturnTrue()
+        public void SelectsTopicWhenFunctionReturnsTrue()
         {
             var testee = CreateTestee(topic => true);
 
-            var result = testee.SelectTopic(new Mock<IEventTopicInfo>().Object);
+            var result = testee.SelectTopic(A.Fake<IEventTopicInfo>());
 
-            Assert.True(result);
+            result.Should().BeTrue();
         }
 
         [Fact]
-        public void SelectTopic_WhenFuncReturnsFalse_MustReturnFalse()
+        public void SelectsTopicWhenFunctionReturnsFalse()
         {
             var testee = CreateTestee(topic => false);
 
-            var result = testee.SelectTopic(new Mock<IEventTopicInfo>().Object);
+            var result = testee.SelectTopic(A.Fake<IEventTopicInfo>());
 
-            Assert.False(result);
+            result.Should().BeFalse();
         }
 
         private static ITopicSelectionStrategy CreateTestee(Func<IEventTopicInfo, bool> strategy)
