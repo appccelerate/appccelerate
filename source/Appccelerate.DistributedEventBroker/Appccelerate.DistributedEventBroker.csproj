@@ -37,6 +37,7 @@
     <Compile Include="IEventBrokerBus.cs" />
     <Compile Include="IEventMessageFactory.cs" />
     <Compile Include="IManageEventBroker.cs" />
+    <Compile Include="InternalEventBrokerHolder.cs" />
     <Compile Include="ITopicSelectionStrategy.cs" />
     <Compile Include="Messages\EventFired.cs" />
     <Compile Include="Messages\IEventFired.cs" />

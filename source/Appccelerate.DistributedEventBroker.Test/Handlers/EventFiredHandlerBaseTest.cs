@@ -25,19 +25,17 @@ namespace Appccelerate.DistributedEventBroker.Handlers
     using Moq;
     using Xunit;
 
-    public class EventFiredHandlerBaseTest : IDisposable
+    public class EventFiredHandlerBaseTest
     {
-        private readonly Mock<IEventBroker> internalEventBroker;
+        private readonly Mock<IEventBroker> eventBroker;
 
         private readonly TestableEventFiredHandlerBase testee;
 
         public EventFiredHandlerBaseTest()
         {
-            this.internalEventBroker = new Mock<IEventBroker>();
+            this.eventBroker = new Mock<IEventBroker>();
 
-            DistributedEventBrokerExtensionBase.InternalEventBroker = this.internalEventBroker.Object;
-
-            this.testee = new TestableEventFiredHandlerBase();
+            this.testee = new TestableEventFiredHandlerBase(this.eventBroker.Object);
         }
 
         [Fact]
@@ -47,7 +45,7 @@ namespace Appccelerate.DistributedEventBroker.Handlers
 
             this.testee.TestDoHandle(message.Object);
 
-            this.internalEventBroker.Verify(broker => broker.Fire("topic://Appccelerate.DistributedEventBroker/DISTRIBUTED", this.testee, HandlerRestriction.Asynchronous, this.testee, It.IsAny<EventArgs<IEventFired>>()));
+            this.eventBroker.Verify(broker => broker.Fire("topic://Appccelerate.DistributedEventBroker/DISTRIBUTED", this.testee, HandlerRestriction.Asynchronous, this.testee, It.IsAny<EventArgs<IEventFired>>()));
         }
 
         [Fact]
@@ -56,7 +54,7 @@ namespace Appccelerate.DistributedEventBroker.Handlers
             EventArgs<IEventFired> collectedArgs = null;
             Mock<IEventFired> message = GetMessage();
 
-            this.internalEventBroker.Setup(
+            this.eventBroker.Setup(
                 broker =>
                 broker.Fire(
                     It.IsAny<string>(),
@@ -72,11 +70,6 @@ namespace Appccelerate.DistributedEventBroker.Handlers
             Assert.Same(collectedArgs.Value, message.Object);
         }
 
-        public void Dispose()
-        {
-            DistributedEventBrokerExtensionBase.InternalEventBroker = null;
-        }
-
         private static Mock<IEventFired> GetMessage()
         {
             var message = new Mock<IEventFired>();
@@ -88,6 +81,11 @@ namespace Appccelerate.DistributedEventBroker.Handlers
 
         private class TestableEventFiredHandlerBase : EventFiredHandlerBase
         {
+            public TestableEventFiredHandlerBase(IEventBroker eventBroker)
+                : base(eventBroker)
+            {
+            }
+
             public void TestDoHandle(IEventFired message)
             {
                 this.DoHandle(message);
