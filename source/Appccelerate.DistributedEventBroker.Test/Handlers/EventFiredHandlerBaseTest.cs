@@ -19,63 +19,67 @@
 namespace Appccelerate.DistributedEventBroker.Handlers
 {
     using System;
-    using EventBroker;
-    using Events;
-    using Messages;
-    using Moq;
+
+    using Appccelerate.DistributedEventBroker.Messages;
+    using Appccelerate.EventBroker;
+    using Appccelerate.Events;
+
+    using FakeItEasy;
+
+    using FluentAssertions;
+
     using Xunit;
 
     public class EventFiredHandlerBaseTest
     {
-        private readonly Mock<IEventBroker> eventBroker;
+        private readonly IEventBroker eventBroker;
 
         private readonly TestableEventFiredHandlerBase testee;
 
         public EventFiredHandlerBaseTest()
         {
-            this.eventBroker = new Mock<IEventBroker>();
+            this.eventBroker = A.Fake<IEventBroker>();
 
-            this.testee = new TestableEventFiredHandlerBase(this.eventBroker.Object);
+            this.testee = new TestableEventFiredHandlerBase(this.eventBroker);
         }
 
         [Fact]
-        public void Handle_MustFireOnEventBroker()
+        public void FiresOnEventBroker()
         {
-            Mock<IEventFired> message = GetMessage();
+            IEventFired message = GetMessage();
 
-            this.testee.TestDoHandle(message.Object);
+            this.testee.TestDoHandle(message);
 
-            this.eventBroker.Verify(broker => broker.Fire("topic://Appccelerate.DistributedEventBroker/DISTRIBUTED", this.testee, HandlerRestriction.Asynchronous, this.testee, It.IsAny<EventArgs<IEventFired>>()));
+            A.CallTo(() => this.eventBroker.Fire("topic://Appccelerate.DistributedEventBroker/DISTRIBUTED", this.testee, HandlerRestriction.Asynchronous, this.testee, A<EventArgs<IEventFired>>.Ignored)).MustHaveHappened();
         }
 
         [Fact]
-        public void Handle_MustPassMessageToEventArgs()
+        public void PassesMessageToEventArgs()
         {
             EventArgs<IEventFired> collectedArgs = null;
-            Mock<IEventFired> message = GetMessage();
+            IEventFired message = GetMessage();
 
-            this.eventBroker.Setup(
-                broker =>
-                broker.Fire(
-                    It.IsAny<string>(),
-                    It.IsAny<object>(),
-                    It.IsAny<HandlerRestriction>(),
-                    It.IsAny<object>(),
-                    It.IsAny<EventArgs>())).Callback<string, object, HandlerRestriction, object, EventArgs>(
-                        (topic, publisher, restriction, sender, args) => collectedArgs = (EventArgs<IEventFired>)args);
+            A.CallTo(
+                () =>
+                this.eventBroker.Fire(
+                    A<string>.Ignored,
+                    A<object>.Ignored,
+                    A<HandlerRestriction>.Ignored,
+                    A<object>.Ignored,
+                    A<EventArgs>.Ignored)).Invokes(fake => collectedArgs = fake.Arguments.Get<EventArgs<IEventFired>>(4));
 
-            this.testee.TestDoHandle(message.Object);
+            this.testee.TestDoHandle(message);
 
-            Assert.NotNull(collectedArgs);
-            Assert.Same(collectedArgs.Value, message.Object);
+            collectedArgs.Should().NotBeNull();
+            collectedArgs.Value.Should().BeSameAs(message);
         }
 
-        private static Mock<IEventFired> GetMessage()
+        private static IEventFired GetMessage()
         {
-            var message = new Mock<IEventFired>();
-            message.SetupGet(m => m.DistributedEventBrokerIdentification).Returns("DISTRIBUTED");
-            message.SetupGet(m => m.EventArgs).Returns("SomeData");
-            message.SetupGet(m => m.Topic).Returns("topic://SomeTopic");
+            var message = A.Fake<IEventFired>();
+            message.DistributedEventBrokerIdentification = "DISTRIBUTED";
+            message.EventArgs = "SomeData";
+            message.Topic = "topic://SomeTopic";
             return message;
         }
 
