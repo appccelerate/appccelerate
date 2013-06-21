@@ -20,55 +20,55 @@ namespace Appccelerate.DistributedEventBroker
 {
     using Appccelerate.EventBroker;
 
-    using Moq;
+    using FakeItEasy;
 
     using Xunit;
 
     public class EventBrokerExtensionsForDistributionTest
     {
-        private readonly Mock<IEventBroker> eventBroker;
+        private readonly IEventBroker eventBroker;
 
-        private readonly Mock<IDistributedEventBrokerExtension> extension;
+        private readonly IDistributedEventBrokerExtension extension;
 
         public EventBrokerExtensionsForDistributionTest()
         {
-            this.eventBroker = new Mock<IEventBroker>();
+            this.eventBroker = A.Fake<IEventBroker>();
 
-            this.extension = new Mock<IDistributedEventBrokerExtension>();
+            this.extension = A.Fake<IDistributedEventBrokerExtension>();
         }
 
         [Fact]
-        public void AddDistributedExtension_MustAddExtension()
+        public void AddsExtension()
         {
-            this.eventBroker.Object.AddDistributedExtension(this.extension.Object);
+            this.eventBroker.AddDistributedExtension(this.extension);
 
-            this.eventBroker.Verify(eb => eb.AddExtension(this.extension.Object));
+            A.CallTo(() => this.eventBroker.AddExtension(this.extension)).MustHaveHappened();
         }
 
         [Fact]
-        public void AddDistributedExtension_MustManageEventBroker()
+        public void ManagesTheEventBroker()
         {
-            this.eventBroker.Object.AddDistributedExtension(this.extension.Object);
+            this.eventBroker.AddDistributedExtension(this.extension);
 
-            this.extension.Verify(e => e.Manage(this.eventBroker.Object));
+            A.CallTo(() => this.extension.Manage(this.eventBroker)).MustHaveHappened();
         }
 
         [Fact]
-        public void AddDistributedExtension_WithEventBrokerIdentification_MustManageEventBroker()
+        public void WhenEventBrokerIdentification_ManagesTheEventBroker()
         {
             const string EventBrokerIdentification = "ID";
 
-            this.eventBroker.Object.AddDistributedExtension(this.extension.Object, EventBrokerIdentification);
+            this.eventBroker.AddDistributedExtension(this.extension, EventBrokerIdentification);
 
-            this.extension.Verify(e => e.Manage(this.eventBroker.Object, EventBrokerIdentification));
+            A.CallTo(() => this.extension.Manage(this.eventBroker, EventBrokerIdentification));
         }
 
         [Fact]
-        public void AddDistributedExtension_WithEventBrokerIdentification_MustAddExtension()
+        public void WhenEventBrokerIdentification_AddsExtension()
         {
-            this.eventBroker.Object.AddDistributedExtension(this.extension.Object);
+            this.eventBroker.AddDistributedExtension(this.extension);
 
-            this.eventBroker.Verify(eb => eb.AddExtension(this.extension.Object));
+            A.CallTo(() => this.eventBroker.AddExtension(this.extension));
         }
     }
 }
