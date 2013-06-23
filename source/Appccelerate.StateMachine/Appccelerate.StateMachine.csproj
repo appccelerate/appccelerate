@@ -104,7 +104,9 @@
     <Content Include="Version.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Appccelerate.StateMachine.nuspec" />
+    <None Include="Appccelerate.StateMachine.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
