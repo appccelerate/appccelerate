@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.ScopingEventBroker</AppccelerateProjectName>
+    <AppccelerateProjectType>Source</AppccelerateProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{7FBCDA54-9487-472F-BA6A-D4CF2F68BA05}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\lib\Net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net45\Appccelerate.ScopingEventBroker.XML</DocumentationFile>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IEventScopeContext.cs" />
+    <Compile Include="IEventScopeContextFactory.cs" />
+    <Compile Include="IEventScopeFactory.cs" />
+    <Compile Include="Internals\Context\AbstractEventScopeContext.cs" />
+    <Compile Include="Internals\Context\AbstractEventScopeFactory.cs" />
+    <Compile Include="Internals\Context\IEventScopeContextInternal.cs" />
+    <Compile Include="Internals\Context\PerCallEventScopeContext.cs" />
+    <Compile Include="Internals\Context\PerThreadEventScopeContext.cs" />
+    <Compile Include="Internals\Context\PerTransactionScopeContext.cs" />
+    <Compile Include="Internals\EventScope.cs" />
+    <Compile Include="Internals\IEventScopeInternal.cs" />
+    <Compile Include="Internals\IEventScopeRegistry.cs" />
+    <Compile Include="Internals\ScopingHandlerDecorator.cs" />
+    <Compile Include="PerCallEventScopeFactory.cs" />
+    <Compile Include="PerThreadEventScopeFactory.cs" />
+    <Compile Include="EventScopingStandardFactory.cs" />
+    <Compile Include="IEventScope.cs" />
+    <Compile Include="IEventScopeHolder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\VersionInfo.g.cs" />
+    <Compile Include="TransactionScopeAwareEventScopeFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6b189709-125e-46ec-8fee-50345375f221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appccelerate.ScopingEventBroker.nuspec" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

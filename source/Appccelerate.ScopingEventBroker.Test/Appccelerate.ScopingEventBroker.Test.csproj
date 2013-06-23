@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AppccelerateProjectName>Appccelerate.ScopingEventBroker.Test</AppccelerateProjectName>
+    <AppccelerateProjectType>Test</AppccelerateProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{5F2E88D4-26F8-4F8D-8D79-F0C4159275E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>Appccelerate.ScopingEventBroker.Test</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Appccelerate.ScopingEventBroker</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.12.0\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.9.1\lib\net20\xunit.extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EventScopeFactoryTest.cs" />
+    <Compile Include="Internals\Context\AbstractEventScopeContextTest.cs" />
+    <Compile Include="Internals\Context\PerCallEventScopeContextTest.cs" />
+    <Compile Include="Internals\Context\PerThreadEventScopeContextTest.cs" />
+    <Compile Include="Internals\Context\PerTransactionScopeContextTest.cs" />
+    <Compile Include="Internals\EventScopeTest.cs" />
+    <Compile Include="Internals\ScopingHandlerDecoratorTest.cs" />
+    <Compile Include="EventScopingStandardFactoryTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
+      <Project>{6b189709-125e-46ec-8fee-50345375f221}</Project>
+      <Name>Appccelerate.EventBroker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Appccelerate.ScopingEventBroker\Appccelerate.ScopingEventBroker.csproj">
+      <Project>{7fbcda54-9487-472f-ba6a-d4cf2f68ba05}</Project>
+      <Name>Appccelerate.ScopingEventBroker</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+</Project>

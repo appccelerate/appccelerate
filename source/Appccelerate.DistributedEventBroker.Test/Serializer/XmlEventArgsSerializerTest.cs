@@ -23,6 +23,8 @@ namespace Appccelerate.DistributedEventBroker.Serializer
     using System.Linq;
     using System.Xml.Linq;
 
+    using FluentAssertions;
+
     using Xunit;
 
     public class XmlEventArgsSerializerTest
@@ -40,7 +42,7 @@ namespace Appccelerate.DistributedEventBroker.Serializer
         }
 
         [Fact]
-        public void Serialize_MustSerializeEventArgsToXmlString()
+        public void SerializesEventArgsToXmlStrings()
         {
             var eventArgs = new CancelEventArgs(true);
 
@@ -48,16 +50,15 @@ namespace Appccelerate.DistributedEventBroker.Serializer
 
             var cancel = XDocument.Load(new StringReader(result)).Descendants("Cancel").Select(x => bool.Parse(x.Value)).Single();
 
-            Assert.True(cancel);
+            cancel.Should().BeTrue();
         }
 
         [Fact]
-        public void Deserialize_MustDeserializeEventArgsFromXmlString()
+        public void DeserializesEventArgsFromXmlStrings()
         {
             var result = this.testee.Deserialize(typeof(CancelEventArgs), InputAndOutput);
 
-            Assert.IsType<CancelEventArgs>(result);
-            Assert.True(((CancelEventArgs)result).Cancel);
+            result.As<CancelEventArgs>().Cancel.Should().BeTrue();
         }
     }
 }

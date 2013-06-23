@@ -21,7 +21,6 @@ namespace Appccelerate.MappingEventBroker
     using System.Collections.ObjectModel;
 
     using Appccelerate.EventBroker;
-    using Appccelerate.EventBroker.Internals;
 
     /// <summary>
     /// Specialized keyed collection which used the <see cref="IEventTopicInfo.Uri"/> as key.
