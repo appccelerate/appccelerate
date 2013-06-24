@@ -52,8 +52,6 @@ namespace Appccelerate.EventBroker.Internals
             this.testee = new Registrar(this.factory, this.eventTopicHost, this.eventInspector, this.extensionsHost);
         }
 
-        public event EventHandler Event;
-
         [Fact]
         public void DoesNothing_WhenUnregisteringANotRegisteredObject()
         {
@@ -61,7 +59,7 @@ namespace Appccelerate.EventBroker.Internals
 
             var eventTopic = A.Fake<IEventTopic>();
 
-            EventInfo eventInfo = this.GetType().GetEvent(EventName);
+            EventInfo eventInfo = typeof(Publisher).GetEvent(EventName);
             var publication = new PropertyPublicationScanResult(EventTopic, eventInfo, HandlerRestriction.None, null);
             A.CallTo(() => this.eventInspector.Scan(publisher)).Returns(new ScanResult(new[] { publication }, Enumerable.Empty<PropertySubscriptionScanResult>()));
             A.CallTo(() => this.eventTopicHost.GetEventTopic(EventTopic)).Returns(eventTopic);
@@ -90,6 +88,11 @@ namespace Appccelerate.EventBroker.Internals
 
             [EventPublication(Topic)]
             public event EventHandler Event;
+
+            public void Fire()
+            {
+                this.Event(this, EventArgs.Empty);
+            }
         }
     }
 }
