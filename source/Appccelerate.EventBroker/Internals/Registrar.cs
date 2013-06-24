@@ -80,7 +80,10 @@ namespace Appccelerate.EventBroker.Internals
 
             IPublication publication = eventTopic.RemovePublication(publisher, eventName);
 
-            publication.Dispose();
+            if (publication != null)
+            {
+                publication.Dispose();
+            }
         }
 
         /// <summary>
@@ -427,7 +430,10 @@ namespace Appccelerate.EventBroker.Internals
 
                 IPublication publication = topic.RemovePublication(publisher, propertyPublication.Event.Name);
 
-                publication.Dispose();
+                if (publication != null)
+                {
+                    publication.Dispose();
+                }
             }
         }
 
