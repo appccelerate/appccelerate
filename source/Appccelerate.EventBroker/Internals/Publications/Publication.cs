@@ -66,11 +66,16 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         public abstract Type EventArgsType { get; }
 
+        public abstract bool AllowsMultipleRegistrationsOnSamePublisher
+        {
+            get;
+        }
+
         protected bool IsPublisherAlive
         {
             get { return this.publisher.IsAlive;  }
         }
-        
+
         public virtual void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");
