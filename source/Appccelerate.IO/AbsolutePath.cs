@@ -62,6 +62,28 @@ namespace Appccelerate.IO
             return absolutePath.Value;
         }
 
+        public static bool operator ==(AbsolutePath a, AbsolutePath b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+// ReSharper disable RedundantCast.0 because otherwise it results in recursion.
+            if (((object)a == null) || ((object)b == null))
+// ReSharper restore RedundantCast.0
+            {
+                return false;
+            }
+
+            return a.Value == b.Value;
+        }
+
+        public static bool operator !=(AbsolutePath a, AbsolutePath b)
+        {
+            return !(a == b);
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
