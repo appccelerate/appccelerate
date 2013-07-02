@@ -208,7 +208,7 @@ namespace Appccelerate.EventBroker.Internals
             // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on event handler type
             // therefore do the check on the event arguments type only.
             // subscriberEventArgsType can be null if the handler method has no parameters.
-            if (subscriberEventArgsType!= null && !subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
+            if (subscriberEventArgsType != null && !subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
             {
                 using (var writer = new StringWriter(CultureInfo.InvariantCulture))
                 {
