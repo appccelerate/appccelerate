@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="Subscribers.cs" company="Appccelerate">
+// <copyright file="NoArgumentsDelegateWrapper.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker.Registration.Subscribers
+namespace Appccelerate.EventBroker.Internals.Subscriptions
 {
-    public static class Subscribers
+    using System;
+    using System.Reflection;
+
+    public class NoArgumentsDelegateWrapper : DelegateWrapper
     {
-        public const string RegisteringEventBrokerRegisterables = "Registering subscribers";
-        public const string RegisteringHandlerMethods = "Registering handler methods";
+        public NoArgumentsDelegateWrapper(MethodInfo handlerMethod)
+            : base(
+                null, 
+                typeof(Action),
+                handlerMethod)
+        {
+        }
+
+        public override void Invoke(object subscriber, object sender, EventArgs e)
+        {
+            Delegate d = this.CreateSubscriptionDelegate(subscriber);
+
+            d.DynamicInvoke();
+        }
     }
 }

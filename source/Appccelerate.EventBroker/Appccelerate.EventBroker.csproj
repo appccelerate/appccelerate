@@ -79,6 +79,7 @@
     <Compile Include="Internals\Subscriptions\DelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\EventArgsOnlyDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\IDelegateWrapper.cs" />
+    <Compile Include="Internals\Subscriptions\NoArgumentsDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\SenderAndEventArgsDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\Subscription.cs" />
     <Compile Include="Internals\Subscriptions\UnwrappedEventArgsOnlyDelegateWrapper.cs" />

@@ -18,26 +18,23 @@
 
 namespace Appccelerate.EventBroker.Registration.Subscribers
 {
-    using System;
-    using System.Collections.Generic;
     using Appccelerate.EventBroker.Handlers;
-    using Appccelerate.Events;
     using FluentAssertions;
     using Machine.Specifications;
 
     [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument_using_registration_by_attribute
+    public class When_defining_a_handler_method_with_no_sender_and_no_event_argument_using_registration_by_attribute
     {
         const string Value = "value";
 
         static EventBroker eventBroker;
         static Publisher publisher;
-        static SubscriberWithoutSenderAndUnwrappedEventArgs subscriber;
+        static SubscriberWithoutSenderAndWithoutEventArgs subscriber;
 
         Establish context = () =>
             {
                 publisher = new Publisher();
-                subscriber = new SubscriberWithoutSenderAndUnwrappedEventArgs();
+                subscriber = new SubscriberWithoutSenderAndWithoutEventArgs();
 
                 eventBroker = new EventBroker();
 
@@ -55,35 +52,35 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
                 publisher.FireEvent(Value);
             };
 
-        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgValues.Should().Contain(Value);
+        It should_call_handler_method = () =>
+            subscriber.CallCount.Should().BePositive();
 
         It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+            subscriber.CallCount.Should().Be(1, "event should not be routed anymore after subscriber is unregistered.");
 
-        public class SubscriberWithoutSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
+        public class SubscriberWithoutSenderAndWithoutEventArgs : SubscriberWithoutSenderAndWithoutEventArgsBase
         {
             [EventSubscription(SimpleEvent.EventTopic, typeof(OnPublisher))]
-            public void Handle(string value)
+            public void Handle()
             {
-                this.ReceivedEventArgValues.Add(value);
+                this.CallCount++;
             }
         }
     }
 
     [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument_using_registration_by_registrar
+    public class When_defining_a_handler_method_with_no_sender_and_no_event_argument_using_registration_by_registrar
     {
         const string Value = "value";
 
         static EventBroker eventBroker;
         static Publisher publisher;
-        static SubscriberWithoutSenderAndUnwrappedEventArgs subscriber;
+        static SubscriberWithoutSenderAndWithoutEventArgs subscriber;
 
         Establish context = () =>
         {
             publisher = new Publisher();
-            subscriber = new SubscriberWithoutSenderAndUnwrappedEventArgs();
+            subscriber = new SubscriberWithoutSenderAndWithoutEventArgs();
 
             eventBroker = new EventBroker();
 
@@ -92,48 +89,37 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
 
         Because of = () =>
         {
-            eventBroker.SpecialCasesRegistrar.AddSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
+            eventBroker.SpecialCasesRegistrar.AddSubscription(SimpleEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
 
             publisher.FireEvent(Value);
 
-            eventBroker.SpecialCasesRegistrar.RemoveSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle);
+            eventBroker.SpecialCasesRegistrar.RemoveSubscription(SimpleEvent.EventTopic, subscriber, subscriber.Handle);
 
             publisher.FireEvent(Value);
         };
 
-        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgValues.Should().Contain(Value);
+        It should_call_handler_method = () =>
+            subscriber.CallCount.Should().BePositive();
 
         It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+            subscriber.CallCount.Should().Be(1, "event should not be routed anymore after subscriber is unregistered.");
 
-        public class SubscriberWithoutSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
+        public class SubscriberWithoutSenderAndWithoutEventArgs : SubscriberWithoutSenderAndWithoutEventArgsBase
         {
-            public void Handle(string value)
+            public void Handle()
             {
-                this.ReceivedEventArgValues.Add(value);
+                this.CallCount++;
             }
         }
     }
 
-    public class Publisher
+    public class SubscriberWithoutSenderAndWithoutEventArgsBase
     {
-        [EventPublication(SimpleEvent.EventTopic)]
-        public event EventHandler<EventArgs<string>> Event;
-
-        public void FireEvent(string value)
+        public SubscriberWithoutSenderAndWithoutEventArgsBase()
         {
-            this.Event(this, new EventArgs<string>(value));
-        }
-    }
-
-    public class SubscriberWithoutSenderAndUnwrappedEventArgsBase
-    {
-        public SubscriberWithoutSenderAndUnwrappedEventArgsBase()
-        {
-            this.ReceivedEventArgValues = new List<object>();
+            this.CallCount = 0;
         }
 
-        public List<object> ReceivedEventArgValues { get; private set; }
+        public int CallCount { get; protected set; }
     }
 }
