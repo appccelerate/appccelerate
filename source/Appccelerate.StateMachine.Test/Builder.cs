@@ -67,6 +67,13 @@ namespace Appccelerate.StateMachine
                 return this;
             }
 
+            public GuardBuilder Throwing(Exception exception)
+            {
+                A.CallTo(() => this.guardHolder.Execute(A<object>._)).Throws(exception);
+
+                return this;
+            }
+
             public IGuardHolder Build()
             {
                 return this.guardHolder;
