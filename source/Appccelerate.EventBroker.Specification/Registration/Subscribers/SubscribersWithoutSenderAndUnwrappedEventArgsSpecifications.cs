@@ -16,16 +16,13 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker.Subscribers
+namespace Appccelerate.EventBroker.Registration.Subscribers
 {
     using System;
     using System.Collections.Generic;
-
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.Events;
-
     using FluentAssertions;
-
     using Machine.Specifications;
 
     [Subject(Subscribers.RegisteringHandlerMethods)]
