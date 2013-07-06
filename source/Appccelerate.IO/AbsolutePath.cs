@@ -84,7 +84,6 @@ namespace Appccelerate.IO
             return !(a == b);
         }
 
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
