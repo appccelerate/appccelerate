@@ -18,20 +18,16 @@
 
 namespace Appccelerate.StateMachine.Machine.Transitions
 {
-    using Appccelerate.StateMachine.Machine.ActionHolders;
     using FakeItEasy;
-    using FluentAssertions;
     using Xunit;
 
-    using Builder = Builder<TransitionTest.States, TransitionTest.Events>;
-    
     public class TransitionTest : SuccessfulTransitionWithExecutedActionsTestBase
     {
         public TransitionTest()
         {
-            this.Source = Builder.CreateState().Build();
-            this.Target = Builder.CreateState().Build();
-            this.TransitionContext = Builder.CreateTransitionContext().WithState(this.Source).Build();
+            this.Source = Builder<States, Events>.CreateState().Build();
+            this.Target = Builder<States, Events>.CreateState().Build();
+            this.TransitionContext = Builder<States, Events>.CreateTransitionContext().WithState(this.Source).Build();
 
             this.Testee.Source = this.Source;
             this.Testee.Target = this.Target;
@@ -51,6 +47,14 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             this.Testee.Fire(this.TransitionContext);
 
             A.CallTo(() => this.Source.Exit(this.TransitionContext)).MustHaveHappened(Repeated.Exactly.Once);
-        }        
+        }
+
+        [Fact]
+        public void NotifiesTransitionBeginOnTransitionContext()
+        {
+            this.Testee.Fire(this.TransitionContext);
+
+            A.CallTo(() => this.TransitionContext.OnTransitionBegin()).MustHaveHappened();
+        }
     }
 }
