@@ -165,8 +165,8 @@ namespace Appccelerate.StateMachine.Reports
                 transitionsReport = reader.ReadToEnd();
             }
 
-            const string ExpectedTransitionsReport = "Source;Event;Guard;Target;ActionsHealthy;ErrorOccured;;Error;OnFloor;CloseDoor;;DoorClosed;OnFloor;OpenDoor;;DoorOpen;OnFloor;GoUp;CheckOverload;MovingUp;OnFloor;GoUp;;internal transition;AnnounceOverload, BeepOnFloor;GoDown;CheckOverload;MovingDown;OnFloor;GoDown;;internal transition;AnnounceOverloadMoving;Stop;;OnFloor;Error;Reset;;Healthy;Error;ErrorOccured;;internal transition;";
-            const string ExpectedStatesReport = "Source;Entry;Exit;ChildrenHealthy;;;OnFloor, MovingOnFloor;AnnounceFloor;Beep, Beep;DoorClosed, DoorOpenMoving;;;MovingUp, MovingDownMovingUp;;;MovingDown;;;DoorClosed;;;DoorOpen;;;Error;;;";
+            const string ExpectedTransitionsReport = "Source;Event;Guard;Target;ActionsHealthy;ErrorOccured;;Error;noneOnFloor;CloseDoor;;DoorClosed;noneOnFloor;OpenDoor;;DoorOpen;noneOnFloor;GoUp;CheckOverload;MovingUp;noneOnFloor;GoUp;;internal transition;AnnounceOverload, BeepOnFloor;GoDown;CheckOverload;MovingDown;noneOnFloor;GoDown;;internal transition;AnnounceOverloadMoving;Stop;;OnFloor;noneError;Reset;;Healthy;noneError;ErrorOccured;;internal transition;none";
+            const string ExpectedStatesReport = "Source;Entry;Exit;ChildrenHealthy;none;none;OnFloor, MovingOnFloor;AnnounceFloor;Beep, Beep;DoorClosed, DoorOpenMoving;none;none;MovingUp, MovingDownMovingUp;none;none;noneMovingDown;none;none;noneDoorClosed;none;none;noneDoorOpen;none;none;noneError;none;none;none";
 
             statesReport.Replace("\n", string.Empty).Replace("\r", string.Empty)
                 .Should().Be(ExpectedStatesReport.Replace("\n", string.Empty).Replace("\r", string.Empty));
