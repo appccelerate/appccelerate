@@ -21,6 +21,7 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
     using System;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Text;
 
     public class ParametrizedActionHolder<T> : IActionHolder
     {
@@ -41,7 +42,20 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
 
         public string Describe()
         {
-            return this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name;
+            StringBuilder result = new StringBuilder();
+
+            result.Append(this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name);
+
+            if (this.parameter == null)
+            {
+                result.Append("(null)");
+            }
+            else
+            {
+                result.AppendFormat("({0})", this.parameter);
+            }
+
+            return result.ToString();
         }
     }
 }
