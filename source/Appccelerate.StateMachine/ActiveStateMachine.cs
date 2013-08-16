@@ -347,6 +347,7 @@ namespace Appccelerate.StateMachine
                     }
                     else
                     {
+                        // ReSharper disable once ConditionIsAlwaysTrueOrFalse because it is multi-threaded and can change in the mean time
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             Monitor.Wait(this.queue);
