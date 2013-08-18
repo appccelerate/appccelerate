@@ -224,7 +224,7 @@ namespace Appccelerate.StateMachine.Extensions
         /// <summary>
         /// Called when a transition is skipped because its guard returned false.
         /// </summary>
-        public void SkippedTransition(
+        public virtual void SkippedTransition(
             IStateMachineInformation<TState, TEvent> stateMachineInformation,
             ITransition<TState, TEvent> transition,
             ITransitionContext<TState, TEvent> context)
@@ -234,7 +234,7 @@ namespace Appccelerate.StateMachine.Extensions
         /// <summary>
         /// Called when a transition was executed.
         /// </summary>
-        public void ExecutedTransition(
+        public virtual void ExecutedTransition(
             IStateMachineInformation<TState, TEvent> stateMachineInformation,
             ITransition<TState, TEvent> transition,
             ITransitionContext<TState, TEvent> context)
