@@ -317,10 +317,11 @@ Function VersionNumber([string] $n1,[string] $n2,[string] $n3,[string] $n4){
 Function GetNewest($path){
     $firstPart = $path.split("*")[0]
     $secondPart = $path.split("*")[1]
-    
-    $highestVersion = [version] "0.0"
+	
+	$highestVersion = [version] "0.0"
     Get-Item $path | Foreach-Object {
-        $currentVersion = [version] $_.fullname.Replace($firstPart, "").Replace($secondPart, "")
+	    $p = GetRidOfPrereleaseInfo($_.fullname.Replace($firstPart, "").Replace($secondPart, ""))
+        $currentVersion = [version] $p
         if($currentVersion.CompareTo($highestVersion) -gt 0){
             $highestVersion = $currentVersion
             $newest = $_.fullname
@@ -328,4 +329,15 @@ Function GetNewest($path){
     }
     
     return $newest
+}
+
+Function GetRidOfPrereleaseInfo($path) {
+
+    if($path.Contains("-")) {
+	    $newPath = $path.SubString(0, $path.IndexOf("-"))
+		Write-Host "cut away pre-release version info " $path " -> " $newPath
+		return $newPath
+	}
+	
+	return $path
 }
