@@ -62,6 +62,12 @@ namespace Appccelerate.EventBroker
         Type EventArgsType { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the same event on the same publisher may be registered multiple times.
+        /// </summary>
+        /// <returns>Whether this publication allows multiple registrations.</returns>
+        bool AllowsMultipleRegistrationsOnSamePublisher { get; }
+
+        /// <summary>
         /// Describes this publication
         /// name, scope, event handler.
         /// </summary>

@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------
-// <copyright file="ActiveStateMachineTest.cs" company="Appccelerate">
+// <copyright file="EventInformation.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,17 +18,19 @@
 
 namespace Appccelerate.StateMachine
 {
-    /// <summary>
-    /// Tests the <see cref="ActiveStateMachine{TState,TEvent}"/> class.
-    /// </summary>
-    public class ActiveStateMachineTest : StateMachineTestBase<ActiveStateMachine<States, Events>>
+    using System;
+
+    public class EventInformation<TEvent>
+        where TEvent : IComparable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActiveStateMachineTest"/> class.
-        /// </summary>
-        public ActiveStateMachineTest()
-            : base(new ActiveStateMachine<States, Events>("Test Machine"))
+        public EventInformation(TEvent eventId, object eventArgument)
         {
+            this.EventId = eventId;
+            this.EventArgument = eventArgument;
         }
+
+        public TEvent EventId { get; private set; }
+
+        public object EventArgument { get; private set; }
     }
 }

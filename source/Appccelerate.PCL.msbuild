@@ -29,7 +29,7 @@
     <SchemaVersion>2.0</SchemaVersion>
 
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkProfile Condition="'$(TargetFrameworkProfile)' == ''">Profile7</TargetFrameworkProfile>
     <PlatformTarget>AnyCPU</PlatformTarget>
 
     <FileAlignment>512</FileAlignment>
