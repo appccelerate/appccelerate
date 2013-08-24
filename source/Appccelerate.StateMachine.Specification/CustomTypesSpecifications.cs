@@ -22,7 +22,11 @@ namespace Appccelerate.StateMachine
     using FluentAssertions;
     using global::Machine.Specifications;
 
-    [Subject("Custom types")]
+    /// <summary>
+    /// see http://www.appccelerate.com/statemachinecustomtypes.html for an explanation why states and events have to be IComparable
+    /// and not IEquatable.
+    /// </summary>
+    [Subject("Custom types for states and events")]
     public class When_using_custom_classes_for_states_and_events
     {
         static PassiveStateMachine<MyState, MyEvent> machine;
