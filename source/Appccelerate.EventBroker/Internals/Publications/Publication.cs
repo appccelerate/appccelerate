@@ -66,9 +66,9 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         public abstract Type EventArgsType { get; }
 
-        public abstract bool AllowsMultipleRegistrationsOnSamePublisher
+        public virtual bool AllowsMultipleRegistrationsOnSamePublisher
         {
-            get;
+            get { return false; }
         }
 
         protected bool IsPublisherAlive
