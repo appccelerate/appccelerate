@@ -22,7 +22,6 @@ namespace Appccelerate.StateMachine
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Threading.Tasks.Dataflow;
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
     using Appccelerate.StateMachine.Persistence;
@@ -40,10 +39,10 @@ namespace Appccelerate.StateMachine
         where TEvent : IComparable
     {
         private readonly StateMachine<TState, TEvent> stateMachine;
-        private readonly ActionBlock<Action> enqueuer;
-        private readonly LinkedList<QueueItem> queue;
+        private readonly LinkedList<EventInformation<TEvent>> queue;
 
         private bool initialized;
+        private bool pendingInitialization;
 
         private Task worker;
         private CancellationTokenSource stopToken;
@@ -74,17 +73,7 @@ namespace Appccelerate.StateMachine
         {
             this.stateMachine = new StateMachine<TState, TEvent>(name, factory);
 
-            this.queue = new LinkedList<QueueItem>();
-            this.enqueuer = new ActionBlock<Action>(
-                action =>
-                {
-                    lock (this.queue)
-                    {
-                        action();
-                        Monitor.Pulse(this.queue);
-                    }
-                }, 
-                new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 1 });
+            this.queue = new LinkedList<EventInformation<TEvent>>();
         }
 
         /// <summary>
@@ -169,7 +158,11 @@ namespace Appccelerate.StateMachine
         {
             this.CheckThatStateMachineIsInitialized();
 
-            this.enqueuer.Post(() => this.queue.AddLast(new EventInformation(eventId, eventArgument)));
+            lock (this.queue)
+            {
+                this.queue.AddLast(new EventInformation<TEvent>(eventId, eventArgument));
+                Monitor.Pulse(this.queue);
+            }
             
             this.stateMachine.ForEach(extension => extension.EventQueued(this.stateMachine, eventId, eventArgument));
         }
@@ -192,7 +185,11 @@ namespace Appccelerate.StateMachine
         {
             this.CheckThatStateMachineIsInitialized();
 
-            this.enqueuer.Post(() => this.queue.AddFirst(new EventInformation(eventId, eventArgument)));
+            lock (this.queue)
+            {
+                this.queue.AddFirst(new EventInformation<TEvent>(eventId, eventArgument));
+                Monitor.Pulse(this.queue);
+            }
 
             this.stateMachine.ForEach(extension => extension.EventQueuedWithPriority(this.stateMachine, eventId, eventArgument));
         }
@@ -209,7 +206,7 @@ namespace Appccelerate.StateMachine
 
             this.stateMachine.Initialize(initialState);
 
-            this.enqueuer.Post(() => this.queue.AddLast(new InitializationInformation()));
+            this.pendingInitialization = true;
         }
 
         /// <summary>
@@ -255,8 +252,10 @@ namespace Appccelerate.StateMachine
 
             this.stopToken = new CancellationTokenSource();
             this.worker = Task.Factory.StartNew(
-                () => this.ProcessQueueItems(this.stopToken.Token),
-                this.stopToken.Token);
+                () => this.ProcessEventQueue(this.stopToken.Token),
+                this.stopToken.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
 
             this.stateMachine.ForEach(extension => extension.StartedStateMachine(this.stateMachine));
         }
@@ -270,10 +269,10 @@ namespace Appccelerate.StateMachine
             {
                 return;
             }
-
-            this.stopToken.Cancel();
+            
             lock (this.queue)
             {
+                this.stopToken.Cancel();
                 Monitor.Pulse(this.queue); // wake up task to get a chance to stop
             }
             
@@ -289,6 +288,8 @@ namespace Appccelerate.StateMachine
                     throw;
                 }
             }
+
+            this.worker = null;
             
             this.stateMachine.ForEach(extension => extension.StoppedStateMachine(this.stateMachine));
         }
@@ -330,26 +331,43 @@ namespace Appccelerate.StateMachine
             return this.stateMachine.Name ?? this.GetType().FullName;
         }
 
-        private void ProcessQueueItems(CancellationToken cancellationToken)
+        private void ProcessEventQueue(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                QueueItem queueItem;
+                this.InitializeStateMachineIfInitializationIsPending();
+
+                EventInformation<TEvent> eventInformation;
                 lock (this.queue)
                 {
                     if (this.queue.Count > 0)
                     {
-                        queueItem = this.queue.First.Value;
+                        eventInformation = this.queue.First.Value;
                         this.queue.RemoveFirst();
                     }
                     else
                     {
-                        Monitor.Wait(this.queue);
+                        // ReSharper disable once ConditionIsAlwaysTrueOrFalse because it is multi-threaded and can change in the mean time
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            Monitor.Wait(this.queue);
+                        }
+                        
                         continue;
                     }
                 }
 
-                queueItem.Execute(this.stateMachine);
+                this.stateMachine.Fire(eventInformation.EventId, eventInformation.EventArgument);
+            }
+        }
+
+        private void InitializeStateMachineIfInitializationIsPending()
+        {
+            if (this.pendingInitialization)
+            {
+                this.stateMachine.EnterInitialState();
+
+                this.pendingInitialization = false;
             }
         }
 
@@ -366,37 +384,6 @@ namespace Appccelerate.StateMachine
             if (!this.initialized)
             {
                 throw new InvalidOperationException(ExceptionMessages.StateMachineNotInitialized);
-            }
-        }
-
-        private abstract class QueueItem
-        {
-            public abstract void Execute(StateMachine<TState, TEvent> stateMachine);
-        }
-
-        private class EventInformation : QueueItem
-        {
-            public EventInformation(TEvent eventId, object eventArgument)
-            {
-                this.EventId = eventId;
-                this.EventArgument = eventArgument;
-            }
-
-            public TEvent EventId { get; private set; }
-
-            public object EventArgument { get; private set; }
-
-            public override void Execute(StateMachine<TState, TEvent> stateMachine)
-            {
-                stateMachine.Fire(this.EventId, this.EventArgument);
-            }
-        }
-
-        private class InitializationInformation : QueueItem
-        {
-            public override void Execute(StateMachine<TState, TEvent> stateMachine)
-            {
-                stateMachine.EnterInitialState();
             }
         }
     }

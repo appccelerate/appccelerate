@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveStateMachineTest.cs" />
+    <Compile Include="Builder.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="ExtensionTest.cs" />
     <Compile Include="Machine\ActionHolders\SingleArgumentTransitionActionHolderTest.cs" />
@@ -48,12 +49,25 @@
     <Compile Include="Machine\States\StateTest.cs" />
     <Compile Include="Machine\Syntax\SyntaxTest.cs" />
     <Compile Include="Machine\TransitionsTest.cs" />
+    <Compile Include="Machine\Transitions\ExceptionThrowingActionTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\ExceptionThrowingGuardTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\HierarchicalTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\SourceIsDescendantOfTargetTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\GuardsTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\InternalTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\SelfTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\SourceIsParentOfTargetTransitionTest.cs" />
+    <Compile Include="Machine\Transitions\SuccessfulTransitionWithExecutedActionsTestBase.cs" />
+    <Compile Include="Machine\Transitions\TransitionDefinedInSuperStateTransitionTest.cs" />
     <Compile Include="Machine\Transitions\TransitionDictionaryTest.cs" />
+    <Compile Include="Machine\Transitions\TransitionTest.cs" />
+    <Compile Include="Machine\Transitions\TransitionTestBase.cs" />
     <Compile Include="PassiveStateMachineTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\CsvStateMachineReportGeneratorTest.cs" />
     <Compile Include="Reports\StateMachineReportGeneratorTest.cs" />
     <Compile Include="Reports\YEdStateMachineReportGeneratorTest.cs" />
+    <Compile Include="StateMachineAssertionsExtensionMethods.cs" />
     <Compile Include="StateMachineTestBase.cs" />
     <Compile Include="States.cs" />
   </ItemGroup>

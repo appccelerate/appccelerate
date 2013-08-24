@@ -68,7 +68,10 @@ namespace Appccelerate.EventBroker.Internals
             Ensure.ArgumentNotNull(publication, "publication");
 
             this.Clean();
-            this.ThrowIfRepeatedPublication(publication.Publisher, publication.EventName);
+            if (!publication.AllowsMultipleRegistrationsOnSamePublisher)
+            {
+                this.ThrowIfRepeatedPublication(publication.Publisher, publication.EventName);
+            }
 
             this.extensionHost.ForEach(extension => extension.CreatedPublication(this, publication));
 

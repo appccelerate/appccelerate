@@ -53,6 +53,11 @@ namespace Appccelerate.EventBroker.Internals.Publications
             }
         }
 
+        public override bool AllowsMultipleRegistrationsOnSamePublisher
+        {
+            get { return true; }
+        }
+
         public override void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");

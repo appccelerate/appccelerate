@@ -28,7 +28,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
     /// </summary>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
-    internal class TransitionResult<TState, TEvent>
+    public class TransitionResult<TState, TEvent>
         : ITransitionResult<TState, TEvent>
         where TState : IComparable
         where TEvent : IComparable
