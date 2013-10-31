@@ -497,7 +497,7 @@ namespace Appccelerate.AsyncModule
 
             stopThread.Join(timeout);
 
-            var runningThreads = this.messageConsumerThreads.Where(thread => thread.ThreadState == ThreadState.Running);
+            var runningThreads = this.messageConsumerThreads.Where(thread => thread.ThreadState == ThreadState.Running).ToList();
             foreach (Thread thread in runningThreads)
             {
                 this.LogExtension.AbortingThread(this.controlledModule, thread.Name, timeout);
@@ -730,7 +730,7 @@ namespace Appccelerate.AsyncModule
         /// </summary>
         private void WaitUntilAllThreadHaveStopped()
         {
-            foreach (Thread thread in this.messageConsumerThreads)
+            foreach (Thread thread in this.messageConsumerThreads.ToList())
             {
                 if (thread.IsAlive)
                 {
