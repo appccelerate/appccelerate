@@ -64,6 +64,11 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
             if (!this.ShouldFire(context))
             {
+                this.extensionHost.ForEach(extension => extension.SkippedTransition(
+                    this.stateMachineInformation,
+                    this,
+                    context));
+
                 return TransitionResult<TState, TEvent>.NotFired;
             }
 
@@ -83,6 +88,11 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             {
                 this.PerformActions(context);
             }
+
+            this.extensionHost.ForEach(extension => extension.ExecutedTransition(
+                this.stateMachineInformation, 
+                this,
+                context));
 
             return new TransitionResult<TState, TEvent>(true, newState, context.Exceptions);
         }
@@ -202,7 +212,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
         private void PerformActions(ITransitionContext<TState, TEvent> context)
         {
-            foreach (var action in this.actions)
+            foreach (IActionHolder action in this.actions)
             {
                 try
                 {

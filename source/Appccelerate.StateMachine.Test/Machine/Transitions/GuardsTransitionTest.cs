@@ -18,11 +18,12 @@
 
 namespace Appccelerate.StateMachine.Machine.Transitions
 {
+    using Appccelerate.StateMachine.Machine.GuardHolders;
     using FakeItEasy;
     using FluentAssertions;
     using Xunit;
 
-    public class GuardsTransitionTest : SuccessfulTransitionWithExecutedActionsTestBase
+    public class GuardsTransitionTest : TransitionTestBase
     {
         public GuardsTransitionTest()
         {
@@ -65,6 +66,23 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             ITransitionResult<States, Events> result = this.Testee.Fire(this.TransitionContext);
 
             result.Should().BeNotFiredTransitionResult<States, Events>();
+        }
+
+        [Fact]
+        public void NotifiesExtensions_WhenGuardIsNotMet()
+        {
+            var extension = A.Fake<IExtension<States, Events>>();
+            this.ExtensionHost.Extension = extension;
+
+            IGuardHolder guard = Builder<States, Events>.CreateGuardHolder().ReturningFalse().Build();
+            this.Testee.Guard = guard;
+
+            ITransitionResult<States, Events> result = this.Testee.Fire(this.TransitionContext);
+
+            A.CallTo(() => extension.SkippedTransition(
+                this.StateMachineInformation,
+                A<ITransition<States, Events>>.That.Matches(t => t.Source == this.Source && t.Target == this.Target),
+                this.TransitionContext)).MustHaveHappened();
         }
     }
 }
