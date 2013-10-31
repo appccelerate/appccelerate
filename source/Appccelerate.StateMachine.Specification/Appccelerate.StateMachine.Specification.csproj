@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Concern.cs" />
     <Compile Include="CurrentStateExtension.cs" />
+    <Compile Include="CustomTypesSpecifications.cs" />
     <Compile Include="EntryExitActionSpecification.cs" />
     <Compile Include="ExceptionHandlingSpecification.cs" />
     <Compile Include="GuardSpecification.cs" />
