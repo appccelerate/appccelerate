@@ -79,6 +79,11 @@ namespace Appccelerate.EventBroker.Internals.Publications
             get { return this.eventArgsType; }
         }
 
+        public override bool AllowsMultipleRegistrationsOnSamePublisher
+        {
+            get { return false; }
+        }
+
         public void PublicationHandler(object sender, EventArgs e)
         {
             this.Fire(sender, e);
