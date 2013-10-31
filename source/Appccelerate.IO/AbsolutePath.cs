@@ -69,13 +69,14 @@ namespace Appccelerate.IO
                 return true;
             }
 
-// ReSharper disable RedundantCast.0 because otherwise it results in recursion.
+// ReSharper disable RedundantCast.0 because otherwise a recursive call happens
             if (((object)a == null) || ((object)b == null))
 // ReSharper restore RedundantCast.0
             {
                 return false;
             }
 
+            // Return true if the fields match:
             return a.Value == b.Value;
         }
 
