@@ -52,6 +52,7 @@
     <Compile Include="Machine\States\StateTest.cs" />
     <Compile Include="Machine\Syntax\SyntaxTest.cs" />
     <Compile Include="Machine\TransitionsTest.cs" />
+    <Compile Include="Machine\Transitions\ExceptionThrowingActionTransitionTest.cs" />
     <Compile Include="Machine\Transitions\ExceptionThrowingGuardTransitionTest.cs" />
     <Compile Include="Machine\Transitions\HierarchicalTransitionTest.cs" />
     <Compile Include="Machine\Transitions\SourceIsDescendantOfTargetTransitionTest.cs" />

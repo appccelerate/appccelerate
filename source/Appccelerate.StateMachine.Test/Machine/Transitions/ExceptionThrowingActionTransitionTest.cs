@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="ExceptionThrowingGuardTransitionTest.cs" company="Appccelerate">
+// <copyright file="ExceptionThrowingActionTransitionTest.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,15 +19,16 @@
 namespace Appccelerate.StateMachine.Machine.Transitions
 {
     using System;
+    using Appccelerate.StateMachine.Machine.ActionHolders;
     using FakeItEasy;
     using FluentAssertions;
     using Xunit;
 
-    public class ExceptionThrowingGuardTransitionTest : TransitionTestBase
+    public class ExceptionThrowingActionTransitionTest : TransitionTestBase
     {
         private Exception exception;
 
-        public ExceptionThrowingGuardTransitionTest()
+        public ExceptionThrowingActionTransitionTest()
         {
             this.Source = Builder<States, Events>.CreateState().Build();
             this.Target = Builder<States, Events>.CreateState().Build();
@@ -38,8 +39,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
             this.exception = new Exception();
 
-            var guard = Builder<States, Events>.CreateGuardHolder().Throwing(this.exception).Build();
-            this.Testee.Guard = guard;
+            this.Testee.Actions.Add(new ArgumentLessActionHolder(() => { throw this.exception; }));
         }
 
         [Fact]
@@ -51,16 +51,16 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
             this.Testee.Fire(this.TransitionContext);
 
-            A.CallTo(() => extension.HandlingGuardException(this.StateMachineInformation, this.Testee, this.TransitionContext, ref this.exception)).MustHaveHappened();
-            A.CallTo(() => extension.HandledGuardException(this.StateMachineInformation, this.Testee, this.TransitionContext, this.exception)).MustHaveHappened();
+            A.CallTo(() => extension.HandlingTransitionException(this.StateMachineInformation, this.Testee, this.TransitionContext, ref this.exception)).MustHaveHappened();
+            A.CallTo(() => extension.HandledTransitionException(this.StateMachineInformation, this.Testee, this.TransitionContext, this.exception)).MustHaveHappened();
         }
 
         [Fact]
-        public void ReturnsNotFiredTransitionResult()
+        public void ReturnsFiredTransitionResult()
         {
             ITransitionResult<States, Events> result = this.Testee.Fire(this.TransitionContext);
 
-            result.Fired.Should().BeFalse();
+            result.Fired.Should().BeTrue();
         }
 
         [Fact]
