@@ -62,27 +62,27 @@ namespace Appccelerate.IO
             return absolutePath.Value;
         }
 
-        public static bool operator ==(AbsolutePath a, AbsolutePath b)
+        public static bool operator ==(AbsolutePath left, AbsolutePath right)
         {
-            if (ReferenceEquals(a, b))
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
 
 // ReSharper disable RedundantCast.0 because otherwise a recursive call happens
-            if (((object)a == null) || ((object)b == null))
+            if (((object)left == null) || ((object)right == null))
 // ReSharper restore RedundantCast.0
             {
                 return false;
             }
 
             // Return true if the fields match:
-            return a.Value == b.Value;
+            return left.Value == right.Value;
         }
 
-        public static bool operator !=(AbsolutePath a, AbsolutePath b)
+        public static bool operator !=(AbsolutePath left, AbsolutePath right)
         {
-            return !(a == b);
+            return !(left == right);
         }
 
         public override bool Equals(object obj)

@@ -84,12 +84,30 @@ namespace Appccelerate.EventBroker.Internals
                 .ShouldNotThrow();
         }
 
+        protected virtual void OnEvent()
+        {
+            EventHandler handler = this.Event;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
         public class Publisher
         {
             private const string Topic = "Topic";
 
             [EventPublication(Topic)]
             public event EventHandler Event;
+
+            protected virtual void OnEvent()
+            {
+                EventHandler handler = this.Event;
+                if (handler != null)
+                {
+                    handler(this, EventArgs.Empty);
+                }
+            }
         }
     }
 }
