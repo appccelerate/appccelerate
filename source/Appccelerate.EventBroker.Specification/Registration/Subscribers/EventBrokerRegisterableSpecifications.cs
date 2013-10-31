@@ -16,10 +16,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker.Subscribers
+namespace Appccelerate.EventBroker.Registration.Subscribers
 {
     using FluentAssertions;
-
     using Machine.Specifications;
 
     [Subject(Subscribers.RegisteringEventBrokerRegisterables)]

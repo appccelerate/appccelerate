@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="SubscribersWithoutSenderSpecifications.cs" company="Appccelerate">
+// <copyright file="SubscribersWithoutSenderAndWithoutEventArgsSpecifications.cs" company="Appccelerate">
 //   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,25 +18,23 @@
 
 namespace Appccelerate.EventBroker.Registration.Subscribers
 {
-    using System;
-    using System.Collections.Generic;
     using Appccelerate.EventBroker.Handlers;
     using FluentAssertions;
     using Machine.Specifications;
 
     [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_without_sender_using_registration_by_attribute
+    public class When_defining_a_handler_method_with_no_sender_and_no_event_argument_using_registration_by_attribute
     {
-        static readonly EventArgs EventArgs = new EventArgs();
+        const string Value = "value";
 
         static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static SubscriberWithoutSender subscriber;
+        static Publisher publisher;
+        static SubscriberWithoutSenderAndWithoutEventArgs subscriber;
 
         Establish context = () =>
             {
-                publisher = new SimpleEvent.EventPublisher();
-                subscriber = new SubscriberWithoutSender();
+                publisher = new Publisher();
+                subscriber = new SubscriberWithoutSenderAndWithoutEventArgs();
 
                 eventBroker = new EventBroker();
 
@@ -46,40 +44,43 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
         Because of = () =>
             {
                 eventBroker.Register(subscriber);
-                publisher.FireEvent(EventArgs);
+
+                publisher.FireEvent(Value);
+
                 eventBroker.Unregister(subscriber);
-                publisher.FireEvent(EventArgs);
+
+                publisher.FireEvent(Value);
             };
 
-        It should_call_handler_method_on_subscriber_with_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgs.Should().Contain(EventArgs);
+        It should_call_handler_method = () =>
+            subscriber.CallCount.Should().BePositive();
 
         It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgs.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+            subscriber.CallCount.Should().Be(1, "event should not be routed anymore after subscriber is unregistered.");
 
-        public class SubscriberWithoutSender : SubscriberWithoutSenderBase
+        public class SubscriberWithoutSenderAndWithoutEventArgs : SubscriberWithoutSenderAndWithoutEventArgsBase
         {
             [EventSubscription(SimpleEvent.EventTopic, typeof(OnPublisher))]
-            public void Handle(EventArgs e)
+            public void Handle()
             {
-                this.ReceivedEventArgs.Add(e);
+                this.CallCount++;
             }
         }
     }
 
     [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_without_sender_using_registration_by_registrar
+    public class When_defining_a_handler_method_with_no_sender_and_no_event_argument_using_registration_by_registrar
     {
-        static readonly EventArgs EventArgs = new EventArgs();
+        const string Value = "value";
 
         static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static SubscriberWithoutSender subscriber;
+        static Publisher publisher;
+        static SubscriberWithoutSenderAndWithoutEventArgs subscriber;
 
         Establish context = () =>
         {
-            publisher = new SimpleEvent.EventPublisher();
-            subscriber = new SubscriberWithoutSender();
+            publisher = new Publisher();
+            subscriber = new SubscriberWithoutSenderAndWithoutEventArgs();
 
             eventBroker = new EventBroker();
 
@@ -90,35 +91,35 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
         {
             eventBroker.SpecialCasesRegistrar.AddSubscription(SimpleEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
 
-            publisher.FireEvent(EventArgs);
+            publisher.FireEvent(Value);
 
             eventBroker.SpecialCasesRegistrar.RemoveSubscription(SimpleEvent.EventTopic, subscriber, subscriber.Handle);
 
-            publisher.FireEvent(EventArgs);
+            publisher.FireEvent(Value);
         };
 
-        It should_call_handler_method_on_subscriber_with_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgs.Should().Contain(EventArgs);
+        It should_call_handler_method = () =>
+            subscriber.CallCount.Should().BePositive();
 
         It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgs.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+            subscriber.CallCount.Should().Be(1, "event should not be routed anymore after subscriber is unregistered.");
 
-        public class SubscriberWithoutSender : SubscriberWithoutSenderBase
+        public class SubscriberWithoutSenderAndWithoutEventArgs : SubscriberWithoutSenderAndWithoutEventArgsBase
         {
-            public void Handle(EventArgs e)
+            public void Handle()
             {
-                this.ReceivedEventArgs.Add(e);
+                this.CallCount++;
             }
         }
     }
 
-    public class SubscriberWithoutSenderBase
+    public class SubscriberWithoutSenderAndWithoutEventArgsBase
     {
-        public SubscriberWithoutSenderBase()
+        public SubscriberWithoutSenderAndWithoutEventArgsBase()
         {
-            this.ReceivedEventArgs = new List<EventArgs>();
+            this.CallCount = 0;
         }
 
-        public List<EventArgs> ReceivedEventArgs { get; private set; }
+        public int CallCount { get; protected set; }
     }
 }
