@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DistributedEventBrokerExtensionBase.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace Appccelerate.DistributedEventBroker
     using EventBroker;
     using EventBroker.Extensions;
     using EventBroker.Handlers;
-    using EventBroker.Internals;
+
     using Factories;
     using Messages;
 
@@ -38,8 +38,6 @@ namespace Appccelerate.DistributedEventBroker
     /// </summary>
     public class DistributedEventBrokerExtensionBase : EventBrokerExtensionBase, IDistributedEventBrokerExtension
     {
-        private static IEventBroker internalEventBroker;
-
         private readonly object locker = new object();
 
         private readonly List<string> topics;
@@ -74,22 +72,12 @@ namespace Appccelerate.DistributedEventBroker
         }
 
         /// <summary>
-        /// Gets or sets the internal event broker which is used to control internal event publication.
-        /// </summary>
-        /// <value>The internal event broker.</value>
-        public static IEventBroker InternalEventBroker
-        {
-            get { return internalEventBroker ?? (internalEventBroker = new EventBroker()); }
-            set { internalEventBroker = value; }
-        }
-
-        /// <summary>
-        /// Gets the internal event registerer which is the <see cref="InternalEventBroker"/> casted to <see cref="IEventRegistrar"/>.
+        /// Gets the internal event registerer which is the <see cref="InternalEventBrokerHolder.InternalEventBroker"/> casted to <see cref="IEventRegistrar"/>.
         /// </summary>
         /// <value>The internal event registerer.</value>
-        internal static IEventRegistrar InternalEventRegistrar
+        protected virtual IEventRegistrar EventRegistrar
         {
-            get { return (IEventRegistrar)InternalEventBroker; }
+            get { return (IEventRegistrar)InternalEventBrokerHolder.InternalEventBroker.SpecialCasesRegistrar; }
         }
 
         /// <summary>
@@ -302,7 +290,7 @@ namespace Appccelerate.DistributedEventBroker
 
             var topic = this.CreateDynamicSubscriptionTopic();
 
-            InternalEventRegistrar.AddSubscription<EventArgs<IEventFired>>(topic, this, this.HandleEvent, this.CreateHandler());
+            this.EventRegistrar.AddSubscription<EventArgs<IEventFired>>(topic, this, this.HandleEvent, this.CreateHandler());
         }
 
         /// <summary>

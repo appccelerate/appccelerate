@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DefaultTopicSelectionStrategyTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@ namespace Appccelerate.DistributedEventBroker.Strategies
 {
     using Appccelerate.EventBroker;
 
-    using EventBroker.Internals;
-    using Moq;
+    using FakeItEasy;
+
+    using FluentAssertions;
+
     using Xunit;
 
     public class DefaultTopicSelectionStrategyTest
@@ -34,23 +36,21 @@ namespace Appccelerate.DistributedEventBroker.Strategies
         }
 
         [Fact]
-        public void SelectTopic_ReturnsTrue()
+        public void AnyTopicIsSelected()
         {
-            var topic = new Mock<IEventTopic>();
+            var topic = A.Fake<IEventTopic>();
 
-            var shouldBeSelected = this.testee.SelectTopic(topic.Object);
+            var shouldBeSelected = this.testee.SelectTopic(topic);
 
-            Assert.True(shouldBeSelected);
+            shouldBeSelected.Should().BeTrue();
         }
 
         [Fact]
-        public void SelectTopic_DoesNotAccessTopic()
+        public void TopicIsNotUsedInAnyWayByStrategy()
         {
-            var topic = new Mock<IEventTopic>(MockBehavior.Strict);
+            var topic = A.Fake<IEventTopic>(builder => builder.Strict());
 
-            this.testee.SelectTopic(topic.Object);
-
-            topic.VerifyAll();
+            this.testee.SelectTopic(topic);
         }
     }
 }

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DataContractEventArgsSerializerTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ namespace Appccelerate.DistributedEventBroker.Serializer
     using System.IO;
     using System.Runtime.Serialization;
 
+    using FluentAssertions;
+
     using Xunit;
 
     public class DataContractEventArgsSerializerTest
@@ -36,7 +38,7 @@ namespace Appccelerate.DistributedEventBroker.Serializer
         {
             this.eventArgsToSerialize = new CustomEventArgs(true);
 
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 var serializer = new DataContractSerializer(typeof(CustomEventArgs));
                 serializer.WriteObject(ms, this.eventArgsToSerialize);
@@ -47,20 +49,19 @@ namespace Appccelerate.DistributedEventBroker.Serializer
         }
 
         [Fact]
-        public void Serialize_MustSerializeEventArgsToString()
+        public void SerializesEventArgsToStrings()
         {
             var result = this.testee.Serialize(this.eventArgsToSerialize);
 
-            Assert.Equal(this.inputAndOutput, result);
+            result.Should().Be(this.inputAndOutput);
         }
 
         [Fact]
-        public void Deserialize_MustDeserializeEventArgsFromString()
+        public void DeserializesEventArgsFromStrings()
         {
             var result = this.testee.Deserialize(typeof(CustomEventArgs), this.inputAndOutput);
 
-            Assert.IsType<CustomEventArgs>(result);
-            Assert.True(((CustomEventArgs)result).Cancel);
+            result.As<CustomEventArgs>().Cancel.Should().BeTrue();
         }
 
         [DataContract]

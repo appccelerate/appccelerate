@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ActiveStateMachine.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,12 +19,13 @@
 namespace Appccelerate.StateMachine
 {
     using System;
-
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
-
-    using AsyncModule;
 
     /// <summary>
     /// An active state machine.
@@ -37,17 +38,14 @@ namespace Appccelerate.StateMachine
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The internal state machine.
-        /// </summary>
         private readonly StateMachine<TState, TEvent> stateMachine;
-
-        /// <summary>
-        /// The module controller used to make this state machine active.
-        /// </summary>
-        private readonly IModuleController moduleController;
+        private readonly LinkedList<EventInformation<TEvent>> queue;
 
         private bool initialized;
+        private bool pendingInitialization;
+
+        private Task worker;
+        private CancellationTokenSource stopToken;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveStateMachine{TState, TEvent}"/> class.
@@ -70,25 +68,12 @@ namespace Appccelerate.StateMachine
         /// Initializes a new instance of the <see cref="ActiveStateMachine{TState, TEvent}"/> class.
         /// </summary>
         /// <param name="name">The name of the state machine.</param>
-        /// <param name="factory">The factory.</param>
+        /// <param name="factory">The factory uses to build up internals. Pass your own factory to change the behavior of the state machine.</param>
         public ActiveStateMachine(string name, IFactory<TState, TEvent> factory)
-            : this(name, factory, new ModuleController())
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActiveStateMachine{TState, TEvent}"/> class.
-        /// </summary>
-        /// <param name="name">The name of the state machine.</param>
-        /// <param name="factory">The factory.</param>
-        /// <param name="moduleController">The module controller.</param>
-        public ActiveStateMachine(string name, IFactory<TState, TEvent> factory, IModuleController moduleController)
-        {
-            Ensure.ArgumentNotNull(moduleController, "moduleController");
-
             this.stateMachine = new StateMachine<TState, TEvent>(name, factory);
-            this.moduleController = moduleController;
-            this.moduleController.Initialize(this, 1, true, (name ?? "ActiveStateMachine") + ".AsyncModule");
+
+            this.queue = new LinkedList<EventInformation<TEvent>>();
         }
 
         /// <summary>
@@ -133,7 +118,7 @@ namespace Appccelerate.StateMachine
         /// <value><c>true</c> if this instance is running; otherwise, <c>false</c>.</value>
         public bool IsRunning
         {
-            get { return this.moduleController.IsAlive; }
+            get { return this.worker != null && !this.worker.IsCompleted; }
         }
 
         /// <summary>
@@ -171,8 +156,14 @@ namespace Appccelerate.StateMachine
         /// <param name="eventArgument">The event argument.</param>
         public void Fire(TEvent eventId, object eventArgument)
         {
-            this.moduleController.EnqueueMessage(new EventInformation<TEvent>(eventId, eventArgument));
+            this.CheckThatStateMachineIsInitialized();
 
+            lock (this.queue)
+            {
+                this.queue.AddLast(new EventInformation<TEvent>(eventId, eventArgument));
+                Monitor.Pulse(this.queue);
+            }
+            
             this.stateMachine.ForEach(extension => extension.EventQueued(this.stateMachine, eventId, eventArgument));
         }
 
@@ -192,7 +183,13 @@ namespace Appccelerate.StateMachine
         /// <param name="eventArgument">The event argument.</param>
         public void FirePriority(TEvent eventId, object eventArgument)
         {
-            this.moduleController.EnqueuePriorityMessage(new EventInformation<TEvent>(eventId, eventArgument));
+            this.CheckThatStateMachineIsInitialized();
+
+            lock (this.queue)
+            {
+                this.queue.AddFirst(new EventInformation<TEvent>(eventId, eventArgument));
+                Monitor.Pulse(this.queue);
+            }
 
             this.stateMachine.ForEach(extension => extension.EventQueuedWithPriority(this.stateMachine, eventId, eventArgument));
         }
@@ -209,7 +206,34 @@ namespace Appccelerate.StateMachine
 
             this.stateMachine.Initialize(initialState);
 
-            this.moduleController.EnqueueMessage(new InitializationInformation());
+            this.pendingInitialization = true;
+        }
+
+        /// <summary>
+        /// Saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// </summary>
+        /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            this.stateMachine.Save(stateMachineSaver);
+        }
+
+        /// <summary>
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
+        /// The loader should return exactly the data that was passed to the saver.
+        /// </summary>
+        /// <param name="stateMachineLoader">Loader providing persisted data.</param>
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+            
+            this.CheckThatNotAlreadyInitialized();
+
+            this.stateMachine.Load(stateMachineLoader);
+
+            this.initialized = true;
         }
 
         /// <summary>
@@ -221,7 +245,17 @@ namespace Appccelerate.StateMachine
         {
             this.CheckThatStateMachineIsInitialized();
 
-            this.moduleController.Start();
+            if (this.IsRunning)
+            {
+                return;
+            }
+
+            this.stopToken = new CancellationTokenSource();
+            this.worker = Task.Factory.StartNew(
+                () => this.ProcessEventQueue(this.stopToken.Token),
+                this.stopToken.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
 
             this.stateMachine.ForEach(extension => extension.StartedStateMachine(this.stateMachine));
         }
@@ -231,8 +265,32 @@ namespace Appccelerate.StateMachine
         /// </summary>
         public void Stop()
         {
-            this.moduleController.Stop();
+            if (!this.IsRunning || this.stopToken.IsCancellationRequested)
+            {
+                return;
+            }
+            
+            lock (this.queue)
+            {
+                this.stopToken.Cancel();
+                Monitor.Pulse(this.queue); // wake up task to get a chance to stop
+            }
+            
+            try
+            {
+                this.worker.Wait();
+            }
+            catch (AggregateException)
+            {
+                // in case the task was stopped before it could actually start, it will be canceled.
+                if (this.worker.IsFaulted)
+                {
+                    throw;
+                }
+            }
 
+            this.worker = null;
+            
             this.stateMachine.ForEach(extension => extension.StoppedStateMachine(this.stateMachine));
         }
 
@@ -263,30 +321,6 @@ namespace Appccelerate.StateMachine
         }
 
         /// <summary>
-        /// Fires an event to the state machine.
-        /// </summary>
-        /// <param name="message">The message containing the event information.</param>
-        [MessageConsumer]
-        public void Execute(EventInformation<TEvent> message)
-        {
-            Ensure.ArgumentNotNull(message, "message");
-
-            this.stateMachine.Fire(message.EventId, message.EventArgument);
-        }
-
-        /// <summary>
-        /// Initializes the state machine on the worker thread.
-        /// </summary>
-        /// <param name="message">The message containing the initial state.</param>
-        [MessageConsumer]
-        public void Initialize(InitializationInformation message)
-        {
-            Ensure.ArgumentNotNull(message, "message");
-
-            this.stateMachine.EnterInitialState();
-        }
-
-        /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>
@@ -295,6 +329,46 @@ namespace Appccelerate.StateMachine
         public override string ToString()
         {
             return this.stateMachine.Name ?? this.GetType().FullName;
+        }
+
+        private void ProcessEventQueue(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                this.InitializeStateMachineIfInitializationIsPending();
+
+                EventInformation<TEvent> eventInformation;
+                lock (this.queue)
+                {
+                    if (this.queue.Count > 0)
+                    {
+                        eventInformation = this.queue.First.Value;
+                        this.queue.RemoveFirst();
+                    }
+                    else
+                    {
+                        // ReSharper disable once ConditionIsAlwaysTrueOrFalse because it is multi-threaded and can change in the mean time
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            Monitor.Wait(this.queue);
+                        }
+                        
+                        continue;
+                    }
+                }
+
+                this.stateMachine.Fire(eventInformation.EventId, eventInformation.EventArgument);
+            }
+        }
+
+        private void InitializeStateMachineIfInitializationIsPending()
+        {
+            if (this.pendingInitialization)
+            {
+                this.stateMachine.EnterInitialState();
+
+                this.pendingInitialization = false;
+            }
         }
 
         private void CheckThatNotAlreadyInitialized()

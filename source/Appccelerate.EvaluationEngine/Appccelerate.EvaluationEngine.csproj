@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.EvaluationEngine</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -15,8 +13,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.EvaluationEngine.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\portable-windows8+net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\portable-windows8+net45\Appccelerate.EvaluationEngine.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -89,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Appccelerate.EvaluationEngine.nuspec" />
+    <None Include="Settings.stylecop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
@@ -96,5 +95,5 @@
       <Name>Appccelerate.Fundamentals</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\Appccelerate.PCL.msbuild" />
 </Project>

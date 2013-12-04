@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="AbsolutePathTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace Appccelerate.IO
     using System;
     using FluentAssertions;
     using Xunit;
+    using Xunit.Extensions;
 
     public class AbsolutePathTest
     {
@@ -73,6 +74,141 @@ namespace Appccelerate.IO
             Action action = () => new AbsolutePath("..\folder\file.ext");
 
             action.ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\file.ext", true)]
+        [InlineData(@"c:\folder\", @"c:\folder\", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\other.ext", false)]
+        [InlineData(@"c:\folder\file.ext", @"c:\other\file.ext", false)]
+        public void SupportsEqualityOperator(string aa, string bb, bool expected)
+        {
+            AbsolutePath a = aa;
+            AbsolutePath b = bb;
+
+            bool result = a == b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\file.ext", false)]
+        [InlineData(@"c:\folder\", @"c:\other", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\other.ext", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\other\file.ext", true)]
+        public void SupportsInequalityOperator(string aa, string bb, bool expected)
+        {
+            AbsolutePath a = aa;
+            AbsolutePath b = bb;
+
+            bool result = a != b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\file.ext", true)]
+        [InlineData(@"c:\folder\", @"c:\folder\", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\other.ext", false)]
+        [InlineData(@"c:\folder\file.ext", @"c:\other\file.ext", false)]
+        public void SupportsEquals(string aa, string bb, bool expected)
+        {
+            AbsolutePath a = aa;
+            AbsolutePath b = bb;
+
+            bool result = a.Equals(b);
+
+            result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void ReturnsSameHashCodeForEqualObjects()
+        {
+            AbsolutePath a = @"c:\folder\file.ext";
+            AbsolutePath b = @"c:\folder\file.ext";
+
+            var hashcodeA = a.GetHashCode();
+            var hashcodeB = b.GetHashCode();
+
+            hashcodeA.Should().Be(hashcodeB);
+        }
+
+        [Fact]
+        public void ReturnsDifferentHashCodeForDifferentObjects()
+        {
+            AbsolutePath a = @"c:\folder\file.ext";
+            AbsolutePath b = @"c:\folder\other.ext";
+
+            var hashcodeA = a.GetHashCode();
+            var hashcodeB = b.GetHashCode();
+
+            hashcodeA.Should().NotBe(hashcodeB);
+        }
+
+        [Fact]
+        public void ReturnsTrue_WhenComparingEquivalentPaths()
+        {
+            AbsolutePath a = "c:\\folder\\file.ext";
+            AbsolutePath b = "c:\\folder\\file.ext";
+
+            bool result = a == b;
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ReturnsFalse_WhenComparingInequivalentPaths()
+        {
+            AbsolutePath a = "c:\\folder\\file.ext";
+            AbsolutePath b = "c:\\folder\\other.ext";
+
+            bool result = a == b;
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void ReturnsFalse_WhenComparingEquivalentPathsForInequality()
+        {
+            AbsolutePath a = "c:\\folder\\file.ext";
+            AbsolutePath b = "c:\\folder\\file.ext";
+
+            bool result = a != b;
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void ReturnsTrue_WhenComparingInequivalentPathsForInequality()
+        {
+            AbsolutePath a = "c:\\folder\\file.ext";
+            AbsolutePath b = "c:\\folder\\other.ext";
+
+            bool result = a != b;
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ReturnsTrue_WhenCheckingEqualityForEquivalentPaths()
+        {
+            AbsolutePath a = "c:\\folder\\file.ext";
+            AbsolutePath b = "c:\\folder\\file.ext";
+
+            bool result = a.Equals(b);
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ReturnsFalse_WhenCheckingEqualityForIneequivalentPaths()
+        {
+            AbsolutePath a = "c:\\folder\\file.ext";
+            AbsolutePath b = "c:\\folder\\other.ext";
+
+            bool result = a.Equals(b);
+
+            result.Should().BeFalse();
         }
     }
 }

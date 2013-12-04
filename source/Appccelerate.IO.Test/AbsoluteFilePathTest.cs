@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="AbsoluteFilePathTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace Appccelerate.IO
     using System;
     using FluentAssertions;
     using Xunit;
+    using Xunit.Extensions;
 
     public class AbsoluteFilePathTest
     {
@@ -66,6 +67,48 @@ namespace Appccelerate.IO
             Action action = () => new AbsoluteFilePath(@".\file");
 
             action.ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\file.ext", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\other.ext", false)]
+        [InlineData(@"c:\folder\file.ext", @"c:\other\file.ext", false)]
+        public void SupportsEqualityOperator(string aa, string bb, bool expected)
+        {
+            AbsoluteFilePath a = aa;
+            AbsoluteFilePath b = bb;
+
+            bool result = a == b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\file.ext", false)]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\other.ext", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\other\file.ext", true)]
+        public void SupportsInequalityOperator(string aa, string bb, bool expected)
+        {
+            AbsoluteFilePath a = aa;
+            AbsoluteFilePath b = bb;
+
+            bool result = a != b;
+
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\file.ext", true)]
+        [InlineData(@"c:\folder\file.ext", @"c:\folder\other.ext", false)]
+        [InlineData(@"c:\folder\file.ext", @"c:\other\file.ext", false)]
+        public void SupportsEquals(string aa, string bb, bool expected)
+        {
+            AbsoluteFilePath a = aa;
+            AbsoluteFilePath b = bb;
+
+            bool result = a == b;
+
+            result.Should().Be(expected);
         }
     }
 }

@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.StateMachine</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -15,8 +13,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.StateMachine.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\portable-windows8+net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\portable-windows8+net45\Appccelerate.StateMachine.xml</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -31,9 +29,9 @@
     <Compile Include="Extensions\ExtensionBase.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HistoryType.cs" />
-    <Compile Include="InitializationInformation.cs" />
     <Compile Include="IStateMachine.cs" />
     <Compile Include="IStateMachineInformation.cs" />
+    <Compile Include="ListExtensionMethods.cs" />
     <Compile Include="Machine\ActionHolders\ParametrizedActionHolder{T}.cs" />
     <Compile Include="Machine\ActionHolders\ArgumentLessActionHolder.cs" />
     <Compile Include="Machine\ActionHolders\ArgumentActionHolder.cs" />
@@ -69,6 +67,7 @@
     <Compile Include="Machine\StateBuilder.g.cs" />
     <Compile Include="Machine\StateDictionary.cs" />
     <Compile Include="Machine\StateMachine.cs" />
+    <Compile Include="Machine\StateMachineException.cs" />
     <Compile Include="Machine\StateMachineInitializer.cs" />
     <Compile Include="Machine\States\StatesExceptionMessages.cs" />
     <Compile Include="Machine\States\State.cs" />
@@ -78,6 +77,8 @@
     <Compile Include="Machine\Transitions\TransitionInfo.cs" />
     <Compile Include="Machine\Transitions\TransitionResult.cs" />
     <Compile Include="PassiveStateMachine.cs" />
+    <Compile Include="Persistence\IStateMachineLoader.cs" />
+    <Compile Include="Persistence\IStateMachineSaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\VersionInfo.g.cs" />
     <Compile Include="Reports\CsvStateMachineReportGenerator.cs" />
@@ -100,17 +101,16 @@
     <Content Include="Version.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Appccelerate.StateMachine.nuspec" />
+    <None Include="Appccelerate.StateMachine.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Appccelerate.AsyncModule\Appccelerate.AsyncModule.csproj">
-      <Project>{94C83FE2-1698-4749-9B07-354C9F24D45B}</Project>
-      <Name>Appccelerate.AsyncModule</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">
       <Project>{F2D5C375-C650-4DED-A85E-8DA8EC09927A}</Project>
       <Name>Appccelerate.Fundamentals</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\Appccelerate.PCL.msbuild" />
 </Project>

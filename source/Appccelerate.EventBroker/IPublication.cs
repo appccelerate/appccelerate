@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="IPublication.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -60,6 +60,12 @@ namespace Appccelerate.EventBroker
         /// </summary>
         /// <value>The type of the event arguments.</value>
         Type EventArgsType { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the same event on the same publisher may be registered multiple times.
+        /// </summary>
+        /// <returns>Whether this publication allows multiple registrations.</returns>
+        bool AllowsMultipleRegistrationsOnSamePublisher { get; }
 
         /// <summary>
         /// Describes this publication

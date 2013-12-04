@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventTopicCollection.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ namespace Appccelerate.MappingEventBroker
     using System.Collections.ObjectModel;
 
     using Appccelerate.EventBroker;
-    using Appccelerate.EventBroker.Internals;
 
     /// <summary>
     /// Specialized keyed collection which used the <see cref="IEventTopicInfo.Uri"/> as key.

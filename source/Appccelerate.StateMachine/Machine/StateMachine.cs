@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="StateMachine.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,9 +20,11 @@ namespace Appccelerate.StateMachine.Machine
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -37,31 +39,11 @@ namespace Appccelerate.StateMachine.Machine
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The dictionary of all states.
-        /// </summary>
         private readonly IStateDictionary<TState, TEvent> states;
-
         private readonly IFactory<TState, TEvent> factory;
-
-        /// <summary>
-        /// The initial state of the state machine.
-        /// </summary>
         private readonly Initializable<TState> initialStateId;
-
-        /// <summary>
-        /// Name of this state machine used in log messages.
-        /// </summary>
         private readonly string name;
-
-        /// <summary>
-        /// Extensions of this state machine.
-        /// </summary>
         private readonly List<IExtension<TState, TEvent>> extensions;
-
-        /// <summary>
-        /// The current state.
-        /// </summary>
         private IState<TState, TEvent> currentState;
 
         /// <summary>
@@ -159,7 +141,7 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// Adds the extension.
+        /// Adds the <paramref name="extension"/>.
         /// </summary>
         /// <param name="extension">The extension.</param>
         public void AddExtension(IExtension<TState, TEvent> extension)
@@ -176,7 +158,7 @@ namespace Appccelerate.StateMachine.Machine
         }
 
         /// <summary>
-        /// Executes the specified action for all extensions.
+        /// Executes the specified <paramref name="action"/> for all extensions.
         /// </summary>
         /// <param name="action">The action to execute.</param>
         public void ForEach(Action<IExtension<TState, TEvent>> action)
@@ -309,6 +291,35 @@ namespace Appccelerate.StateMachine.Machine
             reportGenerator.Report(this.ToString(), this.states.GetStates(), this.initialStateId);
         }
 
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            stateMachineSaver.SaveCurrentState(this.currentState != null ? 
+                new Initializable<TState> { Value = this.currentState.Id } : 
+                new Initializable<TState>());
+
+            IEnumerable<IState<TState, TEvent>> superStatesWithLastActiveState = this.states.GetStates()
+                .Where(s => s.SubStates.Any())
+                .Where(s => s.LastActiveState != null)
+                .ToList();
+
+            var historyStates = superStatesWithLastActiveState.ToDictionary(
+                s => s.Id,
+                s => s.LastActiveState.Id);
+
+            stateMachineSaver.SaveHistoryStates(historyStates);
+        }
+
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+            this.CheckThatStateMachineIsNotAlreadyInitialized();
+
+            this.LoadCurrentState(stateMachineLoader);
+            this.LoadHistoryStates(stateMachineLoader);
+        }
+
         /// <summary>
         /// Fires the <see cref="TransitionDeclined"/> event.
         /// </summary>
@@ -331,7 +342,31 @@ namespace Appccelerate.StateMachine.Machine
         {
             if (exceptionHandler == null)
             {
-                throw exception.PreserveStackTrace();
+                throw new StateMachineException("No exception listener is registerd. Exception: ", exception);
+            }
+        }
+
+        private void LoadCurrentState(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Initializable<TState> loadedCurrentState = stateMachineLoader.LoadCurrentState();
+
+            this.currentState = loadedCurrentState.IsInitialized ? this.states[loadedCurrentState.Value] : null;
+        }
+
+        private void LoadHistoryStates(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            IDictionary<TState, TState> historyStates = stateMachineLoader.LoadHistoryStates();
+            foreach (KeyValuePair<TState, TState> historyState in historyStates)
+            {
+                IState<TState, TEvent> superState = this.states[historyState.Key];
+                IState<TState, TEvent> lastActiveState = this.states[historyState.Value];
+
+                if (!superState.SubStates.Contains(lastActiveState))
+                {
+                    throw new InvalidOperationException(ExceptionMessages.CannotSetALastActiveStateThatIsNotASubState);
+                }
+
+                superState.LastActiveState = lastActiveState;
             }
         }
 
@@ -379,9 +414,17 @@ namespace Appccelerate.StateMachine.Machine
 
         private void CheckThatStateMachineIsInitialized()
         {
-            if (!this.initialStateId.IsInitialized)
+            if (this.currentState == null && !this.initialStateId.IsInitialized)
             {
                 throw new InvalidOperationException(ExceptionMessages.StateMachineNotInitialized);
+            }
+        }
+
+        private void CheckThatStateMachineIsNotAlreadyInitialized()
+        {
+            if (this.currentState != null || this.initialStateId.IsInitialized)
+            {
+                throw new InvalidOperationException(ExceptionMessages.StateMachineIsAlreadyInitialized);
             }
         }
 

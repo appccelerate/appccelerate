@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="TypeExtensions.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace Appccelerate.Formatters
 {
     using System;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Contains extension methods for Type.
@@ -35,13 +36,13 @@ namespace Appccelerate.Formatters
         {
             Ensure.ArgumentNotNull(type, "type");
 
-            if (!type.IsGenericType)
+            if (!type.GetTypeInfo().IsGenericType)
             {
                 return type.FullName;
             }
 
             var partName = type.FullName.Substring(0, type.FullName.IndexOf('`'));
-            var genericArgumentNames = type.GetGenericArguments().Select(arg => arg.FullNameToString());
+            var genericArgumentNames = type.GetTypeInfo().GenericTypeArguments.Select(arg => arg.FullNameToString());
             return string.Concat(partName, "<", string.Join(",", genericArgumentNames), ">");
         }
     }

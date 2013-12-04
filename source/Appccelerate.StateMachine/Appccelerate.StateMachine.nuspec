@@ -26,7 +26,6 @@
     <tags>Appccelerate</tags>
     <dependencies>
       <dependency id="Appccelerate.Fundamentals" version="%Appccelerate.Fundamentals%"/>
-      <dependency id="Appccelerate.AsyncModule" version="%Appccelerate.AsyncModule%"/>
     </dependencies>
   </metadata>
 </package>

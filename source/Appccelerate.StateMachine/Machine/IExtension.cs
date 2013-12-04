@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="IExtension.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -224,5 +224,21 @@ namespace Appccelerate.StateMachine.Machine
             ITransition<TState, TEvent> transition, 
             ITransitionContext<TState, TEvent> transitionContext, 
             Exception exception);
+
+        /// <summary>
+        /// Called when a guard of a transition returns false and therefore the transition is not executed.
+        /// </summary>
+        void SkippedTransition(
+            IStateMachineInformation<TState, TEvent> stateMachineInformation, 
+            ITransition<TState, TEvent> transition, 
+            ITransitionContext<TState, TEvent> context);
+
+        /// <summary>
+        /// Called when a transition was executed.s
+        /// </summary>
+        void ExecutedTransition(
+            IStateMachineInformation<TState, TEvent> stateMachineInformation, 
+            ITransition<TState, TEvent> transition, 
+            ITransitionContext<TState, TEvent> context);
     }
 }

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ActiveStateMachineTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace Appccelerate.StateMachine
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveStateMachineTest"/> class.
         /// </summary>
-        public ActiveStateMachineTest() 
+        public ActiveStateMachineTest()
             : base(new ActiveStateMachine<States, Events>("Test Machine"))
         {
         }

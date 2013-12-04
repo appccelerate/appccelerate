@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Registrar.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -80,7 +80,10 @@ namespace Appccelerate.EventBroker.Internals
 
             IPublication publication = eventTopic.RemovePublication(publisher, eventName);
 
-            publication.Dispose();
+            if (publication != null)
+            {
+                publication.Dispose();
+            }
         }
 
         /// <summary>
@@ -272,6 +275,13 @@ namespace Appccelerate.EventBroker.Internals
             this.AddSubscription(topic, subscriber, handler, matchers, handlerMethod.Method);
         }
 
+        public void AddSubscription(string topic, object subscriber, Action handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers)
+        {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            this.AddSubscription(topic, subscriber, handler, matchers, handlerMethod.Method);
+        }
+
         /// <summary>
         /// Removes a subscription.
         /// </summary>
@@ -308,6 +318,13 @@ namespace Appccelerate.EventBroker.Internals
             this.RemoveSubscription(topic, subscriber, handlerMethod.Method);
         }
 
+        public void RemoveSubscription(string topic, object subscriber, Action handlerMethod)
+        {
+            Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
+
+            this.RemoveSubscription(topic, subscriber, handlerMethod.Method);
+        }
+
         public void RemoveSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod)
         {
             Ensure.ArgumentNotNull(handlerMethod, "handlerMethod");
@@ -334,6 +351,9 @@ namespace Appccelerate.EventBroker.Internals
             bool hasOnlyEventArgs = parameters.Length == 1 && typeof(EventArgs).IsAssignableFrom(parameters[0].ParameterType);
 
             bool hasOnlyUnwrappedEventArgs = parameters.Length == 1;
+
+            bool hasNoArguments = parameters.Length == 0;
+
             ParameterInfo parameterInfo = handlerMethod.GetParameters().LastOrDefault();
 
             if (hasSenderAndMatchingEventArgs)
@@ -352,6 +372,11 @@ namespace Appccelerate.EventBroker.Internals
                     typeof(UnwrappedEventArgsOnlyDelegateWrapper<>).MakeGenericType(handlerMethod.GetParameters().Single().ParameterType),
                     typeof(EventArgs<>).MakeGenericType(parameterInfo.ParameterType),
                     handlerMethod);
+            }
+
+            if (hasNoArguments)
+            {
+                return new NoArgumentsDelegateWrapper(handlerMethod);
             }
 
             throw new InvalidSubscriptionSignatureException(handlerMethod);
@@ -427,7 +452,10 @@ namespace Appccelerate.EventBroker.Internals
 
                 IPublication publication = topic.RemovePublication(publisher, propertyPublication.Event.Name);
 
-                publication.Dispose();
+                if (publication != null)
+                {
+                    publication.Dispose();
+                }
             }
         }
 

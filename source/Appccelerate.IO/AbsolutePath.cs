@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="AbsolutePath.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -60,6 +60,28 @@ namespace Appccelerate.IO
             Ensure.ArgumentNotNull(absolutePath, "absolutePath");
 
             return absolutePath.Value;
+        }
+
+        public static bool operator ==(AbsolutePath a, AbsolutePath b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+// ReSharper disable RedundantCast.0 because otherwise it results in recursion.
+            if (((object)a == null) || ((object)b == null))
+// ReSharper restore RedundantCast.0
+            {
+                return false;
+            }
+
+            return a.Value == b.Value;
+        }
+
+        public static bool operator !=(AbsolutePath a, AbsolutePath b)
+        {
+            return !(a == b);
         }
 
         public override bool Equals(object obj)

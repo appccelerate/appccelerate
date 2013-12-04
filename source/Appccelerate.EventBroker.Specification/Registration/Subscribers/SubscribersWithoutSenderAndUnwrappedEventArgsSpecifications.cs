@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="SubscribersWithoutSenderAndUnwrappedEventArgsSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,16 +16,13 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Appccelerate.EventBroker.Subscribers
+namespace Appccelerate.EventBroker.Registration.Subscribers
 {
     using System;
     using System.Collections.Generic;
-
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.Events;
-
     using FluentAssertions;
-
     using Machine.Specifications;
 
     [Subject(Subscribers.RegisteringHandlerMethods)]

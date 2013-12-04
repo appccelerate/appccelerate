@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="IComplexExtension.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ namespace Appccelerate.Bootstrapper.Sample.Complex
         /// <summary>
         /// Called when the Container is created. Allows to resolve dependencies during bootstrapping.
         /// </summary>
-        /// <param name="container">The cotainer which allows resolves</param>
+        /// <param name="container">The container which allows resolves</param>
         void ContainerInitialized(Container container);
 
         /// <summary>

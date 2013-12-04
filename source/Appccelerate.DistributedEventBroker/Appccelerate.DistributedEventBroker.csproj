@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.DistributedEventBroker</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{3197BFBC-30E8-4188-B2CF-64E7472B6995}</ProjectGuid>
@@ -15,8 +13,8 @@
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.DistributedEventBroker.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\Net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net45\Appccelerate.DistributedEventBroker.XML</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -39,6 +37,7 @@
     <Compile Include="IEventBrokerBus.cs" />
     <Compile Include="IEventMessageFactory.cs" />
     <Compile Include="IManageEventBroker.cs" />
+    <Compile Include="InternalEventBrokerHolder.cs" />
     <Compile Include="ITopicSelectionStrategy.cs" />
     <Compile Include="Messages\EventFired.cs" />
     <Compile Include="Messages\IEventFired.cs" />

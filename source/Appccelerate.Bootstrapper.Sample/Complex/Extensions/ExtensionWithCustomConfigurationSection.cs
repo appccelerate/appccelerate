@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="ExtensionWithCustomConfigurationSection.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ namespace Appccelerate.Bootstrapper.Sample.Complex.Extensions
     using log4net;
 
     /// <summary>
-    /// Extension which consumes a costum configuration section.
+    /// Extension which consumes a custom configuration section.
     /// </summary>
     public class ExtensionWithCustomConfigurationSection : ComplexExtensionBase, IConsumeConfigurationSection
     {

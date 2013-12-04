@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="GuardTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -27,53 +27,11 @@ namespace Appccelerate.StateMachine.Machine
     /// </summary>
     public class GuardTest
     {
-        /// <summary>
-        /// Object under test.
-        /// </summary>
         private readonly StateMachine<StateMachine.States, StateMachine.Events> testee;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GuardTest"/> class.
-        /// </summary>
         public GuardTest()
         {
             this.testee = new StateMachine<StateMachine.States, StateMachine.Events>();
-        }
-
-        /// <summary>
-        /// Only the transition with a guard returning true is executed and the event arguments are passed to the guard.
-        /// </summary>
-        [Fact]
-        public void TransitionWithGuardReturningTrueIsExecuted()
-        {
-            this.testee.In(StateMachine.States.A)
-                .On(StateMachine.Events.A)
-                    .If(() => false).Goto(StateMachine.States.B)
-                    .If(() => true).Goto(StateMachine.States.C)
-                    .If(() => false).Goto(StateMachine.States.D);
-
-            this.testee.Initialize(StateMachine.States.A);
-            this.testee.EnterInitialState();
-
-            this.testee.Fire(StateMachine.Events.A);
-
-            Assert.Equal(StateMachine.States.C, this.testee.CurrentStateId);
-        }
-
-        [Fact]
-        public void OtherwiseIsExecutedWhenNoOtherGuardReturnsTrue()
-        {
-            this.testee.In(StateMachine.States.A)
-                .On(StateMachine.Events.A)
-                    .If(() => false).Goto(StateMachine.States.B)
-                    .Otherwise().Goto(StateMachine.States.C);
-
-            this.testee.Initialize(StateMachine.States.A);
-            this.testee.EnterInitialState();
-
-            this.testee.Fire(StateMachine.Events.A);
-
-            Assert.Equal(StateMachine.States.C, this.testee.CurrentStateId);
         }
 
         [Fact]
@@ -98,29 +56,6 @@ namespace Appccelerate.StateMachine.Machine
             this.testee.Fire(StateMachine.Events.A, OriginalEventArgument);
 
             eventArgument.Should().Be(OriginalEventArgument);
-        }
-
-        /// <summary>
-        /// When all guards deny the execution of its transition then ???
-        /// </summary>
-        [Fact]
-        public void AllGuardsReturnFalse()
-        {
-            bool transitionDeclined = false;
-
-            this.testee.TransitionDeclined += (sender, e) => { transitionDeclined = true; };
-
-            this.testee.In(StateMachine.States.A)
-                .On(StateMachine.Events.A).If(() => false).Goto(StateMachine.States.B)
-                .On(StateMachine.Events.A).If(() => false).Goto(StateMachine.States.C);
-
-            this.testee.Initialize(StateMachine.States.A);
-            this.testee.EnterInitialState();
-
-            this.testee.Fire(StateMachine.Events.A);
-
-            Assert.Equal(StateMachine.States.A, this.testee.CurrentStateId);
-            Assert.True(transitionDeclined, "transition was not declined.");
         }
 
         [Fact]

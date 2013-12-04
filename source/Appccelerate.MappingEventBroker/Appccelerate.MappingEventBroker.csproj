@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.MappingEventBroker</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -15,8 +13,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.MappingEventBroker.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\Net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net45\Appccelerate.MappingEventBroker.XML</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>

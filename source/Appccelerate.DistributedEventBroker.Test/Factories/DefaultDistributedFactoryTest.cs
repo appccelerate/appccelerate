@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DefaultDistributedFactoryTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,8 +18,11 @@
 
 namespace Appccelerate.DistributedEventBroker.Factories
 {
-    using Serializer;
-    using Strategies;
+    using Appccelerate.DistributedEventBroker.Serializer;
+    using Appccelerate.DistributedEventBroker.Strategies;
+
+    using FluentAssertions;
+
     using Xunit;
 
     public class DefaultDistributedFactoryTest
@@ -32,27 +35,27 @@ namespace Appccelerate.DistributedEventBroker.Factories
         }
 
         [Fact]
-        public void CreateMessageFactory_ReturnsDefaultMessageFactory()
+        public void CreatesDefaultMessageFactory()
         {
             var factory = this.testee.CreateMessageFactory();
 
-            Assert.IsType<DefaultEventMessageFactory>(factory);
+            factory.Should().BeOfType<DefaultEventMessageFactory>();
         }
 
         [Fact]
-        public void CreateEventArgsSerializer_ReturnsDefaultSerializer()
+        public void CreatesDefaultSerializer()
         {
             var serializer = this.testee.CreateEventArgsSerializer();
 
-            Assert.IsType<BinaryEventArgsSerializer>(serializer);
+            serializer.Should().BeOfType<BinaryEventArgsSerializer>();
         }
 
         [Fact]
-        public void CreateTopicSelectionStrategy_ReturnsDefaulTopicSelectionStrategy()
+        public void CreatesDefaulTopicSelectionStrategy()
         {
             var strategy = this.testee.CreateTopicSelectionStrategy();
 
-            Assert.IsType<DefaultTopicSelectionStrategy>(strategy);
+            strategy.Should().BeOfType<DefaultTopicSelectionStrategy>();
         }
     }
 }

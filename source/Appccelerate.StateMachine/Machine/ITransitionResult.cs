@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ITransitionResult.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 namespace Appccelerate.StateMachine.Machine
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents the result of a transition.
@@ -40,5 +41,11 @@ namespace Appccelerate.StateMachine.Machine
         /// </summary>
         /// <value>The new state.</value>
         IState<TState, TEvent> NewState { get; }
+
+        /// <summary>
+        /// Gets all exceptions that occurred during executing the transition.
+        /// </summary>
+        /// <value>The exceptions.</value>
+        ICollection<Exception> Exceptions { get; }
     }
 }

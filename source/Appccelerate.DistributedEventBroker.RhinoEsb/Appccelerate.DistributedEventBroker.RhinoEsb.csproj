@@ -14,8 +14,8 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.DistributedEventBroker.RhinoEsb.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\Net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\Net45\Appccelerate.DistributedEventBroker.RhinoEsb.XML</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
@@ -25,8 +25,11 @@
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Esent.Interop">
+      <HintPath>..\packages\Rhino.ServiceBus.References.3.1.0.0\lib\Esent.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.ServiceBus">
-      <HintPath>..\packages\Rhino.ServiceBus.3.0.0.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+      <HintPath>..\packages\Rhino.ServiceBus.3.1.0.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

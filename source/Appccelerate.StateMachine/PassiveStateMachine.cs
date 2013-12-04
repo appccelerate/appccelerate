@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="PassiveStateMachine.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ namespace Appccelerate.StateMachine
 
     using Appccelerate.StateMachine.Machine;
     using Appccelerate.StateMachine.Machine.Events;
+    using Appccelerate.StateMachine.Persistence;
     using Appccelerate.StateMachine.Syntax;
 
     /// <summary>
@@ -61,7 +62,7 @@ namespace Appccelerate.StateMachine
         /// Initializes a new instance of the <see cref="PassiveStateMachine&lt;TState, TEvent&gt;"/> class.
         /// </summary>
         public PassiveStateMachine()
-            : this(null)
+            : this(default(string))
         {
         }
 
@@ -259,6 +260,33 @@ namespace Appccelerate.StateMachine
         public void AddExtension(IExtension<TState, TEvent> extension)
         {
             this.stateMachine.AddExtension(extension);
+        }
+
+        /// <summary>
+        /// Saves the current state and history states to a persisted state. Can be restored using <see cref="Load"/>.
+        /// </summary>
+        /// <param name="stateMachineSaver">Data to be persisted is passed to the saver.</param>
+        public void Save(IStateMachineSaver<TState> stateMachineSaver)
+        {
+            Ensure.ArgumentNotNull(stateMachineSaver, "stateMachineSaver");
+
+            this.stateMachine.Save(stateMachineSaver);
+        }
+
+        /// <summary>
+        /// Loads the current state and history states from a persisted state (<see cref="Save"/>).
+        /// The loader should return exactly the data that was passed to the saver.
+        /// </summary>
+        /// <param name="stateMachineLoader">Loader providing persisted data.</param>
+        public void Load(IStateMachineLoader<TState> stateMachineLoader)
+        {
+            Ensure.ArgumentNotNull(stateMachineLoader, "stateMachineLoader");
+            
+            this.CheckThatNotAlreadyInitialized();
+
+            this.stateMachine.Load(stateMachineLoader);
+
+            this.initialized = true;
         }
 
         private void CheckThatNotAlreadyInitialized()

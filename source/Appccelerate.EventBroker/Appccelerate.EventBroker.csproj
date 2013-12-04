@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.EventBroker</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -15,7 +13,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
+    <OutputPath>bin\Release\lib\Net45\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -26,6 +24,7 @@
     <Compile Include="EventPublicationAttribute.cs" />
     <Compile Include="EventSubscriptionAttribute.cs" />
     <Compile Include="EventTopicFireDelegate.cs" />
+    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="Exceptions\EventBrokerException.cs" />
     <Compile Include="Exceptions\ExceptionHandlingContext.cs" />
     <Compile Include="Extensions\EventBrokerExtensionBase.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="Internals\Subscriptions\DelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\EventArgsOnlyDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\IDelegateWrapper.cs" />
+    <Compile Include="Internals\Subscriptions\NoArgumentsDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\SenderAndEventArgsDelegateWrapper.cs" />
     <Compile Include="Internals\Subscriptions\Subscription.cs" />
     <Compile Include="Internals\Subscriptions\UnwrappedEventArgsOnlyDelegateWrapper.cs" />
@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Appccelerate.EventBroker.nuspec" />
+    <None Include="Settings.stylecop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appccelerate.Fundamentals\Appccelerate.Fundamentals.csproj">

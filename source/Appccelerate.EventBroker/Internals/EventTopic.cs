@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventTopic.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -68,7 +68,10 @@ namespace Appccelerate.EventBroker.Internals
             Ensure.ArgumentNotNull(publication, "publication");
 
             this.Clean();
-            this.ThrowIfRepeatedPublication(publication.Publisher, publication.EventName);
+            if (!publication.AllowsMultipleRegistrationsOnSamePublisher)
+            {
+                this.ThrowIfRepeatedPublication(publication.Publisher, publication.EventName);
+            }
 
             this.extensionHost.ForEach(extension => extension.CreatedPublication(this, publication));
 
@@ -207,7 +210,8 @@ namespace Appccelerate.EventBroker.Internals
             // check that the T in EventHandler<T> is matching, the IsAssignableFrom method return false event if types can be assigned
             // e.g. EventHandler<CustomEventArgs> is not assignable to EventHandler<EventArgs> when using IsAssignableFrom directly on event handler type
             // therefore do the check on the event arguments type only.
-            if (!subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
+            // subscriberEventArgsType can be null if the handler method has no parameters.
+            if (subscriberEventArgsType != null && !subscriberEventArgsType.IsAssignableFrom(publisherEventArgsType))
             {
                 using (var writer = new StringWriter(CultureInfo.InvariantCulture))
                 {

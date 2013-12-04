@@ -16,14 +16,11 @@
     <RootNamespace>Appccelerate.IO</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="FakeItEasy">
-      <HintPath>..\packages\FakeItEasy.1.8.0\lib\NET40\FakeItEasy.dll</HintPath>
+      <HintPath>..\packages\FakeItEasy.1.12.0\lib\net40\FakeItEasy.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.2.0.0.1\lib\net40\FluentAssertions.dll</HintPath>
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

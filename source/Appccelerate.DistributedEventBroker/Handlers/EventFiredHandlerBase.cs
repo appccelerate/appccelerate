@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventFiredHandlerBase.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace Appccelerate.DistributedEventBroker.Handlers
         /// Initializes a new instance of the <see cref="EventFiredHandlerBase"/> class.
         /// </summary>
         protected EventFiredHandlerBase()
-            : this(DistributedEventBrokerExtensionBase.InternalEventBroker)
+            : this(InternalEventBrokerHolder.InternalEventBroker)
         {
         }
 
@@ -45,6 +45,7 @@ namespace Appccelerate.DistributedEventBroker.Handlers
         protected EventFiredHandlerBase(IEventBroker eventBroker)
         {
             this.eventBroker = eventBroker;
+            this.Restriction = HandlerRestriction.Asynchronous;
         }
 
         /// <summary>
@@ -56,6 +57,8 @@ namespace Appccelerate.DistributedEventBroker.Handlers
             get { return this.eventBroker; }
         }
 
+        protected HandlerRestriction Restriction { get; set; }
+
         /// <summary>
         /// Fires the message event on the internal event broker.
         /// </summary>
@@ -64,7 +67,7 @@ namespace Appccelerate.DistributedEventBroker.Handlers
         {
             string topic = this.CreateTopic(message);
 
-            this.EventBroker.Fire(topic, this, HandlerRestriction.Asynchronous, this, new EventArgs<IEventFired>(message));
+            this.EventBroker.Fire(topic, this, this.Restriction, this, new EventArgs<IEventFired>(message));
         }
 
         /// <summary>

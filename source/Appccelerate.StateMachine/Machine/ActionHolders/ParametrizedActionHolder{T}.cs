@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ParametrizedActionHolder{T}.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Text;
 
@@ -44,7 +45,7 @@ namespace Appccelerate.StateMachine.Machine.ActionHolders
         {
             StringBuilder result = new StringBuilder();
 
-            result.Append(this.action.Method.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.Method.Name);
+            result.Append(this.action.GetMethodInfo().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any() ? "anonymous" : this.action.GetMethodInfo().Name);
 
             if (this.parameter == null)
             {

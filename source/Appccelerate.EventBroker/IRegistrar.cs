@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="IRegistrar.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -35,12 +35,16 @@ namespace Appccelerate.EventBroker
         void AddSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
 
         void AddSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
+        
+        void AddSubscription(string topic, object subscriber, Action handlerMethod, IHandler handler, params ISubscriptionMatcher[] matchers);
 
         void RemoveSubscription(string topic, object subscriber, EventHandler handlerMethod);
 
         void RemoveSubscription<TEventArgs>(string topic, object subscriber, EventHandler<TEventArgs> handlerMethod) where TEventArgs : EventArgs;
 
         void RemoveSubscription(string topic, object subscriber, Action<EventArgs> handlerMethod);
+
+        void RemoveSubscription(string topic, object subscriber, Action handlerMethod);
 
         void RemoveSubscription<TEventArgValue>(string topic, object subscriber, Action<TEventArgValue> handlerMethod);
     }

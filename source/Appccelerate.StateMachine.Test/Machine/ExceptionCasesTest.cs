@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ExceptionCasesTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,11 @@
 namespace Appccelerate.StateMachine.Machine
 {
     using System;
+    using System.Collections.Generic;
+
+    using Appccelerate.StateMachine.Persistence;
+
+    using FakeItEasy;
 
     using FluentAssertions;
 
@@ -230,6 +235,37 @@ namespace Appccelerate.StateMachine.Machine
             Action action = () => this.testee.In(StateMachine.States.A).On(StateMachine.Events.B).If(() => false).Execute(() => { });
 
             action.ShouldThrow<InvalidOperationException>().WithMessage(ExceptionMessages.TransitionWithoutGuardHasToBeLast);
+        }
+
+        [Fact]
+        public void ThrowsExceptionOnLoading_WhenAlreadyInitialized()
+        {
+            this.testee.Initialize(StateMachine.States.A);
+            Action action = () => this.testee.Load(A.Fake<IStateMachineLoader<StateMachine.States>>());
+
+            action.ShouldThrow<InvalidOperationException>().WithMessage(ExceptionMessages.StateMachineIsAlreadyInitialized);
+        }
+
+        [Fact]
+        public void ThrowsExceptionOnLoading_WhenSettingALastActiveStateThatIsNotASubState()
+        {
+            this.testee.DefineHierarchyOn(StateMachine.States.B)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(StateMachine.States.B1)
+                .WithSubState(StateMachine.States.B2);
+
+            var loader = A.Fake<IStateMachineLoader<StateMachine.States>>();
+
+            A.CallTo(() => loader.LoadHistoryStates())
+                .Returns(new Dictionary<StateMachine.States, StateMachine.States>()
+                             {
+                                 { StateMachine.States.B, StateMachine.States.A }
+                             });
+
+            Action action = () => this.testee.Load(loader);
+
+            action.ShouldThrow<InvalidOperationException>()
+                .WithMessage(ExceptionMessages.CannotSetALastActiveStateThatIsNotASubState);
         }
 
         /// <summary>

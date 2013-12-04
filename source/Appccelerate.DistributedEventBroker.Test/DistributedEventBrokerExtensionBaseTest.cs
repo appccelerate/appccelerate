@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DistributedEventBrokerExtensionBaseTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -24,13 +24,12 @@ namespace Appccelerate.DistributedEventBroker
     using System.Linq;
     using Appccelerate.EventBroker;
 
-    using EventBroker.Internals;
     using Events;
     using Messages;
     using Moq;
     using Xunit;
 
-    public class DistributedEventBrokerExtensionBaseTest : IDisposable
+    public class DistributedEventBrokerExtensionBaseTest
     {
         private const string DefaultTopicUri = "TestTopic";
         private readonly Mock<IEventBrokerBus> eventBrokerBus;
@@ -43,16 +42,13 @@ namespace Appccelerate.DistributedEventBroker
 
         private readonly TestableDistributedEventBrokerExtensionBase testee;
 
-        private readonly Mock<IEventBroker> internalEventBroker;
-
-        private readonly Mock<IEventRegistrar> internalRegisterer;
+        private readonly Mock<IEventRegistrar> registerer;
 
         public DistributedEventBrokerExtensionBaseTest()
         {
             this.eventBrokerBus = new Mock<IEventBrokerBus>();
             this.eventBroker = new Mock<IEventBroker>();
-            this.internalEventBroker = new Mock<IEventBroker>();
-            this.internalRegisterer = this.internalEventBroker.As<IEventRegistrar>();
+            this.registerer = new Mock<IEventRegistrar>();
             this.factory = new Mock<IDistributedFactory>
                                {
                                    DefaultValue = DefaultValue.Mock
@@ -60,9 +56,7 @@ namespace Appccelerate.DistributedEventBroker
 
             this.distributedEventBrokerIdentification = "TestDistributedEventBroker";
 
-            DistributedEventBrokerExtensionBase.InternalEventBroker = this.internalEventBroker.Object;
-
-            this.testee = new TestableDistributedEventBrokerExtensionBase(this.distributedEventBrokerIdentification, this.eventBrokerBus.Object, this.factory.Object);
+            this.testee = new TestableDistributedEventBrokerExtensionBase(this.distributedEventBrokerIdentification, this.eventBrokerBus.Object, this.factory.Object, this.registerer.Object);
         }
 
         [Fact]
@@ -175,7 +169,7 @@ namespace Appccelerate.DistributedEventBroker
 
             this.testee.Manage(broker.Object);
 
-            this.internalRegisterer.Verify(registerer => 
+            this.registerer.Verify(registerer => 
                 registerer.AddSubscription("topic://Appccelerate.DistributedEventBroker/TestDistributedEventBroker", this.testee, It.IsAny<EventHandler<EventArgs<IEventFired>>>(), It.IsAny<IHandler>()));
         }
 
@@ -359,11 +353,6 @@ namespace Appccelerate.DistributedEventBroker
             this.eventBroker.Verify(eb => eb.Fire(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<HandlerRestriction>(), It.IsAny<object>(), It.IsAny<EventArgs>()), Times.Never());
         }
 
-        public void Dispose()
-        {
-            DistributedEventBrokerExtensionBase.InternalEventBroker = null;
-        }
-
         private static Mock<IEventBroker> CreateEventBroker()
         {
             return new Mock<IEventBroker>();
@@ -429,9 +418,12 @@ namespace Appccelerate.DistributedEventBroker
 
         private class TestableDistributedEventBrokerExtensionBase : DistributedEventBrokerExtensionBase
         {
-            public TestableDistributedEventBrokerExtensionBase(string distributedEventBrokerIdentification, IEventBrokerBus eventBrokerBus, IDistributedFactory factory) :
+            private readonly IEventRegistrar registerer;
+
+            public TestableDistributedEventBrokerExtensionBase(string distributedEventBrokerIdentification, IEventBrokerBus eventBrokerBus, IDistributedFactory factory, IEventRegistrar registerer) :
                 base(distributedEventBrokerIdentification, eventBrokerBus, factory)
             {
+                this.registerer = registerer;
             }
 
             public IEnumerable<string> TestTopics
@@ -482,6 +474,14 @@ namespace Appccelerate.DistributedEventBroker
             public void TestHandleMessage(IEventFired eventFired)
             {
                 this.HandleMessage(this, eventFired);
+            }
+
+            protected override IEventRegistrar EventRegistrar
+            {
+                get
+                {
+                    return this.registerer;
+                }
             }
 
             protected override IHandler CreateHandler()

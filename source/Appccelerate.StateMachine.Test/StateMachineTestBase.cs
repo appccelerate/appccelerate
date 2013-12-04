@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="StateMachineTestBase.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -220,6 +220,9 @@ namespace Appccelerate.StateMachine
                     this.testee.FirePriority(Events.C);
                 });
 
+            this.testee.TransitionCompleted += (s, e) => Console.WriteLine("completed " + e.StateId + " to " + e.NewStateId);
+            this.testee.TransitionExceptionThrown += (s, e) => Console.WriteLine("Exception: " + e.Exception);
+
             this.testee.In(States.B)
                 .On(Events.C).Goto(States.C);
 
@@ -290,7 +293,7 @@ namespace Appccelerate.StateMachine
         /// <summary>
         /// Checks the no declined transition message occurred.
         /// </summary>
-        protected void CheckNoDeclinedTransitionMessage()
+        private void CheckNoDeclinedTransitionMessage()
         {
             Assert.Empty(this.TransitionDeclinedMessages);
         }
@@ -298,7 +301,7 @@ namespace Appccelerate.StateMachine
         /// <summary>
         /// Checks the no exception message occurred.
         /// </summary>
-        protected void CheckNoExceptionMessage()
+        private void CheckNoExceptionMessage()
         {
             Assert.Empty(this.Exceptions);
         }
@@ -310,7 +313,7 @@ namespace Appccelerate.StateMachine
         /// <param name="origin">The origin.</param>
         /// <param name="eventId">The event id.</param>
         /// <param name="newState">The new state.</param>
-        protected void CheckTransitionCompletedMessage(object eventArgument, States origin, Events eventId, States newState)
+        private void CheckTransitionCompletedMessage(object eventArgument, States origin, Events eventId, States newState)
         {
             Assert.Equal(1, this.TransitionCompletedMessages.Count);
             Assert.Equal(origin, this.TransitionCompletedMessages[0].StateId);
@@ -329,7 +332,7 @@ namespace Appccelerate.StateMachine
         /// <param name="origin">The origin.</param>
         /// <param name="eventId">The event id.</param>
         /// <param name="eventArgument">The event argument.</param>
-        protected void CheckBeginTransitionMessage(States origin, Events eventId, object eventArgument)
+        private void CheckBeginTransitionMessage(States origin, Events eventId, object eventArgument)
         {
             Assert.Equal(1, this.TransitionBeginMessages.Count);
             Assert.Equal(origin, this.TransitionBeginMessages[0].StateId);

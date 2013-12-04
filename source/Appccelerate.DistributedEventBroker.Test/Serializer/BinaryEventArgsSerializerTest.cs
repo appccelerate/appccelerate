@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="BinaryEventArgsSerializerTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@ namespace Appccelerate.DistributedEventBroker.Serializer
     using System;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
+
+    using FluentAssertions;
+
     using Xunit;
 
     public class BinaryEventArgsSerializerTest
@@ -35,7 +38,7 @@ namespace Appccelerate.DistributedEventBroker.Serializer
         {
             this.eventArgsToSerialize = new CustomEventArgs(true);
 
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(ms, this.eventArgsToSerialize);
@@ -46,20 +49,19 @@ namespace Appccelerate.DistributedEventBroker.Serializer
         }
 
         [Fact]
-        public void Serialize_MustSerializeEventArgsToBinaryString()
+        public void SerializesEventArgsToBinaryStrings()
         {
             var result = this.testee.Serialize(this.eventArgsToSerialize);
 
-            Assert.Equal(this.inputAndOutput, result);
+            result.Should().Be(this.inputAndOutput);
         }
 
         [Fact]
-        public void Deserialize_MustDeserializeEventArgsFromBinaryString()
+        public void DeserializesEventArgsFromBinaryStrings()
         {
             var result = this.testee.Deserialize(typeof(CustomEventArgs), this.inputAndOutput);
 
-            Assert.IsType<CustomEventArgs>(result);
-            Assert.True(((CustomEventArgs)result).Cancel);
+            result.As<CustomEventArgs>().Cancel.Should().BeTrue();
         }
 
         [Serializable]

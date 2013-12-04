@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="GlobalSuppressions.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -119,3 +119,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Scope = "member", Target = "Appccelerate.StateMachine.Machine.Transitions.Transition`2.#ShouldFire(Appccelerate.StateMachine.Machine.ITransitionContext`2<!0,!1>)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "If", Scope = "member", Target = "Appccelerate.StateMachine.Syntax.IGotoInIfSyntax`2.#If(System.Func`1<System.Boolean>)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "If", Scope = "member", Target = "Appccelerate.StateMachine.Syntax.IGotoInIfSyntax`2.#If`1(System.Func`2<!!0,System.Boolean>)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "Appccelerate.StateMachine.Persistence.IStateMachineLoader`1.#LoadCurrentState()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Scope = "member", Target = "Appccelerate.StateMachine.Persistence.IStateMachineLoader`1.#LoadHistoryStates()")]

@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="GlobalSuppressions.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -98,3 +98,18 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SHUTDOWN", Scope = "member", Target = "Appccelerate.Windows.WindowsHelper+EWX_ENUM.#EWX_SHUTDOWN")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Scope = "member", Target = "Appccelerate.Windows.WindowsHelper+EWX_ENUM.#EWX_SHUTDOWN")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "EWX", Scope = "member", Target = "Appccelerate.Windows.WindowsHelper+EWX_ENUM.#EWX_SHUTDOWN")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Exit", Scope = "member", Target = "Appccelerate.Windows.WindowsHelper.#ExitSystem(Appccelerate.Windows.WindowsHelper+EWX_ENUM)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Helper", Scope = "type", Target = "Appccelerate.Windows.ApplicationHelper")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Application", Scope = "type", Target = "Appccelerate.Windows.ApplicationHelper")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Process", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Running", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "switch", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "To", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Check", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Application", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Already", Scope = "member", Target = "Appccelerate.Windows.ApplicationHelper.#CheckApplicationAlreadyRunning(System.Boolean)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Helper", Scope = "type", Target = "Appccelerate.Windows.GraphicHelper")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Dpi", Scope = "member", Target = "Appccelerate.Windows.GraphicHelper.#GetDpi()")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Helper", Scope = "type", Target = "Appccelerate.Windows.WindowsHelper")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "value", Scope = "member", Target = "Appccelerate.Windows.WindowsHelper.#ExitSystem(Appccelerate.Windows.WindowsHelper+EWX_ENUM)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "System", Scope = "member", Target = "Appccelerate.Windows.WindowsHelper.#ExitSystem(Appccelerate.Windows.WindowsHelper+EWX_ENUM)")]

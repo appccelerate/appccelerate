@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Publication.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -66,11 +66,16 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         public abstract Type EventArgsType { get; }
 
+        public virtual bool AllowsMultipleRegistrationsOnSamePublisher
+        {
+            get { return false; }
+        }
+
         protected bool IsPublisherAlive
         {
             get { return this.publisher.IsAlive;  }
         }
-        
+
         public virtual void DescribeTo(TextWriter writer)
         {
             Ensure.ArgumentNotNull(writer, "writer");

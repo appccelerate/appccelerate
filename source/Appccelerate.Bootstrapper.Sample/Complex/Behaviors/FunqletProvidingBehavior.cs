@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="FunqletProvidingBehavior.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ namespace Appccelerate.Bootstrapper.Sample.Complex.Behaviors
         }
 
         /// <summary>
-        /// Scans all extensions which implement IFunqlet and adds them to the funqlet collection.
+        /// Scans all extensions which implement <see cref="IFunqlet"/> and adds them to the funqlet collection.
         /// </summary>
         /// <param name="extensions">The extensions which are scanned.</param>
         public void Behave(IEnumerable<IComplexExtension> extensions)

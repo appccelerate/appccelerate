@@ -27,7 +27,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
 
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v4.5</TargetFrameworkVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
 
     <FileAlignment>512</FileAlignment>
@@ -51,9 +51,11 @@
  
     <!-- Code and Source Analysis settings is set to common files depending on project type (overridable in Project File). -->
     <CodeAnalysisCulture>en-US</CodeAnalysisCulture>
-    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisRuleSet)' == ''">$(AppccelerateSourcePath)Appccelerate.ruleset</CodeAnalysisRuleSet>
+    <!--
+	<CodeAnalysisRuleSet Condition="'$(CodeAnalysisRuleSet)' == ''">$(AppccelerateSourcePath)Appccelerate.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisPath>..\..\tools\FxCop\</CodeAnalysisPath>
     <SourceAnalysisOverrideSettingsFile Condition="'$(SourceAnalysisOverrideSettingsFile)' == ''">$(AppccelerateSourcePath)Appccelerate.$(AppccelerateProjectType).stylecop</SourceAnalysisOverrideSettingsFile>
+	-->
   </PropertyGroup>
 
   
@@ -105,14 +107,18 @@
 
     <!-- Do not treat warnings as errors. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+    <!--
+	<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+	-->
     <SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
-
+	
     <!-- Disable Source Analysis. -->
-    <RunSourceAnalysis>true</RunSourceAnalysis>
+    	<RunSourceAnalysis>true</RunSourceAnalysis>
 
     <!-- Disable Code Analysis. -->
-    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <!--
+	<RunCodeAnalysis>false</RunCodeAnalysis>
+	-->
   </PropertyGroup>
 
   <!-- Default Visual Studio Project properties when configuration is 'DebugWithCodeAnalysis'. -->
@@ -135,7 +141,9 @@
     <RunSourceAnalysis>true</RunSourceAnalysis>
 
     <!-- Enable Code Analysis when Project Type is 'Source'. -->
-    <RunCodeAnalysis Condition="'$(AppccelerateProjectType)' == 'Source'">true</RunCodeAnalysis>
+    <!-- 
+	<RunCodeAnalysis Condition="'$(AppccelerateProjectType)' == 'Source'">true</RunCodeAnalysis>
+	-->
   </PropertyGroup>
 
 
@@ -158,7 +166,9 @@
     <RunSourceAnalysis>true</RunSourceAnalysis>
 
     <!-- Enable Code Analysis when Project Type is 'Source'. -->
-    <RunCodeAnalysis Condition="'$(AppccelerateProjectType)' == 'Source' And '$(RunCodeAnalysis)' == ''">true</RunCodeAnalysis>
+    <!--
+	<RunCodeAnalysis Condition="'$(AppccelerateProjectType)' == 'Source' And '$(RunCodeAnalysis)' == ''">true</RunCodeAnalysis>
+	-->
 
     <!-- Documentation File is set ResultsPath\Configuration\DeploymentType\AssemblyName.xml when Project Type is 'Source'. -->
     <DocumentationFile Condition="'$(AppccelerateProjectType)' == 'Source'">$(OutputPath)$(AssemblyName).xml</DocumentationFile>

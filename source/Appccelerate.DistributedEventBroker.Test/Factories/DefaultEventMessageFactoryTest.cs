@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="DefaultEventMessageFactoryTest.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,7 +21,11 @@ namespace Appccelerate.DistributedEventBroker.Factories
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+
     using Appccelerate.DistributedEventBroker.Messages;
+
+    using FluentAssertions;
+
     using Xunit;
     using Xunit.Extensions;
 
@@ -45,14 +49,16 @@ namespace Appccelerate.DistributedEventBroker.Factories
         }
 
         [Fact]
-        public void CreateEventFiredMessage_MustCreateEventFiredMessage()
+        public void CreatesEventFiredMessage()
         {
-            Assert.IsType<EventFired>(this.testee.CreateEventFiredMessage(x => { }));
+            var message = this.testee.CreateEventFiredMessage(x => { });
+
+            message.Should().BeOfType<EventFired>();
         }
 
         [Theory]
         [PropertyData("InitializerInput")]
-        public void CreateEventFiredMessage_MustAssignPropertiesWithInitializer(string distributedIdentification, Guid identification, string topic, EventArgs eventArgs)
+        public void AssignsPropertiesWithInitializerOnCreatedMessage(string distributedIdentification, Guid identification, string topic, EventArgs eventArgs)
         {
             var result = this.testee.CreateEventFiredMessage(x =>
                                                     {
@@ -63,10 +69,10 @@ namespace Appccelerate.DistributedEventBroker.Factories
                                                         x.EventArgs = eventArgs.ToString();
                                                     });
 
-            Assert.Equal(distributedIdentification, result.DistributedEventBrokerIdentification);
-            Assert.Equal(identification.ToString(), result.EventBrokerIdentification);
-            Assert.Equal(topic, result.Topic);
-            Assert.Equal(eventArgs.ToString(), result.EventArgs);
+            result.DistributedEventBrokerIdentification.Should().Be(distributedIdentification);
+            result.EventBrokerIdentification.Should().Be(identification.ToString());
+            result.Topic.Should().Be(topic);
+            result.EventArgs.Should().Be(eventArgs.ToString());
         }
     }
 }

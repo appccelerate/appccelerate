@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Transition.cs" company="Appccelerate">
-//   Copyright (c) 2008-2012
+//   Copyright (c) 2008-2013
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -25,29 +25,15 @@ namespace Appccelerate.StateMachine.Machine.Transitions
     using Appccelerate.StateMachine.Machine.ActionHolders;
     using Appccelerate.StateMachine.Machine.GuardHolders;
     
-    /// <summary>
-    /// A transition of the state machine.
-    /// </summary>
-    /// <typeparam name="TState">The type of the state.</typeparam>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
     public class Transition<TState, TEvent>
         : ITransition<TState, TEvent>
         where TState : IComparable
         where TEvent : IComparable
     {
-        /// <summary>
-        /// The actions that are executed when this transition is fired.
-        /// </summary>
         private readonly List<IActionHolder> actions;
-
         private readonly IExtensionHost<TState, TEvent> extensionHost;
         private readonly IStateMachineInformation<TState, TEvent> stateMachineInformation;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Transition&lt;TState, TEvent&gt;"/> class.
-        /// </summary>
-        /// <param name="stateMachineInformation">The state machine information.</param>
-        /// <param name="extensionHost">The extension host.</param>
         public Transition(IStateMachineInformation<TState, TEvent> stateMachineInformation, IExtensionHost<TState, TEvent> extensionHost)
         {
             this.stateMachineInformation = stateMachineInformation;
@@ -56,53 +42,33 @@ namespace Appccelerate.StateMachine.Machine.Transitions
             this.actions = new List<IActionHolder>();
         }
 
-        /// <summary>
-        /// Gets or sets the source state of this transition.
-        /// </summary>
-        /// <value>The source state.</value>
         public IState<TState, TEvent> Source { get; set; }
 
-        /// <summary>
-        /// Gets or sets the target state of this transition.
-        /// </summary>
-        /// <value>The target state.</value>
         public IState<TState, TEvent> Target { get; set; }
 
-        /// <summary>
-        /// Gets or sets the guard of this transition.
-        /// </summary>
-        /// <value>The guard.</value>
         public IGuardHolder Guard { get; set; }
 
-        /// <summary>
-        /// Gets the actions of this transition.
-        /// </summary>
-        /// <value>The actions.</value>
         public ICollection<IActionHolder> Actions
         {
             get { return this.actions; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this is an internal transition.
-        /// </summary>
-        /// <value><c>true</c> if this is an internal transition; otherwise, <c>false</c>.</value>
-        private bool InternalTransition
+        private bool IsInternalTransition
         {
             get { return this.Target == null; }
         }
 
-        /// <summary>
-        /// Fires the transition.
-        /// </summary>
-        /// <param name="context">The event context.</param>
-        /// <returns>The result of the transition.</returns>
         public ITransitionResult<TState, TEvent> Fire(ITransitionContext<TState, TEvent> context)
         {
             Ensure.ArgumentNotNull(context, "context");
 
             if (!this.ShouldFire(context))
             {
+                this.extensionHost.ForEach(extension => extension.SkippedTransition(
+                    this.stateMachineInformation,
+                    this,
+                    context));
+
                 return TransitionResult<TState, TEvent>.NotFired;
             }
 
@@ -110,7 +76,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
             IState<TState, TEvent> newState = context.State;
 
-            if (!this.InternalTransition)
+            if (!this.IsInternalTransition)
             {
                 this.UnwindSubStates(context);
 
@@ -123,25 +89,19 @@ namespace Appccelerate.StateMachine.Machine.Transitions
                 this.PerformActions(context);
             }
 
+            this.extensionHost.ForEach(extension => extension.ExecutedTransition(
+                this.stateMachineInformation, 
+                this,
+                context));
+
             return new TransitionResult<TState, TEvent>(true, newState, context.Exceptions);
         }
 
-        /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "Transition from state {0} to state {1}.", this.Source, this.Target);
         }
 
-        /// <summary>
-        /// Handles an exception thrown during performing the transition or guard evaluation.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="context">The context.</param>
         private static void HandleException(Exception exception, ITransitionContext<TState, TEvent> context)
         {
             context.OnExceptionThrown(exception);
@@ -252,7 +212,7 @@ namespace Appccelerate.StateMachine.Machine.Transitions
 
         private void PerformActions(ITransitionContext<TState, TEvent> context)
         {
-            foreach (var action in this.actions)
+            foreach (IActionHolder action in this.actions)
             {
                 try
                 {

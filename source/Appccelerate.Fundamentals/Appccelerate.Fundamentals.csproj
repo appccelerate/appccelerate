@@ -3,8 +3,6 @@
   <PropertyGroup>
     <AppccelerateProjectName>Appccelerate.Fundamentals</AppccelerateProjectName>
     <AppccelerateProjectType>Source</AppccelerateProjectType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -18,9 +16,17 @@
     <RootNamespace>Appccelerate</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\lib\Net40\</OutputPath>
-    <DocumentationFile>bin\Release\lib\Net40\Appccelerate.Fundamentals.XML</DocumentationFile>
+    <OutputPath>bin\Release\lib\portable-windows8+net45\</OutputPath>
+    <DocumentationFile>bin\Release\lib\portable-windows8+net45\Appccelerate.Fundamentals.xml</DocumentationFile>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugWithCodeAnalysis|AnyCPU'">
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -29,7 +35,6 @@
   <ItemGroup>
     <Compile Include="Ensure.cs" />
     <Compile Include="Events\EventArgs{T}.cs" />
-    <Compile Include="ExceptionExtensionMethods.cs" />
     <Compile Include="Formatters\FormatHelper.cs" />
     <Compile Include="Formatters\StringTruncationFormatter.cs" />
     <Compile Include="Formatters\TypeExtensions.cs" />
@@ -43,5 +48,5 @@
   <ItemGroup>
     <None Include="Appccelerate.Fundamentals.nuspec" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Appccelerate.msbuild" />
+  <Import Project="$(SolutionDir)\Appccelerate.PCL.msbuild" />
 </Project>
