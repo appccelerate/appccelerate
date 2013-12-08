@@ -20,13 +20,14 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using FakeItEasy;
 
     using FluentAssertions;
 
     using Xunit;
-    using System.Threading.Tasks;
+
 
     public class PerThreadEventScopeContextTest : IDisposable
     {

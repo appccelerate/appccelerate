@@ -21,9 +21,9 @@ namespace Appccelerate.EventBroker.Handlers
     using System;
     using System.Reflection;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using Appccelerate.EventBroker.Internals.Subscriptions;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Handler that executes the subscription on a thread pool worker process (asynchronous).
