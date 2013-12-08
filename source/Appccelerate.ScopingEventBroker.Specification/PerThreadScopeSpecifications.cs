@@ -278,7 +278,10 @@ namespace Appccelerate.ScopingEventBroker.Specification
 
         protected static Tuple<IEventScope, IEventScope> ExecuteOnDifferentThreads(Func<IEventScope> firstThreadAction, Func<IEventScope> secondThreadAction)
         {
-            Parallel.Invoke(firstThreadAction, secondThreadAction);
+            var firstScopeTask = Task.Factory.StartNew(firstThreadAction);
+            var secondScopeTask = Task.Factory.StartNew(secondThreadAction);
+
+            Task.WaitAll(firstScopeTask, secondScopeTask);
 
             return new Tuple<IEventScope, IEventScope>(firstScopeTask.Result, secondScopeTask.Result);
         }

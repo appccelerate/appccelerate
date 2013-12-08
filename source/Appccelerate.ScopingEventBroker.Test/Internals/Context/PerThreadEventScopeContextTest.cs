@@ -26,6 +26,7 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
     using FluentAssertions;
 
     using Xunit;
+    using System.Threading.Tasks;
 
     public class PerThreadEventScopeContextTest : IDisposable
     {
@@ -63,14 +64,13 @@ namespace Appccelerate.ScopingEventBroker.Internals.Context
             IEventScope firstScopeTaskResult = null;
             IEventScope secondScopeTaskResult = null;
 
-            var firstScopeTask = new Thread(() => firstScopeTaskResult = this.testee.Acquire());
-            var secondScopeTask = new Thread(() => secondScopeTaskResult = this.testee.Acquire());
+            var firstScopeTask = Task.Run(() => firstScopeTaskResult = this.testee.Acquire());
+            var secondScopeTask = new Task(() => secondScopeTaskResult = this.testee.Acquire());
 
-            firstScopeTask.Start();
-            firstScopeTask.Join();
+            firstScopeTask.Wait();
 
             secondScopeTask.Start();
-            secondScopeTask.Join();
+            secondScopeTask.Wait();
 
             using (IEventScope firstScope = firstScopeTaskResult)
             using (IEventScope secondScope = secondScopeTaskResult)
