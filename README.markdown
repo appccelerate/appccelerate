@@ -1,3 +1,8 @@
+**!!!! NOTE: THIS IS THE OLD VERSION !!!!
+The repository was split into a repository per component. Please see the repositories in www.github.com/appccelerate.**
+
+
+
 Accelerate your .Net application development.
 
 For whom it is
