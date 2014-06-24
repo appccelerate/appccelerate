@@ -106,6 +106,10 @@ namespace Appccelerate.Formatters
                 {
                     sb.Length -= separator.Length;
                 }
+                else
+                {
+                    sb.Append("none");
+                }
             }
 
             return sb.ToString();
@@ -133,6 +137,10 @@ namespace Appccelerate.Formatters
                 if (sb.Length > 0)
                 {
                     sb.Length -= separator.Length;
+                }
+                else
+                {
+                    sb.Append("none");
                 }
             }
 

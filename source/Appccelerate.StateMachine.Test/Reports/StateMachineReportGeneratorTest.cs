@@ -87,54 +87,54 @@ namespace Appccelerate.StateMachine.Reports
             const string ExpectedReport =
 @"Test Machine: initial state = A
     B: initial state = B1 history type = None
-        entry action: 
-        exit action: 
+        entry action: none
+        exit action: none
         A -> A actions: Action guard: 
         B1: initial state = None history type = None
-            entry action: 
-            exit action: 
-            B2 -> B1 actions:  guard: 
+            entry action: none
+            exit action: none
+            B2 -> B1 actions: none guard: 
         B2: initial state = None history type = None
-            entry action: 
-            exit action: 
-            B1 -> B2 actions:  guard: 
+            entry action: none
+            exit action: none
+            B1 -> B2 actions: none guard: 
     C: initial state = C1 history type = Shallow
-        entry action: 
-        exit action: 
+        entry action: none
+        exit action: none
         C1: initial state = C1A history type = Shallow
-            entry action: 
-            exit action: 
+            entry action: none
+            exit action: none
             C1A: initial state = None history type = None
-                entry action: 
-                exit action: 
+                entry action: none
+                exit action: none
             C1B: initial state = None history type = None
-                entry action: 
-                exit action: 
+                entry action: none
+                exit action: none
         C2: initial state = None history type = None
-            entry action: 
-            exit action: 
+            entry action: none
+            exit action: none
     D: initial state = D1 history type = Deep
-        entry action: 
-        exit action: 
+        entry action: none
+        exit action: none
         D1: initial state = D1A history type = Deep
-            entry action: 
-            exit action: 
+            entry action: none
+            exit action: none
             D1A: initial state = None history type = None
-                entry action: 
-                exit action: 
+                entry action: none
+                exit action: none
             D1B: initial state = None history type = None
-                entry action: 
-                exit action: 
+                entry action: none
+                exit action: none
         D2: initial state = None history type = None
-            entry action: 
-            exit action: 
+            entry action: none
+            exit action: none
     A: initial state = None history type = None
         entry action: EnterA
         exit action: ExitA
-        A -> internal actions:  guard: 
-        B -> B actions:  guard: 
-        C -> C1 actions:  guard: anonymous
-        C -> C2 actions:  guard: anonymous
+        A -> internal actions: none guard: 
+        B -> B actions: none guard: 
+        C -> C1 actions: none guard: anonymous
+        C -> C2 actions: none guard: anonymous
 ";
             report.Replace("\n", string.Empty).Replace("\r", string.Empty)
                 .Should().Be(ExpectedReport.Replace("\n", string.Empty).Replace("\r", string.Empty));
