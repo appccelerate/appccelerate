@@ -21,6 +21,7 @@ namespace Appccelerate.EventBroker.Handlers
     using System;
     using System.Reflection;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using Appccelerate.EventBroker.Internals.Subscriptions;
 
@@ -43,20 +44,18 @@ namespace Appccelerate.EventBroker.Handlers
 
         public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
-            ThreadPool.QueueUserWorkItem(
-                delegate(object state)
+            Task.Run(()=>
                     {
                         try
                         {
-                            var args = (CallInBackgroundArguments)state;
+                            var args = new CallInBackgroundArguments(subscriber, sender, e, delegateWrapper);
                             args.DelegateWrapper.Invoke(args.Subscriber, args.Sender, args.EventArgs);
                         }
                         catch (TargetInvocationException exception)
                         {
                             this.HandleSubscriberMethodException(exception, eventTopic);
                         }
-                    },
-                new CallInBackgroundArguments(subscriber, sender, e, delegateWrapper));
+                    });
         }
 
         private struct CallInBackgroundArguments
